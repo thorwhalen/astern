@@ -19,6 +19,7 @@ from astern import ledger as _ledger
 from astern import report as _report
 from astern import views as _views
 from astern.lenses import LENSES, load_builtin_lenses
+from astern.recall import DFLT_EMBEDDER
 from astern.sources import SessionFile, homes, iter_session_files, load_records
 from astern.store import Store, mk_store
 from astern.turns import iter_turns, session_meta
@@ -761,4 +762,87 @@ def _sum_predictions(preds: list[dict]) -> dict:
     }
 
 
-_dispatch_funcs = [sync, sessions, show, lenses, report, judge, estimate]
+def index(
+    grain: str = "all",
+    *,
+    store: str | Store | None = None,
+    embedder: str = DFLT_EMBEDDER,
+    refresh: bool = False,
+) -> dict:
+    """Index the synced store into ``ir`` corpora, so ``recall`` can search it.
+
+    Two corpora, one per grain: ``session_synopses`` (one record per session,
+    from the ``synopsis`` findings) and ``session_turns`` (one per turn).
+    Idempotent — ``ir`` embeds only what changed since the last run, so this is
+    the natural thing to run after every ``astern sync``.
+
+    ``embedder`` is ``ir``'s spec: the default is its local ``all-MiniLM-L6-v2``
+    (offline, no API key, no per-query cost); ``light`` is ir's numpy-only
+    hashing embedder (no model download, much weaker semantics). Changing it
+    re-embeds the corpus.
+
+    Needs the optional extra: ``pip install "astern[recall]"``.
+    """
+    from astern.recall import index as _index
+
+    return _index(grain, store=store, embedder=embedder, refresh=bool(refresh))
+
+
+def recall(
+    query: str,
+    *,
+    grains: str = "all",
+    project: str | None = None,
+    since_days: float | None = None,
+    k: int = 8,
+    mode: str | None = None,
+    store: str | Store | None = None,
+) -> dict:
+    """What past sessions already thought, tried and decided about ``query``.
+
+    Runs ``ir``'s ``discover`` across the astern corpora (and, unfiltered, the
+    ``skills`` / ``reports`` corpora when this machine has them) and returns a
+    few high-precision hits, each with the ``pointer`` — an ``astern show``
+    command — that fetches the full record. Reading those is the caller's job:
+    a hit is an address, not an answer.
+
+    Needs ``astern index`` to have run at least once.
+    """
+    from astern.recall import recall as _recall
+
+    return _recall(
+        query,
+        grains=grains,
+        project=project,
+        since_days=float(since_days) if since_days is not None else None,
+        k=int(k),
+        mode=mode,
+        store=store,
+    )
+
+
+def install_skills(
+    *,
+    target: str | None = None,
+    only: str | None = None,
+    force: bool = False,
+    dry_run: bool = False,
+) -> dict:
+    """Link the skills astern ships into an agent host (default ``~/.claude``)."""
+    from astern.skills import install_skills as _install
+
+    return _install(target=target, only=only, force=bool(force), dry_run=bool(dry_run))
+
+
+_dispatch_funcs = [
+    sync,
+    sessions,
+    show,
+    lenses,
+    report,
+    judge,
+    estimate,
+    index,
+    recall,
+    install_skills,
+]

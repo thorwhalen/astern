@@ -13,6 +13,11 @@ astern show <sid-prefix>           # one session: meta, ledger state, last turns
 astern report friction             # (in progress) a lens's findings as a markdown report
 astern judge                       # (in progress) run the LLM-judged lenses over what's synced
 astern estimate                    # (in progress) token/cost estimate before a judge batch runs
+
+pip install "astern[recall]"       # + ir, for searching what past sessions already know
+astern index                       # index the store into ir corpora (idempotent)
+astern recall "what did we decide about the ledger"    # ...and ask it
+astern install-skills              # link the shipped skills into ~/.claude/skills
 ```
 
 `sync`, `sessions` and `show` are shipped today. `report`, `judge` and `estimate` are being built out by other agents against the same store and ledger; once they land, the one-command loop is `astern sync && astern judge && astern report friction`.
@@ -48,6 +53,23 @@ Each **lens** asks one question of a session and returns typed, evidence-backed 
 
 Session handoffs (`Q`) are deliberately not a lens here — that's `openloops`, linked rather than re-derived. The full catalogue, with the signal each lens reads and the sink it feeds, is plan §2 (see "The seams" below).
 
+## Recall — what past sessions already know
+
+`astern recall "<query>"` answers *what did we already think, try and decide about X* without re-reading a transcript. astern is only the **record source** here: `ir` owns the indexing and the search, and the multi-hop search loop belongs to `raglab`. Install the extra (`pip install "astern[recall]"`), run `astern index` after a `sync`, and ask.
+
+Two grains, indexed as two `ir` corpora because they answer different questions:
+
+| Corpus | One record is | Best for |
+|---|---|---|
+| `session_synopses` | a whole session as the `synopsis` lens distilled it — goal, problems and solutions, decisions, corrections | **what was decided** |
+| `session_turns` | one turn: the prompt and the assistant's closing text | **what was actually tried** |
+
+Unfiltered, a recall also reaches the `skills` and `reports` corpora when this machine has them (weighted below the sessions, so they inform rather than crowd out). `--project X` and `--since-days N` are hard metadata filters; a project is resolved *through the store* into its session ids, because a session about a project often runs from a group dir or a worktree whose name says nothing about it.
+
+Embedding is local and offline: ir's `all-MiniLM-L6-v2` by default — **no API key, no per-query cost** — with `--embedder light` (numpy-only hashing) for a build with no model download. Each hit carries a `pointer`, the `astern show` command that fetches the full record: a hit is an address, not an answer. The shipped `astern-recall` skill drives the whole loop, ending in a briefing written to the repo the question was about.
+
+`episodes` — a third grain, consecutive turns on one topic — is deliberately not built yet (issue #7).
+
 ## Never spending a token twice
 
 Every lens run goes through the **ledger**: one entry per session, keyed on the transcript file's fingerprint (size + mtime) and, per lens, its version and the last turn index it has seen. From that, `ledger.plan()` picks one of three actions:
@@ -73,6 +95,7 @@ Five things in astern are deliberately swappable, each with a strong out-of-the-
 | `judge=` — the LLM callable for `L` lenses | the local `claude` CLI, headless, no session persisted | `aix.prompt_func` for API billing; a recorded-replay judge for tests |
 | `similar=` — how findings group across sessions | normalized-string near match | `ir` corpus + embeddings, for real semantic clustering |
 | `turns=` — the transcript-to-turns fetcher | astern's own `openloops`-backed iterator | `priv.claude_transcripts.turn_pair_records` by injection |
+| `embedder=` — how `astern index` embeds | `ir`'s local `all-MiniLM-L6-v2` (offline, no key) | `light` (numpy-only), or any embedder spec `ir` understands |
 
 What's deliberately **not** a seam: the lens registry (a module-level dict), report templates, the finding dict shape, and the `openloops.egress` scrub step on every sink — none of these are meant to vary.
 
