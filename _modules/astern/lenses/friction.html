@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>astern.lenses.friction &mdash; astern 0.0.3 documentation</title>
+  <title>astern.lenses.friction &mdash; astern 0.0.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=47de8214"></script>
+      <script src="../../../_static/documentation_options.js?v=8c5712d9"></script>
       <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -100,14 +100,24 @@
 <span class="sd">(``finding(..., turn=turn)``). Six kinds:</span>
 
 <span class="sd">- ``tool_error``    a tool result came back with ``is_error``.</span>
-<span class="sd">- ``retry``         the same ``(tool, digest)`` pair recurs in the same turn or in</span>
-<span class="sd">                    consecutive turns — the shape of "try again, slightly differently".</span>
+<span class="sd">- ``retry``         the same tool is issued again within the same turn or the next</span>
+<span class="sd">                    one, either with the *same full input* (whitespace-normalized</span>
+<span class="sd">                    ``input_text``) — "try that again" — or with the same ``digest``</span>
+<span class="sd">                    right after an ``is_error`` result — "try again, differently".</span>
+<span class="sd">                    Successive successful edits of one path (different content) are</span>
+<span class="sd">                    not a retry, and neither is a plain re-``Read`` of a path unless</span>
+<span class="sd">                    it follows an error: for ``Read`` the digest *is* the input text</span>
+<span class="sd">                    (see :func:`astern.turns.tool_input_text`), so without this</span>
+<span class="sd">                    exception every re-read would look like a repeat.</span>
 <span class="sd">- ``pivot``         assistant prose contains a phrase that signals a change of plan</span>
 <span class="sd">                    (:data:`PIVOT_PHRASES`).</span>
 <span class="sd">- ``compaction``    a ``compact_boundary`` system record — context got full enough to</span>
 <span class="sd">                    summarize away.</span>
-<span class="sd">- ``long_turn``     a turn's wall-clock duration (``turn_duration`` system record)</span>
-<span class="sd">                    is at or above :data:`LONG_TURN_MS`.</span>
+<span class="sd">- ``long_turn``     a turn's wall-clock duration (``turn_duration`` system record) is</span>
+<span class="sd">                    at or above ``max(``:data:`LONG_TURN_MS`, the session's own</span>
+<span class="sd">                    :data:`LONG_TURN_PERCENTILE` th percentile)`` — a floor plus an</span>
+<span class="sd">                    outlier bar relative to *this* session, so a session made of long</span>
+<span class="sd">                    autonomous turns doesn't flag every one of them.</span>
 <span class="sd">- ``tool_search``   a ``ToolSearch`` call — a deferred tool had to be looked up before</span>
 <span class="sd">                    it could be used at all.</span>
 
@@ -130,14 +140,22 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">statistics</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterator</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">astern.lenses</span><span class="w"> </span><span class="kn">import</span> <span class="n">finding</span><span class="p">,</span> <span class="n">lens</span>
 
 <span class="c1">#: A turn at or above this wall-clock duration is "long" enough to be friction on</span>
-<span class="c1">#: its own, independent of whether anything errored.</span>
+<span class="c1">#: its own, independent of whether anything errored. Also the floor under the</span>
+<span class="c1">#: per-session percentile bar (:data:`LONG_TURN_PERCENTILE`) — a quiet session with a</span>
+<span class="c1">#: handful of quick turns should never have its 90th percentile flag something short.</span>
 <span class="n">LONG_TURN_MS</span> <span class="o">=</span> <span class="mi">120_000</span>
+
+<span class="c1">#: A turn is "long" when its duration is at or above the session's own turn-duration</span>
+<span class="c1">#: distribution at this percentile (and at or above :data:`LONG_TURN_MS`). Flags the</span>
+<span class="c1">#: outliers *for this session* rather than every turn past one fleet-wide number.</span>
+<span class="n">LONG_TURN_PERCENTILE</span> <span class="o">=</span> <span class="mi">90</span>
 
 <span class="c1">#: Substrings in assistant prose that signal an in-flight change of plan. Lowercase;</span>
 <span class="c1">#: matched against lowercased text.</span>
@@ -151,6 +169,13 @@
 
 <span class="c1">#: A retry run needs at least this many attempts to be worth reporting.</span>
 <span class="n">MIN_RETRY_ATTEMPTS</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="c1">#: Tools excluded from the "same full input" retry rule. For these tools</span>
+<span class="c1">#: :func:`astern.turns.tool_input_text` falls back to the digest (there is no</span>
+<span class="c1">#: distinguishing content beyond the path/query), so two unrelated, successful</span>
+<span class="c1">#: calls would otherwise look identical and be mistaken for a retry. Such tools</span>
+<span class="c1">#: can still produce a ``retry`` finding through the after-error rule.</span>
+<span class="n">RETRY_INPUT_MATCH_EXCLUDED_TOOLS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">"Read"</span><span class="p">})</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_error_findings</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">turn</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
@@ -196,8 +221,51 @@
             <span class="p">)</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_turn_durations_ms</span><span class="p">(</span><span class="n">turns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Every ``turn_duration`` value in the session, in no particular order."""</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">s</span><span class="p">[</span><span class="s2">"durationMs"</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">turns</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"system"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[])</span>
+        <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"subtype"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"turn_duration"</span>
+        <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"durationMs"</span><span class="p">),</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span>
+    <span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_percentile</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">pct</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Linear-interpolation percentile (no numpy dependency).</span>
+
+<span class="sd">    &gt;&gt;&gt; _percentile([1, 2, 3, 4, 5], 90)</span>
+<span class="sd">    4.6</span>
+<span class="sd">    &gt;&gt;&gt; _percentile([7], 90)</span>
+<span class="sd">    7</span>
+<span class="sd">    &gt;&gt;&gt; _percentile([], 90)</span>
+<span class="sd">    0</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">values</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="n">xs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">xs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">rank</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">pct</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rank</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">rank</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">lo</span> <span class="o">==</span> <span class="n">hi</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">xs</span><span class="p">[</span><span class="n">lo</span><span class="p">]</span>
+    <span class="n">frac</span> <span class="o">=</span> <span class="n">rank</span> <span class="o">-</span> <span class="n">lo</span>
+    <span class="k">return</span> <span class="n">xs</span><span class="p">[</span><span class="n">lo</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">hi</span><span class="p">]</span> <span class="o">-</span> <span class="n">xs</span><span class="p">[</span><span class="n">lo</span><span class="p">])</span> <span class="o">*</span> <span class="n">frac</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_long_turn_threshold</span><span class="p">(</span><span class="n">turns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""``(threshold_ms, session_median_ms)`` for this session's own turn durations."""</span>
+    <span class="n">durations</span> <span class="o">=</span> <span class="n">_turn_durations_ms</span><span class="p">(</span><span class="n">turns</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">durations</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">LONG_TURN_MS</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">_percentile</span><span class="p">(</span><span class="n">durations</span><span class="p">,</span> <span class="n">LONG_TURN_PERCENTILE</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">LONG_TURN_MS</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">statistics</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">durations</span><span class="p">)</span>
+
+
 <span class="k">def</span><span class="w"> </span><span class="nf">_long_turn_findings</span><span class="p">(</span>
-    <span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">turn</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">threshold_ms</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">LONG_TURN_MS</span>
+    <span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">turn</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">threshold_ms</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">session_median_ms</span><span class="p">:</span> <span class="nb">float</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
     <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"system"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]:</span>
         <span class="n">is_duration</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"subtype"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"turn_duration"</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
@@ -209,7 +277,11 @@
                 <span class="n">session</span><span class="p">,</span>
                 <span class="n">kind</span><span class="o">=</span><span class="s2">"long_turn"</span><span class="p">,</span>
                 <span class="n">turn</span><span class="o">=</span><span class="n">turn</span><span class="p">,</span>
-                <span class="n">evidence</span><span class="o">=</span><span class="p">{</span><span class="s2">"duration_ms"</span><span class="p">:</span> <span class="n">s</span><span class="p">[</span><span class="s2">"durationMs"</span><span class="p">],</span> <span class="s2">"threshold_ms"</span><span class="p">:</span> <span class="n">threshold_ms</span><span class="p">},</span>
+                <span class="n">evidence</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s2">"duration_ms"</span><span class="p">:</span> <span class="n">s</span><span class="p">[</span><span class="s2">"durationMs"</span><span class="p">],</span>
+                    <span class="s2">"threshold_ms"</span><span class="p">:</span> <span class="n">threshold_ms</span><span class="p">,</span>
+                    <span class="s2">"session_median_ms"</span><span class="p">:</span> <span class="n">session_median_ms</span><span class="p">,</span>
+                <span class="p">},</span>
             <span class="p">)</span>
 
 
@@ -225,49 +297,91 @@
             <span class="p">)</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_normalize_ws</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">text</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_is_retry_step</span><span class="p">(</span><span class="n">prev</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">cur</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tool</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Does ``cur`` count as a repeat of ``prev`` (same tool, adjacent occurrence)?"""</span>
+    <span class="n">same_input</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">tool</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">RETRY_INPUT_MATCH_EXCLUDED_TOOLS</span>
+        <span class="ow">and</span> <span class="n">prev</span><span class="p">[</span><span class="s2">"input_norm"</span><span class="p">]</span> <span class="o">==</span> <span class="n">cur</span><span class="p">[</span><span class="s2">"input_norm"</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">after_error</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">prev</span><span class="p">[</span><span class="s2">"is_error"</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">same_input</span> <span class="ow">or</span> <span class="n">after_error</span>
+
+
 <span class="k">def</span><span class="w"> </span><span class="nf">_retry_findings</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">turns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">"""Same ``(tool, digest)`` appearing again in the same turn, or in the next one."""</span>
-    <span class="n">occurrences</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""A tool reissued within the same/next turn, same full input or after an error."""</span>
     <span class="n">by_index</span> <span class="o">=</span> <span class="p">{</span><span class="n">t</span><span class="p">[</span><span class="s2">"index"</span><span class="p">]:</span> <span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">turns</span><span class="p">}</span>
+
+    <span class="n">groups</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">turns</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">tc</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tools"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]:</span>
-            <span class="n">occurrences</span><span class="p">[(</span><span class="n">tc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span> <span class="n">tc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"digest"</span><span class="p">,</span> <span class="s2">""</span><span class="p">))]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="s2">"index"</span><span class="p">])</span>
-    <span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">digest</span><span class="p">),</span> <span class="n">idxs</span> <span class="ow">in</span> <span class="n">occurrences</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">idxs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">idxs</span><span class="p">)</span>
-        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">idxs</span><span class="p">):</span>
-            <span class="n">j</span> <span class="o">=</span> <span class="n">i</span>
-            <span class="k">while</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">idxs</span><span class="p">)</span> <span class="ow">and</span> <span class="n">idxs</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">idxs</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">tc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span> <span class="n">tc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"digest"</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span>
+            <span class="n">groups</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">"turn_index"</span><span class="p">:</span> <span class="n">t</span><span class="p">[</span><span class="s2">"index"</span><span class="p">],</span>
+                    <span class="s2">"input_norm"</span><span class="p">:</span> <span class="n">_normalize_ws</span><span class="p">(</span><span class="n">tc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"input_text"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)),</span>
+                    <span class="s2">"is_error"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">tc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_error"</span><span class="p">)),</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">tool</span><span class="p">,</span> <span class="n">digest</span><span class="p">),</span> <span class="n">items</span> <span class="ow">in</span> <span class="n">groups</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1"># `items` is already chronological: turns are visited in order and, within a</span>
+        <span class="c1"># turn, tools keep call order (astern.turns._tools preserves it).</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+            <span class="n">chain</span> <span class="o">=</span> <span class="p">[</span><span class="n">items</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">followed_error</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">while</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+                <span class="n">prev</span><span class="p">,</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">chain</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">items</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">cur</span><span class="p">[</span><span class="s2">"turn_index"</span><span class="p">]</span> <span class="o">-</span> <span class="n">prev</span><span class="p">[</span><span class="s2">"turn_index"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_retry_step</span><span class="p">(</span><span class="n">prev</span><span class="p">,</span> <span class="n">cur</span><span class="p">,</span> <span class="n">tool</span><span class="o">=</span><span class="n">tool</span><span class="p">):</span>
+                    <span class="k">break</span>
+                <span class="n">followed_error</span> <span class="o">=</span> <span class="n">followed_error</span> <span class="ow">or</span> <span class="n">prev</span><span class="p">[</span><span class="s2">"is_error"</span><span class="p">]</span>
+                <span class="n">chain</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
                 <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="n">run</span> <span class="o">=</span> <span class="n">idxs</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">run</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">MIN_RETRY_ATTEMPTS</span><span class="p">:</span>
-                <span class="n">last_turn</span> <span class="o">=</span> <span class="n">by_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">run</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chain</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">MIN_RETRY_ATTEMPTS</span><span class="p">:</span>
+                <span class="n">turn_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="s2">"turn_index"</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">]</span>
+                <span class="n">last_turn</span> <span class="o">=</span> <span class="n">by_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">turn_indices</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
                 <span class="k">yield</span> <span class="n">finding</span><span class="p">(</span>
                     <span class="s2">"friction"</span><span class="p">,</span>
                     <span class="n">session</span><span class="p">,</span>
                     <span class="n">kind</span><span class="o">=</span><span class="s2">"retry"</span><span class="p">,</span>
                     <span class="n">turn</span><span class="o">=</span><span class="n">last_turn</span><span class="p">,</span>
                     <span class="n">evidence</span><span class="o">=</span><span class="p">{</span>
-                        <span class="s2">"tool"</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+                        <span class="s2">"tool"</span><span class="p">:</span> <span class="n">tool</span><span class="p">,</span>
                         <span class="s2">"digest"</span><span class="p">:</span> <span class="n">digest</span><span class="p">,</span>
-                        <span class="s2">"attempts"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">run</span><span class="p">),</span>
-                        <span class="s2">"turn_indices"</span><span class="p">:</span> <span class="n">run</span><span class="p">,</span>
+                        <span class="s2">"attempts"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">chain</span><span class="p">),</span>
+                        <span class="s2">"turn_indices"</span><span class="p">:</span> <span class="n">turn_indices</span><span class="p">,</span>
+                        <span class="s2">"first_turn_index"</span><span class="p">:</span> <span class="n">turn_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                        <span class="s2">"after_error"</span><span class="p">:</span> <span class="n">followed_error</span><span class="p">,</span>
                     <span class="p">},</span>
                 <span class="p">)</span>
-            <span class="n">i</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">j</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
 
 
 <div class="viewcode-block" id="friction">
 <a class="viewcode-back" href="../../../module_docs/astern/lenses/friction.html#astern.lenses.friction.friction">[docs]</a>
-<span class="nd">@lens</span><span class="p">(</span><span class="s2">"friction"</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"H"</span><span class="p">)</span>
+<span class="nd">@lens</span><span class="p">(</span><span class="s2">"friction"</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"H"</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">friction</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">turns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="o">**</span><span class="n">ctx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">"""Detect stuck moments: errors, retries, pivots, compactions, long turns, tool search."""</span>
+    <span class="n">threshold_ms</span><span class="p">,</span> <span class="n">session_median_ms</span> <span class="o">=</span> <span class="n">_long_turn_threshold</span><span class="p">(</span><span class="n">turns</span><span class="p">)</span>
     <span class="n">out</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">turns</span><span class="p">:</span>
         <span class="n">out</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_error_findings</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
         <span class="n">out</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_pivot_findings</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
         <span class="n">out</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_compaction_findings</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
-        <span class="n">out</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_long_turn_findings</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+            <span class="n">_long_turn_findings</span><span class="p">(</span>
+                <span class="n">session</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">threshold_ms</span><span class="o">=</span><span class="n">threshold_ms</span><span class="p">,</span> <span class="n">session_median_ms</span><span class="o">=</span><span class="n">session_median_ms</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
         <span class="n">out</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_tool_search_findings</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
     <span class="n">out</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_retry_findings</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">turns</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">out</span></div>

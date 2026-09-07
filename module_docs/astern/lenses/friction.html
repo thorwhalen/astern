@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>astern.lenses.friction &mdash; astern 0.0.3 documentation</title>
+  <title>astern.lenses.friction &mdash; astern 0.0.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=47de8214"></script>
+      <script src="../../../_static/documentation_options.js?v=8c5712d9"></script>
       <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -59,8 +59,10 @@
 <li class="toctree-l1"><a class="reference internal" href="cost.html">astern.lenses.cost</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">astern.lenses.friction</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#astern.lenses.friction.LONG_TURN_MS"><code class="docutils literal notranslate"><span class="pre">LONG_TURN_MS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.lenses.friction.LONG_TURN_PERCENTILE"><code class="docutils literal notranslate"><span class="pre">LONG_TURN_PERCENTILE</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#astern.lenses.friction.MIN_RETRY_ATTEMPTS"><code class="docutils literal notranslate"><span class="pre">MIN_RETRY_ATTEMPTS</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#astern.lenses.friction.PIVOT_PHRASES"><code class="docutils literal notranslate"><span class="pre">PIVOT_PHRASES</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.lenses.friction.RETRY_INPUT_MATCH_EXCLUDED_TOOLS"><code class="docutils literal notranslate"><span class="pre">RETRY_INPUT_MATCH_EXCLUDED_TOOLS</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#astern.lenses.friction.friction"><code class="docutils literal notranslate"><span class="pre">friction()</span></code></a></li>
 </ul>
 </li>
@@ -109,7 +111,14 @@
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">tool_error</span></code>    a tool result came back with <code class="docutils literal notranslate"><span class="pre">is_error</span></code>.</p></li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">retry</span></code>         the same <code class="docutils literal notranslate"><span class="pre">(tool,</span> <span class="pre">digest)</span></code> pair recurs in the same turn or in</dt><dd><p>consecutive turns — the shape of “try again, slightly differently”.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">retry</span></code>         the same tool is issued again within the same turn or the next</dt><dd><p>one, either with the <em>same full input</em> (whitespace-normalized
+<code class="docutils literal notranslate"><span class="pre">input_text</span></code>) — “try that again” — or with the same <code class="docutils literal notranslate"><span class="pre">digest</span></code>
+right after an <code class="docutils literal notranslate"><span class="pre">is_error</span></code> result — “try again, differently”.
+Successive successful edits of one path (different content) are
+not a retry, and neither is a plain re-<code class="docutils literal notranslate"><span class="pre">Read</span></code> of a path unless
+it follows an error: for <code class="docutils literal notranslate"><span class="pre">Read</span></code> the digest <em>is</em> the input text
+(see <a class="reference internal" href="../turns.html#astern.turns.tool_input_text" title="astern.turns.tool_input_text"><code class="xref py py-func docutils literal notranslate"><span class="pre">astern.turns.tool_input_text()</span></code></a>), so without this
+exception every re-read would look like a repeat.</p>
 </dd>
 </dl>
 </li>
@@ -124,7 +133,10 @@
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">long_turn</span></code>     a turn’s wall-clock duration (<code class="docutils literal notranslate"><span class="pre">turn_duration</span></code> system record)</dt><dd><p>is at or above <a class="reference internal" href="#astern.lenses.friction.LONG_TURN_MS" title="astern.lenses.friction.LONG_TURN_MS"><code class="xref py py-data docutils literal notranslate"><span class="pre">LONG_TURN_MS</span></code></a>.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">long_turn</span></code>     a turn’s wall-clock duration (<code class="docutils literal notranslate"><span class="pre">turn_duration</span></code> system record) is</dt><dd><p>at or above <code class="docutils literal notranslate"><span class="pre">max(</span></code><a class="reference internal" href="#astern.lenses.friction.LONG_TURN_MS" title="astern.lenses.friction.LONG_TURN_MS"><code class="xref py py-data docutils literal notranslate"><span class="pre">LONG_TURN_MS</span></code></a>, the session’s own
+<a class="reference internal" href="#astern.lenses.friction.LONG_TURN_PERCENTILE" title="astern.lenses.friction.LONG_TURN_PERCENTILE"><code class="xref py py-data docutils literal notranslate"><span class="pre">LONG_TURN_PERCENTILE</span></code></a> th percentile)`` — a floor plus an
+outlier bar relative to <em>this</em> session, so a session made of long
+autonomous turns doesn’t flag every one of them.</p>
 </dd>
 </dl>
 </li>
@@ -155,7 +167,17 @@
 <dt class="sig sig-object py" id="astern.lenses.friction.LONG_TURN_MS">
 <span class="sig-prename descclassname"><span class="pre">astern.lenses.friction.</span></span><span class="sig-name descname"><span class="pre">LONG_TURN_MS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">120000</span></span><a class="headerlink" href="#astern.lenses.friction.LONG_TURN_MS" title="Link to this definition"></a></dt>
 <dd><p>A turn at or above this wall-clock duration is “long” enough to be friction on
-its own, independent of whether anything errored.</p>
+its own, independent of whether anything errored. Also the floor under the
+per-session percentile bar (<a class="reference internal" href="#astern.lenses.friction.LONG_TURN_PERCENTILE" title="astern.lenses.friction.LONG_TURN_PERCENTILE"><code class="xref py py-data docutils literal notranslate"><span class="pre">LONG_TURN_PERCENTILE</span></code></a>) — a quiet session with a
+handful of quick turns should never have its 90th percentile flag something short.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.lenses.friction.LONG_TURN_PERCENTILE">
+<span class="sig-prename descclassname"><span class="pre">astern.lenses.friction.</span></span><span class="sig-name descname"><span class="pre">LONG_TURN_PERCENTILE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">90</span></span><a class="headerlink" href="#astern.lenses.friction.LONG_TURN_PERCENTILE" title="Link to this definition"></a></dt>
+<dd><p>A turn is “long” when its duration is at or above the session’s own turn-duration
+distribution at this percentile (and at or above <a class="reference internal" href="#astern.lenses.friction.LONG_TURN_MS" title="astern.lenses.friction.LONG_TURN_MS"><code class="xref py py-data docutils literal notranslate"><span class="pre">LONG_TURN_MS</span></code></a>). Flags the
+outliers <em>for this session</em> rather than every turn past one fleet-wide number.</p>
 </dd></dl>
 
 <dl class="py data">
@@ -169,6 +191,16 @@ its own, independent of whether anything errored.</p>
 <span class="sig-prename descclassname"><span class="pre">astern.lenses.friction.</span></span><span class="sig-name descname"><span class="pre">PIVOT_PHRASES</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('let</span> <span class="pre">me</span> <span class="pre">try</span> <span class="pre">another</span> <span class="pre">approach',</span> <span class="pre">&quot;that</span> <span class="pre">didn't</span> <span class="pre">work&quot;,</span> <span class="pre">&quot;instead,</span> <span class="pre">i'll&quot;,</span> <span class="pre">'hmm',</span> <span class="pre">'wait,')</span></span><a class="headerlink" href="#astern.lenses.friction.PIVOT_PHRASES" title="Link to this definition"></a></dt>
 <dd><p>Substrings in assistant prose that signal an in-flight change of plan. Lowercase;
 matched against lowercased text.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.lenses.friction.RETRY_INPUT_MATCH_EXCLUDED_TOOLS">
+<span class="sig-prename descclassname"><span class="pre">astern.lenses.friction.</span></span><span class="sig-name descname"><span class="pre">RETRY_INPUT_MATCH_EXCLUDED_TOOLS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({'Read'})</span></span><a class="headerlink" href="#astern.lenses.friction.RETRY_INPUT_MATCH_EXCLUDED_TOOLS" title="Link to this definition"></a></dt>
+<dd><p>Tools excluded from the “same full input” retry rule. For these tools
+<a class="reference internal" href="../turns.html#astern.turns.tool_input_text" title="astern.turns.tool_input_text"><code class="xref py py-func docutils literal notranslate"><span class="pre">astern.turns.tool_input_text()</span></code></a> falls back to the digest (there is no
+distinguishing content beyond the path/query), so two unrelated, successful
+calls would otherwise look identical and be mistaken for a retry. Such tools
+can still produce a <code class="docutils literal notranslate"><span class="pre">retry</span></code> finding through the after-error rule.</p>
 </dd></dl>
 
 <dl class="py function">
