@@ -9,13 +9,14 @@ what words you and your agents do not share.
 Core contract: :mod:`astern.tools` (plain functions, JSON in, JSON out) over
 :mod:`astern.sources` → :mod:`astern.turns` → :mod:`astern.store` with
 :mod:`astern.ledger` deciding what still needs analyzing, :mod:`astern.lenses`
-answering the questions, and :mod:`astern.judge` the one LLM seam.
+answering the questions, :mod:`astern.provenance` tracing a line of code back to the
+turn that wrote it, and :mod:`astern.judge` the one LLM seam.
 """
 
 from astern.judge import Judgment, claude_judge, replay_judge  # noqa: F401
 from astern.lenses import LENSES, finding, lens  # noqa: F401
 from astern.store import MemoryStore, Store, mk_store  # noqa: F401
-from astern.tools import install_skills, lenses, sessions, show, sync  # noqa: F401
+from astern.tools import install_skills, lenses, sessions, show, sync, why  # noqa: F401
 
 # `recall` and `index` are deliberately NOT re-exported here: binding them on the
 # package would shadow the :mod:`astern.recall` module, and `import astern.recall

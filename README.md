@@ -10,6 +10,7 @@ pip install astern
 astern sync                        # read new or changed transcripts, run the free (heuristic) lenses
 astern sessions                    # what's synced, newest first
 astern show <sid-prefix>           # one session: meta, ledger state, last turns, findings
+astern why <file>:<line>           # which session turn wrote this line (see below)
 astern report friction             # (in progress) a lens's findings as a markdown report
 astern judge                       # (in progress) run the LLM-judged lenses over what's synced
 astern estimate                    # (in progress) token/cost estimate before a judge batch runs
@@ -20,7 +21,7 @@ astern recall "what did we decide about the ledger"    # ...and ask it
 astern install-skills              # link the shipped skills into ~/.claude/skills
 ```
 
-`sync`, `sessions` and `show` are shipped today. `report`, `judge` and `estimate` are being built out by other agents against the same store and ledger; once they land, the one-command loop is `astern sync && astern judge && astern report friction`.
+`sync`, `sessions`, `show` and `why` are shipped today. `report`, `judge` and `estimate` are being built out by other agents against the same store and ledger; once they land, the one-command loop is `astern sync && astern judge && astern report friction`.
 
 ## What it extracts
 
@@ -79,6 +80,33 @@ Every lens run goes through the **ledger**: one entry per session, keyed on the 
 - **full** — never analyzed, or analyzed by an older lens version; everything is reprocessed.
 
 A heuristic lens (`kind='H'`) costs nothing, so paying for `full` on every source change is fine. The ledger earns its keep on the LLM lenses (`kind='L'`): a resumed session must not pay again for turns it already paid for, and `astern sync` never re-reads a transcript whose size and mtime it already has on file.
+
+## Tracing a line back to the session
+
+```bash
+astern sync --kinds session,subagent            # why needs the subagent transcripts
+astern why astern/judge.py:115                  # a line
+astern why 589f17a --commit                     # or a whole commit
+```
+
+`astern why` answers *which session turn wrote this line*, after the fact, from transcripts you already have. The chain has three links, and each one exists because the link before it is not enough:
+
+1. **git.** `git blame -L` names the *last* commit to touch the line — which, after a CI `ruff format` pass, is the bot. `git log -S` names the commit whose diff first contained the text. Both are reported; when they differ, the second is the one you wanted.
+2. **The commit trailer.** `Claude-Session: https://claude.ai/code/session_<id>` names the **claude.ai** session, which is *not* the local transcript's `sessionId`. The join lives in the transcript itself, as a `bridge-session` record (`{"sessionId": "<uuid>", "bridgeSessionId": "cse_<id>"}`), which `astern sync` keeps as `bridge_session_id`. (The live registry under `~/.claude/sessions/<pid>.json` carries the same pair, but dies with the process, so it cannot answer about last month.)
+3. **The store.** The session's turns **and its subagents'** are searched for the `Edit` / `Write` / `Bash` call whose input contains the line, whitespace-normalized first and then with quotes and integers flattened, so a reformatted line is still found. Each hit reports session, subagent, turn index, the prompt that led to it, and the assistant's prose around it.
+
+The subagent half is not a refinement — it is usually the whole answer. A session that delegates never has the code in its own turns, so `sync` must have been run with `--kinds session,subagent`; `why` says so in `notes` when it wasn't. That is not the default because on a real corpus (290 sessions, 4547 nested transcripts) it is 50.7 s and a 330 MB store against 7.6 s and 87 MB for sessions alone.
+
+With no trailer (older work, another machine, another account) step 2 has nothing to say and step 3 runs over every session whose `cwd` is inside the repo, inside a date window around the commit. If that still finds nothing, the usual reason is the *other home*: pass `--home ~/.claude-iq` to `sync`, because a second account's transcripts are a different corpus.
+
+### astern and Entire
+
+[Entire CLI](https://github.com/entireio/cli) (MIT) answers the same question from the other end: it hooks into Claude Code as the work happens and writes a **checkpoint** — transcript, prompt, token usage, file attribution — into a git ref, so `entire why file:line` is exact and travels with the repo. astern is the retroactive reader for everything Entire did not record: work done before it was enabled, in repos where it never was, and on the second account. When `entire` is installed and the repo is enabled, `astern why` runs it first and includes its answer verbatim under `entire`; astern's own chain runs regardless.
+
+Two rules if you adopt it:
+
+- **Entire's refs are never pushed.** Checkpoints hold the verbatim transcript, and its redaction is best-effort for secrets and does nothing at all about absolute paths — the `cwd` of every record is in there. Entire pushes them by default: it installs a `pre-push` hook that pushes `refs/entire/checkpoints/*` to the elected remote alongside your own push (no `remote.*.push` refspec is involved, so `git config --get-all remote.origin.push` shows nothing and `git push --dry-run` is silent about it). Turn it off per repo with `entire configure --skip-push-sessions`, which writes `strategy_options.push_sessions: false` into `.entire/settings.json`.
+- **The Claude Code hook is per repo, and the user's own call.** `entire agent add claude-code` writes eight hooks into the **repository's** `.claude/settings.json` and leaves `~/.claude/settings.json` alone. There is no global install; enabling it for every repo is a decision to make once, deliberately, not a side effect.
 
 ## Where things live
 

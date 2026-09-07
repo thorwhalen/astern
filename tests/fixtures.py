@@ -308,8 +308,12 @@ def write_home(
         if spec.get("with_subagent"):
             sub_sid = "agent-x"
             sub_path = proj_dir / sid / "subagents" / f"{sub_sid}.jsonl"
+            # A real subagent transcript's records carry the *parent's* ``sessionId``
+            # -- only the file name identifies the subagent -- so the fixture must
+            # too, or nothing here exercises the de-collision that keeps a subagent's
+            # findings and provenance hits from being filed under its parent.
             sub_records = mk_records(
-                sub_sid,
+                sid,
                 cwd,
                 turns=spec.get("subagent_turns", spec.get("turns", ())),
                 version=version,
@@ -341,3 +345,13 @@ def cost_state(**kw) -> dict:
 
 def permission_mode(mode: str) -> dict:
     return {"type": "permission-mode", "permissionMode": mode}
+
+
+def bridge_session(sid: str, bridge_id: str) -> dict:
+    """The record joining a local transcript to its claude.ai session.
+
+    Its ``bridgeSessionId`` is prefixed ``cse_`` while the commit trailer's URL says
+    ``session_``; both name the same session, which is why
+    :func:`astern.provenance.bridge_key` compares only the tail.
+    """
+    return {"type": "bridge-session", "sessionId": sid, "bridgeSessionId": bridge_id}
