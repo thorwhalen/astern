@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; astern 0.0.4 documentation</title>
+  <title>Index &mdash; astern 0.0.5 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=8c5712d9"></script>
+      <script src="_static/documentation_options.js?v=282f96c0"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -60,7 +60,9 @@
 <li class="toctree-l1"><a class="reference internal" href="module_docs/astern/lenses/synopsis.html">astern.lenses.synopsis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/astern/lenses/timeline.html">astern.lenses.timeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/astern/lenses/tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/astern/recall.html">astern.recall</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/astern/report.html">astern.report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/astern/skills.html">astern.skills</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/astern/sources.html">astern.sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/astern/store.html">astern.store</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/astern/tools.html">astern.tools</a></li>
@@ -122,6 +124,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/astern/report.html#astern.report.aggregate">aggregate() (in module astern.report)</a>
+</li>
+      <li><a href="module_docs/astern/skills.html#astern.skills.Asset">Asset (class in astern.skills)</a>
 </li>
       <li>
     astern
@@ -193,8 +197,6 @@
         <li><a href="module_docs/astern/lenses/hygiene.html#module-astern.lenses.hygiene">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     astern.lenses.stats
 
@@ -202,6 +204,8 @@
         <li><a href="module_docs/astern/lenses/stats.html#module-astern.lenses.stats">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     astern.lenses.synopsis
 
@@ -224,10 +228,24 @@
 </li>
       </ul></li>
       <li>
+    astern.recall
+
+      <ul>
+        <li><a href="module_docs/astern/recall.html#module-astern.recall">module</a>
+</li>
+      </ul></li>
+      <li>
     astern.report
 
       <ul>
         <li><a href="module_docs/astern/report.html#module-astern.report">module</a>
+</li>
+      </ul></li>
+      <li>
+    astern.skills
+
+      <ul>
+        <li><a href="module_docs/astern/skills.html#module-astern.skills">module</a>
 </li>
       </ul></li>
       <li>
@@ -274,16 +292,28 @@
       <li><a href="module_docs/astern/lenses.html#astern.lenses.BUILTIN_MODULES">BUILTIN_MODULES (in module astern.lenses)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/astern/skills.html#astern.skills.bundled">bundled() (in module astern.skills)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/astern/skills.html#astern.skills.claude_home">claude_home() (in module astern.skills)</a>
+</li>
       <li><a href="module_docs/astern/judge.html#astern.judge.claude_judge">claude_judge() (in module astern.judge)</a>
+</li>
+      <li><a href="module_docs/astern/turns.html#astern.turns.clean_prompt">clean_prompt() (in module astern.turns)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/astern/turns.html#astern.turns.clean_prompt">clean_prompt() (in module astern.turns)</a>
+      <li><a href="module_docs/astern/recall.html#astern.recall.COMPANION_CORPORA">COMPANION_CORPORA (in module astern.recall)</a>
+</li>
+      <li><a href="module_docs/astern/recall.html#astern.recall.COMPANION_WEIGHT">COMPANION_WEIGHT (in module astern.recall)</a>
+</li>
+      <li><a href="module_docs/astern/recall.html#astern.recall.CORPUS_SPECS">CORPUS_SPECS (in module astern.recall)</a>
 </li>
       <li><a href="module_docs/astern/lenses/cost.html#astern.lenses.cost.cost">cost() (in module astern.lenses.cost)</a>
 </li>
@@ -295,9 +325,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/astern/store.html#astern.store.data_dir">data_dir() (in module astern.store)</a>
 </li>
+      <li><a href="module_docs/astern/recall.html#astern.recall.DFLT_EMBEDDER">DFLT_EMBEDDER (in module astern.recall)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/astern/views.html#astern.views.DFLT_MAX_CHARS">DFLT_MAX_CHARS (in module astern.views)</a>
+</li>
+      <li><a href="module_docs/astern/recall.html#astern.recall.DFLT_MODE">DFLT_MODE (in module astern.recall)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -337,6 +371,10 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/astern/recall.html#astern.recall.GRAINS">GRAINS (in module astern.recall)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/astern/lenses/commands.html#astern.lenses.commands.guess_language">guess_language() (in module astern.lenses.commands)</a>
 </li>
   </ul></td>
@@ -361,16 +399,28 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/astern/recall.html#astern.recall.index">index() (in module astern.recall)</a>
+
+      <ul>
+        <li><a href="module_docs/astern/tools.html#astern.tools.index">(in module astern.tools)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/astern/judge.html#astern.judge.INPUT_KEYS">INPUT_KEYS (in module astern.judge)</a>
 </li>
       <li><a href="module_docs/astern/judge.html#astern.judge.input_tokens">input_tokens() (in module astern.judge)</a>
 </li>
+      <li><a href="module_docs/astern/skills.html#astern.skills.install_skills">install_skills() (in module astern.skills)</a>
+
+      <ul>
+        <li><a href="module_docs/astern/tools.html#astern.tools.install_skills">(in module astern.tools)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/astern/lenses/commands.html#astern.lenses.commands.interpreter_hint">interpreter_hint() (in module astern.lenses.commands)</a>
 </li>
       <li><a href="module_docs/astern/lenses/commands.html#astern.lenses.commands.INTERPRETER_LANGUAGE">INTERPRETER_LANGUAGE (in module astern.lenses.commands)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/astern/turns.html#astern.turns.is_user_prompt">is_user_prompt() (in module astern.turns)</a>
 </li>
       <li><a href="module_docs/astern/sources.html#astern.sources.iter_session_files">iter_session_files() (in module astern.sources)</a>
@@ -439,6 +489,8 @@
 </li>
       <li><a href="module_docs/astern/turns.html#astern.turns.META_TYPES">META_TYPES (in module astern.turns)</a>
 </li>
+      <li><a href="module_docs/astern/recall.html#astern.recall.METADATA_KEYS">METADATA_KEYS (in module astern.recall)</a>
+</li>
       <li><a href="module_docs/astern/estimate.html#astern.estimate.MIN_POINTS_FOR_OLS">MIN_POINTS_FOR_OLS (in module astern.estimate)</a>
 </li>
       <li><a href="module_docs/astern/views.html#astern.views.MIN_PROMPT_CHARS">MIN_PROMPT_CHARS (in module astern.views)</a>
@@ -479,7 +531,11 @@
 </li>
         <li><a href="module_docs/astern/lenses/tooling.html#module-astern.lenses.tooling">astern.lenses.tooling</a>
 </li>
+        <li><a href="module_docs/astern/recall.html#module-astern.recall">astern.recall</a>
+</li>
         <li><a href="module_docs/astern/report.html#module-astern.report">astern.report</a>
+</li>
+        <li><a href="module_docs/astern/skills.html#module-astern.skills">astern.skills</a>
 </li>
         <li><a href="module_docs/astern/sources.html#module-astern.sources">astern.sources</a>
 </li>
@@ -536,14 +592,22 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/astern/recall.html#astern.recall.recall">recall() (in module astern.recall)</a>
+
+      <ul>
+        <li><a href="module_docs/astern/tools.html#astern.tools.recall">(in module astern.tools)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/astern/recall.html#astern.recall.records">records() (in module astern.recall)</a>
+</li>
       <li><a href="module_docs/astern/report.html#astern.report.render">render() (in module astern.report)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/astern/judge.html#astern.judge.replay_judge">replay_judge() (in module astern.judge)</a>
 </li>
       <li><a href="module_docs/astern/tools.html#astern.tools.report">report() (in module astern.tools)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/astern/lenses/friction.html#astern.lenses.friction.RETRY_INPUT_MATCH_EXCLUDED_TOOLS">RETRY_INPUT_MATCH_EXCLUDED_TOOLS (in module astern.lenses.friction)</a>
 </li>
       <li><a href="module_docs/astern/lenses/commands.html#astern.lenses.commands.rewrites">rewrites() (in module astern.lenses.commands)</a>
@@ -568,10 +632,12 @@
 </li>
       <li><a href="module_docs/astern/tools.html#astern.tools.sessions">sessions() (in module astern.tools)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/astern/tools.html#astern.tools.show">show() (in module astern.tools)</a>
 </li>
+      <li><a href="module_docs/astern/recall.html#astern.recall.SNIPPET_CHARS">SNIPPET_CHARS (in module astern.recall)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/astern/ledger.html#astern.ledger.source_changed">source_changed() (in module astern.ledger)</a>
 </li>
       <li><a href="module_docs/astern/lenses/stats.html#astern.lenses.stats.stats">stats() (in module astern.lenses.stats)</a>
@@ -581,6 +647,10 @@
       <li><a href="module_docs/astern/tools.html#astern.tools.sync">sync() (in module astern.tools)</a>
 </li>
       <li><a href="module_docs/astern/lenses/synopsis.html#astern.lenses.synopsis.synopsis">synopsis() (in module astern.lenses.synopsis)</a>
+</li>
+      <li><a href="module_docs/astern/recall.html#astern.recall.synopsis_records">synopsis_records() (in module astern.recall)</a>
+</li>
+      <li><a href="module_docs/astern/recall.html#astern.recall.synopsis_text">synopsis_text() (in module astern.recall)</a>
 </li>
       <li><a href="module_docs/astern/lenses/synopsis.html#astern.lenses.synopsis.SYSTEM">SYSTEM (in module astern.lenses.synopsis)</a>
 </li>
@@ -603,6 +673,8 @@
       <li><a href="module_docs/astern/lenses/tooling.html#astern.lenses.tooling.tooling">tooling() (in module astern.lenses.tooling)</a>
 </li>
       <li><a href="module_docs/astern/judge.html#astern.judge.total_tokens">total_tokens() (in module astern.judge)</a>
+</li>
+      <li><a href="module_docs/astern/recall.html#astern.recall.turn_records">turn_records() (in module astern.recall)</a>
 </li>
   </ul></td>
 </tr></table>

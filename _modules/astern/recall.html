@@ -1,0 +1,821 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astern.recall &mdash; astern 0.0.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=282f96c0"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            astern
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern.html">astern</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/__main__.html">astern.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/estimate.html">astern.estimate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/judge.html">astern.judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/ledger.html">astern.ledger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses.html">astern.lenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/commands.html">astern.lenses.commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/cost.html">astern.lenses.cost</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/friction.html">astern.lenses.friction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/hygiene.html">astern.lenses.hygiene</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/stats.html">astern.lenses.stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/synopsis.html">astern.lenses.synopsis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/timeline.html">astern.lenses.timeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/recall.html">astern.recall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/report.html">astern.report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/skills.html">astern.skills</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/sources.html">astern.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/store.html">astern.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/tools.html">astern.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/turns.html">astern.turns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/views.html">astern.views</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">astern</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">astern.recall</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for astern.recall</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Recall: what did past sessions already think, try and decide about X?</span>
+
+<span class="sd">astern is the **record source**; ``ir`` owns indexing and search; the multi-hop</span>
+<span class="sd">loop belongs to ``raglab``. This module is that seam, and nothing more: it</span>
+<span class="sd">renders the store into JSON-able records (:func:`records`), registers them with</span>
+<span class="sd">``ir`` as two named corpora and builds them (:func:`index`), and asks ``ir`` to</span>
+<span class="sd">search them (:func:`recall`).</span>
+
+<span class="sd">Two grains, deliberately separate corpora rather than one mixed pile:</span>
+
+<span class="sd">- ``session_synopses`` — one record per session, from the ``synopsis`` lens's</span>
+<span class="sd">  findings: goal, problems and their solutions, decisions, corrections, rendered</span>
+<span class="sd">  as short prose. Small, LLM-distilled, and the best hit for *what was decided*.</span>
+<span class="sd">- ``session_turns`` — one record per turn (prompt + the assistant's closing</span>
+<span class="sd">  text). Free, fine-grained, and the best hit for *what was actually tried*;</span>
+<span class="sd">  this is the shape ``ir``'s :class:`ir.ClaudeTurn` strategy already indexes.</span>
+
+<span class="sd">A third grain, ``episodes`` (consecutive turns on one topic), is the natural</span>
+<span class="sd">unit for "the thinking around X" and is deliberately **not** here — see</span>
+<span class="sd">thorwhalen/astern#7.</span>
+
+<span class="sd">``ir`` (and its ``ef`` / ``vd`` dependencies) is an optional extra:</span>
+<span class="sd">``pip install "astern[recall]"``. Every import of it is lazy and inside</span>
+<span class="sd">:func:`_ir`, so ``import astern`` stays as light as it was.</span>
+
+<span class="sd">&gt;&gt;&gt; from astern.store import MemoryStore</span>
+<span class="sd">&gt;&gt;&gt; store = MemoryStore()</span>
+<span class="sd">&gt;&gt;&gt; store.sessions['s1'] = {'session_id': 's1', 'title': 'Fix CI', 'project': 'astern'}</span>
+<span class="sd">&gt;&gt;&gt; store.turns['s1'] = [{'index': 0, 'uuid': 'u0', 'user_prompt': 'why is CI red?',</span>
+<span class="sd">...                       'assistant_summary': 'a stale lockfile', 'tools': []}]</span>
+<span class="sd">&gt;&gt;&gt; [r['id'] for r in records('session_turns', store=store)]</span>
+<span class="sd">['s1:u0']</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">astern.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">Store</span><span class="p">,</span> <span class="n">mk_store</span>
+
+<span class="c1">#: The two grains astern indexes, and the ir corpus name each becomes.</span>
+<span class="n">GRAINS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"session_synopses"</span><span class="p">,</span> <span class="s2">"session_turns"</span><span class="p">)</span>
+
+<span class="c1"># seam candidate: `episodes` — consecutive turns on one topic, split on</span>
+<span class="c1"># embedding-distance jumps and file-set overlap (plus compact_boundary /</span>
+<span class="c1"># away_summary). A third grain here, an H lens upstream. See astern#7.</span>
+
+<span class="c1">#: The embedder every astern corpus is built with unless told otherwise.</span>
+<span class="c1">#: ``ir``'s local ``all-MiniLM-L6-v2`` — offline after a one-time model</span>
+<span class="c1">#: download, **no API key, no per-query cost**. ``embedder="light"`` selects</span>
+<span class="c1">#: ir's numpy-only hashing embedder instead: zero download (what the tests use),</span>
+<span class="c1">#: at the price of dense scores that carry almost no semantics — with ``light``</span>
+<span class="c1">#: prefer ``mode="lexical"``.</span>
+<span class="n">DFLT_EMBEDDER</span> <span class="o">=</span> <span class="s2">"default"</span>
+
+<span class="c1">#: Retrieval mode for :func:`recall`: dense + BM25, fused. Session prose is</span>
+<span class="c1">#: long-form, but the queries that matter carry identifiers ("json schema</span>
+<span class="c1">#: retries", "ledger"), which is exactly where the lexical leg earns its keep.</span>
+<span class="n">DFLT_MODE</span> <span class="o">=</span> <span class="s2">"hybrid"</span>
+
+<span class="c1">#: How much of a hit's text a recall result carries. Enough to judge relevance;</span>
+<span class="c1">#: the full record is one ``astern show`` away, which is what ``pointer`` says.</span>
+<span class="n">SNIPPET_CHARS</span> <span class="o">=</span> <span class="mi">600</span>
+
+<span class="c1">#: Corpora outside astern that a recall reaches into when they are registered</span>
+<span class="c1">#: *and* built — the skills you already have, the reports you already wrote.</span>
+<span class="n">COMPANION_CORPORA</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"skills"</span><span class="p">,</span> <span class="s2">"reports"</span><span class="p">)</span>
+
+<span class="c1">#: Federated rank-fusion weight for the companion corpora. Below 1.0 because the</span>
+<span class="c1">#: question asked here is *what did past sessions say*: a skill or a report is a</span>
+<span class="c1">#: welcome answer, but it should not take half the slots from the sessions on the</span>
+<span class="c1">#: strength of a rank it earned in a corpus of a different size.</span>
+<span class="n">COMPANION_WEIGHT</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+<span class="c1">#: Record fields lifted into ir's hard-filter metadata, per grain. This is the</span>
+<span class="c1">#: JSON-friendly stand-in for a ``metadata_of`` callable (which a registry entry</span>
+<span class="c1">#: could not carry) — see ``ir.CorpusSource.from_records``.</span>
+<span class="n">METADATA_KEYS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"session_synopses"</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s2">"session_id"</span><span class="p">,</span>
+        <span class="s2">"title"</span><span class="p">,</span>
+        <span class="s2">"project"</span><span class="p">,</span>
+        <span class="s2">"cwd"</span><span class="p">,</span>
+        <span class="s2">"started_at"</span><span class="p">,</span>
+        <span class="s2">"ended_at"</span><span class="p">,</span>
+        <span class="s2">"timestamp"</span><span class="p">,</span>
+        <span class="s2">"outcome"</span><span class="p">,</span>
+        <span class="s2">"prs"</span><span class="p">,</span>
+        <span class="s2">"n_turns"</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="s2">"session_turns"</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s2">"turn_index"</span><span class="p">,</span>
+        <span class="s2">"n_errors"</span><span class="p">,</span>
+        <span class="s2">"n_tool_calls"</span><span class="p">,</span>
+        <span class="s2">"tools"</span><span class="p">,</span>
+        <span class="s2">"files"</span><span class="p">,</span>
+        <span class="s2">"title"</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">}</span>
+
+<span class="n">_MISSING_IR</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">"astern recall needs `ir` (and its ef / vd dependencies): "</span>
+    <span class="s1">'pip install "astern[recall]". '</span>
+    <span class="s2">"ir owns the indexing and the search; astern only supplies the records."</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_ir</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">"""Import ``ir``, or say what to install. The one place ``ir`` is imported."""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">ir</span>
+    <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># pragma: no cover - exercised by the message test</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">_MISSING_IR</span><span class="si">}</span><span class="s2"> (import failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+    <span class="k">return</span> <span class="n">ir</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1"># Records — astern's half of the contract</span>
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_iso_cutoff</span><span class="p">(</span><span class="n">since_days</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The ISO timestamp ``since_days`` ago, in the shape transcripts use.</span>
+
+<span class="sd">    &gt;&gt;&gt; _iso_cutoff(None) is None</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; _iso_cutoff(1).endswith('Z')</span>
+<span class="sd">    True</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">since_days</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">when</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">since_days</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">_normalize_ts</span><span class="p">(</span><span class="n">when</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(</span><span class="n">timespec</span><span class="o">=</span><span class="s2">"seconds"</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_matches</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Whether a session passes the project / recency filters.</span>
+
+<span class="sd">    ``project`` is a **substring** of the session's project, project slug or cwd —</span>
+<span class="sd">    the same rule ``astern sessions --project`` uses, and the cwd is in it because</span>
+<span class="sd">    a session about a project is often not *rooted* at it: a Claude group dir or a</span>
+<span class="sd">    worktree gives the session a cwd basename that names neither.</span>
+
+<span class="sd">    &gt;&gt;&gt; s = {'project': 'agent-x', 'cwd': '/p/astern/.claude/worktrees/agent-x',</span>
+<span class="sd">    ...      'ended_at': '2026-09-01T00:00:00Z'}</span>
+<span class="sd">    &gt;&gt;&gt; _matches(s, project='astern', cutoff=None)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; _matches(s, project='vd', cutoff=None)</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; _matches(s, project=None, cutoff='2026-09-02T00:00:00Z')</span>
+<span class="sd">    False</span>
+<span class="sd">    """</span>
+    <span class="n">named</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"project"</span><span class="p">,</span> <span class="s2">"project_slug"</span><span class="p">,</span> <span class="s2">"cwd"</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">project</span> <span class="ow">and</span> <span class="n">project</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">named</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">cutoff</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ended</span> <span class="o">=</span> <span class="n">_normalize_ts</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ended_at"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ended</span> <span class="ow">or</span> <span class="n">ended</span> <span class="o">&lt;</span> <span class="n">_normalize_ts</span><span class="p">(</span><span class="n">cutoff</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_normalize_ts</span><span class="p">(</span><span class="n">ts</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""ISO timestamps in one comparable shape — the ``Z`` one transcripts write.</span>
+
+<span class="sd">    Timestamps are compared as **strings** (that is what a ``vd`` metadata filter</span>
+<span class="sd">    does too), so the two spellings UTC has must be reduced to one, or a stored</span>
+<span class="sd">    ``…Z`` stamp would sort after every ``…+00:00`` cutoff and a date filter would</span>
+<span class="sd">    quietly keep everything.</span>
+
+<span class="sd">    &gt;&gt;&gt; _normalize_ts('2026-09-01T10:00:00+00:00')</span>
+<span class="sd">    '2026-09-01T10:00:00Z'</span>
+<span class="sd">    &gt;&gt;&gt; _normalize_ts('2026-09-01T10:00:00Z'), _normalize_ts('')</span>
+<span class="sd">    ('2026-09-01T10:00:00Z', '')</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ts</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">""</span>
+    <span class="k">return</span> <span class="n">ts</span><span class="p">[:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="s2">"+00:00"</span><span class="p">)]</span> <span class="o">+</span> <span class="s2">"Z"</span> <span class="k">if</span> <span class="n">ts</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"+00:00"</span><span class="p">)</span> <span class="k">else</span> <span class="n">ts</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_sessions</span><span class="p">(</span>
+    <span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">since_days</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""The synced sessions passing the filters, as ``(session_id, meta)``."""</span>
+    <span class="n">cutoff</span> <span class="o">=</span> <span class="n">_iso_cutoff</span><span class="p">(</span><span class="n">since_days</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">sid</span> <span class="ow">in</span> <span class="n">store</span><span class="o">.</span><span class="n">sessions</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">session</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">sessions</span><span class="p">[</span><span class="n">sid</span><span class="p">]</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>  <span class="c1"># a half-written file is not a reason to stop</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">_matches</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="n">cutoff</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">sid</span><span class="p">,</span> <span class="n">session</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_session_fields</span><span class="p">(</span><span class="n">sid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The metadata every grain's records carry, whatever the grain."""</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">"session_id"</span><span class="p">:</span> <span class="n">sid</span><span class="p">,</span>
+        <span class="s2">"title"</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"title"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s2">"project"</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"project"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s2">"cwd"</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"cwd"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s2">"git_branch"</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"git_branch"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_bullets</span><span class="p">(</span><span class="n">items</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Render list-of-dict findings as ``a — b`` lines, skipping the empty ones.</span>
+
+<span class="sd">    &gt;&gt;&gt; _bullets([{'problem': 'p', 'solution': 's'}, {'problem': ''}],</span>
+<span class="sd">    ...          ('problem', 'solution'))</span>
+<span class="sd">    ['p — s']</span>
+<span class="sd">    """</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">[:</span><span class="n">limit</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">parts</span> <span class="k">if</span> <span class="n">p</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">parts</span><span class="p">:</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">" — "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<div class="viewcode-block" id="synopsis_text">
+<a class="viewcode-back" href="../../module_docs/astern/recall.html#astern.recall.synopsis_text">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">synopsis_text</span><span class="p">(</span><span class="n">evidence</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The prose a synopsis finding becomes: goal, outcome, problems, decisions.</span>
+
+<span class="sd">    Only the fields that answer *what was decided and what went wrong* — the</span>
+<span class="sd">    session's vocabulary and skill candidates are for the reports, not for</span>
+<span class="sd">    recall, and padding the embedded text with them dilutes the signal.</span>
+
+<span class="sd">    &gt;&gt;&gt; print(synopsis_text({'goal': 'unred the CI', 'outcome': 'done',</span>
+<span class="sd">    ...                      'problems': [{'problem': 'stale lockfile',</span>
+<span class="sd">    ...                                    'solution': 'regenerated it'}],</span>
+<span class="sd">    ...                      'notable_decisions': ['pin numpy below 2']}))</span>
+<span class="sd">    Goal: unred the CI</span>
+<span class="sd">    Outcome: done</span>
+<span class="sd">    Problems and solutions:</span>
+<span class="sd">    - stale lockfile — regenerated it</span>
+<span class="sd">    Decisions:</span>
+<span class="sd">    - pin numpy below 2</span>
+<span class="sd">    """</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">evidence</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"goal"</span><span class="p">):</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Goal: </span><span class="si">{</span><span class="n">evidence</span><span class="p">[</span><span class="s1">'goal'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">evidence</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"outcome"</span><span class="p">):</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Outcome: </span><span class="si">{</span><span class="n">evidence</span><span class="p">[</span><span class="s1">'outcome'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">sections</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s2">"Problems and solutions"</span><span class="p">,</span> <span class="s2">"problems"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"problem"</span><span class="p">,</span> <span class="s2">"solution"</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s2">"Friction"</span><span class="p">,</span> <span class="s2">"friction"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"what"</span><span class="p">,</span> <span class="s2">"cause_guess"</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s2">"Corrections"</span><span class="p">,</span> <span class="s2">"corrections"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"what_user_said"</span><span class="p">,</span> <span class="s2">"rule_candidate"</span><span class="p">)),</span>
+    <span class="p">)</span>
+    <span class="k">for</span> <span class="n">heading</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">fields</span> <span class="ow">in</span> <span class="n">sections</span><span class="p">:</span>
+        <span class="n">got</span> <span class="o">=</span> <span class="n">_bullets</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">evidence</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]),</span> <span class="n">fields</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">got</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">heading</span><span class="si">}</span><span class="s2">:"</span><span class="p">)</span>
+            <span class="n">lines</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"- </span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">got</span><span class="p">]</span>
+    <span class="n">decisions</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">(</span><span class="n">evidence</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"notable_decisions"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[])]</span>
+    <span class="n">decisions</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">decisions</span> <span class="k">if</span> <span class="n">d</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">decisions</span><span class="p">:</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"Decisions:"</span><span class="p">)</span>
+        <span class="n">lines</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"- </span><span class="si">{</span><span class="n">d</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">decisions</span><span class="p">]</span>
+    <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_synopsis_records</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span> <span class="n">sid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""One record per session, merging every ``synopsis`` finding it has.</span>
+
+<span class="sd">    A resumed session is judged incrementally, so its findings list holds</span>
+<span class="sd">    several synopses; they are extensions of one another, and the record joins</span>
+<span class="sd">    them rather than picking one — dropping the later ones would index a</span>
+<span class="sd">    session by what it looked like halfway through.</span>
+<span class="sd">    """</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"synopsis/</span><span class="si">{</span><span class="n">sid</span><span class="si">}</span><span class="s2">"</span>
+    <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">store</span><span class="o">.</span><span class="n">findings</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">store</span><span class="o">.</span><span class="n">findings</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+        <span class="k">return</span>
+    <span class="n">texts</span><span class="p">,</span> <span class="n">outcome</span> <span class="o">=</span> <span class="p">[],</span> <span class="s2">""</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">found</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"kind"</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">"synopsis"</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"evidence"</span><span class="p">),</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">synopsis_text</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="s2">"evidence"</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">text</span><span class="p">:</span>
+            <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">outcome</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">"evidence"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"outcome"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">outcome</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">texts</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">ended</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ended_at"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+    <span class="k">yield</span> <span class="p">{</span>
+        <span class="s2">"id"</span><span class="p">:</span> <span class="n">sid</span><span class="p">,</span>
+        <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"</span><span class="se">\n\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">texts</span><span class="p">),</span>
+        <span class="o">**</span><span class="n">_session_fields</span><span class="p">(</span><span class="n">sid</span><span class="p">,</span> <span class="n">session</span><span class="p">),</span>
+        <span class="s2">"started_at"</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"started_at"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s2">"ended_at"</span><span class="p">:</span> <span class="n">ended</span><span class="p">,</span>
+        <span class="s2">"timestamp"</span><span class="p">:</span> <span class="n">ended</span><span class="p">,</span>
+        <span class="s2">"outcome"</span><span class="p">:</span> <span class="n">outcome</span><span class="p">,</span>
+        <span class="s2">"prs"</span><span class="p">:</span> <span class="p">[</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'repo'</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">''</span><span class="si">}</span><span class="s2">#</span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'number'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"prs"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[])</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="p">],</span>
+        <span class="s2">"n_turns"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">store</span><span class="o">.</span><span class="n">turns</span><span class="p">[</span><span class="n">sid</span><span class="p">])</span> <span class="k">if</span> <span class="n">sid</span> <span class="ow">in</span> <span class="n">store</span><span class="o">.</span><span class="n">turns</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">"pointer"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"astern show </span><span class="si">{</span><span class="n">sid</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_files_touched</span><span class="p">(</span><span class="n">turn</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""The files an Edit/Write/NotebookEdit touched in this turn, deduped.</span>
+
+<span class="sd">    &gt;&gt;&gt; _files_touched({'tools': [{'name': 'Edit', 'digest': '/a/b.py'},</span>
+<span class="sd">    ...                           {'name': 'Bash', 'digest': 'ls'}]})</span>
+<span class="sd">    ['/a/b.py']</span>
+<span class="sd">    """</span>
+    <span class="n">out</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tools"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]:</span>
+        <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"Edit"</span><span class="p">,</span> <span class="s2">"Write"</span><span class="p">,</span> <span class="s2">"NotebookEdit"</span><span class="p">,</span> <span class="s2">"MultiEdit"</span><span class="p">):</span>
+            <span class="n">digest</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"digest"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">digest</span> <span class="ow">and</span> <span class="n">digest</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">out</span><span class="p">:</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">digest</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_turn_records</span><span class="p">(</span>
+    <span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span> <span class="n">sid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">include_full</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""One record per turn that carries prose; the shape ``ir.ClaudeTurn`` indexes."""</span>
+    <span class="k">if</span> <span class="n">sid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">store</span><span class="o">.</span><span class="n">turns</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">turns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">store</span><span class="o">.</span><span class="n">turns</span><span class="p">[</span><span class="n">sid</span><span class="p">])</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+        <span class="k">return</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="n">_session_fields</span><span class="p">(</span><span class="n">sid</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">turn</span> <span class="ow">in</span> <span class="n">turns</span><span class="p">:</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="p">(</span><span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"user_prompt"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">summary</span> <span class="o">=</span> <span class="p">(</span><span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"assistant_summary"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">summary</span><span class="p">:</span>
+            <span class="k">continue</span>  <span class="c1"># a turn with no prose is a tool-call artifact, not a memory</span>
+        <span class="n">tools</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">(</span><span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tools"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[])</span> <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)]</span>
+        <span class="n">record</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"id"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">sid</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'uuid'</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'index'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">fields</span><span class="p">,</span>
+            <span class="s2">"session_title"</span><span class="p">:</span> <span class="n">fields</span><span class="p">[</span><span class="s2">"title"</span><span class="p">],</span>
+            <span class="s2">"user_prompt"</span><span class="p">:</span> <span class="n">user</span><span class="p">,</span>
+            <span class="s2">"assistant_summary"</span><span class="p">:</span> <span class="n">summary</span><span class="p">,</span>
+            <span class="s2">"turn_index"</span><span class="p">:</span> <span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"index"</span><span class="p">),</span>
+            <span class="s2">"timestamp"</span><span class="p">:</span> <span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"timestamp"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+            <span class="s2">"git_branch"</span><span class="p">:</span> <span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"git_branch"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">fields</span><span class="p">[</span><span class="s2">"git_branch"</span><span class="p">],</span>
+            <span class="s2">"model"</span><span class="p">:</span> <span class="p">(</span><span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"models"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[</span><span class="s2">""</span><span class="p">])[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="s2">"tools"</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">tools</span><span class="p">)),</span>
+            <span class="s2">"n_tool_calls"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"n_tool_calls"</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="s2">"n_errors"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"n_errors"</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="s2">"files"</span><span class="p">:</span> <span class="n">_files_touched</span><span class="p">(</span><span class="n">turn</span><span class="p">),</span>
+            <span class="s2">"has_tool_use"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">tools</span><span class="p">),</span>
+            <span class="s2">"pointer"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"astern show </span><span class="si">{</span><span class="n">sid</span><span class="si">}</span><span class="s2"> --turns </span><span class="si">{</span><span class="p">(</span><span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'index'</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">include_full</span><span class="p">:</span>
+            <span class="n">record</span><span class="p">[</span><span class="s2">"assistant_full"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"assistant_full"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">yield</span> <span class="n">record</span>
+
+
+<div class="viewcode-block" id="records">
+<a class="viewcode-back" href="../../module_docs/astern/recall.html#astern.recall.records">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">records</span><span class="p">(</span>
+    <span class="n">grain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">store</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Store</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">project</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">since_days</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">include_full</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Yield the JSON-able records of one ``grain``, in the shape ``ir`` indexes.</span>
+
+<span class="sd">    Ids are stable, because they are what the index keys on: ``&lt;sid&gt;`` for a</span>
+<span class="sd">    synopsis, ``&lt;sid&gt;:&lt;turn_uuid&gt;`` for a turn. ``project`` / ``since_days``</span>
+<span class="sd">    narrow the *source*; the same filters exist at query time in :func:`recall`,</span>
+<span class="sd">    where they are hard metadata filters and cost nothing to change.</span>
+
+<span class="sd">    &gt;&gt;&gt; from astern.store import MemoryStore</span>
+<span class="sd">    &gt;&gt;&gt; store = MemoryStore()</span>
+<span class="sd">    &gt;&gt;&gt; store.sessions['s1'] = {'session_id': 's1', 'project': 'astern'}</span>
+<span class="sd">    &gt;&gt;&gt; store.findings['synopsis/s1'] = [</span>
+<span class="sd">    ...     {'kind': 'synopsis', 'evidence': {'goal': 'ship recall', 'outcome': 'done'}}]</span>
+<span class="sd">    &gt;&gt;&gt; rec = next(records('session_synopses', store=store))</span>
+<span class="sd">    &gt;&gt;&gt; rec['id'], rec['outcome'], rec['text'].splitlines()[0]</span>
+<span class="sd">    ('s1', 'done', 'Goal: ship recall')</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">grain</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">GRAINS</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"unknown grain </span><span class="si">{</span><span class="n">grain</span><span class="si">!r}</span><span class="s2">; known: </span><span class="si">{</span><span class="n">GRAINS</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">store</span> <span class="o">=</span> <span class="n">mk_store</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">sid</span><span class="p">,</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">_sessions</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">since_days</span><span class="o">=</span><span class="n">since_days</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">grain</span> <span class="o">==</span> <span class="s2">"session_synopses"</span><span class="p">:</span>
+            <span class="k">yield from</span> <span class="n">_synopsis_records</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">sid</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">yield from</span> <span class="n">_turn_records</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">sid</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">include_full</span><span class="o">=</span><span class="n">include_full</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="synopsis_records">
+<a class="viewcode-back" href="../../module_docs/astern/recall.html#astern.recall.synopsis_records">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">synopsis_records</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Every session-synopsis record in the default store — ``ir``'s fetcher.</span>
+
+<span class="sd">    A registry entry is JSON, so ``ir`` holds a *reference* to this function</span>
+<span class="sd">    (``"astern.recall:synopsis_records"``) rather than an object: that is what</span>
+<span class="sd">    lets ``ir build session_synopses``, in a process that knows nothing about</span>
+<span class="sd">    this one, rebuild the corpus. ``$ASTERN_DATA_DIR`` therefore selects the</span>
+<span class="sd">    store here exactly as it does for every other astern verb.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">records</span><span class="p">(</span><span class="s2">"session_synopses"</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="turn_records">
+<a class="viewcode-back" href="../../module_docs/astern/recall.html#astern.recall.turn_records">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">turn_records</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Every turn record in the default store — ``ir``'s fetcher (see above)."""</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">records</span><span class="p">(</span><span class="s2">"session_turns"</span><span class="p">))</span></div>
+
+
+
+<span class="c1">#: grain -&gt; the registry entry ``ir`` persists for it. The fetchers are named,</span>
+<span class="c1">#: never passed: an entry that held a callable could not be written to disk.</span>
+<span class="n">CORPUS_SPECS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"session_synopses"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"kind"</span><span class="p">:</span> <span class="s2">"records"</span><span class="p">,</span>
+        <span class="s2">"fetcher"</span><span class="p">:</span> <span class="s2">"astern.recall:synopsis_records"</span><span class="p">,</span>
+        <span class="s2">"strategy"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Chunked"</span><span class="p">,</span> <span class="s2">"params"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"text_key"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">}},</span>
+        <span class="s2">"metadata_keys"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">METADATA_KEYS</span><span class="p">[</span><span class="s2">"session_synopses"</span><span class="p">]),</span>
+    <span class="p">},</span>
+    <span class="s2">"session_turns"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"kind"</span><span class="p">:</span> <span class="s2">"records"</span><span class="p">,</span>
+        <span class="s2">"fetcher"</span><span class="p">:</span> <span class="s2">"astern.recall:turn_records"</span><span class="p">,</span>
+        <span class="s2">"strategy"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"ClaudeTurn"</span><span class="p">,</span> <span class="s2">"params"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"include_full"</span><span class="p">:</span> <span class="kc">False</span><span class="p">}},</span>
+        <span class="s2">"metadata_keys"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">METADATA_KEYS</span><span class="p">[</span><span class="s2">"session_turns"</span><span class="p">]),</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1"># index / recall — ir's half, driven through its public API</span>
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_grains</span><span class="p">(</span><span class="n">grain</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""``'all'`` or a comma-separated list -&gt; grain names.</span>
+
+<span class="sd">    &gt;&gt;&gt; _grains('all')</span>
+<span class="sd">    ['session_synopses', 'session_turns']</span>
+<span class="sd">    &gt;&gt;&gt; _grains('session_turns')</span>
+<span class="sd">    ['session_turns']</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">grain</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"all"</span><span class="p">,</span> <span class="s2">"*"</span><span class="p">,</span> <span class="s2">""</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">GRAINS</span><span class="p">)</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">g</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">grain</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span> <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
+    <span class="n">unknown</span> <span class="o">=</span> <span class="p">[</span><span class="n">g</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">names</span> <span class="k">if</span> <span class="n">g</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">GRAINS</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">unknown</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"unknown grain(s) </span><span class="si">{</span><span class="n">unknown</span><span class="si">}</span><span class="s2">; known: </span><span class="si">{</span><span class="n">GRAINS</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">names</span>
+
+
+<div class="viewcode-block" id="index">
+<a class="viewcode-back" href="../../module_docs/astern/recall.html#astern.recall.index">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">(</span>
+    <span class="n">grain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"all"</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">store</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Store</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">embedder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DFLT_EMBEDDER</span><span class="p">,</span>
+    <span class="n">refresh</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Register the astern corpora with ``ir`` and build them. Idempotent.</span>
+
+<span class="sd">    Registration writes ``ir``'s corpora config (``~/.config/ir/corpora.json``);</span>
+<span class="sd">    the build embeds only what changed, because ``ir`` keys every artifact on a</span>
+<span class="sd">    content hash — so re-running after a ``sync`` costs the new records only.</span>
+<span class="sd">    ``refresh=True`` re-registers first, which is how an embedder change takes</span>
+<span class="sd">    effect (``ir`` then re-embeds everything, its ledger having pinned the old</span>
+<span class="sd">    embedder id).</span>
+
+<span class="sd">    ``store=`` is honoured by pointing ``$ASTERN_DATA_DIR`` at it for the build,</span>
+<span class="sd">    because the fetcher ``ir`` calls back is a *name*, resolved in a process</span>
+<span class="sd">    that never saw this call's arguments.</span>
+<span class="sd">    """</span>
+    <span class="n">ir</span> <span class="o">=</span> <span class="n">_ir</span><span class="p">()</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="n">_grains</span><span class="p">(</span><span class="n">grain</span><span class="p">)</span>
+    <span class="n">out</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"embedder"</span><span class="p">:</span> <span class="n">embedder</span><span class="p">,</span> <span class="s2">"corpora"</span><span class="p">:</span> <span class="p">{}}</span>
+    <span class="k">with</span> <span class="n">_store_env</span><span class="p">(</span><span class="n">store</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+            <span class="n">spec</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">CORPUS_SPECS</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
+            <span class="n">kind</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"kind"</span><span class="p">)</span>
+            <span class="n">entry</span> <span class="o">=</span> <span class="n">ir</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">refresh</span> <span class="ow">or</span> <span class="n">entry</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"embedder"</span><span class="p">)</span> <span class="o">!=</span> <span class="n">embedder</span><span class="p">:</span>
+                <span class="n">ir</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="n">embedder</span><span class="p">,</span> <span class="o">**</span><span class="n">spec</span><span class="p">)</span>
+            <span class="n">corpus</span> <span class="o">=</span> <span class="n">ir</span><span class="o">.</span><span class="n">build_corpus</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">out</span><span class="p">[</span><span class="s2">"corpora"</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">"n_records"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">corpus</span><span class="p">),</span>
+                <span class="s2">"n_artifacts"</span><span class="p">:</span> <span class="n">_n_artifacts</span><span class="p">(</span><span class="n">corpus</span><span class="p">),</span>
+                <span class="s2">"embedder_id"</span><span class="p">:</span> <span class="n">corpus</span><span class="o">.</span><span class="n">embedder_id</span><span class="p">,</span>
+                <span class="s2">"path"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">ir</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">corpus_dir</span><span class="p">(</span><span class="n">name</span><span class="p">)),</span>
+            <span class="p">}</span>
+    <span class="n">out</span><span class="p">[</span><span class="s2">"config"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ir</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">registry_path</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_n_artifacts</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""How many source records the corpus holds (records are per *surface*)."""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">corpus</span><span class="o">.</span><span class="n">store</span><span class="o">.</span><span class="n">ledger_items</span><span class="p">())</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>  <span class="c1"># pragma: no cover - store variants</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">_store_env</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Point ``$ASTERN_DATA_DIR`` at ``store`` for the duration of a build.</span>
+
+<span class="sd">    The fetcher ir calls is named, not passed, so a non-default store can only</span>
+<span class="sd">    reach it through the environment — the same seam ``astern sync`` uses.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">store</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Store</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">store</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">mk_store</span><span class="p">(</span><span class="n">store</span><span class="p">)</span><span class="o">.</span><span class="n">root</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">previous</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">previous</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ASTERN_DATA_DIR"</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"ASTERN_DATA_DIR"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">exc</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"ASTERN_DATA_DIR"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"ASTERN_DATA_DIR"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_built_corpora</span><span class="p">(</span><span class="n">ir</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""Split ``names`` into the corpora that are built and those that are not."""</span>
+    <span class="n">built</span><span class="p">,</span> <span class="n">missing</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">corpus</span> <span class="o">=</span> <span class="n">ir</span><span class="o">.</span><span class="n">open_corpus</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="p">(</span><span class="n">built</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span> <span class="k">else</span> <span class="n">missing</span><span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># noqa: BLE001 - an unopenable corpus is simply not built</span>
+            <span class="n">missing</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">built</span><span class="p">,</span> <span class="n">missing</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_filter</span><span class="p">(</span>
+    <span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">since_days</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The ``vd`` metadata filter for a recall, or ``None``.</span>
+
+<span class="sd">    A ``vd`` filter has equality and ranges, not substrings — so ``project`` is</span>
+<span class="sd">    resolved **through the store** into the session ids it names, and the index</span>
+<span class="sd">    is filtered on those. That is not a workaround: the store is the SSOT of</span>
+<span class="sd">    which sessions a project has, and it knows what a bare ``project`` field</span>
+<span class="sd">    cannot — that a session run from a Claude group dir or a git worktree</span>
+<span class="sd">    carries neither the project's name nor its slug, only its cwd.</span>
+
+<span class="sd">    &gt;&gt;&gt; from astern.store import MemoryStore</span>
+<span class="sd">    &gt;&gt;&gt; store = MemoryStore()</span>
+<span class="sd">    &gt;&gt;&gt; store.sessions['s1'] = {'cwd': '/p/astern/.claude/worktrees/w', 'project': 'w'}</span>
+<span class="sd">    &gt;&gt;&gt; _filter(store, project='astern', since_days=None)</span>
+<span class="sd">    {'session_id': {'$in': ['s1']}}</span>
+<span class="sd">    &gt;&gt;&gt; _filter(store, project=None, since_days=None) is None</span>
+<span class="sd">    True</span>
+<span class="sd">    """</span>
+    <span class="n">clauses</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">project</span><span class="p">:</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">sid</span> <span class="k">for</span> <span class="n">sid</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">_sessions</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">since_days</span><span class="o">=</span><span class="kc">None</span><span class="p">)]</span>
+        <span class="n">clauses</span><span class="p">[</span><span class="s2">"session_id"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"$in"</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">ids</span><span class="p">)}</span>
+    <span class="n">cutoff</span> <span class="o">=</span> <span class="n">_iso_cutoff</span><span class="p">(</span><span class="n">since_days</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cutoff</span><span class="p">:</span>
+        <span class="n">clauses</span><span class="p">[</span><span class="s2">"timestamp"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"$gte"</span><span class="p">:</span> <span class="n">cutoff</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">clauses</span> <span class="ow">or</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_hit</span><span class="p">(</span><span class="n">disclosure</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""One ir ``Disclosure`` as a recall hit — small, cited, and followable."""</span>
+    <span class="n">meta</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">disclosure</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">or</span> <span class="p">{})</span>
+    <span class="n">sid</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"session_id"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">disclosure</span><span class="o">.</span><span class="n">summary</span> <span class="ow">or</span> <span class="s2">""</span>
+    <span class="n">pointer</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"pointer"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">disclosure</span><span class="o">.</span><span class="n">pointer</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">pointer</span> <span class="ow">and</span> <span class="n">sid</span><span class="p">:</span>
+        <span class="n">pointer</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"astern show </span><span class="si">{</span><span class="n">sid</span><span class="si">}</span><span class="s2">"</span>
+    <span class="c1"># A session hit is named by its session's title (often empty — sessions are</span>
+    <span class="c1"># not always titled); only a non-session hit falls back to the artifact name,</span>
+    <span class="c1"># where the name is a skill or a file path and means something.</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"title"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"session_title"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">"grain"</span><span class="p">:</span> <span class="n">disclosure</span><span class="o">.</span><span class="n">source</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s2">"score"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">disclosure</span><span class="o">.</span><span class="n">score</span><span class="p">),</span> <span class="mi">4</span><span class="p">),</span>
+        <span class="s2">"session_id"</span><span class="p">:</span> <span class="n">sid</span><span class="p">,</span>
+        <span class="s2">"title"</span><span class="p">:</span> <span class="n">title</span> <span class="ow">or</span> <span class="p">(</span><span class="s2">""</span> <span class="k">if</span> <span class="n">sid</span> <span class="k">else</span> <span class="n">disclosure</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+        <span class="s2">"project"</span><span class="p">:</span> <span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"project"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s2">"timestamp"</span><span class="p">:</span> <span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"timestamp"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ended_at"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="s2">"turn_index"</span><span class="p">:</span> <span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"turn_index"</span><span class="p">),</span>
+        <span class="s2">"text"</span><span class="p">:</span> <span class="n">text</span><span class="p">[:</span><span class="n">SNIPPET_CHARS</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="s2">"…"</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">SNIPPET_CHARS</span> <span class="k">else</span> <span class="s2">""</span><span class="p">),</span>
+        <span class="s2">"pointer"</span><span class="p">:</span> <span class="n">pointer</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<div class="viewcode-block" id="recall">
+<a class="viewcode-back" href="../../module_docs/astern/recall.html#astern.recall.recall">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">recall</span><span class="p">(</span>
+    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">grains</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"all"</span><span class="p">,</span>
+    <span class="n">project</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">since_days</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">store</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Store</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">companions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""What past sessions already thought about ``query`` — ``ir`` federated over the grains.</span>
+
+<span class="sd">    Searches ``session_synopses`` and ``session_turns`` (whichever are built),</span>
+<span class="sd">    and — when no project/date filter is set — the ``skills`` and ``reports``</span>
+<span class="sd">    corpora if this machine has them. A filter excludes those two deliberately</span>
+<span class="sd">    rather than silently: they carry no ``session_id`` or ``timestamp`` metadata,</span>
+<span class="sd">    so a hard filter would drop every one of their hits without saying so.</span>
+
+<span class="sd">    Returns hits with a ``pointer`` — the command that fetches the full record —</span>
+<span class="sd">    because the point is to read the few that matter, not to paste prose here.</span>
+<span class="sd">    """</span>
+    <span class="n">ir</span> <span class="o">=</span> <span class="n">_ir</span><span class="p">()</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="n">_grains</span><span class="p">(</span><span class="n">grains</span><span class="p">)</span>
+    <span class="n">filter_</span> <span class="o">=</span> <span class="n">_filter</span><span class="p">(</span><span class="n">mk_store</span><span class="p">(</span><span class="n">store</span><span class="p">),</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">since_days</span><span class="o">=</span><span class="n">since_days</span><span class="p">)</span>
+    <span class="n">notes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">project</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="n">filter_</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"session_id"</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"$in"</span><span class="p">):</span>
+        <span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"no synced session matches project=</span><span class="si">{</span><span class="n">project</span><span class="si">!r}</span><span class="s2"> — `astern sessions "</span>
+            <span class="sa">f</span><span class="s2">"--project </span><span class="si">{</span><span class="n">project</span><span class="si">}</span><span class="s2">` shows what the store knows"</span>
+        <span class="p">)</span>
+    <span class="k">with</span> <span class="n">_store_env</span><span class="p">(</span><span class="n">store</span><span class="p">):</span>
+        <span class="n">built</span><span class="p">,</span> <span class="n">missing</span> <span class="o">=</span> <span class="n">_built_corpora</span><span class="p">(</span><span class="n">ir</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
+            <span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"not built: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span><span class="si">}</span><span class="s2"> — run `astern index` "</span>
+                <span class="sa">f</span><span class="s2">"(after `astern sync`) to build them"</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">companions</span> <span class="ow">and</span> <span class="n">filter_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">extra</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_built_corpora</span><span class="p">(</span><span class="n">ir</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">COMPANION_CORPORA</span><span class="p">))</span>
+            <span class="n">built</span> <span class="o">+=</span> <span class="n">extra</span>
+        <span class="k">elif</span> <span class="n">companions</span> <span class="ow">and</span> <span class="n">filter_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'/'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">COMPANION_CORPORA</span><span class="p">)</span><span class="si">}</span><span class="s2"> skipped: they carry no project or "</span>
+                <span class="sa">f</span><span class="s2">"timestamp metadata, so a filtered search cannot include them"</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">built</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">"query"</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
+                <span class="s2">"hits"</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">"abstained"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s2">"notes"</span><span class="p">:</span> <span class="n">notes</span> <span class="ow">or</span> <span class="p">[</span><span class="s2">"no astern corpus is built"</span><span class="p">],</span>
+            <span class="p">}</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">ir</span><span class="o">.</span><span class="n">discover</span><span class="p">(</span>
+            <span class="n">built</span><span class="p">,</span>
+            <span class="n">query</span><span class="p">,</span>
+            <span class="n">k</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="p">),</span>
+            <span class="n">mode</span><span class="o">=</span><span class="n">mode</span> <span class="ow">or</span> <span class="n">DFLT_MODE</span><span class="p">,</span>
+            <span class="nb">filter</span><span class="o">=</span><span class="n">filter_</span><span class="p">,</span>
+            <span class="n">max_k</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="p">),</span>
+            <span class="n">merge_weights</span><span class="o">=</span><span class="p">{</span>
+                <span class="n">name</span><span class="p">:</span> <span class="p">(</span><span class="n">COMPANION_WEIGHT</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">COMPANION_CORPORA</span> <span class="k">else</span> <span class="mf">1.0</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">built</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">"query"</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
+        <span class="s2">"corpora"</span><span class="p">:</span> <span class="n">built</span><span class="p">,</span>
+        <span class="s2">"mode"</span><span class="p">:</span> <span class="n">mode</span> <span class="ow">or</span> <span class="n">DFLT_MODE</span><span class="p">,</span>
+        <span class="s2">"filter"</span><span class="p">:</span> <span class="n">filter_</span><span class="p">,</span>
+        <span class="s2">"hits"</span><span class="p">:</span> <span class="p">[</span><span class="n">_hit</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">results</span><span class="p">],</span>
+        <span class="s2">"abstained"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">abstained</span><span class="p">),</span>
+        <span class="s2">"n_retrieved"</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">n_retrieved</span><span class="p">,</span>
+        <span class="s2">"notes"</span><span class="p">:</span> <span class="n">notes</span> <span class="o">+</span> <span class="p">([</span><span class="n">result</span><span class="o">.</span><span class="n">reason</span><span class="p">]</span> <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">reason</span> <span class="k">else</span> <span class="p">[]),</span>
+    <span class="p">}</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

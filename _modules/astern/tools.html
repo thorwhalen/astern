@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>astern.tools &mdash; astern 0.0.4 documentation</title>
+  <title>astern.tools &mdash; astern 0.0.5 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=8c5712d9"></script>
+      <script src="../../_static/documentation_options.js?v=282f96c0"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -60,7 +60,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/synopsis.html">astern.lenses.synopsis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/timeline.html">astern.lenses.timeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/recall.html">astern.recall</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/report.html">astern.report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/skills.html">astern.skills</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/sources.html">astern.sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/store.html">astern.store</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/tools.html">astern.tools</a></li>
@@ -114,6 +116,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">astern</span><span class="w"> </span><span class="kn">import</span> <span class="n">report</span> <span class="k">as</span> <span class="n">_report</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astern</span><span class="w"> </span><span class="kn">import</span> <span class="n">views</span> <span class="k">as</span> <span class="n">_views</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astern.lenses</span><span class="w"> </span><span class="kn">import</span> <span class="n">LENSES</span><span class="p">,</span> <span class="n">load_builtin_lenses</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astern.recall</span><span class="w"> </span><span class="kn">import</span> <span class="n">DFLT_EMBEDDER</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astern.sources</span><span class="w"> </span><span class="kn">import</span> <span class="n">SessionFile</span><span class="p">,</span> <span class="n">homes</span><span class="p">,</span> <span class="n">iter_session_files</span><span class="p">,</span> <span class="n">load_records</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astern.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">Store</span><span class="p">,</span> <span class="n">mk_store</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astern.turns</span><span class="w"> </span><span class="kn">import</span> <span class="n">iter_turns</span><span class="p">,</span> <span class="n">session_meta</span>
@@ -877,7 +880,99 @@
     <span class="p">}</span>
 
 
-<span class="n">_dispatch_funcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">sync</span><span class="p">,</span> <span class="n">sessions</span><span class="p">,</span> <span class="n">show</span><span class="p">,</span> <span class="n">lenses</span><span class="p">,</span> <span class="n">report</span><span class="p">,</span> <span class="n">judge</span><span class="p">,</span> <span class="n">estimate</span><span class="p">]</span>
+<div class="viewcode-block" id="index">
+<a class="viewcode-back" href="../../module_docs/astern/tools.html#astern.tools.index">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">(</span>
+    <span class="n">grain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"all"</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">store</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Store</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">embedder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DFLT_EMBEDDER</span><span class="p">,</span>
+    <span class="n">refresh</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Index the synced store into ``ir`` corpora, so ``recall`` can search it.</span>
+
+<span class="sd">    Two corpora, one per grain: ``session_synopses`` (one record per session,</span>
+<span class="sd">    from the ``synopsis`` findings) and ``session_turns`` (one per turn).</span>
+<span class="sd">    Idempotent — ``ir`` embeds only what changed since the last run, so this is</span>
+<span class="sd">    the natural thing to run after every ``astern sync``.</span>
+
+<span class="sd">    ``embedder`` is ``ir``'s spec: the default is its local ``all-MiniLM-L6-v2``</span>
+<span class="sd">    (offline, no API key, no per-query cost); ``light`` is ir's numpy-only</span>
+<span class="sd">    hashing embedder (no model download, much weaker semantics). Changing it</span>
+<span class="sd">    re-embeds the corpus.</span>
+
+<span class="sd">    Needs the optional extra: ``pip install "astern[recall]"``.</span>
+<span class="sd">    """</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">astern.recall</span><span class="w"> </span><span class="kn">import</span> <span class="n">index</span> <span class="k">as</span> <span class="n">_index</span>
+
+    <span class="k">return</span> <span class="n">_index</span><span class="p">(</span><span class="n">grain</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="n">store</span><span class="p">,</span> <span class="n">embedder</span><span class="o">=</span><span class="n">embedder</span><span class="p">,</span> <span class="n">refresh</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">refresh</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="recall">
+<a class="viewcode-back" href="../../module_docs/astern/tools.html#astern.tools.recall">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">recall</span><span class="p">(</span>
+    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">grains</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"all"</span><span class="p">,</span>
+    <span class="n">project</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">since_days</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">store</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Store</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""What past sessions already thought, tried and decided about ``query``.</span>
+
+<span class="sd">    Runs ``ir``'s ``discover`` across the astern corpora (and, unfiltered, the</span>
+<span class="sd">    ``skills`` / ``reports`` corpora when this machine has them) and returns a</span>
+<span class="sd">    few high-precision hits, each with the ``pointer`` — an ``astern show``</span>
+<span class="sd">    command — that fetches the full record. Reading those is the caller's job:</span>
+<span class="sd">    a hit is an address, not an answer.</span>
+
+<span class="sd">    Needs ``astern index`` to have run at least once.</span>
+<span class="sd">    """</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">astern.recall</span><span class="w"> </span><span class="kn">import</span> <span class="n">recall</span> <span class="k">as</span> <span class="n">_recall</span>
+
+    <span class="k">return</span> <span class="n">_recall</span><span class="p">(</span>
+        <span class="n">query</span><span class="p">,</span>
+        <span class="n">grains</span><span class="o">=</span><span class="n">grains</span><span class="p">,</span>
+        <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+        <span class="n">since_days</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">since_days</span><span class="p">)</span> <span class="k">if</span> <span class="n">since_days</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">k</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="p">),</span>
+        <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span>
+        <span class="n">store</span><span class="o">=</span><span class="n">store</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="install_skills">
+<a class="viewcode-back" href="../../module_docs/astern/tools.html#astern.tools.install_skills">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">install_skills</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">target</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">only</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">dry_run</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Link the skills astern ships into an agent host (default ``~/.claude``)."""</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">astern.skills</span><span class="w"> </span><span class="kn">import</span> <span class="n">install_skills</span> <span class="k">as</span> <span class="n">_install</span>
+
+    <span class="k">return</span> <span class="n">_install</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span> <span class="n">only</span><span class="o">=</span><span class="n">only</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">force</span><span class="p">),</span> <span class="n">dry_run</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">dry_run</span><span class="p">))</span></div>
+
+
+
+<span class="n">_dispatch_funcs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">sync</span><span class="p">,</span>
+    <span class="n">sessions</span><span class="p">,</span>
+    <span class="n">show</span><span class="p">,</span>
+    <span class="n">lenses</span><span class="p">,</span>
+    <span class="n">report</span><span class="p">,</span>
+    <span class="n">judge</span><span class="p">,</span>
+    <span class="n">estimate</span><span class="p">,</span>
+    <span class="n">index</span><span class="p">,</span>
+    <span class="n">recall</span><span class="p">,</span>
+    <span class="n">install_skills</span><span class="p">,</span>
+<span class="p">]</span>
 </pre></div>
 
            </div>

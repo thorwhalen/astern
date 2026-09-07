@@ -16,7 +16,9 @@
    module_docs/astern/lenses/synopsis
    module_docs/astern/lenses/timeline
    module_docs/astern/lenses/tooling
+   module_docs/astern/recall
    module_docs/astern/report
+   module_docs/astern/skills
    module_docs/astern/sources
    module_docs/astern/store
    module_docs/astern/tools

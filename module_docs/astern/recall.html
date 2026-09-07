@@ -1,0 +1,335 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astern.recall &mdash; astern 0.0.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=282f96c0"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="astern.report" href="report.html" />
+    <link rel="prev" title="astern.lenses.tooling" href="lenses/tooling.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            astern
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../astern.html">astern</a></li>
+<li class="toctree-l1"><a class="reference internal" href="__main__.html">astern.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="estimate.html">astern.estimate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="judge.html">astern.judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ledger.html">astern.ledger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses.html">astern.lenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/commands.html">astern.lenses.commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/cost.html">astern.lenses.cost</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/friction.html">astern.lenses.friction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/hygiene.html">astern.lenses.hygiene</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/stats.html">astern.lenses.stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/synopsis.html">astern.lenses.synopsis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/timeline.html">astern.lenses.timeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">astern.recall</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#astern.recall.COMPANION_CORPORA"><code class="docutils literal notranslate"><span class="pre">COMPANION_CORPORA</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.recall.COMPANION_WEIGHT"><code class="docutils literal notranslate"><span class="pre">COMPANION_WEIGHT</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.recall.CORPUS_SPECS"><code class="docutils literal notranslate"><span class="pre">CORPUS_SPECS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.recall.DFLT_EMBEDDER"><code class="docutils literal notranslate"><span class="pre">DFLT_EMBEDDER</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.recall.DFLT_MODE"><code class="docutils literal notranslate"><span class="pre">DFLT_MODE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.recall.GRAINS"><code class="docutils literal notranslate"><span class="pre">GRAINS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.recall.METADATA_KEYS"><code class="docutils literal notranslate"><span class="pre">METADATA_KEYS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.recall.SNIPPET_CHARS"><code class="docutils literal notranslate"><span class="pre">SNIPPET_CHARS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.recall.index"><code class="docutils literal notranslate"><span class="pre">index()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.recall.recall"><code class="docutils literal notranslate"><span class="pre">recall()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.recall.records"><code class="docutils literal notranslate"><span class="pre">records()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.recall.synopsis_records"><code class="docutils literal notranslate"><span class="pre">synopsis_records()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.recall.synopsis_text"><code class="docutils literal notranslate"><span class="pre">synopsis_text()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.recall.turn_records"><code class="docutils literal notranslate"><span class="pre">turn_records()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="report.html">astern.report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="skills.html">astern.skills</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources.html">astern.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="store.html">astern.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">astern.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="turns.html">astern.turns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">astern.views</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">astern</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">astern.recall</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/astern/recall.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-astern.recall">
+<span id="astern-recall"></span><h1>astern.recall<a class="headerlink" href="#module-astern.recall" title="Link to this heading"></a></h1>
+<p>Recall: what did past sessions already think, try and decide about X?</p>
+<p>astern is the <strong>record source</strong>; <code class="docutils literal notranslate"><span class="pre">ir</span></code> owns indexing and search; the multi-hop
+loop belongs to <code class="docutils literal notranslate"><span class="pre">raglab</span></code>. This module is that seam, and nothing more: it
+renders the store into JSON-able records (<a class="reference internal" href="#astern.recall.records" title="astern.recall.records"><code class="xref py py-func docutils literal notranslate"><span class="pre">records()</span></code></a>), registers them with
+<code class="docutils literal notranslate"><span class="pre">ir</span></code> as two named corpora and builds them (<a class="reference internal" href="#astern.recall.index" title="astern.recall.index"><code class="xref py py-func docutils literal notranslate"><span class="pre">index()</span></code></a>), and asks <code class="docutils literal notranslate"><span class="pre">ir</span></code> to
+search them (<a class="reference internal" href="#astern.recall.recall" title="astern.recall.recall"><code class="xref py py-func docutils literal notranslate"><span class="pre">recall()</span></code></a>).</p>
+<p>Two grains, deliberately separate corpora rather than one mixed pile:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">session_synopses</span></code> — one record per session, from the <code class="docutils literal notranslate"><span class="pre">synopsis</span></code> lens’s
+findings: goal, problems and their solutions, decisions, corrections, rendered
+as short prose. Small, LLM-distilled, and the best hit for <em>what was decided</em>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">session_turns</span></code> — one record per turn (prompt + the assistant’s closing
+text). Free, fine-grained, and the best hit for <em>what was actually tried</em>;
+this is the shape <code class="docutils literal notranslate"><span class="pre">ir</span></code>’s <code class="xref py py-class docutils literal notranslate"><span class="pre">ir.ClaudeTurn</span></code> strategy already indexes.</p></li>
+</ul>
+<p>A third grain, <code class="docutils literal notranslate"><span class="pre">episodes</span></code> (consecutive turns on one topic), is the natural
+unit for “the thinking around X” and is deliberately <strong>not</strong> here — see
+thorwhalen/astern#7.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ir</span></code> (and its <code class="docutils literal notranslate"><span class="pre">ef</span></code> / <code class="docutils literal notranslate"><span class="pre">vd</span></code> dependencies) is an optional extra:
+<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;astern[recall]&quot;</span></code>. Every import of it is lazy and inside
+<code class="xref py py-func docutils literal notranslate"><span class="pre">_ir()</span></code>, so <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">astern</span></code> stays as light as it was.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">astern.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">MemoryStore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span> <span class="o">=</span> <span class="n">MemoryStore</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span><span class="o">.</span><span class="n">sessions</span><span class="p">[</span><span class="s1">'s1'</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'session_id'</span><span class="p">:</span> <span class="s1">'s1'</span><span class="p">,</span> <span class="s1">'title'</span><span class="p">:</span> <span class="s1">'Fix CI'</span><span class="p">,</span> <span class="s1">'project'</span><span class="p">:</span> <span class="s1">'astern'</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span><span class="o">.</span><span class="n">turns</span><span class="p">[</span><span class="s1">'s1'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">'index'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'uuid'</span><span class="p">:</span> <span class="s1">'u0'</span><span class="p">,</span> <span class="s1">'user_prompt'</span><span class="p">:</span> <span class="s1">'why is CI red?'</span><span class="p">,</span>
+<span class="gp">... </span>                      <span class="s1">'assistant_summary'</span><span class="p">:</span> <span class="s1">'a stale lockfile'</span><span class="p">,</span> <span class="s1">'tools'</span><span class="p">:</span> <span class="p">[]}]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">records</span><span class="p">(</span><span class="s1">'session_turns'</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="n">store</span><span class="p">)]</span>
+<span class="go">['s1:u0']</span>
+</pre></div>
+</div>
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.recall.COMPANION_CORPORA">
+<span class="sig-prename descclassname"><span class="pre">astern.recall.</span></span><span class="sig-name descname"><span class="pre">COMPANION_CORPORA</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('skills',</span> <span class="pre">'reports')</span></span><a class="headerlink" href="#astern.recall.COMPANION_CORPORA" title="Link to this definition"></a></dt>
+<dd><p>Corpora outside astern that a recall reaches into when they are registered
+<em>and</em> built — the skills you already have, the reports you already wrote.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.recall.COMPANION_WEIGHT">
+<span class="sig-prename descclassname"><span class="pre">astern.recall.</span></span><span class="sig-name descname"><span class="pre">COMPANION_WEIGHT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.5</span></span><a class="headerlink" href="#astern.recall.COMPANION_WEIGHT" title="Link to this definition"></a></dt>
+<dd><p>Federated rank-fusion weight for the companion corpora. Below 1.0 because the
+question asked here is <em>what did past sessions say</em>: a skill or a report is a
+welcome answer, but it should not take half the slots from the sessions on the
+strength of a rank it earned in a corpus of a different size.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.recall.CORPUS_SPECS">
+<span class="sig-prename descclassname"><span class="pre">astern.recall.</span></span><span class="sig-name descname"><span class="pre">CORPUS_SPECS</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'session_synopses':</span> <span class="pre">{'fetcher':</span> <span class="pre">'astern.recall:synopsis_records',</span> <span class="pre">'kind':</span> <span class="pre">'records',</span> <span class="pre">'metadata_keys':</span> <span class="pre">['session_id',</span> <span class="pre">'title',</span> <span class="pre">'project',</span> <span class="pre">'cwd',</span> <span class="pre">'started_at',</span> <span class="pre">'ended_at',</span> <span class="pre">'timestamp',</span> <span class="pre">'outcome',</span> <span class="pre">'prs',</span> <span class="pre">'n_turns'],</span> <span class="pre">'strategy':</span> <span class="pre">{'name':</span> <span class="pre">'Chunked',</span> <span class="pre">'params':</span> <span class="pre">{'text_key':</span> <span class="pre">'text'}}},</span> <span class="pre">'session_turns':</span> <span class="pre">{'fetcher':</span> <span class="pre">'astern.recall:turn_records',</span> <span class="pre">'kind':</span> <span class="pre">'records',</span> <span class="pre">'metadata_keys':</span> <span class="pre">['turn_index',</span> <span class="pre">'n_errors',</span> <span class="pre">'n_tool_calls',</span> <span class="pre">'tools',</span> <span class="pre">'files',</span> <span class="pre">'title'],</span> <span class="pre">'strategy':</span> <span class="pre">{'name':</span> <span class="pre">'ClaudeTurn',</span> <span class="pre">'params':</span> <span class="pre">{'include_full':</span> <span class="pre">False}}}}</span></span><a class="headerlink" href="#astern.recall.CORPUS_SPECS" title="Link to this definition"></a></dt>
+<dd><p>grain -&gt; the registry entry <code class="docutils literal notranslate"><span class="pre">ir</span></code> persists for it. The fetchers are named,
+never passed: an entry that held a callable could not be written to disk.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.recall.DFLT_EMBEDDER">
+<span class="sig-prename descclassname"><span class="pre">astern.recall.</span></span><span class="sig-name descname"><span class="pre">DFLT_EMBEDDER</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'default'</span></span><a class="headerlink" href="#astern.recall.DFLT_EMBEDDER" title="Link to this definition"></a></dt>
+<dd><p>The embedder every astern corpus is built with unless told otherwise.
+<code class="docutils literal notranslate"><span class="pre">ir</span></code>’s local <code class="docutils literal notranslate"><span class="pre">all-MiniLM-L6-v2</span></code> — offline after a one-time model
+download, <strong>no API key, no per-query cost</strong>. <code class="docutils literal notranslate"><span class="pre">embedder=&quot;light&quot;</span></code> selects
+ir’s numpy-only hashing embedder instead: zero download (what the tests use),
+at the price of dense scores that carry almost no semantics — with <code class="docutils literal notranslate"><span class="pre">light</span></code>
+prefer <code class="docutils literal notranslate"><span class="pre">mode=&quot;lexical&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.recall.DFLT_MODE">
+<span class="sig-prename descclassname"><span class="pre">astern.recall.</span></span><span class="sig-name descname"><span class="pre">DFLT_MODE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'hybrid'</span></span><a class="headerlink" href="#astern.recall.DFLT_MODE" title="Link to this definition"></a></dt>
+<dd><p>dense + BM25, fused. Session prose is
+long-form, but the queries that matter carry identifiers (“json schema
+retries”, “ledger”), which is exactly where the lexical leg earns its keep.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Retrieval mode for <a class="reference internal" href="#astern.recall.recall" title="astern.recall.recall"><code class="xref py py-func docutils literal notranslate"><span class="pre">recall()</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.recall.GRAINS">
+<span class="sig-prename descclassname"><span class="pre">astern.recall.</span></span><span class="sig-name descname"><span class="pre">GRAINS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('session_synopses',</span> <span class="pre">'session_turns')</span></span><a class="headerlink" href="#astern.recall.GRAINS" title="Link to this definition"></a></dt>
+<dd><p>The two grains astern indexes, and the ir corpus name each becomes.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.recall.METADATA_KEYS">
+<span class="sig-prename descclassname"><span class="pre">astern.recall.</span></span><span class="sig-name descname"><span class="pre">METADATA_KEYS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'session_synopses':</span> <span class="pre">('session_id',</span> <span class="pre">'title',</span> <span class="pre">'project',</span> <span class="pre">'cwd',</span> <span class="pre">'started_at',</span> <span class="pre">'ended_at',</span> <span class="pre">'timestamp',</span> <span class="pre">'outcome',</span> <span class="pre">'prs',</span> <span class="pre">'n_turns'),</span> <span class="pre">'session_turns':</span> <span class="pre">('turn_index',</span> <span class="pre">'n_errors',</span> <span class="pre">'n_tool_calls',</span> <span class="pre">'tools',</span> <span class="pre">'files',</span> <span class="pre">'title')}</span></span><a class="headerlink" href="#astern.recall.METADATA_KEYS" title="Link to this definition"></a></dt>
+<dd><p>Record fields lifted into ir’s hard-filter metadata, per grain. This is the
+JSON-friendly stand-in for a <code class="docutils literal notranslate"><span class="pre">metadata_of</span></code> callable (which a registry entry
+could not carry) — see <code class="docutils literal notranslate"><span class="pre">ir.CorpusSource.from_records</span></code>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.recall.SNIPPET_CHARS">
+<span class="sig-prename descclassname"><span class="pre">astern.recall.</span></span><span class="sig-name descname"><span class="pre">SNIPPET_CHARS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">600</span></span><a class="headerlink" href="#astern.recall.SNIPPET_CHARS" title="Link to this definition"></a></dt>
+<dd><p>How much of a hit’s text a recall result carries. Enough to judge relevance;
+the full record is one <code class="docutils literal notranslate"><span class="pre">astern</span> <span class="pre">show</span></code> away, which is what <code class="docutils literal notranslate"><span class="pre">pointer</span></code> says.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.recall.index">
+<span class="sig-prename descclassname"><span class="pre">astern.recall.</span></span><span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="store.html#astern.store.Store" title="astern.store.Store"><span class="pre">Store</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refresh</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/astern/recall.html#index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.recall.index" title="Link to this definition"></a></dt>
+<dd><p>Register the astern corpora with <code class="docutils literal notranslate"><span class="pre">ir</span></code> and build them. Idempotent.</p>
+<p>Registration writes <code class="docutils literal notranslate"><span class="pre">ir</span></code>’s corpora config (<code class="docutils literal notranslate"><span class="pre">~/.config/ir/corpora.json</span></code>);
+the build embeds only what changed, because <code class="docutils literal notranslate"><span class="pre">ir</span></code> keys every artifact on a
+content hash — so re-running after a <code class="docutils literal notranslate"><span class="pre">sync</span></code> costs the new records only.
+<code class="docutils literal notranslate"><span class="pre">refresh=True</span></code> re-registers first, which is how an embedder change takes
+effect (<code class="docutils literal notranslate"><span class="pre">ir</span></code> then re-embeds everything, its ledger having pinned the old
+embedder id).</p>
+<p><code class="docutils literal notranslate"><span class="pre">store=</span></code> is honoured by pointing <code class="docutils literal notranslate"><span class="pre">$ASTERN_DATA_DIR</span></code> at it for the build,
+because the fetcher <code class="docutils literal notranslate"><span class="pre">ir</span></code> calls back is a <em>name</em>, resolved in a process
+that never saw this call’s arguments.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.recall.recall">
+<span class="sig-prename descclassname"><span class="pre">astern.recall.</span></span><span class="sig-name descname"><span class="pre">recall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">grains</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">since_days</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="store.html#astern.store.Store" title="astern.store.Store"><span class="pre">Store</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">companions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/astern/recall.html#recall"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.recall.recall" title="Link to this definition"></a></dt>
+<dd><p>What past sessions already thought about <code class="docutils literal notranslate"><span class="pre">query</span></code> — <code class="docutils literal notranslate"><span class="pre">ir</span></code> federated over the grains.</p>
+<p>Searches <code class="docutils literal notranslate"><span class="pre">session_synopses</span></code> and <code class="docutils literal notranslate"><span class="pre">session_turns</span></code> (whichever are built),
+and — when no project/date filter is set — the <code class="docutils literal notranslate"><span class="pre">skills</span></code> and <code class="docutils literal notranslate"><span class="pre">reports</span></code>
+corpora if this machine has them. A filter excludes those two deliberately
+rather than silently: they carry no <code class="docutils literal notranslate"><span class="pre">session_id</span></code> or <code class="docutils literal notranslate"><span class="pre">timestamp</span></code> metadata,
+so a hard filter would drop every one of their hits without saying so.</p>
+<p>Returns hits with a <code class="docutils literal notranslate"><span class="pre">pointer</span></code> — the command that fetches the full record —
+because the point is to read the few that matter, not to paste prose here.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.recall.records">
+<span class="sig-prename descclassname"><span class="pre">astern.recall.</span></span><span class="sig-name descname"><span class="pre">records</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="store.html#astern.store.Store" title="astern.store.Store"><span class="pre">Store</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">since_days</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_full</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/astern/recall.html#records"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.recall.records" title="Link to this definition"></a></dt>
+<dd><p>Yield the JSON-able records of one <code class="docutils literal notranslate"><span class="pre">grain</span></code>, in the shape <code class="docutils literal notranslate"><span class="pre">ir</span></code> indexes.</p>
+<p>Ids are stable, because they are what the index keys on: <code class="docutils literal notranslate"><span class="pre">&lt;sid&gt;</span></code> for a
+synopsis, <code class="docutils literal notranslate"><span class="pre">&lt;sid&gt;:&lt;turn_uuid&gt;</span></code> for a turn. <code class="docutils literal notranslate"><span class="pre">project</span></code> / <code class="docutils literal notranslate"><span class="pre">since_days</span></code>
+narrow the <em>source</em>; the same filters exist at query time in <a class="reference internal" href="#astern.recall.recall" title="astern.recall.recall"><code class="xref py py-func docutils literal notranslate"><span class="pre">recall()</span></code></a>,
+where they are hard metadata filters and cost nothing to change.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">astern.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">MemoryStore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span> <span class="o">=</span> <span class="n">MemoryStore</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span><span class="o">.</span><span class="n">sessions</span><span class="p">[</span><span class="s1">'s1'</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'session_id'</span><span class="p">:</span> <span class="s1">'s1'</span><span class="p">,</span> <span class="s1">'project'</span><span class="p">:</span> <span class="s1">'astern'</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span><span class="o">.</span><span class="n">findings</span><span class="p">[</span><span class="s1">'synopsis/s1'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s1">'kind'</span><span class="p">:</span> <span class="s1">'synopsis'</span><span class="p">,</span> <span class="s1">'evidence'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'goal'</span><span class="p">:</span> <span class="s1">'ship recall'</span><span class="p">,</span> <span class="s1">'outcome'</span><span class="p">:</span> <span class="s1">'done'</span><span class="p">}}]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rec</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">records</span><span class="p">(</span><span class="s1">'session_synopses'</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="n">store</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rec</span><span class="p">[</span><span class="s1">'id'</span><span class="p">],</span> <span class="n">rec</span><span class="p">[</span><span class="s1">'outcome'</span><span class="p">],</span> <span class="n">rec</span><span class="p">[</span><span class="s1">'text'</span><span class="p">]</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">('s1', 'done', 'Goal: ship recall')</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.recall.synopsis_records">
+<span class="sig-prename descclassname"><span class="pre">astern.recall.</span></span><span class="sig-name descname"><span class="pre">synopsis_records</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/astern/recall.html#synopsis_records"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.recall.synopsis_records" title="Link to this definition"></a></dt>
+<dd><p>Every session-synopsis record in the default store — <code class="docutils literal notranslate"><span class="pre">ir</span></code>’s fetcher.</p>
+<p>A registry entry is JSON, so <code class="docutils literal notranslate"><span class="pre">ir</span></code> holds a <em>reference</em> to this function
+(<code class="docutils literal notranslate"><span class="pre">&quot;astern.recall:synopsis_records&quot;</span></code>) rather than an object: that is what
+lets <code class="docutils literal notranslate"><span class="pre">ir</span> <span class="pre">build</span> <span class="pre">session_synopses</span></code>, in a process that knows nothing about
+this one, rebuild the corpus. <code class="docutils literal notranslate"><span class="pre">$ASTERN_DATA_DIR</span></code> therefore selects the
+store here exactly as it does for every other astern verb.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.recall.synopsis_text">
+<span class="sig-prename descclassname"><span class="pre">astern.recall.</span></span><span class="sig-name descname"><span class="pre">synopsis_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evidence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/astern/recall.html#synopsis_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.recall.synopsis_text" title="Link to this definition"></a></dt>
+<dd><p>The prose a synopsis finding becomes: goal, outcome, problems, decisions.</p>
+<p>Only the fields that answer <em>what was decided and what went wrong</em> — the
+session’s vocabulary and skill candidates are for the reports, not for
+recall, and padding the embedded text with them dilutes the signal.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">synopsis_text</span><span class="p">({</span><span class="s1">'goal'</span><span class="p">:</span> <span class="s1">'unred the CI'</span><span class="p">,</span> <span class="s1">'outcome'</span><span class="p">:</span> <span class="s1">'done'</span><span class="p">,</span>
+<span class="gp">... </span>                     <span class="s1">'problems'</span><span class="p">:</span> <span class="p">[{</span><span class="s1">'problem'</span><span class="p">:</span> <span class="s1">'stale lockfile'</span><span class="p">,</span>
+<span class="gp">... </span>                                   <span class="s1">'solution'</span><span class="p">:</span> <span class="s1">'regenerated it'</span><span class="p">}],</span>
+<span class="gp">... </span>                     <span class="s1">'notable_decisions'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'pin numpy below 2'</span><span class="p">]}))</span>
+<span class="go">Goal: unred the CI</span>
+<span class="go">Outcome: done</span>
+<span class="go">Problems and solutions:</span>
+<span class="go">- stale lockfile — regenerated it</span>
+<span class="go">Decisions:</span>
+<span class="go">- pin numpy below 2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.recall.turn_records">
+<span class="sig-prename descclassname"><span class="pre">astern.recall.</span></span><span class="sig-name descname"><span class="pre">turn_records</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/astern/recall.html#turn_records"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.recall.turn_records" title="Link to this definition"></a></dt>
+<dd><p>Every turn record in the default store — <code class="docutils literal notranslate"><span class="pre">ir</span></code>’s fetcher (see above).</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="lenses/tooling.html" class="btn btn-neutral float-left" title="astern.lenses.tooling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="report.html" class="btn btn-neutral float-right" title="astern.report" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
