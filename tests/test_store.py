@@ -4,10 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
-
 from astern.store import MemoryStore, Store, data_dir, mk_store
-
 
 # --- Store round trip -----------------------------------------------------------
 

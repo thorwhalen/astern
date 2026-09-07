@@ -33,8 +33,9 @@ from __future__ import annotations
 
 import json
 import re
+from collections.abc import Iterator, Mapping
 from pathlib import Path
-from typing import Any, Iterator, Mapping
+from typing import Any
 
 #: XML-ish wrapper tags the CLI logs around non-prose user lines — slash-command
 #: echoes, local-command stdout, injected reminders. Stripped from the *user prompt*
@@ -132,9 +133,9 @@ def iter_turn_pairs(records: list[dict]) -> Iterator[tuple[dict, list[dict]]]:
         while j < n:
             mj = records[j]
             t = mj.get("type")
-            if t == "user" and not is_tool_result(mj) and not mj.get("isMeta"):
-                if _text_blocks(_content(mj)):
-                    break
+            is_prompt = t == "user" and not is_tool_result(mj) and not mj.get("isMeta")
+            if is_prompt and _text_blocks(_content(mj)):
+                break
             if t in ("assistant", "user", "system"):
                 turn.append(mj)
             j += 1

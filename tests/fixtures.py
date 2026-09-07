@@ -16,10 +16,11 @@ from __future__ import annotations
 import itertools
 import json
 import os
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any
 
 _BASE = datetime(2026, 9, 1, tzinfo=timezone.utc)
 
@@ -209,10 +210,8 @@ def mk_records(
 def _write_jsonl(path: Path, records: list[dict], *, extra_lines: list[str] = ()) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
-        for r in records:
-            f.write(json.dumps(r) + "\n")
-        for line in extra_lines:
-            f.write(line + "\n")
+        f.writelines(json.dumps(r) + "\n" for r in records)
+        f.writelines(line + "\n" for line in extra_lines)
 
 
 def append_records(
@@ -235,8 +234,7 @@ def append_records(
     """
     new_records = mk_records(sid, cwd, turns=turns, meta=meta, version=version, git_branch=git_branch)
     with open(path, "a", encoding="utf-8") as f:
-        for r in new_records:
-            f.write(json.dumps(r) + "\n")
+        f.writelines(json.dumps(r) + "\n" for r in new_records)
     if mtime is not None:
         os.utime(path, (mtime, mtime))
     else:
@@ -283,7 +281,7 @@ def write_home(tmp_path: Path, *, sessions: list[Mapping[str, Any]] = (), name: 
         out.paths[sid] = path
         out.slugs[sid] = slug
         if spec.get("with_subagent"):
-            sub_sid = f"agent-x"
+            sub_sid = "agent-x"
             sub_path = proj_dir / sid / "subagents" / f"{sub_sid}.jsonl"
             sub_records = mk_records(
                 sub_sid, cwd, turns=spec.get("subagent_turns", spec.get("turns", ())),

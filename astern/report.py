@@ -27,7 +27,7 @@ from __future__ import annotations
 
 import statistics
 from collections import Counter
-from typing import Callable
+from collections.abc import Callable
 
 from astern.store import Store
 
@@ -97,8 +97,8 @@ def _rewrites_report(fbs: dict, store: Store, top: int) -> tuple[dict, str]:
            "groups": [{"fingerprint": fp, "n_sessions": len(g["sessions"]), "n_occurrences": g["n"],
                       "language": g["language"], "example_first_line": g["first_line"],
                       "sessions": sorted(g["sessions"])} for fp, g in ranked[:top]]}
-    lines = [f"# Rewrites report ({len(fbs)} sessions, {n_scripts} scripts, "
-             f"{len(dup)} rewritten ≥2x)", "", "| fingerprint | sessions | occurrences | language | example |",
+    lines = [(f"# Rewrites report ({len(fbs)} sessions, {n_scripts} scripts, "
+              f"{len(dup)} rewritten ≥2x)"), "", "| fingerprint | sessions | occurrences | language | example |",
              "|---|---|---|---|---|"]
     for fp, g in ranked[:top]:
         lines.append(f"| `{fp}` | {len(g['sessions'])} | {g['n']} | {g['language']} | "

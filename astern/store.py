@@ -22,10 +22,10 @@ Key shapes (all end in ``.json`` on disk; keys are relative paths):
 from __future__ import annotations
 
 import os
+from collections.abc import MutableMapping
 from dataclasses import dataclass, field
 from functools import cached_property
 from pathlib import Path
-from typing import MutableMapping
 
 KINDS = ("sessions", "turns", "findings", "ledger", "judgments")
 
@@ -67,7 +67,7 @@ class _Suffixed(MutableMapping):
 
     def __iter__(self):
         for k in self._inner:
-            yield k[: -len(self._suffix)] if k.endswith(self._suffix) else k
+            yield k.removesuffix(self._suffix)
 
     def __len__(self):
         return len(self._inner)

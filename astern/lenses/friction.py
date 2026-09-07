@@ -35,7 +35,7 @@ True
 from __future__ import annotations
 
 from collections import defaultdict
-from typing import Iterator
+from collections.abc import Iterator
 
 from astern.lenses import finding, lens
 
@@ -84,10 +84,10 @@ def _compaction_findings(session: dict, turn: dict) -> Iterator[dict]:
 
 def _long_turn_findings(session: dict, turn: dict, *, threshold_ms: int = LONG_TURN_MS) -> Iterator[dict]:
     for s in turn.get("system") or []:
-        if s.get("subtype") == "turn_duration" and isinstance(s.get("durationMs"), (int, float)):
-            if s["durationMs"] >= threshold_ms:
-                yield finding("friction", session, kind="long_turn", turn=turn,
-                              evidence={"duration_ms": s["durationMs"], "threshold_ms": threshold_ms})
+        is_duration = s.get("subtype") == "turn_duration" and isinstance(s.get("durationMs"), (int, float))
+        if is_duration and s["durationMs"] >= threshold_ms:
+            yield finding("friction", session, kind="long_turn", turn=turn,
+                          evidence={"duration_ms": s["durationMs"], "threshold_ms": threshold_ms})
 
 
 def _tool_search_findings(session: dict, turn: dict) -> Iterator[dict]:

@@ -5,11 +5,9 @@ from __future__ import annotations
 import time
 from pathlib import Path
 
-import pytest
-
-from astern.sources import DFLT_HOME, Home, homes, iter_session_files, load_records
 from fixtures import write_home
 
+from astern.sources import DFLT_HOME, Home, homes, iter_session_files, load_records
 
 # --- homes() -----------------------------------------------------------------
 

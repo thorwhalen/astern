@@ -21,10 +21,10 @@ because a claim about a pattern is worth nothing without the turns it came from.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from importlib import import_module
-from typing import Callable
 
 FINDING_VERSION = 1
 
@@ -83,7 +83,7 @@ def finding(lens_name: str, session: dict, *, kind: str, evidence: dict, turn: d
 
 #: Built-in lens modules, imported on demand so that registering is one import away
 #: and a broken optional lens cannot take the registry down with it.
-BUILTIN_MODULES = ("stats", "friction", "commands", "timeline", "cost", "hygiene", "tooling")
+BUILTIN_MODULES = ("stats", "friction", "commands", "timeline", "cost", "hygiene", "tooling", "synopsis")
 
 
 def load_builtin_lenses(modules=BUILTIN_MODULES) -> dict[str, Lens]:

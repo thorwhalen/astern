@@ -5,12 +5,12 @@ from __future__ import annotations
 import time
 
 import pytest
+from fixtures import mk_records, write_home
 
 from astern import tools
-from astern.lenses import LENSES, finding, lens
-from astern.store import MemoryStore, Store
+from astern.lenses import finding, lens
+from astern.store import MemoryStore
 from astern.turns import iter_turns
-from fixtures import mk_records, write_home
 
 
 def _proj_spec(sid, cwd, mtime=None):

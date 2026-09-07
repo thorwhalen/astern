@@ -2,9 +2,17 @@
 
 from __future__ import annotations
 
-from astern.turns import clean_prompt, iter_turns, session_meta
-from fixtures import agent_name, ai_title, cost_state, custom_title, mk_records, permission_mode, pr_link
+from fixtures import (
+    agent_name,
+    ai_title,
+    cost_state,
+    custom_title,
+    mk_records,
+    permission_mode,
+    pr_link,
+)
 
+from astern.turns import clean_prompt, iter_turns, session_meta
 
 # --- turn boundaries -----------------------------------------------------------
 

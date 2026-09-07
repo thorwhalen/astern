@@ -34,7 +34,7 @@ from __future__ import annotations
 
 import hashlib
 import re
-from typing import Iterator
+from collections.abc import Iterator
 
 from astern.lenses import finding, lens
 
@@ -67,8 +67,7 @@ def heredoc_body(command: str) -> str | None:
         return None
     marker = m.group(2)
     rest = command[m.end():]
-    if rest.startswith("\n"):
-        rest = rest[1:]
+    rest = rest.removeprefix("\n")
     lines, body = rest.split("\n"), []
     for line in lines:
         if line.strip() == marker:

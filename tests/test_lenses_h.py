@@ -4,6 +4,8 @@ Every assertion is about the *kind* of finding a lens produces, tying back to th
 fixture built in ``tests/fixtures_lenses.py`` — never about a real transcript.
 """
 
+from fixtures_lenses import mk_records
+
 from astern.lenses.commands import rewrites
 from astern.lenses.cost import cost
 from astern.lenses.friction import friction
@@ -11,7 +13,6 @@ from astern.lenses.hygiene import hygiene
 from astern.lenses.timeline import timeline
 from astern.lenses.tooling import tooling
 from astern.turns import iter_turns, session_meta
-from fixtures_lenses import mk_records
 
 
 def _session_and_turns():

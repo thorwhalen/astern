@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from astern import ledger
 
-
 # --- plan() ------------------------------------------------------------------
 
 

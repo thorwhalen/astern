@@ -12,9 +12,9 @@ Core contract: :mod:`astern.tools` (plain functions, JSON in, JSON out) over
 answering the questions, and :mod:`astern.judge` the one LLM seam.
 """
 
-from astern.tools import sync, sessions, show, lenses  # noqa: F401
-from astern.store import Store, MemoryStore, mk_store  # noqa: F401
-from astern.judge import claude_judge, replay_judge, Judgment  # noqa: F401
-from astern.lenses import LENSES, lens, finding  # noqa: F401
+from astern.judge import Judgment, claude_judge, replay_judge  # noqa: F401
+from astern.lenses import LENSES, finding, lens  # noqa: F401
+from astern.store import MemoryStore, Store, mk_store  # noqa: F401
+from astern.tools import lenses, sessions, show, sync  # noqa: F401
 
 __version__ = "0.0.1"

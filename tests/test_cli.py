@@ -24,7 +24,7 @@ def _run(args, *, home, data_dir):
     env["PYTHONPATH"] = str(REPO_ROOT) + os.pathsep + env.get("PYTHONPATH", "")
     return subprocess.run(
         [sys.executable, "-m", "astern", *args],
-        env=env, capture_output=True, text=True, timeout=60,
+        env=env, capture_output=True, text=True, timeout=60, check=False,
     )
 
 

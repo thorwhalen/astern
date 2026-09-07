@@ -30,9 +30,9 @@ again for the turns it already paid for.
 
 from __future__ import annotations
 
+from collections.abc import MutableMapping
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import MutableMapping
 
 
 @dataclass(frozen=True)
