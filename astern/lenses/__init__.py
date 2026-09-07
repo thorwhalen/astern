@@ -83,7 +83,7 @@ def finding(lens_name: str, session: dict, *, kind: str, evidence: dict, turn: d
 
 #: Built-in lens modules, imported on demand so that registering is one import away
 #: and a broken optional lens cannot take the registry down with it.
-BUILTIN_MODULES = ("stats",)
+BUILTIN_MODULES = ("stats", "synopsis")
 
 
 def load_builtin_lenses(modules=BUILTIN_MODULES) -> dict[str, Lens]:
