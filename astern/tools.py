@@ -423,11 +423,17 @@ def judge(
     effort: str | None = None,
     max_chars: int | None = None,
     strict_schema: bool = False,
+    workers: int = 1,
     store: str | Store | None = None,
     dry_run: bool = False,
     judge_fn=None,
 ) -> dict:
     """Run an LLM lens over the synced sessions, newest first, under the ledger.
+
+    ``workers`` runs that many judge calls at once (each is its own ``claude``
+    process; a call takes 30–150 s, so a 280-session batch is hours serial and
+    well under one hour at 8). Every session writes only its own store keys, and
+    the ledger is per session, so concurrent runs never contend.
 
     Idempotent by construction: a session this lens version already covered is
     ``skip`` and costs nothing; a session that was resumed is ``incremental`` and
@@ -457,7 +463,9 @@ def judge(
             model=model, effort=effort, strict_schema=strict_schema
         )
     cost_model = _estimate.fit(_judgments(store, lens)) if dry_run else None
+    workers = max(1, int(workers))
     rows: list[dict] = []
+    pending: list[tuple[dict, dict, list[dict], int]] = []
     for sid, session in _synced(
         store,
         session_id=session_id,
@@ -504,23 +512,11 @@ def judge(
             )
             rows.append(row)
             continue
-        t0 = time.time()
-        res = _run_lens(store, lens, session, turns, judge=judge_fn, max_chars=max_chars)
-        rec = _last_judgment(store, lens, sid, p.from_index)
-        row.update(
-            {
-                "seconds": round(time.time() - t0, 1),
-                "usage": res.get("usage") or {},
-                "n_findings": res.get("n_findings", 0),
-                "failed": bool(res.get("failed")),
-                "errors": res.get("errors"),
-                "view_chars": (rec.get("features") or {}).get("view_chars"),
-                "cost_usd": rec.get("cost_usd"),
-                "model": rec.get("model"),
-                "outcome": _outcome(store, lens, sid),
-            }
-        )
         rows.append(row)
+        pending.append((row, session, turns, p.from_index))
+    _judge_pending(
+        store, lens, pending, judge_fn=judge_fn, max_chars=max_chars, workers=workers
+    )
     return {
         "store": str(store.root),
         "lens": lens,
@@ -530,6 +526,79 @@ def judge(
         **_totals(rows, dry_run=dry_run),
         "sessions": rows,
     }
+
+
+def _judge_one(
+    store: Store,
+    lens: str,
+    row: dict,
+    session: dict,
+    turns: list[dict],
+    from_index: int,
+    *,
+    judge_fn,
+    max_chars,
+) -> dict:
+    t0 = time.time()
+    res = _run_lens(store, lens, session, turns, judge=judge_fn, max_chars=max_chars)
+    rec = _last_judgment(store, lens, session["session_id"], from_index)
+    row.update(
+        {
+            "seconds": round(time.time() - t0, 1),
+            "usage": res.get("usage") or {},
+            "input_tokens": rec.get("input_tokens"),
+            "output_tokens": rec.get("output_tokens"),
+            "num_turns": rec.get("num_turns"),
+            "n_findings": res.get("n_findings", 0),
+            "failed": bool(res.get("failed")),
+            "errors": res.get("errors"),
+            "view_chars": (rec.get("features") or {}).get("view_chars"),
+            "cost_usd": rec.get("cost_usd"),
+            "model": rec.get("model"),
+            "outcome": _outcome(store, lens, session["session_id"]),
+        }
+    )
+    return row
+
+
+def _judge_pending(
+    store: Store, lens: str, pending: list, *, judge_fn, max_chars, workers: int
+) -> None:
+    """Run the judge over ``pending`` (row, session, turns, from_index) items, in place."""
+    if not pending:
+        return
+    if workers <= 1:
+        for row, session, turns, from_index in pending:
+            _judge_one(
+                store,
+                lens,
+                row,
+                session,
+                turns,
+                from_index,
+                judge_fn=judge_fn,
+                max_chars=max_chars,
+            )
+        return
+    from concurrent.futures import ThreadPoolExecutor
+
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        futures = [
+            pool.submit(
+                _judge_one,
+                store,
+                lens,
+                row,
+                session,
+                turns,
+                from_index,
+                judge_fn=judge_fn,
+                max_chars=max_chars,
+            )
+            for row, session, turns, from_index in pending
+        ]
+        for f in futures:
+            f.result()
 
 
 def _mk_claude_judge(*, model: str, effort: str | None, strict_schema: bool = False):
