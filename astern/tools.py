@@ -867,7 +867,10 @@ def entire_enable(
     ``telemetry=False`` stops PostHog reporting. See :func:`astern.entire.entire_enable`.
     """
     return _entire.entire_enable(
-        repo, push_sessions=bool(push_sessions), telemetry=bool(telemetry), dry_run=bool(dry_run)
+        repo,
+        push_sessions=bool(push_sessions),
+        telemetry=bool(telemetry),
+        dry_run=bool(dry_run),
     )
 
 

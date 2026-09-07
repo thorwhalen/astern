@@ -58,7 +58,12 @@ def _run(cmd: list[str], *, cwd: Path, timeout: float = 30.0):
     """One subprocess call; ``None`` (never a raised exception) if it could not run."""
     try:
         return subprocess.run(
-            cmd, cwd=str(cwd), capture_output=True, text=True, timeout=timeout, check=False
+            cmd,
+            cwd=str(cwd),
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+            check=False,
         )
     except (OSError, subprocess.SubprocessError):
         return None
@@ -66,7 +71,13 @@ def _run(cmd: list[str], *, cwd: Path, timeout: float = 30.0):
 
 def _cmd_result(cmd: list[str], res) -> dict:
     if res is None:
-        return {"cmd": cmd, "ok": False, "returncode": None, "stdout": "", "stderr": "failed to execute"}
+        return {
+            "cmd": cmd,
+            "ok": False,
+            "returncode": None,
+            "stdout": "",
+            "stderr": "failed to execute",
+        }
     return {
         "cmd": cmd,
         "ok": res.returncode == 0,
@@ -84,7 +95,9 @@ def is_git_repo(repo: str | Path) -> bool:
 
 def origin_url(repo: str | Path) -> str | None:
     """``git config --get remote.origin.url``, or ``None`` when there is no origin."""
-    res = _run(["git", "config", "--get", "remote.origin.url"], cwd=Path(repo).expanduser())
+    res = _run(
+        ["git", "config", "--get", "remote.origin.url"], cwd=Path(repo).expanduser()
+    )
     if not res or res.returncode != 0:
         return None
     url = res.stdout.strip()
@@ -140,7 +153,11 @@ def _git_hook_paths(repo: Path) -> dict[str, Path]:
     hooks_dir = repo / ".git" / "hooks"
     if not hooks_dir.is_dir():
         return {}
-    return {p.name: p for p in hooks_dir.iterdir() if p.is_file() and not p.name.endswith(".sample")}
+    return {
+        p.name: p
+        for p in hooks_dir.iterdir()
+        if p.is_file() and not p.name.endswith(".sample")
+    }
 
 
 def _mentions_entire(path: Path) -> bool:
@@ -153,7 +170,9 @@ def _mentions_entire(path: Path) -> bool:
 def git_hooks_mentioning_entire(repo: str | Path) -> list[str]:
     """Which git hooks (by filename, e.g. ``pre-push``) reference ``entire``."""
     repo = Path(repo).expanduser()
-    return sorted(name for name, p in _git_hook_paths(repo).items() if _mentions_entire(p))
+    return sorted(
+        name for name, p in _git_hook_paths(repo).items() if _mentions_entire(p)
+    )
 
 
 def _entire_settings_path(repo: Path) -> Path:

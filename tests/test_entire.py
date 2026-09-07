@@ -46,7 +46,9 @@ def _stub_run(monkeypatch, canned: dict):
 def _stub_which(monkeypatch, *, installed: bool = True):
     monkeypatch.setattr(
         "astern.entire.shutil.which",
-        lambda name: ("/opt/homebrew/bin/entire" if installed and name == "entire" else None),
+        lambda name: (
+            "/opt/homebrew/bin/entire" if installed and name == "entire" else None
+        ),
     )
 
 
@@ -55,9 +57,7 @@ def _init_repo(tmp_path, *, origin: str | None = None):
     repo.mkdir()
     subprocess.run(["git", "init", "-q", "-b", "main"], cwd=repo, check=True)
     if origin is not None:
-        subprocess.run(
-            ["git", "remote", "add", "origin", origin], cwd=repo, check=True
-        )
+        subprocess.run(["git", "remote", "add", "origin", origin], cwd=repo, check=True)
     return repo
 
 
@@ -103,7 +103,13 @@ def test_status_reads_settings_when_hooks_and_settings_are_present(tmp_path, mon
     (hooks_dir / "pre-push").write_text('#!/bin/sh\nentire hooks git pre-push "$1"\n')
     (repo / ".entire").mkdir()
     (repo / ".entire" / "settings.json").write_text(
-        json.dumps({"enabled": True, "strategy_options": {"push_sessions": False}, "telemetry": False})
+        json.dumps(
+            {
+                "enabled": True,
+                "strategy_options": {"push_sessions": False},
+                "telemetry": False,
+            }
+        )
     )
 
     out = entire.entire_status(str(repo))
@@ -244,7 +250,9 @@ def _mk_agent_add_side_effect(repo):
         hooks_dir = repo / ".git" / "hooks"
         hooks_dir.mkdir(parents=True, exist_ok=True)
         (hooks_dir / "pre-push").write_text('#!/bin/sh\nentire hooks git pre-push "$1"\n')
-        (hooks_dir / "post-commit").write_text("#!/bin/sh\nentire hooks git post-commit\n")
+        (hooks_dir / "post-commit").write_text(
+            "#!/bin/sh\nentire hooks git post-commit\n"
+        )
         entire_dir = repo / ".entire"
         entire_dir.mkdir(exist_ok=True)
         (entire_dir / "settings.json").write_text(json.dumps({"enabled": True}))
