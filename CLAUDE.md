@@ -14,7 +14,8 @@ judge.py     the LLM seam: claude_judge() = headless `claude -p --bare --output-
 recall.py    the record source for search: store → ir corpora (`session_synopses`, `session_turns`), then ir's discover  (embedder= seam)
 skills.py    the skills the package ships (astern/data/skills/) and the installer that links them into ~/.claude
 provenance.py  code→session: git blame/-S, the Claude-Session trailer, the bridge-id join, the store search
-tools.py     SSOT of verbs (sync, sessions, show, lenses, report, judge, estimate, index, recall, why, …) — plain functions, JSON in / dict out; __main__ is cw over _dispatch_funcs
+entire.py    entire_enable() / entire_status(): the Entire CLI, made safe by default (push_sessions + telemetry off unless asked) — read-only status never runs `entire` itself
+tools.py     SSOT of verbs (sync, sessions, show, lenses, report, judge, estimate, index, recall, why, entire_enable, entire_status, …) — plain functions, JSON in / dict out; __main__ is cw over _dispatch_funcs
 ```
 
 ## Invariants (each one is load-bearing)

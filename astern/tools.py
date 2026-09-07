@@ -15,6 +15,7 @@ from collections.abc import Iterable
 from datetime import datetime, timezone
 from pathlib import Path
 
+from astern import entire as _entire
 from astern import estimate as _estimate
 from astern import ledger as _ledger
 from astern import provenance as _prov
@@ -850,18 +851,33 @@ def install_skills(
     return _install(target=target, only=only, force=bool(force), dry_run=bool(dry_run))
 
 
-_dispatch_funcs = [
-    sync,
-    sessions,
-    show,
-    lenses,
-    report,
-    judge,
-    estimate,
-    index,
-    recall,
-    install_skills,
-]
+def entire_enable(
+    repo: str = ".",
+    *,
+    push_sessions: bool = False,
+    telemetry: bool = False,
+    dry_run: bool = False,
+) -> dict:
+    """Enable the Entire CLI's Claude Code hooks in ``repo``, safe by default.
+
+    Runs ``entire agent add claude-code``, then turns off Entire's own (opt-in)
+    defaults unless told otherwise: ``push_sessions=False`` (the default here) stops
+    the ``pre-push`` hook from pushing ``refs/entire/checkpoints/*`` — verbatim
+    transcripts, absolute paths unscrubbed — to origin on every ``git push``;
+    ``telemetry=False`` stops PostHog reporting. See :func:`astern.entire.entire_enable`.
+    """
+    return _entire.entire_enable(
+        repo, push_sessions=bool(push_sessions), telemetry=bool(telemetry), dry_run=bool(dry_run)
+    )
+
+
+def entire_status(repo: str = ".") -> dict:
+    """Is Entire installed and enabled in ``repo``, and is it safe? Read-only.
+
+    See :func:`astern.entire.entire_status` for the full field list, including
+    ``risk`` — set when checkpoints will be pushed on the next ``git push``.
+    """
+    return _entire.entire_status(repo)
 
 
 def _split_target(target: str, line: int | None) -> tuple[str, int | None]:
@@ -1003,6 +1019,12 @@ def why(
         window_days=window_days,
         notes=notes,
     )
+    entire_result = None
+    if entire and rel and line_no:
+        entire_result = _prov.entire_why(root, rel, line_no)
+        risk = _entire.entire_status(root).get("risk")
+        if risk:
+            notes.append(f"entire: {risk}")
     hits: list[dict] = []
     if text:
         hits.extend(_prov.iter_hits(store, sids, text))
@@ -1032,9 +1054,7 @@ def why(
         "session_id": bridge_id,
         "searched": len(sids),
         "hits": _prov.rank_hits(hits)[:max_hits],
-        "entire": (
-            _prov.entire_why(root, rel, line_no) if entire and rel and line_no else None
-        ),
+        "entire": entire_result,
         "notes": notes,
     }
 
@@ -1054,4 +1074,6 @@ _dispatch_funcs = [
     recall,
     install_skills,
     why,
+    entire_enable,
+    entire_status,
 ]
