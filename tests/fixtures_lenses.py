@@ -18,11 +18,16 @@ CWD = "/home/dev/proj/demo"
 VERSION = "2.1.0"
 
 
-def _user(uuid: str, text: str, *, ts: str) -> dict:
+#: Small raw-record builders, shaped like the JSONL the CLI logs. Public (no leading
+#: underscore) because ``tests/test_lenses_h.py`` also uses them to build tiny,
+#: single-purpose fixtures for cases that don't belong in :func:`mk_records`.
+
+
+def user(uuid: str, text: str, *, ts: str, sid: str = SID) -> dict:
     return {
         "type": "user",
         "uuid": uuid,
-        "sessionId": SID,
+        "sessionId": sid,
         "cwd": CWD,
         "timestamp": ts,
         "gitBranch": "main",
@@ -31,13 +36,13 @@ def _user(uuid: str, text: str, *, ts: str) -> dict:
     }
 
 
-def _tool_result(
-    uuid: str, tool_use_id: str, *, is_error: bool, content: str, ts: str
+def tool_result(
+    uuid: str, tool_use_id: str, *, is_error: bool, content: str, ts: str, sid: str = SID
 ) -> dict:
     return {
         "type": "user",
         "uuid": uuid,
-        "sessionId": SID,
+        "sessionId": sid,
         "timestamp": ts,
         "message": {
             "role": "user",
@@ -53,11 +58,11 @@ def _tool_result(
     }
 
 
-def _assistant(uuid: str, msg_id: str, *, blocks: list[dict], ts: str) -> dict:
+def assistant(uuid: str, msg_id: str, *, blocks: list[dict], ts: str, sid: str = SID) -> dict:
     return {
         "type": "assistant",
         "uuid": uuid,
-        "sessionId": SID,
+        "sessionId": sid,
         "timestamp": ts,
         "message": {
             "id": msg_id,
@@ -68,22 +73,33 @@ def _assistant(uuid: str, msg_id: str, *, blocks: list[dict], ts: str) -> dict:
     }
 
 
-def _tool_use(tool_id: str, name: str, inp: dict) -> dict:
+def tool_use(tool_id: str, name: str, inp: dict) -> dict:
     return {"type": "tool_use", "id": tool_id, "name": name, "input": inp}
 
 
-def _text(t: str) -> dict:
+def text(t: str) -> dict:
     return {"type": "text", "text": t}
 
 
-def _system(subtype: str, *, ts: str, **extra) -> dict:
+def system_record(subtype: str, *, ts: str, sid: str = SID, **extra) -> dict:
     return {
         "type": "system",
         "subtype": subtype,
-        "sessionId": SID,
+        "sessionId": sid,
         "timestamp": ts,
         **extra,
     }
+
+
+# Back-compat aliases used by :func:`mk_records` below.
+_user, _tool_result, _assistant, _tool_use, _text, _system = (
+    user,
+    tool_result,
+    assistant,
+    tool_use,
+    text,
+    system_record,
+)
 
 
 def mk_records() -> list[dict]:
