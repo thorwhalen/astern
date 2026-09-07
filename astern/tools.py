@@ -1042,4 +1042,16 @@ def why(
 #: Per-parameter ``add_argument`` overrides for the CLI (``cw``'s ``config=`` seam).
 _dispatch_config: dict = {}
 
-_dispatch_funcs = [sync, sessions, show, lenses, report, judge, estimate, index, recall, install_skills, why]
+_dispatch_funcs = [
+    sync,
+    sessions,
+    show,
+    lenses,
+    report,
+    judge,
+    estimate,
+    index,
+    recall,
+    install_skills,
+    why,
+]

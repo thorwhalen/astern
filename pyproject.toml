@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "astern"
-version = "0.0.6"
+version = "0.0.7"
 description = "Look astern: mine your past Claude Code sessions for recurring problems, friction, rewritten code, and the vocabulary gap between you and your agents"
 readme = "README.md"
 license = "MIT"
