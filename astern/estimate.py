@@ -281,7 +281,7 @@ def predict(model: dict, features: dict) -> dict:
     y_out = max(0.0, float(model["output"]["mean"]))
     total = y_in + y_out
     band = float(inp["resid_std"] or 0.0) + float(model["output"]["std"] or 0.0)
-    return {"input_tokens": int(round(y_in)), "output_tokens": int(round(y_out)),
-            "total_tokens": int(round(total)),
-            "low": int(round(max(0.0, total - band))), "high": int(round(total + band)),
+    return {"input_tokens": round(y_in), "output_tokens": round(y_out),
+            "total_tokens": round(total),
+            "low": round(max(0.0, total - band)), "high": round(total + band),
             "cost_usd": round(total * model.get("cost_per_total_token", 0.0), 6)}

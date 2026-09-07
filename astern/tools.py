@@ -11,9 +11,8 @@ The one-command test of v1: ``astern sync && astern report friction``.
 from __future__ import annotations
 
 import time
+from collections.abc import Iterable
 from datetime import datetime, timezone
-from pathlib import Path
-from typing import Iterable
 
 from astern import estimate as _estimate
 from astern import ledger as _ledger

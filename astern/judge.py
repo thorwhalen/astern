@@ -46,8 +46,8 @@ from __future__ import annotations
 import json
 import shutil
 import subprocess
+from collections.abc import Callable, Mapping
 from dataclasses import asdict, dataclass, field
-from typing import Callable, Mapping
 
 DFLT_MODEL = "haiku"
 DFLT_TIMEOUT_S = 900
@@ -139,9 +139,7 @@ def _usage_record(usage: Mapping) -> dict:
 def _parse_json_loose(text: str):
     text = text.strip()
     if text.startswith("```"):
-        text = text.strip("`")
-        if text.startswith("json"):
-            text = text[4:]
+        text = text.strip("`").removeprefix("json")
     try:
         return json.loads(text)
     except ValueError:
@@ -182,8 +180,10 @@ def claude_judge(prompt: str, *, schema: Mapping | None = None, model: str = DFL
     if schema is not None:
         cmd += ["--json-schema", json.dumps(dict(schema))]
     try:
+        # check=False: a failed judge is data (it becomes the `error` below), never an
+        # exception that takes the batch down with it.
         proc = subprocess.run(cmd, input=prompt, capture_output=True, text=True,
-                              timeout=timeout_s)
+                              timeout=timeout_s, check=False)
     except subprocess.TimeoutExpired:
         return Judgment(text="", error=f"timeout after {timeout_s}s", model=model,
                         prompt_chars=len(prompt))
