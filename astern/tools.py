@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Iterable
 
 from astern import ledger as _ledger
+from astern import report as _report
 from astern.lenses import LENSES, load_builtin_lenses
 from astern.sources import SessionFile, homes, iter_session_files, load_records
 from astern.store import Store, mk_store
@@ -187,4 +188,59 @@ def lenses() -> dict:
                         "doc": l.doc} for l in LENSES.values()]}
 
 
-_dispatch_funcs = [sync, sessions, show, lenses]
+def _parse_ts(iso: str) -> float | None:
+    if not iso:
+        return None
+    try:
+        return datetime.fromisoformat(iso.replace("Z", "+00:00")).timestamp()
+    except ValueError:
+        return None
+
+
+def _findings_by_session(store: Store, lens_name: str, *, project: str | None,
+                         since_days: float | None) -> dict:
+    cutoff = datetime.now(timezone.utc).timestamp() - since_days * 86400 if since_days is not None else None
+    out: dict[str, list[dict]] = {}
+    for sid in store.sessions:
+        s = store.sessions[sid]
+        if project and project not in (s.get("project") or "") and project not in (s.get("project_slug") or ""):
+            continue
+        if cutoff is not None:
+            ts = _parse_ts(s.get("ended_at") or "")
+            if ts is not None and ts < cutoff:
+                continue
+        key = f"{lens_name}/{sid}"
+        if key in store.findings:
+            out[sid] = list(store.findings[key])
+    return out
+
+
+def report(
+    lens: str,
+    *,
+    store: str | Store | None = None,
+    project: str | None = None,
+    since_days: float | None = None,
+    top: int = 20,
+    fmt: str = "md",
+) -> dict:
+    """Cross-session report for one lens, over what has already been synced.
+
+    ``fmt='md'`` (default) puts a markdown report in ``text``; ``fmt='json'`` puts
+    the same underlying aggregate dict there instead.
+    """
+    store = mk_store(store)
+    load_builtin_lenses()
+    top = int(top)
+    since_days = float(since_days) if since_days is not None else None
+    if lens not in LENSES:
+        raise KeyError(f"unknown lens {lens!r}; known: {sorted(LENSES)}")
+    fbs = _findings_by_session(store, lens, project=project, since_days=since_days)
+    if fmt == "json":
+        text = _report.aggregate(lens, fbs, store=store, top=top)
+    else:
+        text = _report.render(lens, fbs, store=store, top=top)
+    return {"lens": lens, "n_sessions": len(fbs), "text": text}
+
+
+_dispatch_funcs = [sync, sessions, show, lenses, report]
