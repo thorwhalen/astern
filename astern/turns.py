@@ -77,6 +77,7 @@ META_TYPES = (
     "permission-mode",
     "worktree-state",
     "frame-link",
+    "bridge-session",
 )
 
 DIGEST_CHARS = 200
@@ -343,6 +344,12 @@ def session_meta(records: list[dict]) -> dict:
         "ai_title": "",
         "custom_title": "",
         "agent_name": "",
+        # The claude.ai session id this transcript was bridged to, as it appears in
+        # the ``Claude-Session:`` commit trailer. Kept because it is the *only*
+        # durable join between a commit and a local transcript: the live registry
+        # under ``~/.claude/sessions/<pid>.json`` carries the same pair but dies
+        # with the process.
+        "bridge_session_id": "",
         "prs": [],
         "cost_state": None,
         "permission_mode": "",
@@ -381,5 +388,7 @@ def session_meta(records: list[dict]) -> dict:
             }
         elif t == "permission-mode" and m.get("permissionMode"):
             meta["permission_mode"] = m["permissionMode"]
+        elif t == "bridge-session" and m.get("bridgeSessionId"):
+            meta["bridge_session_id"] = str(m["bridgeSessionId"])
     meta["title"] = (meta["custom_title"] or meta["ai_title"]).strip()
     return meta

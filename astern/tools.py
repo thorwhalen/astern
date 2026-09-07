@@ -13,9 +13,11 @@ from __future__ import annotations
 import time
 from collections.abc import Iterable
 from datetime import datetime, timezone
+from pathlib import Path
 
 from astern import estimate as _estimate
 from astern import ledger as _ledger
+from astern import provenance as _prov
 from astern import report as _report
 from astern import views as _views
 from astern.lenses import LENSES, load_builtin_lenses
@@ -30,7 +32,13 @@ def _now() -> str:
 
 def _session_record(sf: SessionFile, records: list[dict]) -> dict:
     meta = session_meta(records)
-    meta["session_id"] = meta["session_id"] or sf.session_id
+    # A nested transcript's records carry the *parent's* ``sessionId`` -- only the file
+    # name and the ``agentId`` field identify the subagent. Trusting the record here
+    # would file every subagent under its parent's id, and a provenance hit would then
+    # name the wrong transcript. For anything nested, the file stem is the identity.
+    meta["session_id"] = (
+        sf.session_id if sf.kind != "session" else (meta["session_id"] or sf.session_id)
+    )
     meta["home"] = sf.home
     meta["kind"] = sf.kind
     meta["parent_id"] = sf.parent_id
@@ -127,6 +135,14 @@ def sync(
     re-read; a lens that already covered every turn is not re-run (``force`` re-runs
     the lenses, never the LLM ones — those go through :func:`judge`). ``lenses`` is
     ``'H'`` (all heuristic lenses), ``'none'``, or a comma-separated list of names.
+
+    ``kinds`` defaults to ``'session'`` — top-level transcripts only — on measurement,
+    not on principle. :func:`why` genuinely needs ``'session,subagent'`` (a delegating
+    session's own turns never contain the code its subagents wrote), but on this
+    machine's corpus (290 top-level sessions, 4547 nested transcripts, 2.1 GB of
+    JSONL) that is 50.7 s and a 330 MB store — 442 MB on disk, because 36,000 small
+    JSON files round up hard — against 7.6 s and 87 MB for sessions alone. Too big to
+    impose on every ``sync``, so :func:`why` says when it needs it instead.
     """
     store = mk_store(store)
     load_builtin_lenses()
@@ -761,4 +777,182 @@ def _sum_predictions(preds: list[dict]) -> dict:
     }
 
 
-_dispatch_funcs = [sync, sessions, show, lenses, report, judge, estimate]
+def _split_target(target: str, line: int | None) -> tuple[str, int | None]:
+    """``'a/b.py:42'`` → ``('a/b.py', 42)``; an explicit ``line`` always wins.
+
+    >>> _split_target('a/b.py:42', None)
+    ('a/b.py', 42)
+    >>> _split_target('a/b.py', '7')
+    ('a/b.py', 7)
+    """
+    if line is not None:
+        return target, int(line)
+    head, sep, tail = target.rpartition(":")
+    return (head, int(tail)) if sep and tail.isdigit() else (target, None)
+
+
+def _rel_to_repo(root: str, path: str) -> str:
+    """``path`` as the repo-relative path git wants, whether or not it was absolute."""
+    p = Path(path).expanduser()
+    if not p.is_absolute():
+        p = (Path.cwd() / p).resolve() if (Path.cwd() / p).exists() else p
+    if p.is_absolute():
+        try:
+            return str(p.resolve().relative_to(Path(root).resolve()))
+        except ValueError:
+            return str(p)
+    return str(p)
+
+
+def _candidates(
+    store: Store,
+    *,
+    bridge_id: str | None,
+    root: str,
+    when,
+    window_days: float,
+    notes: list[str],
+) -> list[str]:
+    """The session ids to search, and the notes explaining how they were chosen."""
+    base: list[str] = []
+    if bridge_id:
+        base = _prov.sessions_for_bridge(store, bridge_id)
+        if not base:
+            notes.append(
+                f"the trailer names claude.ai session {bridge_id!r}, but no synced "
+                "transcript carries that bridge id (another machine or account, or "
+                "not synced yet) — falling back to a repo-wide scan"
+            )
+    if not base:
+        base = _prov.sessions_in_repo(store, root, around=when, window_days=window_days)
+        notes.append(
+            f"scanned {len(base)} session(s) whose cwd is inside the repo"
+            + (f", within {window_days:g} days of the commit" if when else "")
+        )
+        return base
+    with_subs = _prov.with_subagents(store, base)
+    if len(with_subs) == len(base):
+        notes.append(
+            "no subagent transcripts for this session are in the store; a session "
+            "that delegated wrote the line from a subagent transcript, so re-run "
+            "`astern sync --kinds session,subagent`"
+        )
+    return with_subs
+
+
+def why(
+    target: str,
+    *,
+    line: int | None = None,
+    commit: bool = False,
+    store: str | Store | None = None,
+    repo: str | None = None,
+    window_days: float = 14.0,
+    max_hits: int = 10,
+    entire: bool = True,
+) -> dict:
+    """Why does this line exist? — the commit, the session, and the turn that wrote it.
+
+    ``target`` is ``<file>:<line>`` (a file plus ``--line`` works too) or, with
+    ``--commit``, a commit-ish. A target that names no readable file and *does*
+    resolve as a revision is read as a commit without the flag, so
+    ``astern why 589f17a`` and ``astern why HEAD --commit`` are the same question:
+    the commit's trailer names the session, and the hits are that session's tool
+    calls against the files the commit touched.
+
+    (``target`` is positional and therefore required, which is why ``--commit`` is a
+    flag over it rather than an option carrying the sha: argh's grammar — the one
+    ``cw`` reproduces — makes any parameter with a default an *option*, and
+    ``astern why -t astern/judge.py:115`` is the wrong headline.)
+
+    Two commits are reported, never one: ``blame`` is the last hand to touch the line
+    (a CI ``ruff format`` pass owns a lot of them) and ``introduced`` is the commit
+    whose diff first contained the text. When they differ, ``introduced`` is the one
+    whose ``Claude-Session:`` trailer is worth following.
+
+    When the Entire CLI is installed and this repo is enabled, its generation-time
+    answer is included verbatim under ``entire``; astern's own retroactive chain runs
+    either way, because Entire only speaks for work done after it was enabled.
+    """
+    store = mk_store(store)
+    max_hits = int(max_hits)
+    window_days = float(window_days)
+    notes: list[str] = []
+    raw, line_no = _split_target(target, line)
+    root = repo or _prov.repo_root(raw) or str(Path.cwd())
+    rel = _rel_to_repo(root, raw)
+    as_commit = bool(commit) or (line_no is None and not (Path(root) / rel).is_file())
+    text, blame, introduced, sha = "", None, None, None
+    if as_commit:
+        sha, rel = raw, None
+        introduced = _prov.commit_record(root, sha)
+        if introduced is None:
+            raise ValueError(
+                f"{target!r} is neither a readable file in {root} nor a commit there"
+            )
+    else:
+        if line_no is None:
+            raise ValueError(f"{target!r} needs a line: <file>:<line>, or --line N")
+        text = _prov.line_text(root, rel, line_no)
+        if not text:
+            notes.append(f"{rel}:{line_no} is not readable in the working tree")
+        blame = _prov.commit_record(root, _prov.blame_commit(root, rel, line_no))
+        introduced = _prov.commit_record(root, _prov.introducing_commit(root, rel, text))
+        if blame and introduced and blame["sha"] != introduced["sha"]:
+            notes.append(
+                f"blame says {blame['short_sha']} ({blame['subject'][:60]}) but the "
+                f"text was introduced by {introduced['short_sha']}"
+            )
+    carrier = introduced or blame
+    bridge_id = (carrier or {}).get("session_id")
+    if not bridge_id:
+        notes.append("no Claude-Session trailer on the commit")
+    when = _iso((carrier or {}).get("date") or "")
+    sids = _candidates(
+        store,
+        bridge_id=bridge_id,
+        root=root,
+        when=when,
+        window_days=window_days,
+        notes=notes,
+    )
+    hits: list[dict] = []
+    if text:
+        hits.extend(_prov.iter_hits(store, sids, text))
+    else:
+        # No line to match, so match the commit's files against each call's digest.
+        for path in _prov.changed_files(root, sha):
+            hits.extend(
+                _prov.iter_hits(
+                    store,
+                    sids,
+                    path,
+                    fields=("digest",),
+                    min_chars=_prov.MIN_PATH_CHARS,
+                )
+            )
+    if not hits and text:
+        notes.append(
+            "no tool call in those transcripts contains the line — it may predate "
+            "the corpus, or have been written on another machine"
+        )
+    return {
+        "repo": root,
+        "file": rel,
+        "line": line_no,
+        "text": text,
+        "commits": {"blame": blame, "introduced": introduced},
+        "session_id": bridge_id,
+        "searched": len(sids),
+        "hits": _prov.rank_hits(hits)[:max_hits],
+        "entire": (
+            _prov.entire_why(root, rel, line_no) if entire and rel and line_no else None
+        ),
+        "notes": notes,
+    }
+
+
+_dispatch_funcs = [sync, sessions, show, lenses, report, judge, estimate, why]
+
+#: Per-parameter ``add_argument`` overrides for the CLI (``cw``'s ``config=`` seam).
+_dispatch_config: dict = {}

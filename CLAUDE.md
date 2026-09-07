@@ -11,7 +11,8 @@ store.py     dol JsonFiles under ~/.local/share/astern/{sessions,turns,findings,
 ledger.py    idempotency: per session × lens → skip | incremental | full
 lenses/      registry (LENSES, @lens, finding()) + one module per lens
 judge.py     the LLM seam: claude_judge() = headless `claude -p --bare --output-format json`; replay_judge() for tests
-tools.py     SSOT of verbs (sync, sessions, show, lenses, …) — plain functions, JSON in / dict out; __main__ is cw over _dispatch_funcs
+provenance.py  code→session: git blame/-S, the Claude-Session trailer, the bridge-id join, the store search
+tools.py     SSOT of verbs (sync, sessions, show, lenses, why, …) — plain functions, JSON in / dict out; __main__ is cw over _dispatch_funcs
 ```
 
 ## Invariants (each one is load-bearing)
@@ -24,6 +25,8 @@ tools.py     SSOT of verbs (sync, sessions, show, lenses, …) — plain functio
 - **Anything leaving the machine passes `openloops.egress.scrub`** (home paths rewritten, credentials raise). Reports that stay in the store are exempt.
 - **Tolerant parsing.** Unknown record types are kept; every derived record can say which Claude Code `version` wrote its source.
 - **Nothing in `tools.py` prints or exits.** The CLI is `cw`; MCP would be `py2mcp` string refs to the same functions.
+- **A nested transcript's identity is its file name, never its records.** A subagent's records carry the *parent's* `sessionId`; believing them files every subagent's findings and provenance hits under the parent. `_session_record` overrides `session_id` for any `kind != 'session'`, and `parent_id` carries the join.
+- **The commit trailer's id is not the local session id.** `Claude-Session: …session_<id>` names the claude.ai session; the transcript's `bridge-session` record (`bridgeSessionId: cse_<id>`) is the only durable join, so `session_meta` keeps it as `bridge_session_id`. `~/.claude/sessions/<pid>.json` has the same pair but dies with the process.
 
 ## Conventions
 
