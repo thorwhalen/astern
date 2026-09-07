@@ -3,19 +3,30 @@
 astern is the **record source**; ``ir`` owns indexing and search; the multi-hop
 loop belongs to ``raglab``. This module is that seam, and nothing more: it
 renders the store into JSON-able records (:func:`records`), registers them with
-``ir`` as two named corpora and builds them (:func:`index`), and asks ``ir`` to
+``ir`` as named corpora and builds them (:func:`index`), and asks ``ir`` to
 search them (:func:`recall`).
 
-Two grains, deliberately separate corpora rather than one mixed pile:
+Three grains, deliberately separate corpora rather than one mixed pile:
 
 - ``session_synopses`` — one record per session, from the ``synopsis`` lens's
   findings: goal, problems and their solutions, decisions, corrections, rendered
   as short prose. Small, LLM-distilled, and the best hit for *what was decided*.
 - ``session_turns`` — one record per turn (prompt + the assistant's closing
-  text). Free, fine-grained, and the best hit for *what was actually tried*;
-  this is the shape ``ir``'s :class:`ir.ClaudeTurn` strategy already indexes.
+  text) of a top-level session (``kind == "session"``). Free, fine-grained, and
+  the best hit for *what was actually tried*; this is the shape ``ir``'s
+  :class:`ir.ClaudeTurn` strategy already indexes.
+- ``subagent_turns`` — the same shape as ``session_turns``, but for the
+  transcripts a session delegates to (``kind in ("subagent", "workflow")``).
+  A subagent's "user prompt" is the *parent's* task instruction, not a human
+  asking a question, so unfiltered it duplicates the parent's own content and
+  drowns it out — indexing it as a **separate** corpus keeps that duplication
+  from ever reaching ``session_turns`` while still making it searchable on
+  purpose. It answers *what did an agent do*, which is a different question
+  from *what did we decide*; :func:`recall` therefore excludes it by default
+  and includes it only when asked (``grains`` names it, or
+  ``include_subagents=True``).
 
-A third grain, ``episodes`` (consecutive turns on one topic), is the natural
+A fourth grain, ``episodes`` (consecutive turns on one topic), is the natural
 unit for "the thinking around X" and is deliberately **not** here — see
 thorwhalen/astern#7.
 
@@ -41,8 +52,20 @@ from typing import Any
 
 from astern.store import Store, mk_store
 
-#: The two grains astern indexes, and the ir corpus name each becomes.
-GRAINS = ("session_synopses", "session_turns")
+#: The grains astern indexes, and the ir corpus name each becomes.
+GRAINS = ("session_synopses", "session_turns", "subagent_turns")
+
+#: A session's own ``kind`` field (see ``astern.sources.KINDS``) selects which
+#: grain its turns feed. Missing/empty defaults to ``"session"`` — older stores,
+#: and every synthetic test fixture, never set it.
+SESSION_KINDS = frozenset({"session"})
+SUBAGENT_KINDS = frozenset({"subagent", "workflow"})
+
+#: The grains :func:`recall` searches when ``grains="all"`` (the default) and
+#: ``include_subagents`` is not set — the two that answer "what was decided" /
+#: "what was actually tried" by *this* session. ``subagent_turns`` joins only
+#: when named explicitly or ``include_subagents=True``.
+DFLT_RECALL_GRAINS = ("session_synopses", "session_turns")
 
 # seam candidate: `episodes` — consecutive turns on one topic, split on
 # embedding-distance jumps and file-set overlap (plus compact_boundary /
@@ -98,6 +121,18 @@ METADATA_KEYS = {
         "tools",
         "files",
         "title",
+    ),
+    "subagent_turns": (
+        "turn_index",
+        "n_errors",
+        "n_tool_calls",
+        "tools",
+        "files",
+        "title",
+        "kind",
+        "parent_id",
+        "parent_title",
+        "parent_project",
     ),
 }
 
@@ -183,15 +218,32 @@ def _normalize_ts(ts: str) -> str:
     return ts[: -len("+00:00")] + "Z" if ts.endswith("+00:00") else ts
 
 
+def _kind_of(session: dict) -> str:
+    """A session's own ``kind``, defaulting to ``"session"`` when unset."""
+    return session.get("kind") or "session"
+
+
 def _sessions(
-    store: Store, *, project: str | None, since_days: float | None
+    store: Store,
+    *,
+    project: str | None,
+    since_days: float | None,
+    kinds: frozenset[str] | None = None,
 ) -> Iterator[tuple[str, dict]]:
-    """The synced sessions passing the filters, as ``(session_id, meta)``."""
+    """The synced sessions passing the filters, as ``(session_id, meta)``.
+
+    ``kinds`` restricts by :func:`_kind_of`; ``None`` means no restriction — used
+    when resolving a project filter (:func:`_filter`), because that filter is
+    shared across whichever grains a search names and must not silently drop a
+    ``subagent_turns`` session for being the wrong kind.
+    """
     cutoff = _iso_cutoff(since_days)
     for sid in store.sessions:
         try:
             session = store.sessions[sid]
         except (KeyError, ValueError):  # a half-written file is not a reason to stop
+            continue
+        if kinds is not None and _kind_of(session) not in kinds:
             continue
         if _matches(session, project=project, cutoff=cutoff):
             yield sid, session
@@ -327,10 +379,45 @@ def _files_touched(turn: dict) -> list[str]:
     return out
 
 
+def _parent_fields(store: Store, session: dict) -> dict:
+    """``kind`` + ``parent_id`` + the *parent's* title/project, for a subagent record.
+
+    A subagent transcript almost never carries its own ``ai-title`` /
+    ``custom-title`` record (only a top-level session gets titled), so the field
+    worth indexing is the parent's — without it a subagent hit is an address with
+    no context: whose task was this?
+    """
+    parent_id = session.get("parent_id") or ""
+    parent_title = parent_project = ""
+    if parent_id:
+        try:
+            parent = store.sessions[parent_id]
+        except (KeyError, ValueError):
+            parent = None
+        if parent:
+            parent_title = parent.get("title") or ""
+            parent_project = parent.get("project") or ""
+    return {
+        "kind": _kind_of(session),
+        "parent_id": parent_id,
+        "parent_title": parent_title,
+        "parent_project": parent_project,
+    }
+
+
 def _turn_records(
-    store: Store, sid: str, session: dict, *, include_full: bool
+    store: Store,
+    sid: str,
+    session: dict,
+    *,
+    include_full: bool,
+    extra: dict | None = None,
 ) -> Iterator[dict]:
-    """One record per turn that carries prose; the shape ``ir.ClaudeTurn`` indexes."""
+    """One record per turn that carries prose; the shape ``ir.ClaudeTurn`` indexes.
+
+    ``extra`` merges in extra metadata (:func:`_parent_fields`, for
+    ``subagent_turns``) without disturbing the fields every turn record carries.
+    """
     if sid not in store.turns:
         return
     try:
@@ -361,6 +448,8 @@ def _turn_records(
             "has_tool_use": bool(tools),
             "pointer": f"astern show {sid} --turns {(turn.get('index') or 0) + 1}",
         }
+        if extra:
+            record.update(extra)
         if include_full:
             record["assistant_full"] = (turn.get("assistant_full") or "").strip()
         yield record
@@ -393,11 +482,19 @@ def records(
     if grain not in GRAINS:
         raise ValueError(f"unknown grain {grain!r}; known: {GRAINS}")
     store = mk_store(store)
-    for sid, session in _sessions(store, project=project, since_days=since_days):
+    kinds = SUBAGENT_KINDS if grain == "subagent_turns" else SESSION_KINDS
+    for sid, session in _sessions(
+        store, project=project, since_days=since_days, kinds=kinds
+    ):
         if grain == "session_synopses":
             yield from _synopsis_records(store, sid, session)
-        else:
+        elif grain == "session_turns":
             yield from _turn_records(store, sid, session, include_full=include_full)
+        else:
+            extra = _parent_fields(store, session)
+            yield from _turn_records(
+                store, sid, session, include_full=include_full, extra=extra
+            )
 
 
 def synopsis_records() -> list[dict]:
@@ -413,8 +510,18 @@ def synopsis_records() -> list[dict]:
 
 
 def turn_records() -> list[dict]:
-    """Every turn record in the default store — ``ir``'s fetcher (see above)."""
+    """Every top-level-session turn record in the default store — ``ir``'s fetcher."""
     return list(records("session_turns"))
+
+
+def subagent_turn_records() -> list[dict]:
+    """Every subagent/workflow turn record in the default store — ``ir``'s fetcher.
+
+    Kept as its own corpus (never merged into :func:`turn_records`) so a
+    subagent's turns — whose "user prompt" is the parent session's task
+    instruction, not a human asking a question — never dilute ``session_turns``.
+    """
+    return list(records("subagent_turns"))
 
 
 #: grain -> the registry entry ``ir`` persists for it. The fetchers are named,
@@ -432,6 +539,12 @@ CORPUS_SPECS: dict[str, dict] = {
         "strategy": {"name": "ClaudeTurn", "params": {"include_full": False}},
         "metadata_keys": list(METADATA_KEYS["session_turns"]),
     },
+    "subagent_turns": {
+        "kind": "records",
+        "fetcher": "astern.recall:subagent_turn_records",
+        "strategy": {"name": "ClaudeTurn", "params": {"include_full": False}},
+        "metadata_keys": list(METADATA_KEYS["subagent_turns"]),
+    },
 }
 
 
@@ -441,10 +554,12 @@ CORPUS_SPECS: dict[str, dict] = {
 
 
 def _grains(grain: str) -> list[str]:
-    """``'all'`` or a comma-separated list -> grain names.
+    """``'all'`` or a comma-separated list -> grain names. Used by :func:`index`,
+    where ``'all'`` means every grain — :func:`recall` resolves ``'all'``
+    differently (see :func:`_recall_grain_names`).
 
     >>> _grains('all')
-    ['session_synopses', 'session_turns']
+    ['session_synopses', 'session_turns', 'subagent_turns']
     >>> _grains('session_turns')
     ['session_turns']
     """
@@ -455,6 +570,29 @@ def _grains(grain: str) -> list[str]:
     if unknown:
         raise ValueError(f"unknown grain(s) {unknown}; known: {GRAINS}")
     return names
+
+
+def _recall_grain_names(grains: str, *, include_subagents: bool) -> list[str]:
+    """Resolve :func:`recall`'s ``grains=`` seam.
+
+    ``'all'`` (the default) means :data:`DFLT_RECALL_GRAINS` — ``subagent_turns``
+    joins only when named explicitly or ``include_subagents=True``. A named list
+    is honoured verbatim, ``subagent_turns`` included, because naming it *is* the
+    ask.
+
+    >>> _recall_grain_names('all', include_subagents=False)
+    ['session_synopses', 'session_turns']
+    >>> _recall_grain_names('all', include_subagents=True)
+    ['session_synopses', 'session_turns', 'subagent_turns']
+    >>> _recall_grain_names('subagent_turns', include_subagents=False)
+    ['subagent_turns']
+    """
+    if grains in ("all", "*", ""):
+        names = list(DFLT_RECALL_GRAINS)
+        if include_subagents and "subagent_turns" not in names:
+            names.append("subagent_turns")
+        return names
+    return _grains(grains)
 
 
 def index(
@@ -583,9 +721,13 @@ def _hit(disclosure) -> dict:
     if not pointer and sid:
         pointer = f"astern show {sid}"
     # A session hit is named by its session's title (often empty — sessions are
-    # not always titled); only a non-session hit falls back to the artifact name,
-    # where the name is a skill or a file path and means something.
-    title = meta.get("title") or meta.get("session_title") or ""
+    # not always titled); a subagent hit falls back to its *parent's* title
+    # (its own is almost never set — see _parent_fields); only a non-session hit
+    # falls back to the artifact name, where the name is a skill or a file path
+    # and means something.
+    title = (
+        meta.get("title") or meta.get("session_title") or meta.get("parent_title") or ""
+    )
     return {
         "grain": disclosure.source or "",
         "score": round(float(disclosure.score), 4),
@@ -609,20 +751,28 @@ def recall(
     mode: str | None = None,
     store: str | Store | None = None,
     companions: bool = True,
+    include_subagents: bool = False,
 ) -> dict:
     """What past sessions already thought about ``query`` — ``ir`` federated over the grains.
 
-    Searches ``session_synopses`` and ``session_turns`` (whichever are built),
-    and — when no project/date filter is set — the ``skills`` and ``reports``
-    corpora if this machine has them. A filter excludes those two deliberately
-    rather than silently: they carry no ``session_id`` or ``timestamp`` metadata,
-    so a hard filter would drop every one of their hits without saying so.
+    Searches ``session_synopses`` and ``session_turns`` (whichever are built) by
+    default, and — when no project/date filter is set — the ``skills`` and
+    ``reports`` corpora if this machine has them. A filter excludes those two
+    deliberately rather than silently: they carry no ``session_id`` or
+    ``timestamp`` metadata, so a hard filter would drop every one of their hits
+    without saying so.
+
+    ``subagent_turns`` (what a delegated agent did, not what was decided) is
+    excluded by default — a subagent's "user prompt" is the parent's task
+    instruction, and unfiltered it duplicates the parent's own turns and drowns
+    them out. Name it in ``grains`` or pass ``include_subagents=True`` to search
+    it too.
 
     Returns hits with a ``pointer`` — the command that fetches the full record —
     because the point is to read the few that matter, not to paste prose here.
     """
     ir = _ir()
-    names = _grains(grains)
+    names = _recall_grain_names(grains, include_subagents=include_subagents)
     filter_ = _filter(mk_store(store), project=project, since_days=since_days)
     notes: list[str] = []
     if project and not (filter_ or {}).get("session_id", {}).get("$in"):

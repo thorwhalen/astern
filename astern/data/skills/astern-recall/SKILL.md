@@ -49,14 +49,16 @@ astern recall "what did we decide about the judge and json schema retries" --pro
 astern recall "vector store backend choice" --project vd --since-days 120 --k 12
 ```
 
-Flags: `--project` (matched against the session's project/cwd), `--since-days`, `--k` (how many hits), `--grains session_synopses|session_turns` (default both), `--mode dense|lexical|hybrid` (default hybrid).
+Flags: `--project` (matched against the session's project/cwd), `--since-days`, `--k` (how many hits), `--grains session_synopses|session_turns|subagent_turns` (default: `session_synopses` + `session_turns`), `--mode dense|lexical|hybrid` (default hybrid).
 
-Two grains answer different questions, and it is worth naming which you want:
+Two grains answer the default question — what did *we* decide and try — and it is worth naming which you want:
 
 | Grain | One record is | Best for |
 |---|---|---|
 | `session_synopses` | a whole session, LLM-distilled: goal, problems and their solutions, decisions, corrections | **what was decided**, what the session was for |
-| `session_turns` | one turn: the prompt and the assistant's closing text | **what was actually tried**, the specific error, the exact command |
+| `session_turns` | one turn of a top-level session: the prompt and the assistant's closing text | **what was actually tried**, the specific error, the exact command |
+
+A third grain, `subagent_turns`, answers a different question — **what did an agent do**, not what was decided — and is excluded by default: a subagent's "user prompt" is the *parent* session's task instruction, not a human asking a question, so mixed in unfiltered it would duplicate the parent's own content and drown it out. Reach for it deliberately, when the question is about delegated work specifically: `--grains subagent_turns` (or add it alongside the defaults, `--grains session_turns,subagent_turns`).
 
 Unfiltered, recall also reaches the `skills` and `reports` corpora when this machine has them — often the fastest route to an existing skill or a written-up report. A `--project` or `--since-days` filter deliberately excludes those two (they carry no project or timestamp metadata); the result's `notes` says so.
 
@@ -112,4 +114,4 @@ _Briefing written <date> from N sessions between <first> and <last>. Sources: as
 
 - **Never paste real transcript content into a public artifact** (an issue, a PR, a committed doc that leaves the machine) without checking it for secrets and absolute home paths. A briefing is a local doc; keep it that way unless the user says otherwise.
 - The store is per-machine. A second Claude home (`~/.claude-*`) is just another source to `astern sync`; a session that lives only on another machine is invisible here, and "not found" means "not found on this machine".
-- `episodes` — a third grain, consecutive turns on one topic — does not exist yet (thorwhalen/astern#7). Until it does, a topic that spans many turns is best reached through `session_synopses` first, then read in full with `astern show`.
+- `episodes` — a fourth grain, consecutive turns on one topic — does not exist yet (thorwhalen/astern#7). Until it does, a topic that spans many turns is best reached through `session_synopses` first, then read in full with `astern show`.
