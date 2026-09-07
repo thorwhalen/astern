@@ -279,3 +279,33 @@ def test_why_needs_a_line_for_a_file_target(tmp_path, store):
     repo = _git_repo(tmp_path, trailer=True)
     with pytest.raises(ValueError, match="needs a line"):
         tools.why("mod.py", repo=str(repo), store=store, entire=False)
+
+
+@pytestmark_git
+def test_why_folds_the_entire_status_risk_into_notes(tmp_path, store, monkeypatch):
+    """§why includes entire_status's ``risk`` in ``notes`` whenever it runs ``entire why``."""
+    repo = _git_repo(tmp_path, trailer=True)
+    w = _home_with_subagent_write(tmp_path, str(repo))
+    tools.sync(str(w.home), kinds="session,subagent", store=store)
+    monkeypatch.setattr(
+        "astern.tools._entire.entire_status",
+        lambda _repo: {"risk": "checkpoints will be pushed on next git push"},
+    )
+
+    out = tools.why(f"{repo}/mod.py:2", store=store, entire=True)
+
+    assert any("checkpoints will be pushed on next git push" in n for n in out["notes"])
+
+
+@pytestmark_git
+def test_why_adds_no_entire_note_when_there_is_no_risk(tmp_path, store, monkeypatch):
+    repo = _git_repo(tmp_path, trailer=True)
+    w = _home_with_subagent_write(tmp_path, str(repo))
+    tools.sync(str(w.home), kinds="session,subagent", store=store)
+    monkeypatch.setattr(
+        "astern.tools._entire.entire_status", lambda _repo: {"risk": None}
+    )
+
+    out = tools.why(f"{repo}/mod.py:2", store=store, entire=True)
+
+    assert not any("entire:" in n for n in out["notes"])

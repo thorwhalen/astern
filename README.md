@@ -108,6 +108,18 @@ Two rules if you adopt it:
 - **Entire's refs are never pushed.** Checkpoints hold the verbatim transcript, and its redaction is best-effort for secrets and does nothing at all about absolute paths — the `cwd` of every record is in there. Entire pushes them by default: it installs a `pre-push` hook that pushes `refs/entire/checkpoints/*` to the elected remote alongside your own push (no `remote.*.push` refspec is involved, so `git config --get-all remote.origin.push` shows nothing and `git push --dry-run` is silent about it). Turn it off per repo with `entire configure --skip-push-sessions`, which writes `strategy_options.push_sessions: false` into `.entire/settings.json`.
 - **The Claude Code hook is per repo, and the user's own call.** `entire agent add claude-code` writes eight hooks into the **repository's** `.claude/settings.json` and leaves `~/.claude/settings.json` alone. There is no global install; enabling it for every repo is a decision to make once, deliberately, not a side effect.
 
+### Enabling Entire safely
+
+```bash
+astern entire-enable --repo .              # push off, telemetry off, by default
+astern entire-enable --repo . --dry-run    # see the commands first, run nothing
+astern entire-status --repo .              # is it enabled here, and is it safe?
+```
+
+`astern entire-enable` runs the same `entire agent add claude-code` the Entire docs tell you to run, then immediately turns off both unsafe defaults above — `entire configure --skip-push-sessions` and `entire configure --telemetry=false` — unless you pass `--push-sessions` or `--telemetry` to keep either on. It reports exactly what changed: the hooks added to `.claude/settings.json`, the git hooks installed, and the resulting `.entire/settings.json` values. Turning `push_sessions` back on for a repo whose origin is github.com adds a plain warning to the result rather than proceeding quietly — that combination is the pre-push hook above.
+
+`astern entire-status` is read-only and never invokes `entire` at all — hook presence, `push_sessions`/`telemetry`, a count of local `refs/entire/checkpoints/*`, and whether any exist on origin already (tolerating being offline). Its `risk` field reads `"checkpoints will be pushed on next git push"` exactly when the repo is enabled, `push_sessions` is on, and the origin is github.com. `astern why` folds that same `risk` into its `notes` whenever it runs `entire why` for you, so the warning surfaces on the command you were already running rather than a separate one you'd have to remember to run.
+
 ## Where things live
 
 The store is `dol`-backed JSON files under `~/.local/share/astern/` (`sessions`, `turns`, `findings`, `ledger`, `judgments`) — override with `$ASTERN_DATA_DIR` to keep an experiment out of the real store. The transcripts it reads come from `~/.claude` by default — override with `$ASTERN_HOME` to point at a second account or a synced copy of another machine's home. Both are seams: any `MutableMapping` serves as a store, and `homes()` takes a single dir, an iterable of dirs, or `None`.
