@@ -55,71 +55,56 @@ SYSTEM = (
 _STR = {"type": "string"}
 
 
-def _objects(props: dict, required: list[str]) -> dict:
-    return {
-        "type": "array",
-        "items": {
-            "type": "object",
-            "properties": props,
-            "required": required,
-            "additionalProperties": False,
-        },
-    }
+def _objects(props: dict) -> dict:
+    return {"type": "array", "items": {"type": "object", "properties": props}}
 
 
-#: The synopsis schema. ``additionalProperties: false`` everywhere and every field
-#: required: a partially-filled object is indistinguishable from a session with
-#: nothing to say, and the difference matters for the recurrence lenses downstream.
+#: The synopsis schema. Every list field is optional (defaults to empty) and
+#: ``outcome`` is a free string, not an enum: in loose (non-strict) mode nothing
+#: enforces this on the CLI side anyway, and even in strict mode a schema this
+#: forgiving means a slightly-off answer is a slightly-off finding, not a failed
+#: call. :func:`_coerce_synopsis` does the real tolerance work in Python — filling
+#: missing keys with defaults and dropping list items that are not dict-shaped —
+#: so this schema is documentation for the model, not a gate on the judgment.
 SCHEMA = {
     "type": "object",
     "properties": {
         "goal": _STR,
-        "outcome": {"type": "string", "enum": ["done", "partly", "abandoned", "unclear"]},
-        "problems": _objects(
-            {"problem": _STR, "solution": _STR, "category": _STR},
-            ["problem", "solution", "category"],
-        ),
+        "outcome": _STR,
+        "problems": _objects({"problem": _STR, "solution": _STR, "category": _STR}),
         "friction": _objects(
             {
                 "what": _STR,
                 "cause_guess": _STR,
                 "turn_indices": {"type": "array", "items": {"type": "integer"}},
-            },
-            ["what", "cause_guess", "turn_indices"],
+            }
         ),
-        "corrections": _objects(
-            {"what_user_said": _STR, "rule_candidate": _STR},
-            ["what_user_said", "rule_candidate"],
-        ),
+        "corrections": _objects({"what_user_said": _STR, "rule_candidate": _STR}),
         "user_terms": _objects(
-            {"phrase": _STR, "established_term": _STR, "definition": _STR},
-            ["phrase", "established_term", "definition"],
+            {"phrase": _STR, "established_term": _STR, "definition": _STR}
         ),
-        "agent_terms": _objects(
-            {"term": _STR, "definition": _STR}, ["term", "definition"]
-        ),
+        "agent_terms": _objects({"term": _STR, "definition": _STR}),
         "skill_candidates": _objects(
-            {"name": _STR, "why": _STR, "recurrence_hint": _STR},
-            ["name", "why", "recurrence_hint"],
+            {"name": _STR, "why": _STR, "recurrence_hint": _STR}
         ),
-        "reusable_code": _objects(
-            {"what": _STR, "suggested_function": _STR}, ["what", "suggested_function"]
-        ),
+        "reusable_code": _objects({"what": _STR, "suggested_function": _STR}),
         "notable_decisions": {"type": "array", "items": _STR},
     },
-    "required": [
-        "goal",
-        "outcome",
-        "problems",
-        "friction",
-        "corrections",
-        "user_terms",
-        "agent_terms",
-        "skill_candidates",
-        "reusable_code",
-        "notable_decisions",
-    ],
-    "additionalProperties": False,
+}
+
+#: outcome, normalized. Anything the model writes that is not one of these maps to
+#: 'unclear' rather than failing the finding.
+OUTCOMES = ("done", "partly", "abandoned", "unclear")
+
+#: field -> {sub-key: 'str' | 'int_list'}, the shape :func:`_coerce_item` fills.
+_LIST_SPECS: dict[str, dict[str, str]] = {
+    "problems": {"problem": "str", "solution": "str", "category": "str"},
+    "friction": {"what": "str", "cause_guess": "str", "turn_indices": "int_list"},
+    "corrections": {"what_user_said": "str", "rule_candidate": "str"},
+    "user_terms": {"phrase": "str", "established_term": "str", "definition": "str"},
+    "agent_terms": {"term": "str", "definition": "str"},
+    "skill_candidates": {"name": "str", "why": "str", "recurrence_hint": "str"},
+    "reusable_code": {"what": "str", "suggested_function": "str"},
 }
 
 PROMPT = """\
@@ -205,7 +190,7 @@ def synopsis(
                 **{**common, "usage": {}},
             )
         ]
-    data = dict(judgment.data)
+    data = _coerce_synopsis(judgment.data)
     return [
         finding(
             LENS_NAME,
@@ -218,6 +203,74 @@ def synopsis(
             **common,
         )
     ]
+
+
+def _coerce_outcome(value: object) -> str:
+    """Normalize the judge's ``outcome`` to one of :data:`OUTCOMES`; anything else is unclear.
+
+    >>> _coerce_outcome('Done'), _coerce_outcome('kinda'), _coerce_outcome(None)
+    ('done', 'unclear', 'unclear')
+    """
+    v = str(value or "").strip().lower()
+    return v if v in OUTCOMES else "unclear"
+
+
+def _coerce_item(item: object, spec: dict[str, str]) -> dict | None:
+    """One list item coerced to ``spec``'s shape; ``None`` if it is not usable at all.
+
+    A non-dict item (the model answered with a bare string, say) carries nothing worth
+    keeping and is dropped rather than failing the whole call. A dict item keeps its
+    fields, missing ones defaulted, so a partially-filled item is still evidence.
+
+    >>> _coerce_item({'problem': 'p', 'solution': 's'}, {'problem': 'str', 'solution': 'str',
+    ...                                                  'category': 'str'})
+    {'problem': 'p', 'solution': 's', 'category': ''}
+    >>> _coerce_item('oops', {'problem': 'str'}) is None
+    True
+    """
+    if not isinstance(item, dict):
+        return None
+    out: dict = {}
+    for key, kind in spec.items():
+        v = item.get(key)
+        if kind == "int_list":
+            out[key] = (
+                [int(x) for x in v if isinstance(x, (int, float))]
+                if isinstance(v, list)
+                else []
+            )
+        else:
+            out[key] = str(v) if v is not None else ""
+    return out
+
+
+def _coerce_synopsis(data: dict) -> dict:
+    """Fill missing keys with defaults and drop malformed list items — never fail the call.
+
+    >>> out = _coerce_synopsis({'goal': 'x', 'outcome': 'weird',
+    ...                        'problems': [{'problem': 'p', 'solution': 's', 'category': 'c'},
+    ...                                     'not a dict']})
+    >>> out['outcome'], out['problems']
+    ('unclear', [{'problem': 'p', 'solution': 's', 'category': 'c'}])
+    >>> _coerce_synopsis({})['friction']
+    []
+    """
+    out: dict = {
+        "goal": str(data.get("goal") or ""),
+        "outcome": _coerce_outcome(data.get("outcome")),
+        "notable_decisions": [
+            str(x)
+            for x in (data.get("notable_decisions") or [])
+            if isinstance(x, (str, int, float))
+        ],
+    }
+    for field, spec in _LIST_SPECS.items():
+        items = data.get(field)
+        coerced = (
+            [_coerce_item(i, spec) for i in items] if isinstance(items, list) else []
+        )
+        out[field] = [i for i in coerced if i is not None]
+    return out
 
 
 def _prior_synopsis(prior: list[dict] | None) -> dict | None:

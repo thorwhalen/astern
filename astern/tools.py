@@ -422,6 +422,7 @@ def judge(
     model: str = "haiku",
     effort: str | None = None,
     max_chars: int | None = None,
+    strict_schema: bool = False,
     store: str | Store | None = None,
     dry_run: bool = False,
     judge_fn=None,
@@ -433,6 +434,12 @@ def judge(
     pays for its new turns only. ``dry_run`` builds every view and prices the batch
     from the fitted cost model without calling the judge once — run it before a
     batch, not after.
+
+    ``strict_schema`` (default ``False``, see :mod:`astern.judge`) passes the
+    schema to the CLI as ``--json-schema``; a rejected answer then costs a CLI-side
+    retry (the whole conversation resent). The default embeds the schema in the
+    prompt instead and parses loosely, trading strict validation for a predictable,
+    single-pass bill.
     """
     store = mk_store(store)
     load_builtin_lenses()
@@ -446,7 +453,9 @@ def judge(
             f"(use sync for heuristics)"
         )
     if judge_fn is None and not dry_run:
-        judge_fn = _mk_claude_judge(model=model, effort=effort)
+        judge_fn = _mk_claude_judge(
+            model=model, effort=effort, strict_schema=strict_schema
+        )
     cost_model = _estimate.fit(_judgments(store, lens)) if dry_run else None
     rows: list[dict] = []
     for sid, session in _synced(
@@ -517,16 +526,19 @@ def judge(
         "lens": lens,
         "model": model,
         "dry_run": dry_run,
+        "strict_schema": strict_schema,
         **_totals(rows, dry_run=dry_run),
         "sessions": rows,
     }
 
 
-def _mk_claude_judge(*, model: str, effort: str | None):
+def _mk_claude_judge(*, model: str, effort: str | None, strict_schema: bool = False):
     from astern.judge import claude_judge
 
     def judge_fn(prompt: str, **kw):
-        return claude_judge(prompt, model=model, effort=effort, **kw)
+        return claude_judge(
+            prompt, model=model, effort=effort, strict_schema=strict_schema, **kw
+        )
 
     return judge_fn
 

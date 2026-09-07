@@ -26,9 +26,14 @@ Three decisions:
   structured answer the schema rejects is retried with the whole conversation
   resent. Restricted to the calls that took one round trip the same regression has
   R² = 0.995 — so ``fit`` reports ``input_single_pass`` and ``retry_rate`` beside
-  the headline line, and a low overall R² has an explanation instead of a shrug.
-  :func:`predict` still uses the all-calls line, because retries are part of what a
-  batch actually costs.
+  the headline line. ``astern.judge.claude_judge`` now defaults to
+  ``strict_schema=False``, which is what makes a 0% retry rate the normal case
+  rather than the exception: :func:`predict` uses the ``input_single_pass`` line
+  whenever the stored judgments' ``retry_rate`` for the current settings is 0 (a
+  batch that has not retried once), and falls back to the all-calls ``input`` line
+  the moment even one retry is on record — a low overall R² then has an
+  explanation instead of a shrug, and a prediction says in its own output
+  (``input_model``) which line priced it.
 
 >>> pts = [{'features': {'view_chars': c, 'n_turns': 2}, 'usage':
 ...         {'input_tokens': 1000 + c // 4, 'output_tokens': 300}}
@@ -307,8 +312,35 @@ def fit(judgments) -> dict:
     return model
 
 
+def _input_model(model: dict) -> tuple[dict, str]:
+    """Which input-token regression :func:`predict` prices with, and its name.
+
+    The single-pass line only when every judged call *on record* took one round
+    trip (``retry_rate == 0``) — the moment even one retry shows up, pricing with
+    the single-pass line would under-price the batch it was measured on, so the
+    all-calls ``input`` line (which already bakes retries in) is the honest default.
+
+    >>> _input_model({'input': {'per_char': 1}, 'retry_rate': 0.0,
+    ...               'input_single_pass': {'per_char': 2}})[1]
+    'single_pass'
+    >>> _input_model({'input': {'per_char': 1}, 'retry_rate': 0.4,
+    ...               'input_single_pass': {'per_char': 2}})[1]
+    'all_calls'
+    >>> _input_model({'input': {'per_char': 1}})[1]
+    'all_calls'
+    """
+    single = model.get("input_single_pass")
+    if single and model.get("retry_rate") == 0.0:
+        return single, "single_pass"
+    return model["input"], "all_calls"
+
+
 def predict(model: dict, features: dict) -> dict:
     """Predicted tokens (and cost) of judging one session, with a ±1σ band.
+
+    ``input_model`` in the result says which regression priced it — ``single_pass``
+    when the judged batch this model was fit on never retried, ``all_calls``
+    otherwise (see :func:`_input_model`).
 
     >>> m = fit([])
     >>> p = predict(m, {'view_chars': 10000})
@@ -316,6 +348,8 @@ def predict(model: dict, features: dict) -> dict:
     (3800, True)
     >>> p['low'] <= p['total_tokens'] <= p['high']
     True
+    >>> p['input_model']
+    'all_calls'
     """
     x = float(features.get("view_chars") or 0)
     if not x and model.get("view_chars_per_byte"):
@@ -325,7 +359,7 @@ def predict(model: dict, features: dict) -> dict:
             float(features.get("bytes") or 0) * model["view_chars_per_byte"],
             float(DFLT_MAX_CHARS),
         )
-    inp = model["input"]
+    inp, used = _input_model(model)
     y_in = max(0.0, inp["intercept"] + inp["per_char"] * x)
     y_out = max(0.0, float(model["output"]["mean"]))
     total = y_in + y_out
@@ -337,4 +371,5 @@ def predict(model: dict, features: dict) -> dict:
         "low": round(max(0.0, total - band)),
         "high": round(total + band),
         "cost_usd": round(total * model.get("cost_per_total_token", 0.0), 6),
+        "input_model": used,
     }

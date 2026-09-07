@@ -15,6 +15,7 @@ import pytest
 from astern.estimate import features, fit, predict
 from astern.judge import Judgment, replay_judge
 from astern.lenses import load_builtin_lenses
+from astern.lenses.synopsis import synopsis
 from astern.store import MemoryStore
 from astern.tools import _run_lens
 from astern.turns import iter_turns
@@ -224,6 +225,84 @@ def test_a_judge_that_answers_no_json_is_an_error_too():
     )
     assert res["failed"] is True
     assert "synopsis/sid" not in store.findings
+
+
+# --- loose-mode tolerance: schema-off-ness is a finding, never a failed call ---
+
+
+def test_a_fenced_preambled_answer_still_produces_a_synopsis():
+    load_builtin_lenses()
+    store, (session, turns) = MemoryStore(), _session()
+    fenced = (
+        "Sure, here is the JSON:\n```json\n"
+        + json.dumps(SYNOPSIS)
+        + "\n```\nHope that helps!"
+    )
+    res = _run_lens(
+        store, "synopsis", session, turns, judge=replay_judge({}, default=fenced)
+    )
+    assert res["action"] == "full" and res["n_findings"] == 1
+    (f,) = store.findings["synopsis/sid"]
+    assert f["kind"] == "synopsis" and f["evidence"]["goal"] == SYNOPSIS["goal"]
+
+
+def test_an_unparseable_answer_yields_a_judge_error_finding_and_leaves_the_ledger_untouched():
+    load_builtin_lenses()
+    store, (session, turns) = MemoryStore(), _session()
+    judge = replay_judge({}, default="sorry, I cannot help with that")
+    # the lens function itself, so the finding it produces can be inspected directly
+    out = synopsis(session, turns, judge=judge, from_index=0, prior=[], store=None)
+    assert len(out) == 1 and out[0]["kind"] == "judge_error" and out[0]["error"]
+
+    res = _run_lens(store, "synopsis", session, turns, judge=judge)
+    assert res["failed"] is True
+    assert "synopsis/sid" not in store.findings
+    assert (store.ledger.get("sid") or {}).get("lenses", {}).get("synopsis") is None
+
+
+def test_missing_schema_fields_are_defaulted_and_outcome_is_normalized():
+    load_builtin_lenses()
+    store, (session, turns) = MemoryStore(), _session()
+    sparse = json.dumps({"goal": "just the goal", "outcome": "kind of, I guess"})
+    res = _run_lens(
+        store, "synopsis", session, turns, judge=replay_judge({}, default=sparse)
+    )
+    assert res["action"] == "full" and res["n_findings"] == 1
+    (f,) = store.findings["synopsis/sid"]
+    ev = f["evidence"]
+    assert ev["goal"] == "just the goal"
+    assert ev["outcome"] == "unclear"  # not one of the recognised outcomes
+    for field in (
+        "problems",
+        "friction",
+        "corrections",
+        "user_terms",
+        "agent_terms",
+        "skill_candidates",
+        "reusable_code",
+        "notable_decisions",
+    ):
+        assert ev[field] == []
+
+
+def test_malformed_list_items_are_dropped_rather_than_failing_the_call():
+    load_builtin_lenses()
+    store, (session, turns) = MemoryStore(), _session()
+    messy = dict(SYNOPSIS)
+    messy["problems"] = [messy["problems"][0], "not a dict", 42, {"problem": "p2"}]
+    res = _run_lens(
+        store,
+        "synopsis",
+        session,
+        turns,
+        judge=replay_judge({}, default=json.dumps(messy)),
+    )
+    assert res["action"] == "full" and res["n_findings"] == 1
+    (f,) = store.findings["synopsis/sid"]
+    problems = f["evidence"]["problems"]
+    # "not a dict" and 42 are dropped; the two dict items survive, the sparse one defaulted
+    assert len(problems) == 2
+    assert problems[1] == {"problem": "p2", "solution": "", "category": ""}
 
 
 def test_the_view_shrinks_and_says_so():

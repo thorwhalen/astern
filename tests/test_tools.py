@@ -280,3 +280,46 @@ def test_lens_names_unknown_raises():
 
 def test_lens_names_none_is_empty():
     assert tools._lens_names("none", kind="H") == []
+
+
+# --- judge(): strict_schema is plumbed through to the CLI judge --------------
+
+
+def test_mk_claude_judge_defaults_to_loose_schema(monkeypatch):
+    captured = {}
+
+    def fake_claude_judge(prompt, **kw):
+        captured.update(kw)
+        from astern.judge import Judgment
+
+        return Judgment(text="{}", data={}, model=kw.get("model", ""))
+
+    monkeypatch.setattr("astern.judge.claude_judge", fake_claude_judge)
+    judge_fn = tools._mk_claude_judge(model="haiku", effort=None)
+    judge_fn("hi", schema={"type": "object"})
+    assert captured["strict_schema"] is False
+
+
+def test_mk_claude_judge_passes_strict_schema_through(monkeypatch):
+    captured = {}
+
+    def fake_claude_judge(prompt, **kw):
+        captured.update(kw)
+        from astern.judge import Judgment
+
+        return Judgment(text="{}", data={}, model=kw.get("model", ""))
+
+    monkeypatch.setattr("astern.judge.claude_judge", fake_claude_judge)
+    judge_fn = tools._mk_claude_judge(model="haiku", effort=None, strict_schema=True)
+    judge_fn("hi", schema={"type": "object"})
+    assert captured["strict_schema"] is True
+
+
+def test_judge_dry_run_reports_strict_schema_flag(store):
+    from astern.lenses import load_builtin_lenses
+
+    load_builtin_lenses()
+    result = tools.judge("synopsis", store=store, dry_run=True)
+    assert result["strict_schema"] is False
+    result2 = tools.judge("synopsis", store=store, dry_run=True, strict_schema=True)
+    assert result2["strict_schema"] is True
