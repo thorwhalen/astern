@@ -47,7 +47,11 @@ def _kinds_of(findings: list[dict], kind: str) -> list[dict]:
 def _friction_report(fbs: dict, store: Store, top: int) -> tuple[dict, str]:
     kind_counts: Counter = Counter()
     tool_errors: Counter = Counter()
-    retry_digests: Counter = Counter()
+    retry_attempts: Counter = Counter()  # key -> attempts summed, for ranking
+    retry_after_error: Counter = Counter()  # key -> n findings that followed an error
+    retry_identical_input: Counter = Counter()  # key -> n findings that did not
+    n_retry_after_error = 0
+    n_retry_identical_input = 0
     rows = []
     for sid, findings in fbs.items():
         per_kind: Counter = Counter()
@@ -59,9 +63,14 @@ def _friction_report(fbs: dict, store: Store, top: int) -> tuple[dict, str]:
             if kind == "tool_error":
                 tool_errors[ev.get("tool", "")] += 1
             elif kind == "retry":
-                retry_digests[f"{ev.get('tool', '')}: {ev.get('digest', '')}"] += ev.get(
-                    "attempts", 1
-                )
+                key = f"{ev.get('tool', '')}: {ev.get('digest', '')}"
+                retry_attempts[key] += ev.get("attempts", 1)
+                if ev.get("after_error"):
+                    retry_after_error[key] += 1
+                    n_retry_after_error += 1
+                else:
+                    retry_identical_input[key] += 1
+                    n_retry_identical_input += 1
         rows.append(
             {
                 "session_id": sid,
@@ -74,7 +83,17 @@ def _friction_report(fbs: dict, store: Store, top: int) -> tuple[dict, str]:
     agg = {
         "kind_counts": dict(kind_counts),
         "top_error_tools": tool_errors.most_common(top),
-        "top_retry_digests": retry_digests.most_common(top),
+        "top_retry_digests": [
+            {
+                "key": key,
+                "attempts": n,
+                "after_error": retry_after_error.get(key, 0),
+                "identical_input": retry_identical_input.get(key, 0),
+            }
+            for key, n in retry_attempts.most_common(top)
+        ],
+        "retry_after_error_count": n_retry_after_error,
+        "retry_identical_input_count": n_retry_identical_input,
         "sessions": rows[:top],
     }
     lines = [f"# Friction report ({len(fbs)} sessions)", "", "## Counts by kind"]
@@ -82,8 +101,17 @@ def _friction_report(fbs: dict, store: Store, top: int) -> tuple[dict, str]:
     lines += ["", "## Top tools by error count"]
     lines += [f"- {tool}: {n}" for tool, n in tool_errors.most_common(top)] or ["- none"]
     lines += ["", "## Top retried digests"]
-    lines += [f"- {key} — {n} attempts" for key, n in retry_digests.most_common(top)] or [
-        "- none"
+    lines += [
+        f"- {key} — {n} attempts "
+        f"({retry_after_error.get(key, 0)} after error, "
+        f"{retry_identical_input.get(key, 0)} identical-input)"
+        for key, n in retry_attempts.most_common(top)
+    ] or ["- none"]
+    lines += [
+        (
+            f"- retries after error: {n_retry_after_error} · "
+            f"identical-input repeats: {n_retry_identical_input}"
+        )
     ]
     lines += [
         "",
