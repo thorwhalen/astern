@@ -39,9 +39,17 @@ Issues = "https://github.com/thorwhalen/astern/issues"
 dev = ["pytest>=7.0", "ruff>=0.1.0"]
 # Cross-session clustering of findings; the default groups by normalized strings.
 similar = ["ir"]
+# `astern index` / `astern recall`: ir owns the indexing and the search (ef/vd
+# come with it); astern only supplies the records. Offline by default -- ir's
+# local embedder needs no API key.
+recall = ["ir>=0.1.31"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["astern"]
+
+# The shipped skills live at astern/data/skills/<name>/SKILL.md -- inside the
+# package dir, so hatchling carries them into the wheel with no extra config,
+# and `astern install-skills` links them into an agent host.
 
 [tool.hatch.build.targets.sdist]
 only-include = ["astern", "tests", ".github", "README.md", "LICENSE", "pyproject.toml"]

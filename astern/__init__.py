@@ -15,6 +15,12 @@ answering the questions, and :mod:`astern.judge` the one LLM seam.
 from astern.judge import Judgment, claude_judge, replay_judge  # noqa: F401
 from astern.lenses import LENSES, finding, lens  # noqa: F401
 from astern.store import MemoryStore, Store, mk_store  # noqa: F401
-from astern.tools import lenses, sessions, show, sync  # noqa: F401
+from astern.tools import install_skills, lenses, sessions, show, sync  # noqa: F401
+
+# `recall` and `index` are deliberately NOT re-exported here: binding them on the
+# package would shadow the :mod:`astern.recall` module, and `import astern.recall
+# as r` would then hand back a *function* — a trap that fails much later than it
+# is made. Reach them as `from astern.recall import recall, index` (or through
+# :mod:`astern.tools`, which is what the CLI dispatches).
 
 __version__ = "0.0.1"

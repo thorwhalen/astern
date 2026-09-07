@@ -11,7 +11,9 @@ store.py     dol JsonFiles under ~/.local/share/astern/{sessions,turns,findings,
 ledger.py    idempotency: per session × lens → skip | incremental | full
 lenses/      registry (LENSES, @lens, finding()) + one module per lens
 judge.py     the LLM seam: claude_judge() = headless `claude -p --bare --output-format json`; replay_judge() for tests
-tools.py     SSOT of verbs (sync, sessions, show, lenses, …) — plain functions, JSON in / dict out; __main__ is cw over _dispatch_funcs
+recall.py    the record source for search: store → ir corpora (`session_synopses`, `session_turns`), then ir's discover  (embedder= seam)
+skills.py    the skills the package ships (astern/data/skills/) and the installer that links them into ~/.claude
+tools.py     SSOT of verbs (sync, sessions, show, lenses, index, recall, …) — plain functions, JSON in / dict out; __main__ is cw over _dispatch_funcs
 ```
 
 ## Invariants (each one is load-bearing)
@@ -29,7 +31,8 @@ tools.py     SSOT of verbs (sync, sessions, show, lenses, …) — plain functio
 
 - Python ≥ 3.10, keyword-only args from the 2nd or 3rd position, small helpers (`_prefixed` when module-private, inner when single-caller). Functional over OOP; dataclasses for data.
 - Every module has a docstring with a doctest that runs (`pytest --doctest-modules astern`). Tests in `tests/`, on fixture transcripts under `tests/fixtures/` (small, synthetic, secret-free — never copy a real transcript into the repo).
-- Dependencies: `openloops`, `dol`, `cw` only. `ir` is an optional extra for clustering; `aix` is not a dependency (the judge is the `claude` CLI).
+- Dependencies: `openloops`, `dol`, `cw` only. `ir` is an optional extra (`astern[recall]`) for clustering *and* for `index`/`recall` — import it lazily, never at module scope; `aix` is not a dependency (the judge is the `claude` CLI).
+- **astern is the record source, not a search engine.** Indexing and retrieval belong to `ir` (add what is missing *there*, as `from_records` was); the multi-hop search loop belongs to `raglab`. `astern.recall` is the seam between them and holds no ranking logic of its own.
 - Commit messages: Conventional Commits, no AI attribution.
 - `$ASTERN_DATA_DIR` overrides the store for experiments; `$ASTERN_HOME` overrides the transcript home.
 
