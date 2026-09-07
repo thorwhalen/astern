@@ -1,0 +1,24 @@
+# wads CI — calls the reusable workflow hosted in i2mint/wads.
+#
+# All configuration comes from this repo's pyproject.toml [tool.wads.ci.*].
+# To customize the workflow itself (rare), replace this file with the
+# full inline template `wads/data/github_ci_uv.yml` from i2mint/wads.
+#
+# Permissions: the reusable workflow needs `contents: write` (version-bump
+# push-back, gh-pages branch push) and `pages: write` (Pages REST config).
+# Both default to read-only on personal-account callers, so they are granted
+# explicitly here.
+name: Continuous Integration
+on: [push, pull_request]
+jobs:
+  ci:
+    uses: i2mint/wads/.github/workflows/uv-ci.yml@master
+    permissions:
+      contents: write
+      pages: write
+    # Explicit pass-through (not `secrets: inherit`, which does not reliably
+    # propagate caller-repo secrets to a reusable workflow owned by a different
+    # account). astern reads local files and only ever runs the local `claude` CLI, so
+    # PYPI_PASSWORD is the only secret it needs.
+    secrets:
+      PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}

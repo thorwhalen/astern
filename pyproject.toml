@@ -1,0 +1,61 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "astern"
+version = "0.0.1"
+description = "Look astern: mine your past Claude Code sessions for recurring problems, friction, rewritten code, and the vocabulary gap between you and your agents"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+keywords = ["claude-code", "agents", "sessions", "transcripts", "mining", "retrospective"]
+authors = [{ name = "Thor Whalen" }]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Utilities",
+]
+# `openloops` owns the reading of a transcript's *content* (which user line is a human
+# speaking, what a session's recap says) and the scrub-or-raise egress step; `dol` is
+# the store facade; `cw` builds the CLI from the same functions the library exposes.
+# The LLM judge is the local `claude` CLI, run headless -- no API client is a dependency.
+dependencies = ["openloops>=0.1.9", "dol>=0.3", "cw>=0.1.1,<0.2"]
+
+[project.scripts]
+astern = "astern.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/thorwhalen/astern"
+Repository = "https://github.com/thorwhalen/astern"
+Issues = "https://github.com/thorwhalen/astern/issues"
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "ruff>=0.1.0"]
+# Cross-session clustering of findings; the default groups by normalized strings.
+similar = ["ir"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["astern"]
+
+[tool.hatch.build.targets.sdist]
+only-include = ["astern", "tests", ".github", "README.md", "LICENSE", "pyproject.toml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "astern"]
+addopts = "--doctest-modules"
+
+[tool.ruff]
+line-length = 90
+target-version = "py310"
+
+[tool.wads.ci]
+project_name = "astern"
+
+[tool.wads.ci.testing]
+python_versions = ["3.10", "3.12"]
