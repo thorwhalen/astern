@@ -1,0 +1,206 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astern.entire &mdash; astern 0.0.7 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=bbaf98b3"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="astern.estimate" href="estimate.html" />
+    <link rel="prev" title="astern.__main__" href="__main__.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            astern
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../astern.html">astern</a></li>
+<li class="toctree-l1"><a class="reference internal" href="__main__.html">astern.__main__</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">astern.entire</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#astern.entire.entire_enable"><code class="docutils literal notranslate"><span class="pre">entire_enable()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.entire.entire_status"><code class="docutils literal notranslate"><span class="pre">entire_status()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="estimate.html">astern.estimate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="judge.html">astern.judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ledger.html">astern.ledger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses.html">astern.lenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/commands.html">astern.lenses.commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/cost.html">astern.lenses.cost</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/friction.html">astern.lenses.friction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/hygiene.html">astern.lenses.hygiene</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/stats.html">astern.lenses.stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/synopsis.html">astern.lenses.synopsis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/timeline.html">astern.lenses.timeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="provenance.html">astern.provenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recall.html">astern.recall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="report.html">astern.report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="skills.html">astern.skills</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources.html">astern.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="store.html">astern.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">astern.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="turns.html">astern.turns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">astern.views</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">astern</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">astern.entire</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/astern/entire.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-astern.entire">
+<span id="astern-entire"></span><h1>astern.entire<a class="headerlink" href="#module-astern.entire" title="Link to this heading"></a></h1>
+<p>Enable and inspect the <a class="reference external" href="https://github.com/entireio/cli">Entire CLI</a> safely, per repo.</p>
+<p><code class="docutils literal notranslate"><span class="pre">entire</span> <span class="pre">agent</span> <span class="pre">add</span> <span class="pre">claude-code</span></code> is one command, but two of its defaults are unsafe
+for a public repo: it installs a <code class="docutils literal notranslate"><span class="pre">pre-push</span></code> git hook that, by default, pushes
+<code class="docutils literal notranslate"><span class="pre">refs/entire/checkpoints/*</span></code> — verbatim Claude Code transcripts, absolute paths
+unscrubbed — to origin on every ordinary <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span></code>, and it opts into PostHog
+telemetry. Neither shows up in <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">config</span> <span class="pre">--get-all</span> <span class="pre">remote.origin.push</span></code> or
+<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">--dry-run</span></code>: the push happens from a git hook, not a refspec, so the usual
+way of auditing what a push sends says nothing about it.</p>
+<p>This module exists to make enabling Entire safe <em>by default</em>: <a class="reference internal" href="#astern.entire.entire_enable" title="astern.entire.entire_enable"><code class="xref py py-func docutils literal notranslate"><span class="pre">entire_enable()</span></code></a>
+runs the same <code class="docutils literal notranslate"><span class="pre">entire</span> <span class="pre">agent</span> <span class="pre">add</span> <span class="pre">claude-code</span></code> the docs tell you to run, then turns
+both defaults off unless asked otherwise, and reports exactly what changed.
+<a class="reference internal" href="#astern.entire.entire_status" title="astern.entire.entire_status"><code class="xref py py-func docutils literal notranslate"><span class="pre">entire_status()</span></code></a> answers what is already true of a repo — without invoking
+<code class="docutils literal notranslate"><span class="pre">entire</span></code> itself — so it works offline and never mutates anything.</p>
+<p>Measured against Entire CLI 0.10.5 (2026-09-07, in a throwaway clone, never a real
+repo — see <code class="docutils literal notranslate"><span class="pre">tests/test_entire.py</span></code>):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">entire</span> <span class="pre">agent</span> <span class="pre">add</span> <span class="pre">claude-code</span></code> writes 8 hook entries into <code class="docutils literal notranslate"><span class="pre">.claude/settings.json</span></code>
+(<code class="docutils literal notranslate"><span class="pre">PreToolUse</span></code>, two under <code class="docutils literal notranslate"><span class="pre">PostToolUse</span></code>, <code class="docutils literal notranslate"><span class="pre">SessionStart</span></code>, <code class="docutils literal notranslate"><span class="pre">SessionEnd</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Stop</span></code>, <code class="docutils literal notranslate"><span class="pre">SubagentStop</span></code>, <code class="docutils literal notranslate"><span class="pre">UserPromptSubmit</span></code>) and five git hooks
+(<code class="docutils literal notranslate"><span class="pre">commit-msg</span></code>, <code class="docutils literal notranslate"><span class="pre">post-commit</span></code>, <code class="docutils literal notranslate"><span class="pre">post-rewrite</span></code>, <code class="docutils literal notranslate"><span class="pre">pre-push</span></code>,
+<code class="docutils literal notranslate"><span class="pre">prepare-commit-msg</span></code>) — the <code class="docutils literal notranslate"><span class="pre">pre-push</span></code> one runs
+<code class="docutils literal notranslate"><span class="pre">entire</span> <span class="pre">hooks</span> <span class="pre">git</span> <span class="pre">pre-push</span> <span class="pre">&quot;$1&quot;</span></code> unconditionally whenever <code class="docutils literal notranslate"><span class="pre">entire</span></code> is on PATH.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">entire</span> <span class="pre">configure</span> <span class="pre">--skip-push-sessions</span></code> writes
+<code class="docutils literal notranslate"><span class="pre">strategy_options.push_sessions:</span> <span class="pre">false</span></code> into <code class="docutils literal notranslate"><span class="pre">.entire/settings.json</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">entire</span> <span class="pre">configure</span> <span class="pre">--telemetry=false</span></code> writes <code class="docutils literal notranslate"><span class="pre">telemetry:</span> <span class="pre">false</span></code> into the same
+file. (<code class="docutils literal notranslate"><span class="pre">--telemetry</span></code> is a bool flag; <code class="docutils literal notranslate"><span class="pre">entire</span> <span class="pre">configure</span> <span class="pre">--help</span></code> documents both
+defaulting to enabled/true when unset.)</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">_hook_slugs</span><span class="p">({</span><span class="s1">'hooks'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'Stop'</span><span class="p">:</span> <span class="p">[{</span><span class="s1">'matcher'</span><span class="p">:</span> <span class="s1">''</span><span class="p">}],</span> <span class="s1">'PostToolUse'</span><span class="p">:</span> <span class="p">[{</span><span class="s1">'matcher'</span><span class="p">:</span> <span class="s1">'Agent'</span><span class="p">},</span> <span class="p">{</span><span class="s1">'matcher'</span><span class="p">:</span> <span class="s1">'TaskCreate'</span><span class="p">}]}})</span>
+<span class="go">['PostToolUse/Agent', 'PostToolUse/TaskCreate', 'Stop/*']</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_is_github_origin</span><span class="p">(</span><span class="s1">'git@github.com:thorwhalen/astern.git'</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_is_github_origin</span><span class="p">(</span><span class="s1">'https://gitlab.com/x/y.git'</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.entire.entire_enable">
+<span class="sig-prename descclassname"><span class="pre">astern.entire.</span></span><span class="sig-name descname"><span class="pre">entire_enable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">push_sessions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">telemetry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dry_run</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/astern/entire.html#entire_enable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.entire.entire_enable" title="Link to this definition"></a></dt>
+<dd><p>Enable Entire’s Claude Code hooks in <code class="docutils literal notranslate"><span class="pre">repo</span></code>, safe by default.</p>
+<p>Runs <code class="docutils literal notranslate"><span class="pre">entire</span> <span class="pre">agent</span> <span class="pre">add</span> <span class="pre">claude-code</span></code>, then — unless told otherwise —
+<code class="docutils literal notranslate"><span class="pre">entire</span> <span class="pre">configure</span> <span class="pre">--skip-push-sessions</span></code> (so checkpoints stay local) and
+<code class="docutils literal notranslate"><span class="pre">entire</span> <span class="pre">configure</span> <span class="pre">--telemetry=false</span></code> (so nothing phones PostHog). Pass
+<code class="docutils literal notranslate"><span class="pre">push_sessions=True</span></code> or <code class="docutils literal notranslate"><span class="pre">telemetry=True</span></code> to keep either of Entire’s own
+(opt-in) defaults; doing so on a github.com origin adds a plain-language entry
+to <code class="docutils literal notranslate"><span class="pre">warnings</span></code> rather than silently proceeding.</p>
+<p><code class="docutils literal notranslate"><span class="pre">dry_run=True</span></code> reports the commands that would run and returns before running
+anything. Idempotent either way — <code class="docutils literal notranslate"><span class="pre">entire</span> <span class="pre">agent</span> <span class="pre">add</span></code> and <code class="docutils literal notranslate"><span class="pre">entire</span> <span class="pre">configure</span></code>
+are themselves idempotent, so re-running this changes nothing that already
+matches.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.entire.entire_status">
+<span class="sig-prename descclassname"><span class="pre">astern.entire.</span></span><span class="sig-name descname"><span class="pre">entire_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'.'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/astern/entire.html#entire_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.entire.entire_status" title="Link to this definition"></a></dt>
+<dd><p>What is already true of <code class="docutils literal notranslate"><span class="pre">repo</span></code>’s Entire setup — reads only, never runs <code class="docutils literal notranslate"><span class="pre">entire</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">enabled</span></code> means both halves are present: hooks in <code class="docutils literal notranslate"><span class="pre">.claude/settings.json</span></code> <em>and</em>
+a <code class="docutils literal notranslate"><span class="pre">pre-push</span></code> git hook that mentions <code class="docutils literal notranslate"><span class="pre">entire</span></code> — either alone (a manually edited
+settings file, a hook removed by hand) is not really enabled. <code class="docutils literal notranslate"><span class="pre">push_sessions</span></code> and
+<code class="docutils literal notranslate"><span class="pre">telemetry</span></code> fall back to Entire’s own defaults (both <code class="docutils literal notranslate"><span class="pre">True</span></code>) when
+<code class="docutils literal notranslate"><span class="pre">.entire/settings.json</span></code> doesn’t mention them. <code class="docutils literal notranslate"><span class="pre">remote_checkpoints</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+not <code class="docutils literal notranslate"><span class="pre">False</span></code>, when the remote can’t be reached — offline is not evidence of
+nothing being pushed.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="__main__.html" class="btn btn-neutral float-left" title="astern.__main__" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="estimate.html" class="btn btn-neutral float-right" title="astern.estimate" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

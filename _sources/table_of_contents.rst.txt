@@ -4,6 +4,7 @@
 
    module_docs/astern
    module_docs/astern/__main__
+   module_docs/astern/entire
    module_docs/astern/estimate
    module_docs/astern/judge
    module_docs/astern/ledger

@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>astern.tools &mdash; astern 0.0.5 documentation</title>
+  <title>astern.tools &mdash; astern 0.0.7 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=282f96c0"></script>
+      <script src="../../_static/documentation_options.js?v=bbaf98b3"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -51,6 +51,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../astern.html">astern</a></li>
 <li class="toctree-l1"><a class="reference internal" href="__main__.html">astern.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="entire.html">astern.entire</a></li>
 <li class="toctree-l1"><a class="reference internal" href="estimate.html">astern.estimate</a></li>
 <li class="toctree-l1"><a class="reference internal" href="judge.html">astern.judge</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ledger.html">astern.ledger</a></li>
@@ -70,6 +71,8 @@
 <li class="toctree-l1"><a class="reference internal" href="sources.html">astern.sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="store.html">astern.store</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">astern.tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#astern.tools.entire_enable"><code class="docutils literal notranslate"><span class="pre">entire_enable()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.tools.entire_status"><code class="docutils literal notranslate"><span class="pre">entire_status()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#astern.tools.estimate"><code class="docutils literal notranslate"><span class="pre">estimate()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#astern.tools.index"><code class="docutils literal notranslate"><span class="pre">index()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#astern.tools.install_skills"><code class="docutils literal notranslate"><span class="pre">install_skills()</span></code></a></li>
@@ -119,6 +122,25 @@ server (<code class="docutils literal notranslate"><span class="pre">py2mcp</spa
 functions and nothing else. Nothing here prints or exits; nothing here knows what
 called it.</p>
 <p>The one-command test of v1: <code class="docutils literal notranslate"><span class="pre">astern</span> <span class="pre">sync</span> <span class="pre">&amp;&amp;</span> <span class="pre">astern</span> <span class="pre">report</span> <span class="pre">friction</span></code>.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.tools.entire_enable">
+<span class="sig-prename descclassname"><span class="pre">astern.tools.</span></span><span class="sig-name descname"><span class="pre">entire_enable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">push_sessions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">telemetry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dry_run</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/astern/tools.html#entire_enable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.tools.entire_enable" title="Link to this definition"></a></dt>
+<dd><p>Enable the Entire CLI’s Claude Code hooks in <code class="docutils literal notranslate"><span class="pre">repo</span></code>, safe by default.</p>
+<p>Runs <code class="docutils literal notranslate"><span class="pre">entire</span> <span class="pre">agent</span> <span class="pre">add</span> <span class="pre">claude-code</span></code>, then turns off Entire’s own (opt-in)
+defaults unless told otherwise: <code class="docutils literal notranslate"><span class="pre">push_sessions=False</span></code> (the default here) stops
+the <code class="docutils literal notranslate"><span class="pre">pre-push</span></code> hook from pushing <code class="docutils literal notranslate"><span class="pre">refs/entire/checkpoints/*</span></code> — verbatim
+transcripts, absolute paths unscrubbed — to origin on every <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span></code>;
+<code class="docutils literal notranslate"><span class="pre">telemetry=False</span></code> stops PostHog reporting. See <a class="reference internal" href="entire.html#astern.entire.entire_enable" title="astern.entire.entire_enable"><code class="xref py py-func docutils literal notranslate"><span class="pre">astern.entire.entire_enable()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.tools.entire_status">
+<span class="sig-prename descclassname"><span class="pre">astern.tools.</span></span><span class="sig-name descname"><span class="pre">entire_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'.'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/astern/tools.html#entire_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.tools.entire_status" title="Link to this definition"></a></dt>
+<dd><p>Is Entire installed and enabled in <code class="docutils literal notranslate"><span class="pre">repo</span></code>, and is it safe? Read-only.</p>
+<p>See <a class="reference internal" href="entire.html#astern.entire.entire_status" title="astern.entire.entire_status"><code class="xref py py-func docutils literal notranslate"><span class="pre">astern.entire.entire_status()</span></code></a> for the full field list, including
+<code class="docutils literal notranslate"><span class="pre">risk</span></code> — set when checkpoints will be pushed on the next <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span></code>.</p>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="astern.tools.estimate">
 <span class="sig-prename descclassname"><span class="pre">astern.tools.</span></span><span class="sig-name descname"><span class="pre">estimate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="store.html#astern.store.Store" title="astern.store.Store"><span class="pre">Store</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'synopsis'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'haiku'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">home</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/astern/tools.html#estimate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.tools.estimate" title="Link to this definition"></a></dt>

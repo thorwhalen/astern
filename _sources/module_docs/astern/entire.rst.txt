@@ -1,0 +1,4 @@
+astern.entire
+=============
+.. automodule:: astern.entire
+   :members:

@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>astern.tools &mdash; astern 0.0.5 documentation</title>
+  <title>astern.tools &mdash; astern 0.0.7 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=282f96c0"></script>
+      <script src="../../_static/documentation_options.js?v=bbaf98b3"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -48,6 +48,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern.html">astern</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/__main__.html">astern.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/entire.html">astern.entire</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/estimate.html">astern.estimate</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/judge.html">astern.judge</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/ledger.html">astern.ledger</a></li>
@@ -113,6 +114,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">astern</span><span class="w"> </span><span class="kn">import</span> <span class="n">entire</span> <span class="k">as</span> <span class="n">_entire</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astern</span><span class="w"> </span><span class="kn">import</span> <span class="n">estimate</span> <span class="k">as</span> <span class="n">_estimate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astern</span><span class="w"> </span><span class="kn">import</span> <span class="n">ledger</span> <span class="k">as</span> <span class="n">_ledger</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astern</span><span class="w"> </span><span class="kn">import</span> <span class="n">provenance</span> <span class="k">as</span> <span class="n">_prov</span>
@@ -978,18 +980,42 @@
 
 
 
-<span class="n">_dispatch_funcs</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">sync</span><span class="p">,</span>
-    <span class="n">sessions</span><span class="p">,</span>
-    <span class="n">show</span><span class="p">,</span>
-    <span class="n">lenses</span><span class="p">,</span>
-    <span class="n">report</span><span class="p">,</span>
-    <span class="n">judge</span><span class="p">,</span>
-    <span class="n">estimate</span><span class="p">,</span>
-    <span class="n">index</span><span class="p">,</span>
-    <span class="n">recall</span><span class="p">,</span>
-    <span class="n">install_skills</span><span class="p">,</span>
-<span class="p">]</span>
+<div class="viewcode-block" id="entire_enable">
+<a class="viewcode-back" href="../../module_docs/astern/tools.html#astern.tools.entire_enable">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">entire_enable</span><span class="p">(</span>
+    <span class="n">repo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"."</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">push_sessions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">telemetry</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">dry_run</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Enable the Entire CLI's Claude Code hooks in ``repo``, safe by default.</span>
+
+<span class="sd">    Runs ``entire agent add claude-code``, then turns off Entire's own (opt-in)</span>
+<span class="sd">    defaults unless told otherwise: ``push_sessions=False`` (the default here) stops</span>
+<span class="sd">    the ``pre-push`` hook from pushing ``refs/entire/checkpoints/*`` — verbatim</span>
+<span class="sd">    transcripts, absolute paths unscrubbed — to origin on every ``git push``;</span>
+<span class="sd">    ``telemetry=False`` stops PostHog reporting. See :func:`astern.entire.entire_enable`.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">_entire</span><span class="o">.</span><span class="n">entire_enable</span><span class="p">(</span>
+        <span class="n">repo</span><span class="p">,</span>
+        <span class="n">push_sessions</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">push_sessions</span><span class="p">),</span>
+        <span class="n">telemetry</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">telemetry</span><span class="p">),</span>
+        <span class="n">dry_run</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">dry_run</span><span class="p">),</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="entire_status">
+<a class="viewcode-back" href="../../module_docs/astern/tools.html#astern.tools.entire_status">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">entire_status</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"."</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Is Entire installed and enabled in ``repo``, and is it safe? Read-only.</span>
+
+<span class="sd">    See :func:`astern.entire.entire_status` for the full field list, including</span>
+<span class="sd">    ``risk`` — set when checkpoints will be pushed on the next ``git push``.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">_entire</span><span class="o">.</span><span class="n">entire_status</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span></div>
+
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_split_target</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
@@ -1133,6 +1159,12 @@
         <span class="n">window_days</span><span class="o">=</span><span class="n">window_days</span><span class="p">,</span>
         <span class="n">notes</span><span class="o">=</span><span class="n">notes</span><span class="p">,</span>
     <span class="p">)</span>
+    <span class="n">entire_result</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">entire</span> <span class="ow">and</span> <span class="n">rel</span> <span class="ow">and</span> <span class="n">line_no</span><span class="p">:</span>
+        <span class="n">entire_result</span> <span class="o">=</span> <span class="n">_prov</span><span class="o">.</span><span class="n">entire_why</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">rel</span><span class="p">,</span> <span class="n">line_no</span><span class="p">)</span>
+        <span class="n">risk</span> <span class="o">=</span> <span class="n">_entire</span><span class="o">.</span><span class="n">entire_status</span><span class="p">(</span><span class="n">root</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"risk"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">risk</span><span class="p">:</span>
+            <span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"entire: </span><span class="si">{</span><span class="n">risk</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="n">hits</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">text</span><span class="p">:</span>
         <span class="n">hits</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_prov</span><span class="o">.</span><span class="n">iter_hits</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">sids</span><span class="p">,</span> <span class="n">text</span><span class="p">))</span>
@@ -1162,9 +1194,7 @@
         <span class="s2">"session_id"</span><span class="p">:</span> <span class="n">bridge_id</span><span class="p">,</span>
         <span class="s2">"searched"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">sids</span><span class="p">),</span>
         <span class="s2">"hits"</span><span class="p">:</span> <span class="n">_prov</span><span class="o">.</span><span class="n">rank_hits</span><span class="p">(</span><span class="n">hits</span><span class="p">)[:</span><span class="n">max_hits</span><span class="p">],</span>
-        <span class="s2">"entire"</span><span class="p">:</span> <span class="p">(</span>
-            <span class="n">_prov</span><span class="o">.</span><span class="n">entire_why</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">rel</span><span class="p">,</span> <span class="n">line_no</span><span class="p">)</span> <span class="k">if</span> <span class="n">entire</span> <span class="ow">and</span> <span class="n">rel</span> <span class="ow">and</span> <span class="n">line_no</span> <span class="k">else</span> <span class="kc">None</span>
-        <span class="p">),</span>
+        <span class="s2">"entire"</span><span class="p">:</span> <span class="n">entire_result</span><span class="p">,</span>
         <span class="s2">"notes"</span><span class="p">:</span> <span class="n">notes</span><span class="p">,</span>
     <span class="p">}</span></div>
 
@@ -1173,7 +1203,21 @@
 <span class="c1">#: Per-parameter ``add_argument`` overrides for the CLI (``cw``'s ``config=`` seam).</span>
 <span class="n">_dispatch_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
 
-<span class="n">_dispatch_funcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">sync</span><span class="p">,</span> <span class="n">sessions</span><span class="p">,</span> <span class="n">show</span><span class="p">,</span> <span class="n">lenses</span><span class="p">,</span> <span class="n">report</span><span class="p">,</span> <span class="n">judge</span><span class="p">,</span> <span class="n">estimate</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">recall</span><span class="p">,</span> <span class="n">install_skills</span><span class="p">,</span> <span class="n">why</span><span class="p">]</span>
+<span class="n">_dispatch_funcs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">sync</span><span class="p">,</span>
+    <span class="n">sessions</span><span class="p">,</span>
+    <span class="n">show</span><span class="p">,</span>
+    <span class="n">lenses</span><span class="p">,</span>
+    <span class="n">report</span><span class="p">,</span>
+    <span class="n">judge</span><span class="p">,</span>
+    <span class="n">estimate</span><span class="p">,</span>
+    <span class="n">index</span><span class="p">,</span>
+    <span class="n">recall</span><span class="p">,</span>
+    <span class="n">install_skills</span><span class="p">,</span>
+    <span class="n">why</span><span class="p">,</span>
+    <span class="n">entire_enable</span><span class="p">,</span>
+    <span class="n">entire_status</span><span class="p">,</span>
+<span class="p">]</span>
 </pre></div>
 
            </div>
