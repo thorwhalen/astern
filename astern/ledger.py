@@ -46,7 +46,9 @@ def _now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
-def plan(entry: dict, *, lens: str, version: int, n_turns: int, incremental: bool) -> Plan:
+def plan(
+    entry: dict, *, lens: str, version: int, n_turns: int, incremental: bool
+) -> Plan:
     """Decide what a lens has to do for a session, given its ledger entry."""
     state = (entry.get("lenses") or {}).get(lens)
     if not state:
@@ -61,8 +63,15 @@ def plan(entry: dict, *, lens: str, version: int, n_turns: int, incremental: boo
     return Plan("full", 0, f"{n_turns - through} new turns, lens is not incremental")
 
 
-def mark(entry: dict, *, lens: str, version: int, through_index: int, through_uuid: str = "",
-         usage: dict | None = None) -> None:
+def mark(
+    entry: dict,
+    *,
+    lens: str,
+    version: int,
+    through_index: int,
+    through_uuid: str = "",
+    usage: dict | None = None,
+) -> None:
     """Record that ``lens`` (at ``version``) has now seen turns ``[0, through_index)``.
 
     ``usage`` accumulates across incremental runs so the entry always says what the
@@ -74,9 +83,14 @@ def mark(entry: dict, *, lens: str, version: int, through_index: int, through_uu
     for k, v in (usage or {}).items():
         if isinstance(v, (int, float)):
             total[k] = total.get(k, 0) + v
-    lenses[lens] = {"version": version, "through_index": through_index, "through_uuid": through_uuid,
-                    "at": _now(), "runs": (prev.get("runs", 0) if prev.get("version") == version else 0) + 1,
-                    "usage": total}
+    lenses[lens] = {
+        "version": version,
+        "through_index": through_index,
+        "through_uuid": through_uuid,
+        "at": _now(),
+        "runs": (prev.get("runs", 0) if prev.get("version") == version else 0) + 1,
+        "usage": total,
+    }
 
 
 def source_changed(entry: dict, fingerprint: dict) -> bool:
@@ -84,9 +98,15 @@ def source_changed(entry: dict, fingerprint: dict) -> bool:
     return (entry.get("source") or {}).get("fingerprint") != fingerprint
 
 
-def touch_source(entry: dict, *, path: str, home: str, fingerprint: dict, n_turns: int,
-                 last_uuid: str) -> None:
-    entry["source"] = {"path": path, "home": home, "fingerprint": fingerprint, "synced_at": _now()}
+def touch_source(
+    entry: dict, *, path: str, home: str, fingerprint: dict, n_turns: int, last_uuid: str
+) -> None:
+    entry["source"] = {
+        "path": path,
+        "home": home,
+        "fingerprint": fingerprint,
+        "synced_at": _now(),
+    }
     entry["n_turns"] = n_turns
     entry["last_turn_uuid"] = last_uuid
 

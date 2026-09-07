@@ -19,11 +19,14 @@ from astern.turns import clean_prompt, iter_turns, session_meta
 
 def test_tool_result_does_not_start_a_new_turn():
     recs = mk_records(
-        "s1", "/tmp/p",
+        "s1",
+        "/tmp/p",
         turns=[
             {
                 "prompt": "fix the bug",
-                "tool_uses": [{"name": "Bash", "input": {"command": "pytest"}, "is_error": True}],
+                "tool_uses": [
+                    {"name": "Bash", "input": {"command": "pytest"}, "is_error": True}
+                ],
                 "final_text": "fixed it",
             }
         ],
@@ -37,7 +40,8 @@ def test_tool_result_does_not_start_a_new_turn():
 
 def test_a_real_prompt_starts_a_new_turn():
     recs = mk_records(
-        "s1", "/tmp/p",
+        "s1",
+        "/tmp/p",
         turns=[
             {"prompt": "first ask", "final_text": "first answer"},
             {"prompt": "second ask", "final_text": "second answer"},
@@ -51,7 +55,8 @@ def test_a_real_prompt_starts_a_new_turn():
 
 def test_meta_user_line_does_not_start_a_turn_and_is_excluded():
     recs = mk_records(
-        "s1", "/tmp/p",
+        "s1",
+        "/tmp/p",
         turns=[
             {"prompt": "real prompt", "final_text": "ack"},
             {"kind": "meta_user", "prompt": "queued unattended prompt"},
@@ -68,7 +73,9 @@ def test_meta_user_line_does_not_start_a_turn_and_is_excluded():
 
 
 def test_clean_prompt_strips_system_reminder():
-    assert clean_prompt("<system-reminder>x</system-reminder> hello  world") == "hello world"
+    assert (
+        clean_prompt("<system-reminder>x</system-reminder> hello  world") == "hello world"
+    )
 
 
 def test_clean_prompt_strips_multiple_wrapper_tags():
@@ -82,8 +89,16 @@ def test_clean_prompt_leaves_plain_prose_untouched():
 
 def test_prompt_content_as_blocks_and_reminder_wrapped():
     recs = mk_records(
-        "s1", "/tmp/p",
-        turns=[{"prompt": "please help", "prompt_blocks": True, "wrap_reminder": True, "final_text": "ok"}],
+        "s1",
+        "/tmp/p",
+        turns=[
+            {
+                "prompt": "please help",
+                "prompt_blocks": True,
+                "wrap_reminder": True,
+                "final_text": "ok",
+            }
+        ],
     )
     turns = list(iter_turns(recs))
     assert turns[0]["user_prompt"] == "please help"
@@ -94,7 +109,8 @@ def test_prompt_content_as_blocks_and_reminder_wrapped():
 
 def test_usage_deduped_by_message_id():
     recs = mk_records(
-        "s1", "/tmp/p",
+        "s1",
+        "/tmp/p",
         turns=[
             {
                 "prompt": "do a thing",
@@ -115,7 +131,8 @@ def test_usage_deduped_by_message_id():
 
 def test_usage_sums_distinct_message_ids():
     recs = mk_records(
-        "s1", "/tmp/p",
+        "s1",
+        "/tmp/p",
         turns=[
             {
                 "prompt": "do two things",
@@ -138,13 +155,24 @@ def test_usage_sums_distinct_message_ids():
 
 def test_tools_list_records_is_error_and_result_chars():
     recs = mk_records(
-        "s1", "/tmp/p",
+        "s1",
+        "/tmp/p",
         turns=[
             {
                 "prompt": "run two commands",
                 "tool_uses": [
-                    {"name": "Bash", "input": {"command": "ls"}, "result": "ok", "is_error": False},
-                    {"name": "Bash", "input": {"command": "boom"}, "result": "traceback!!", "is_error": True},
+                    {
+                        "name": "Bash",
+                        "input": {"command": "ls"},
+                        "result": "ok",
+                        "is_error": False,
+                    },
+                    {
+                        "name": "Bash",
+                        "input": {"command": "boom"},
+                        "result": "traceback!!",
+                        "is_error": True,
+                    },
                 ],
                 "final_text": "done",
             }
@@ -165,7 +193,8 @@ def test_tools_list_records_is_error_and_result_chars():
 
 def test_system_records_kept_turn_duration_and_compact_boundary():
     recs = mk_records(
-        "s1", "/tmp/p",
+        "s1",
+        "/tmp/p",
         turns=[
             {
                 "prompt": "long task",
@@ -189,7 +218,8 @@ def test_system_records_kept_turn_duration_and_compact_boundary():
 
 def test_session_meta_title_precedence_custom_over_ai():
     recs = mk_records(
-        "s1", "/tmp/proj",
+        "s1",
+        "/tmp/proj",
         turns=[{"prompt": "hi", "final_text": "hey"}],
         meta=[ai_title("AI-generated title"), custom_title("My real title")],
     )
@@ -201,7 +231,8 @@ def test_session_meta_title_precedence_custom_over_ai():
 
 def test_session_meta_title_falls_back_to_ai_title():
     recs = mk_records(
-        "s1", "/tmp/proj",
+        "s1",
+        "/tmp/proj",
         turns=[{"prompt": "hi", "final_text": "hey"}],
         meta=[ai_title("only an ai title")],
     )
@@ -211,7 +242,8 @@ def test_session_meta_title_falls_back_to_ai_title():
 
 def test_session_meta_prs_cost_state_agent_name_permission_mode():
     recs = mk_records(
-        "s1", "/tmp/proj",
+        "s1",
+        "/tmp/proj",
         turns=[{"prompt": "hi", "final_text": "hey"}],
         meta=[
             pr_link(42, "https://github.com/o/r/pull/42", "o/r"),
@@ -221,14 +253,21 @@ def test_session_meta_prs_cost_state_agent_name_permission_mode():
         ],
     )
     meta = session_meta(recs)
-    assert meta["prs"] == [{"number": 42, "url": "https://github.com/o/r/pull/42", "repo": "o/r"}]
+    assert meta["prs"] == [
+        {"number": 42, "url": "https://github.com/o/r/pull/42", "repo": "o/r"}
+    ]
     assert meta["cost_state"]["totalCostUSD"] == 1.23
     assert meta["agent_name"] == "my-agent"
     assert meta["permission_mode"] == "acceptEdits"
 
 
 def test_session_meta_version_cwd_project_and_record_types():
-    recs = mk_records("s1", "/tmp/some-proj", turns=[{"prompt": "hi", "final_text": "hey"}], version="9.9.9")
+    recs = mk_records(
+        "s1",
+        "/tmp/some-proj",
+        turns=[{"prompt": "hi", "final_text": "hey"}],
+        version="9.9.9",
+    )
     meta = session_meta(recs)
     assert meta["session_id"] == "s1"
     assert meta["cwd"] == "/tmp/some-proj"

@@ -119,7 +119,10 @@ def _ols(rows: list[list[float]], y: list[float]) -> dict | None:
     n, k = len(rows), len(rows[0])
     if n <= k:
         return None
-    xtx = [[sum(rows[i][a] * rows[i][b] for i in range(n)) for b in range(k)] for a in range(k)]
+    xtx = [
+        [sum(rows[i][a] * rows[i][b] for i in range(n)) for b in range(k)]
+        for a in range(k)
+    ]
     xty = [sum(rows[i][a] * y[i] for i in range(n)) for a in range(k)]
     coef = _solve(xtx, xty)
     if coef is None:
@@ -130,9 +133,12 @@ def _ols(rows: list[list[float]], y: list[float]) -> dict | None:
     ss_tot = sum((yi - ybar) ** 2 for yi in y)
     ss_res = sum(r * r for r in resid)
     dof = max(1, n - k)
-    return {"coef": coef, "n": n,
-            "r2": 1.0 - ss_res / ss_tot if ss_tot > 0 else 1.0,
-            "resid_std": (ss_res / dof) ** 0.5}
+    return {
+        "coef": coef,
+        "n": n,
+        "r2": 1.0 - ss_res / ss_tot if ss_tot > 0 else 1.0,
+        "resid_std": (ss_res / dof) ** 0.5,
+    }
 
 
 def _points(judgments) -> list[tuple[dict, dict]]:
@@ -176,8 +182,11 @@ def round_trips(judgment: dict) -> int:
 
 
 def _spread(values: list[float]) -> dict:
-    return {"mean": mean(values), "std": pstdev(values) if len(values) > 1 else 0.0,
-            "n": len(values)}
+    return {
+        "mean": mean(values),
+        "std": pstdev(values) if len(values) > 1 else 0.0,
+        "n": len(values),
+    }
 
 
 def fit(judgments) -> dict:
@@ -199,10 +208,22 @@ def fit(judgments) -> dict:
     ins = [float(input_tokens(u)) for _, u in pts]
     outs = [float(u.get("output_tokens") or 0) for _, u in pts]
     tots = [i + o for i, o in zip(ins, outs)]
-    costs = [float(j.get("cost_usd") or 0.0) for j in judgments
-             if isinstance(j, dict) and not j.get("error") and j.get("cost_usd") is not None]
-    model: dict = {"n": n, "method": "prior", "models": sorted(
-        {str(j.get("model")) for j in judgments if isinstance(j, dict) and j.get("model")})}
+    costs = [
+        float(j.get("cost_usd") or 0.0)
+        for j in judgments
+        if isinstance(j, dict) and not j.get("error") and j.get("cost_usd") is not None
+    ]
+    model: dict = {
+        "n": n,
+        "method": "prior",
+        "models": sorted(
+            {
+                str(j.get("model"))
+                for j in judgments
+                if isinstance(j, dict) and j.get("model")
+            }
+        ),
+    }
     if n == 0:
         b0, b1, resid = PRIOR_INPUT_INTERCEPT, PRIOR_INPUT_PER_CHAR, PRIOR_INPUT_INTERCEPT
         r2 = None
@@ -221,39 +242,65 @@ def fit(judgments) -> dict:
         if multi:
             model["input_multi"] = {
                 "names": ["1", "view_chars", "n_turns"],
-                "coef": multi["coef"], "r2": multi["r2"], "resid_std": multi["resid_std"]}
-    model["input"] = {"intercept": b0, "per_char": b1, "per_1k_chars": b1 * 1000,
-                      "r2": r2, "resid_std": resid,
-                      "reads_as": f"≈ {b1 * 1000:.0f} input tokens per 1k view chars"
-                                  f" + {b0:.0f}"}
-    model["output"] = _spread(outs) if outs else {"mean": PRIOR_OUTPUT_TOKENS, "std": 0.0, "n": 0}
-    model["total"] = _spread(tots) if tots else {"mean": PRIOR_INPUT_INTERCEPT + PRIOR_OUTPUT_TOKENS,
-                                                 "std": 0.0, "n": 0}
+                "coef": multi["coef"],
+                "r2": multi["r2"],
+                "resid_std": multi["resid_std"],
+            }
+    model["input"] = {
+        "intercept": b0,
+        "per_char": b1,
+        "per_1k_chars": b1 * 1000,
+        "r2": r2,
+        "resid_std": resid,
+        "reads_as": f"≈ {b1 * 1000:.0f} input tokens per 1k view chars + {b0:.0f}",
+    }
+    model["output"] = (
+        _spread(outs) if outs else {"mean": PRIOR_OUTPUT_TOKENS, "std": 0.0, "n": 0}
+    )
+    model["total"] = (
+        _spread(tots)
+        if tots
+        else {"mean": PRIOR_INPUT_INTERCEPT + PRIOR_OUTPUT_TOKENS, "std": 0.0, "n": 0}
+    )
     model["cost_usd"] = _spread(costs) if costs else {"mean": 0.0, "std": 0.0, "n": 0}
     # Round trips are the variance nobody sees: a structured answer the schema rejects
     # is retried with the whole conversation resent, so one session's input can be four
     # times the view it was built from. Reported separately, so a low overall R² has an
     # explanation rather than a shrug — and so the fix (fewer retries) is measurable.
-    ok = [j for j in judgments if isinstance(j, dict) and not j.get("error")
-          and (j.get("features") or {}).get("view_chars") and total_tokens(j.get("usage") or {})]
+    ok = [
+        j
+        for j in judgments
+        if isinstance(j, dict)
+        and not j.get("error")
+        and (j.get("features") or {}).get("view_chars")
+        and total_tokens(j.get("usage") or {})
+    ]
     if ok:
         trips = [float(round_trips(j)) for j in ok]
         model["iterations"] = _spread(trips)
         model["retry_rate"] = sum(1 for t in trips if t > 1) / len(trips)
         one = [(f, u) for (f, u), t in zip(pts, trips) if t <= 1]
         if len(one) >= MIN_POINTS_FOR_OLS:
-            single = _ols([[1.0, float(f["view_chars"])] for f, _ in one],
-                          [float(input_tokens(u)) for _, u in one])
+            single = _ols(
+                [[1.0, float(f["view_chars"])] for f, _ in one],
+                [float(input_tokens(u)) for _, u in one],
+            )
             if single:
                 b = single["coef"]
                 model["input_single_pass"] = {
-                    "n": len(one), "intercept": b[0], "per_char": b[1],
-                    "per_1k_chars": b[1] * 1000, "r2": single["r2"],
+                    "n": len(one),
+                    "intercept": b[0],
+                    "per_char": b[1],
+                    "per_1k_chars": b[1] * 1000,
+                    "r2": single["r2"],
                     "resid_std": single["resid_std"],
                     "reads_as": f"≈ {b[1] * 1000:.0f} input tokens per 1k view chars"
-                                f" + {b[0]:.0f}, on calls that took one round trip"}
+                    f" + {b[0]:.0f}, on calls that took one round trip",
+                }
     tot_tokens = sum(tots)
-    model["cost_per_total_token"] = (sum(costs) / tot_tokens) if (costs and tot_tokens) else 0.0
+    model["cost_per_total_token"] = (
+        (sum(costs) / tot_tokens) if (costs and tot_tokens) else 0.0
+    )
     # view_chars per source byte: the proxy for a session that has never been viewed.
     src = [float(f.get("bytes") or 0) for f, _ in pts]
     model["view_chars_per_byte"] = (sum(xs) / sum(src)) if sum(src) else 0.0
@@ -274,14 +321,20 @@ def predict(model: dict, features: dict) -> dict:
     if not x and model.get("view_chars_per_byte"):
         # The bytes proxy must respect the ceiling the view itself has, or a 17 MB
         # session is priced as if the judge would read all of it. It never does.
-        x = min(float(features.get("bytes") or 0) * model["view_chars_per_byte"],
-                float(DFLT_MAX_CHARS))
+        x = min(
+            float(features.get("bytes") or 0) * model["view_chars_per_byte"],
+            float(DFLT_MAX_CHARS),
+        )
     inp = model["input"]
     y_in = max(0.0, inp["intercept"] + inp["per_char"] * x)
     y_out = max(0.0, float(model["output"]["mean"]))
     total = y_in + y_out
     band = float(inp["resid_std"] or 0.0) + float(model["output"]["std"] or 0.0)
-    return {"input_tokens": round(y_in), "output_tokens": round(y_out),
-            "total_tokens": round(total),
-            "low": round(max(0.0, total - band)), "high": round(total + band),
-            "cost_usd": round(total * model.get("cost_per_total_token", 0.0), 6)}
+    return {
+        "input_tokens": round(y_in),
+        "output_tokens": round(y_out),
+        "total_tokens": round(total),
+        "low": round(max(0.0, total - band)),
+        "high": round(total + band),
+        "cost_usd": round(total * model.get("cost_per_total_token", 0.0), 6),
+    }

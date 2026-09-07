@@ -23,14 +23,38 @@ from astern.views import session_view, view_stats
 SYNOPSIS = {
     "goal": "make the build green",
     "outcome": "done",
-    "problems": [{"problem": "stale lockfile", "solution": "regenerate it", "category": "packaging"}],
-    "friction": [{"what": "retried uv build", "cause_guess": "env drift", "turn_indices": [0]}],
-    "corrections": [{"what_user_said": "no, use uv", "rule_candidate": "prefer uv over pip"}],
-    "user_terms": [{"phrase": "the pth thing", "established_term": "path configuration file",
-                    "definition": "a .pth file consumed by site"}],
-    "agent_terms": [{"term": "editable install", "definition": "an install that points at a source tree"}],
-    "skill_candidates": [{"name": "fix-lockfile", "why": "recurs", "recurrence_hint": "twice"}],
-    "reusable_code": [{"what": "lockfile regeneration", "suggested_function": "relock(path)"}],
+    "problems": [
+        {
+            "problem": "stale lockfile",
+            "solution": "regenerate it",
+            "category": "packaging",
+        }
+    ],
+    "friction": [
+        {"what": "retried uv build", "cause_guess": "env drift", "turn_indices": [0]}
+    ],
+    "corrections": [
+        {"what_user_said": "no, use uv", "rule_candidate": "prefer uv over pip"}
+    ],
+    "user_terms": [
+        {
+            "phrase": "the pth thing",
+            "established_term": "path configuration file",
+            "definition": "a .pth file consumed by site",
+        }
+    ],
+    "agent_terms": [
+        {
+            "term": "editable install",
+            "definition": "an install that points at a source tree",
+        }
+    ],
+    "skill_candidates": [
+        {"name": "fix-lockfile", "why": "recurs", "recurrence_hint": "twice"}
+    ],
+    "reusable_code": [
+        {"what": "lockfile regeneration", "suggested_function": "relock(path)"}
+    ],
     "notable_decisions": ["pin the resolver"],
 }
 
@@ -39,28 +63,77 @@ def _records(n_turns: int = 1) -> list[dict]:
     """A synthetic transcript: ``n_turns`` prompt/answer pairs, one failing Bash each."""
     recs: list[dict] = []
     for i in range(n_turns):
-        recs.append({"type": "user", "uuid": f"u{i}", "sessionId": "sid", "cwd": "/p/proj",
-                     "timestamp": f"2026-09-0{i + 1}T10:00:00Z",
-                     "message": {"role": "user", "content": f"turn {i}: make the build green"}})
-        recs.append({"type": "assistant", "uuid": f"a{i}", "sessionId": "sid",
-                     "message": {"id": f"m{i}", "model": "claude-x",
-                                 "usage": {"input_tokens": 10, "output_tokens": 5},
-                                 "content": [{"type": "tool_use", "id": f"t{i}", "name": "Bash",
-                                              "input": {"command": "uv build"}}]}})
-        recs.append({"type": "user", "uuid": f"r{i}", "sessionId": "sid",
-                     "message": {"role": "user", "content": [
-                         {"type": "tool_result", "tool_use_id": f"t{i}", "is_error": True,
-                          "content": "boom"}]}})
-        recs.append({"type": "assistant", "uuid": f"b{i}", "sessionId": "sid",
-                     "message": {"id": f"n{i}", "model": "claude-x",
-                                 "usage": {"input_tokens": 20, "output_tokens": 7},
-                                 "content": [{"type": "text", "text": f"Fixed it on turn {i}."}]}})
+        recs.append(
+            {
+                "type": "user",
+                "uuid": f"u{i}",
+                "sessionId": "sid",
+                "cwd": "/p/proj",
+                "timestamp": f"2026-09-0{i + 1}T10:00:00Z",
+                "message": {"role": "user", "content": f"turn {i}: make the build green"},
+            }
+        )
+        recs.append(
+            {
+                "type": "assistant",
+                "uuid": f"a{i}",
+                "sessionId": "sid",
+                "message": {
+                    "id": f"m{i}",
+                    "model": "claude-x",
+                    "usage": {"input_tokens": 10, "output_tokens": 5},
+                    "content": [
+                        {
+                            "type": "tool_use",
+                            "id": f"t{i}",
+                            "name": "Bash",
+                            "input": {"command": "uv build"},
+                        }
+                    ],
+                },
+            }
+        )
+        recs.append(
+            {
+                "type": "user",
+                "uuid": f"r{i}",
+                "sessionId": "sid",
+                "message": {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "tool_result",
+                            "tool_use_id": f"t{i}",
+                            "is_error": True,
+                            "content": "boom",
+                        }
+                    ],
+                },
+            }
+        )
+        recs.append(
+            {
+                "type": "assistant",
+                "uuid": f"b{i}",
+                "sessionId": "sid",
+                "message": {
+                    "id": f"n{i}",
+                    "model": "claude-x",
+                    "usage": {"input_tokens": 20, "output_tokens": 7},
+                    "content": [{"type": "text", "text": f"Fixed it on turn {i}."}],
+                },
+            }
+        )
     return recs
 
 
 def _session(n_turns: int = 1) -> tuple[dict, list[dict]]:
-    session = {"session_id": "sid", "title": "Green build", "project": "proj",
-               "source": {"size": 4096}}
+    session = {
+        "session_id": "sid",
+        "title": "Green build",
+        "project": "proj",
+        "source": {"size": 4096},
+    }
     return session, list(iter_turns(_records(n_turns)))
 
 
@@ -125,8 +198,12 @@ def test_a_judge_error_does_not_advance_the_ledger():
     store, (session, turns) = MemoryStore(), _session(2)
 
     def broken(prompt, *, schema=None, **kw):
-        return Judgment(text="Not logged in", error="error_during_execution: Not logged in",
-                        model="haiku", prompt_chars=len(prompt))
+        return Judgment(
+            text="Not logged in",
+            error="error_during_execution: Not logged in",
+            model="haiku",
+            prompt_chars=len(prompt),
+        )
 
     res = _run_lens(store, "synopsis", session, turns, judge=broken)
     assert res["failed"] is True and res["n_findings"] == 0
@@ -142,7 +219,9 @@ def test_a_judge_error_does_not_advance_the_ledger():
 def test_a_judge_that_answers_no_json_is_an_error_too():
     load_builtin_lenses()
     store, (session, turns) = MemoryStore(), _session()
-    res = _run_lens(store, "synopsis", session, turns, judge=replay_judge({}, default="sorry, no"))
+    res = _run_lens(
+        store, "synopsis", session, turns, judge=replay_judge({}, default="sorry, no")
+    )
     assert res["failed"] is True
     assert "synopsis/sid" not in store.findings
 
@@ -167,9 +246,14 @@ def test_features_are_computable_without_a_model():
 
 def test_fit_recovers_a_known_slope():
     slope, intercept = 0.30, 1200.0  # tokens per view char, plus the fixed call cost
-    pts = [{"features": {"view_chars": c, "n_turns": 4}, "cost_usd": 0.001 * (c / 1000),
-            "usage": {"input_tokens": int(intercept + slope * c), "output_tokens": 900}}
-           for c in (2000, 5000, 11000, 19000)]
+    pts = [
+        {
+            "features": {"view_chars": c, "n_turns": 4},
+            "cost_usd": 0.001 * (c / 1000),
+            "usage": {"input_tokens": int(intercept + slope * c), "output_tokens": 900},
+        }
+        for c in (2000, 5000, 11000, 19000)
+    ]
     m = fit(pts)
     assert m["n"] == 4 and m["method"] == "ols"
     assert m["input"]["per_char"] == pytest.approx(slope, abs=0.01)
@@ -185,7 +269,15 @@ def test_fit_recovers_a_known_slope():
 
 def test_fit_falls_back_gracefully_below_three_points():
     assert fit([])["method"] == "prior"
-    one = fit([{"features": {"view_chars": 4000, "n_turns": 2},
-                "usage": {"input_tokens": 2300, "output_tokens": 800}}])
+    one = fit(
+        [
+            {
+                "features": {"view_chars": 4000, "n_turns": 2},
+                "usage": {"input_tokens": 2300, "output_tokens": 800},
+            }
+        ]
+    )
     assert one["method"] == "ratio" and one["input"]["per_char"] > 0
-    assert predict(one, {"view_chars": 4000})["input_tokens"] == pytest.approx(2300, abs=5)
+    assert predict(one, {"view_chars": 4000})["input_tokens"] == pytest.approx(
+        2300, abs=5
+    )

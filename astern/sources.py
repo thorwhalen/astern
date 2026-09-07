@@ -39,7 +39,9 @@ class Home:
         return self.path / "projects"
 
 
-def homes(home: str | Path | Home | Iterable[str | Path | Home] | None = None) -> list[Home]:
+def homes(
+    home: str | Path | Home | Iterable[str | Path | Home] | None = None,
+) -> list[Home]:
     """Resolve the ``home=`` seam to a list of :class:`Home`.
 
     ``None`` → the one default home (``$ASTERN_HOME`` or ``~/.claude``). A string or
@@ -128,7 +130,11 @@ def iter_session_files(
                 continue
             if keep and not any(k in project_dir.name for k in keep):
                 continue
-            paths = project_dir.glob("*.jsonl") if kinds == {"session"} else project_dir.rglob("*.jsonl")
+            paths = (
+                project_dir.glob("*.jsonl")
+                if kinds == {"session"}
+                else project_dir.rglob("*.jsonl")
+            )
             for p in paths:
                 kind, parent = _kind_and_parent(p, project_dir)
                 if kind not in kinds:

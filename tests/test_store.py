@@ -18,7 +18,9 @@ def test_store_round_trips_json(tmp_path):
 def test_store_round_trips_nested_key(tmp_path):
     s = Store(root=tmp_path / "root")
     s.findings["stats/abc123"] = [{"kind": "session_stats", "evidence": {"n_turns": 2}}]
-    assert s.findings["stats/abc123"] == [{"kind": "session_stats", "evidence": {"n_turns": 2}}]
+    assert s.findings["stats/abc123"] == [
+        {"kind": "session_stats", "evidence": {"n_turns": 2}}
+    ]
     # physically nested on disk
     assert (tmp_path / "root" / "findings" / "stats" / "abc123.json").exists()
 
@@ -56,7 +58,8 @@ def test_store_five_kinds_are_independent(tmp_path):
     s.ledger["sid"] = {"n_turns": 1}
     s.judgments["stats/sid/0"] = {"text": "x"}
     assert set((tmp_path / "root").iterdir()) == {
-        tmp_path / "root" / k for k in ("sessions", "turns", "findings", "ledger", "judgments")
+        tmp_path / "root" / k
+        for k in ("sessions", "turns", "findings", "ledger", "judgments")
     }
 
 

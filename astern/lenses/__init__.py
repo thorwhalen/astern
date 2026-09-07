@@ -49,15 +49,30 @@ def lens(name: str, *, version: int = 1, kind: str = "H", incremental: bool = Fa
     """Register a lens function under ``name``. Bump ``version`` when its output changes."""
 
     def deco(fn):
-        LENSES[name] = Lens(name=name, version=version, kind=kind, fn=fn, incremental=incremental,
-                            doc=(fn.__doc__ or "").strip().splitlines()[0] if fn.__doc__ else "")
+        LENSES[name] = Lens(
+            name=name,
+            version=version,
+            kind=kind,
+            fn=fn,
+            incremental=incremental,
+            doc=(fn.__doc__ or "").strip().splitlines()[0] if fn.__doc__ else "",
+        )
         return fn
 
     return deco
 
 
-def finding(lens_name: str, session: dict, *, kind: str, evidence: dict, turn: dict | None = None,
-            label: str | None = None, text: str = "", **extra) -> dict:
+def finding(
+    lens_name: str,
+    session: dict,
+    *,
+    kind: str,
+    evidence: dict,
+    turn: dict | None = None,
+    label: str | None = None,
+    text: str = "",
+    **extra,
+) -> dict:
     """Make one finding. ``turn`` (a turn record) fills the evidence pointer."""
     ev = dict(evidence)
     if turn is not None:
@@ -83,7 +98,16 @@ def finding(lens_name: str, session: dict, *, kind: str, evidence: dict, turn: d
 
 #: Built-in lens modules, imported on demand so that registering is one import away
 #: and a broken optional lens cannot take the registry down with it.
-BUILTIN_MODULES = ("stats", "friction", "commands", "timeline", "cost", "hygiene", "tooling", "synopsis")
+BUILTIN_MODULES = (
+    "stats",
+    "friction",
+    "commands",
+    "timeline",
+    "cost",
+    "hygiene",
+    "tooling",
+    "synopsis",
+)
 
 
 def load_builtin_lenses(modules=BUILTIN_MODULES) -> dict[str, Lens]:

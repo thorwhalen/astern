@@ -44,8 +44,15 @@ LONG_COMMAND_CHARS = 400
 
 #: File extension → language guess, checked before any content sniffing.
 EXT_LANGUAGE = {
-    ".py": "python", ".sh": "bash", ".js": "javascript", ".ts": "typescript",
-    ".json": "json", ".md": "markdown", ".sql": "sql", ".yaml": "yaml", ".yml": "yaml",
+    ".py": "python",
+    ".sh": "bash",
+    ".js": "javascript",
+    ".ts": "typescript",
+    ".json": "json",
+    ".md": "markdown",
+    ".sql": "sql",
+    ".yaml": "yaml",
+    ".yml": "yaml",
 }
 
 _HEREDOC_RE = re.compile(r"<<-?\s*(['\"]?)(\w+)\1")
@@ -66,7 +73,7 @@ def heredoc_body(command: str) -> str | None:
     if not m:
         return None
     marker = m.group(2)
-    rest = command[m.end():]
+    rest = command[m.end() :]
     rest = rest.removeprefix("\n")
     lines, body = rest.split("\n"), []
     for line in lines:
@@ -97,8 +104,15 @@ def fingerprint(text: str) -> str:
 
 
 #: Heredoc interpreter word → language, checked before content sniffing.
-INTERPRETER_LANGUAGE = {"python": "python", "python3": "python", "python2": "python",
-                        "node": "javascript", "bash": "bash", "sh": "bash", "zsh": "bash"}
+INTERPRETER_LANGUAGE = {
+    "python": "python",
+    "python3": "python",
+    "python2": "python",
+    "node": "javascript",
+    "bash": "bash",
+    "sh": "bash",
+    "zsh": "bash",
+}
 
 
 def interpreter_hint(command: str) -> str:
@@ -147,12 +161,23 @@ def _first_line(text: str) -> str:
     return ""
 
 
-def _script_finding(session: dict, turn: dict, *, tool: str, script: str, path: str | None,
-                    hint: str = "") -> dict:
-    return finding("rewrites", session, kind="inline_script", turn=turn,
-                   evidence={"tool": tool, "path": path, "first_line": _first_line(script),
-                            "fingerprint": fingerprint(script), "chars": len(script),
-                            "language": guess_language(script, path=path or "", hint=hint)})
+def _script_finding(
+    session: dict, turn: dict, *, tool: str, script: str, path: str | None, hint: str = ""
+) -> dict:
+    return finding(
+        "rewrites",
+        session,
+        kind="inline_script",
+        turn=turn,
+        evidence={
+            "tool": tool,
+            "path": path,
+            "first_line": _first_line(script),
+            "fingerprint": fingerprint(script),
+            "chars": len(script),
+            "language": guess_language(script, path=path or "", hint=hint),
+        },
+    )
 
 
 def _bash_findings(session: dict, turn: dict) -> Iterator[dict]:
@@ -164,8 +189,14 @@ def _bash_findings(session: dict, turn: dict) -> Iterator[dict]:
             continue
         body = heredoc_body(text)
         if body:
-            yield _script_finding(session, turn, tool="Bash", script=body, path=None,
-                                  hint=interpreter_hint(text))
+            yield _script_finding(
+                session,
+                turn,
+                tool="Bash",
+                script=body,
+                path=None,
+                hint=interpreter_hint(text),
+            )
         elif len(text) > LONG_COMMAND_CHARS:
             yield _script_finding(session, turn, tool="Bash", script=text, path=None)
 

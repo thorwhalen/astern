@@ -195,6 +195,8 @@ def test_load_records_missing_file_returns_empty(tmp_path):
 
 def test_load_records_preserves_unknown_types(tmp_path):
     path = tmp_path / "t2.jsonl"
-    path.write_text('{"type": "some-future-record-type", "payload": 42}\n', encoding="utf-8")
+    path.write_text(
+        '{"type": "some-future-record-type", "payload": 42}\n', encoding="utf-8"
+    )
     recs = load_records(path)
     assert recs == [{"type": "some-future-record-type", "payload": 42}]

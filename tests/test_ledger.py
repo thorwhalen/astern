@@ -58,8 +58,12 @@ def test_plan_full_on_version_bump_even_when_shrunk_or_equal_turns():
 
 def test_mark_usage_accumulates_across_incremental_runs_same_version():
     entry = {}
-    ledger.mark(entry, lens="problems", version=1, through_index=5, usage={"input_tokens": 100})
-    ledger.mark(entry, lens="problems", version=1, through_index=10, usage={"input_tokens": 50})
+    ledger.mark(
+        entry, lens="problems", version=1, through_index=5, usage={"input_tokens": 100}
+    )
+    ledger.mark(
+        entry, lens="problems", version=1, through_index=10, usage={"input_tokens": 50}
+    )
     assert entry["lenses"]["problems"]["usage"]["input_tokens"] == 150
     assert entry["lenses"]["problems"]["runs"] == 2
     assert entry["lenses"]["problems"]["through_index"] == 10
@@ -67,8 +71,12 @@ def test_mark_usage_accumulates_across_incremental_runs_same_version():
 
 def test_mark_usage_resets_on_version_change():
     entry = {}
-    ledger.mark(entry, lens="problems", version=1, through_index=5, usage={"input_tokens": 100})
-    ledger.mark(entry, lens="problems", version=2, through_index=5, usage={"input_tokens": 7})
+    ledger.mark(
+        entry, lens="problems", version=1, through_index=5, usage={"input_tokens": 100}
+    )
+    ledger.mark(
+        entry, lens="problems", version=2, through_index=5, usage={"input_tokens": 7}
+    )
     assert entry["lenses"]["problems"]["usage"]["input_tokens"] == 7
     assert entry["lenses"]["problems"]["version"] == 2
     assert entry["lenses"]["problems"]["runs"] == 1
@@ -82,7 +90,13 @@ def test_mark_without_usage_leaves_empty_usage_dict():
 
 def test_mark_ignores_non_numeric_usage_values():
     entry = {}
-    ledger.mark(entry, lens="problems", version=1, through_index=1, usage={"note": "n/a", "input_tokens": 3})
+    ledger.mark(
+        entry,
+        lens="problems",
+        version=1,
+        through_index=1,
+        usage={"note": "n/a", "input_tokens": 3},
+    )
     assert entry["lenses"]["problems"]["usage"] == {"input_tokens": 3}
 
 
@@ -105,7 +119,9 @@ def test_source_changed_true_when_no_prior_source():
 def test_touch_source_then_unchanged_fingerprint_is_not_changed():
     entry = {}
     fp = {"size": 10, "mtime": 123.456}
-    ledger.touch_source(entry, path="/p/s.jsonl", home="claude", fingerprint=fp, n_turns=3, last_uuid="u3")
+    ledger.touch_source(
+        entry, path="/p/s.jsonl", home="claude", fingerprint=fp, n_turns=3, last_uuid="u3"
+    )
     assert ledger.source_changed(entry, fp) is False
     assert entry["n_turns"] == 3
     assert entry["last_turn_uuid"] == "u3"
@@ -117,7 +133,14 @@ def test_touch_source_then_changed_fingerprint_is_changed():
     entry = {}
     fp1 = {"size": 10, "mtime": 100.0}
     fp2 = {"size": 20, "mtime": 200.0}
-    ledger.touch_source(entry, path="/p/s.jsonl", home="claude", fingerprint=fp1, n_turns=3, last_uuid="u3")
+    ledger.touch_source(
+        entry,
+        path="/p/s.jsonl",
+        home="claude",
+        fingerprint=fp1,
+        n_turns=3,
+        last_uuid="u3",
+    )
     assert ledger.source_changed(entry, fp2) is True
 
 

@@ -47,8 +47,10 @@ def timeline(session: dict, turns: list[dict], **ctx) -> list[dict]:
             elif name == "Agent":
                 n_subagents += 1
     ev = {
-        "started_at": session.get("started_at", "") or (turns[0]["timestamp"] if turns else ""),
-        "ended_at": session.get("ended_at", "") or (turns[-1]["timestamp"] if turns else ""),
+        "started_at": session.get("started_at", "")
+        or (turns[0]["timestamp"] if turns else ""),
+        "ended_at": session.get("ended_at", "")
+        or (turns[-1]["timestamp"] if turns else ""),
         "project": session.get("project", ""),
         "git_branches": branches,
         "prs": session.get("prs") or [],

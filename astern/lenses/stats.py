@@ -24,7 +24,9 @@ def _duration_ms(turns: list[dict]) -> int:
     tot = 0
     for t in turns:
         for s in t.get("system") or []:
-            if s.get("subtype") == "turn_duration" and isinstance(s.get("durationMs"), (int, float)):
+            if s.get("subtype") == "turn_duration" and isinstance(
+                s.get("durationMs"), (int, float)
+            ):
                 tot += int(s["durationMs"])
     return tot
 
@@ -44,7 +46,9 @@ def stats(session: dict, turns: list[dict], **ctx) -> list[dict]:
         for m in t.get("models") or []:
             if m not in models:
                 models.append(m)
-        n_compactions += sum(1 for s in t.get("system") or [] if s.get("subtype") == "compact_boundary")
+        n_compactions += sum(
+            1 for s in t.get("system") or [] if s.get("subtype") == "compact_boundary"
+        )
     prompt_chars = sum(len(t.get("user_prompt", "")) for t in turns)
     prompt_chars_raw = sum(t.get("user_prompt_chars_raw", 0) for t in turns)
     asst_chars = sum(t.get("assistant_chars", 0) for t in turns)
@@ -65,8 +69,12 @@ def stats(session: dict, turns: list[dict], **ctx) -> list[dict]:
         "tools": dict(tools.most_common()),
         "models": models,
         "duration_ms": _duration_ms(turns),
-        "started_at": turns[0].get("timestamp", "") if turns else session.get("started_at", ""),
-        "ended_at": turns[-1].get("timestamp", "") if turns else session.get("ended_at", ""),
+        "started_at": turns[0].get("timestamp", "")
+        if turns
+        else session.get("started_at", ""),
+        "ended_at": turns[-1].get("timestamp", "")
+        if turns
+        else session.get("ended_at", ""),
         "cost_state": session.get("cost_state"),
         "n_prs": len(session.get("prs") or []),
     }

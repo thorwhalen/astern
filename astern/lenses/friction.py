@@ -60,41 +60,73 @@ MIN_RETRY_ATTEMPTS = 2
 def _error_findings(session: dict, turn: dict) -> Iterator[dict]:
     for tc in turn.get("tools") or []:
         if tc.get("is_error"):
-            yield finding("friction", session, kind="tool_error", turn=turn,
-                          evidence={"tool": tc["name"], "digest": tc.get("digest", "")})
+            yield finding(
+                "friction",
+                session,
+                kind="tool_error",
+                turn=turn,
+                evidence={"tool": tc["name"], "digest": tc.get("digest", "")},
+            )
 
 
 def _pivot_findings(session: dict, turn: dict) -> Iterator[dict]:
-    text = (turn.get("assistant_full") or "")
+    text = turn.get("assistant_full") or ""
     low = text.lower()
     for phrase in PIVOT_PHRASES:
         idx = low.find(phrase)
         if idx >= 0:
-            yield finding("friction", session, kind="pivot", turn=turn,
-                          evidence={"phrase": phrase, "snippet": text[max(0, idx - 40):idx + 80]})
+            yield finding(
+                "friction",
+                session,
+                kind="pivot",
+                turn=turn,
+                evidence={"phrase": phrase, "snippet": text[max(0, idx - 40) : idx + 80]},
+            )
 
 
 def _compaction_findings(session: dict, turn: dict) -> Iterator[dict]:
     for s in turn.get("system") or []:
         if s.get("subtype") == "compact_boundary":
             meta = s.get("compactMetadata") or {}
-            yield finding("friction", session, kind="compaction", turn=turn,
-                          evidence={"pre_tokens": meta.get("preTokens"), "post_tokens": meta.get("postTokens")})
+            yield finding(
+                "friction",
+                session,
+                kind="compaction",
+                turn=turn,
+                evidence={
+                    "pre_tokens": meta.get("preTokens"),
+                    "post_tokens": meta.get("postTokens"),
+                },
+            )
 
 
-def _long_turn_findings(session: dict, turn: dict, *, threshold_ms: int = LONG_TURN_MS) -> Iterator[dict]:
+def _long_turn_findings(
+    session: dict, turn: dict, *, threshold_ms: int = LONG_TURN_MS
+) -> Iterator[dict]:
     for s in turn.get("system") or []:
-        is_duration = s.get("subtype") == "turn_duration" and isinstance(s.get("durationMs"), (int, float))
+        is_duration = s.get("subtype") == "turn_duration" and isinstance(
+            s.get("durationMs"), (int, float)
+        )
         if is_duration and s["durationMs"] >= threshold_ms:
-            yield finding("friction", session, kind="long_turn", turn=turn,
-                          evidence={"duration_ms": s["durationMs"], "threshold_ms": threshold_ms})
+            yield finding(
+                "friction",
+                session,
+                kind="long_turn",
+                turn=turn,
+                evidence={"duration_ms": s["durationMs"], "threshold_ms": threshold_ms},
+            )
 
 
 def _tool_search_findings(session: dict, turn: dict) -> Iterator[dict]:
     for tc in turn.get("tools") or []:
         if tc.get("name") == "ToolSearch":
-            yield finding("friction", session, kind="tool_search", turn=turn,
-                          evidence={"query": tc.get("digest", "")})
+            yield finding(
+                "friction",
+                session,
+                kind="tool_search",
+                turn=turn,
+                evidence={"query": tc.get("digest", "")},
+            )
 
 
 def _retry_findings(session: dict, turns: list[dict]) -> Iterator[dict]:
@@ -111,12 +143,21 @@ def _retry_findings(session: dict, turns: list[dict]) -> Iterator[dict]:
             j = i
             while j + 1 < len(idxs) and idxs[j + 1] - idxs[j] <= 1:
                 j += 1
-            run = idxs[i:j + 1]
+            run = idxs[i : j + 1]
             if len(run) >= MIN_RETRY_ATTEMPTS:
                 last_turn = by_index.get(run[-1])
-                yield finding("friction", session, kind="retry", turn=last_turn,
-                              evidence={"tool": name, "digest": digest, "attempts": len(run),
-                                       "turn_indices": run})
+                yield finding(
+                    "friction",
+                    session,
+                    kind="retry",
+                    turn=last_turn,
+                    evidence={
+                        "tool": name,
+                        "digest": digest,
+                        "attempts": len(run),
+                        "turn_indices": run,
+                    },
+                )
             i = j + 1
 
 

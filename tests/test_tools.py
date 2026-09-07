@@ -24,7 +24,10 @@ def _proj_spec(sid, cwd, mtime=None):
 
 
 def test_sync_first_run_reads_all_and_runs_stats(tmp_path, store):
-    w = write_home(tmp_path, sessions=[_proj_spec("s1", "/tmp/proj-a"), _proj_spec("s2", "/tmp/proj-b")])
+    w = write_home(
+        tmp_path,
+        sessions=[_proj_spec("s1", "/tmp/proj-a"), _proj_spec("s2", "/tmp/proj-b")],
+    )
     result = tools.sync(str(w.home), store=store)
     assert result["seen"] == 2
     assert result["read"] == 2
@@ -37,7 +40,10 @@ def test_sync_first_run_reads_all_and_runs_stats(tmp_path, store):
 
 
 def test_sync_second_run_reads_none_and_skips_every_lens(tmp_path, store):
-    w = write_home(tmp_path, sessions=[_proj_spec("s1", "/tmp/proj-a"), _proj_spec("s2", "/tmp/proj-b")])
+    w = write_home(
+        tmp_path,
+        sessions=[_proj_spec("s1", "/tmp/proj-a"), _proj_spec("s2", "/tmp/proj-b")],
+    )
     tools.sync(str(w.home), store=store)
     result = tools.sync(str(w.home), store=store)
     assert result["read"] == 0
@@ -61,7 +67,9 @@ def test_sync_grown_session_is_reread_and_stats_updated(tmp_path, store):
     from fixtures import append_records
 
     append_records(
-        w.paths["s-grow"], "s-grow", cwd,
+        w.paths["s-grow"],
+        "s-grow",
+        cwd,
         turns=[{"prompt": "more", "final_text": "more done"}],
         mtime=now + 100,
     )
@@ -138,7 +146,10 @@ def test_sessions_lists_synced_sessions(tmp_path, store):
 def test_sessions_project_filter(tmp_path, store):
     w = write_home(
         tmp_path,
-        sessions=[_proj_spec("s1", "/tmp/proj-alpha"), _proj_spec("s2", "/tmp/proj-beta")],
+        sessions=[
+            _proj_spec("s1", "/tmp/proj-alpha"),
+            _proj_spec("s2", "/tmp/proj-beta"),
+        ],
     )
     tools.sync(str(w.home), store=store)
     result = tools.sessions(store=store, project="alpha")
@@ -163,7 +174,10 @@ def test_show_resolves_unique_prefix(tmp_path, store):
 def test_show_ambiguous_prefix_raises(tmp_path, store):
     w = write_home(
         tmp_path,
-        sessions=[_proj_spec("abc111", "/tmp/proj-a"), _proj_spec("abc222", "/tmp/proj-b")],
+        sessions=[
+            _proj_spec("abc111", "/tmp/proj-a"),
+            _proj_spec("abc222", "/tmp/proj-b"),
+        ],
     )
     tools.sync(str(w.home), store=store)
     with pytest.raises(KeyError):
@@ -200,14 +214,24 @@ def test_run_lens_incremental_receives_from_index_and_prior(clean_lenses):
 
     @lens("fake_l", version=1, kind="L", incremental=True)
     def fake_l(session, turns, **ctx):
-        calls.append({"from_index": ctx.get("from_index"), "prior": ctx.get("prior"), "n_turns": len(turns)})
+        calls.append(
+            {
+                "from_index": ctx.get("from_index"),
+                "prior": ctx.get("prior"),
+                "n_turns": len(turns),
+            }
+        )
         return [finding("fake_l", session, kind="probe", evidence={"n": len(turns)})]
 
     store = MemoryStore()
     session = {"session_id": "sid1", "project": "p", "home": "claude"}
     records_full = mk_records(
-        "sid1", "/tmp/p",
-        turns=[{"prompt": "t1", "final_text": "a1"}, {"prompt": "t2", "final_text": "a2"}],
+        "sid1",
+        "/tmp/p",
+        turns=[
+            {"prompt": "t1", "final_text": "a1"},
+            {"prompt": "t2", "final_text": "a2"},
+        ],
     )
     all_turns = list(iter_turns(records_full))
     turns_v1 = all_turns[:1]
@@ -237,7 +261,11 @@ def test_run_lens_skip_when_already_covered(clean_lenses):
 
     store = MemoryStore()
     session = {"session_id": "sid1"}
-    turns = list(iter_turns(mk_records("sid1", "/tmp/p", turns=[{"prompt": "t1", "final_text": "a1"}])))
+    turns = list(
+        iter_turns(
+            mk_records("sid1", "/tmp/p", turns=[{"prompt": "t1", "final_text": "a1"}])
+        )
+    )
 
     tools._run_lens(store, "fake_h", session, turns)
     r2 = tools._run_lens(store, "fake_h", session, turns)

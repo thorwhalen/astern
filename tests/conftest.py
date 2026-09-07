@@ -19,7 +19,9 @@ _ROOT = Path(__file__).resolve().parent.parent
 if str(_ROOT) not in sys.path:
     sys.path.insert(0, str(_ROOT))
 _wrong_astern = sys.modules.get("astern")
-if _wrong_astern is not None and getattr(_wrong_astern, "__file__", None) != str(_ROOT / "astern" / "__init__.py"):
+if _wrong_astern is not None and getattr(_wrong_astern, "__file__", None) != str(
+    _ROOT / "astern" / "__init__.py"
+):
     for _name in [n for n in sys.modules if n == "astern" or n.startswith("astern.")]:
         del sys.modules[_name]
 

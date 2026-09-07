@@ -54,7 +54,9 @@ def hygiene(session: dict, turns: list[dict], **ctx) -> list[dict]:
     n_turns = len(turns)
     n_edit_write = n_edit + n_write
     ev = {
-        "n_read": n_read, "n_edit": n_edit, "n_write": n_write,
+        "n_read": n_read,
+        "n_edit": n_edit,
+        "n_write": n_write,
         "read_edit_ratio": (n_read / n_edit) if n_edit else None,
         "write_share": (n_write / n_edit_write) if n_edit_write else None,
         "n_unread_edits": n_unread,

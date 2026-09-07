@@ -49,15 +49,22 @@ LENS_NAME = "synopsis"
 SYSTEM = (
     "You analyse transcripts of coding sessions between a developer and an AI agent. "
     "You answer only with one JSON object matching the given schema. No prose, no "
-    "markdown, no code fences. Unknown or absent: use an empty list or \"unclear\"."
+    'markdown, no code fences. Unknown or absent: use an empty list or "unclear".'
 )
 
 _STR = {"type": "string"}
 
 
 def _objects(props: dict, required: list[str]) -> dict:
-    return {"type": "array", "items": {"type": "object", "properties": props,
-                                       "required": required, "additionalProperties": False}}
+    return {
+        "type": "array",
+        "items": {
+            "type": "object",
+            "properties": props,
+            "required": required,
+            "additionalProperties": False,
+        },
+    }
 
 
 #: The synopsis schema. ``additionalProperties: false`` everywhere and every field
@@ -68,24 +75,50 @@ SCHEMA = {
     "properties": {
         "goal": _STR,
         "outcome": {"type": "string", "enum": ["done", "partly", "abandoned", "unclear"]},
-        "problems": _objects({"problem": _STR, "solution": _STR, "category": _STR},
-                             ["problem", "solution", "category"]),
-        "friction": _objects({"what": _STR, "cause_guess": _STR,
-                              "turn_indices": {"type": "array", "items": {"type": "integer"}}},
-                             ["what", "cause_guess", "turn_indices"]),
-        "corrections": _objects({"what_user_said": _STR, "rule_candidate": _STR},
-                                ["what_user_said", "rule_candidate"]),
-        "user_terms": _objects({"phrase": _STR, "established_term": _STR, "definition": _STR},
-                               ["phrase", "established_term", "definition"]),
-        "agent_terms": _objects({"term": _STR, "definition": _STR}, ["term", "definition"]),
-        "skill_candidates": _objects({"name": _STR, "why": _STR, "recurrence_hint": _STR},
-                                     ["name", "why", "recurrence_hint"]),
-        "reusable_code": _objects({"what": _STR, "suggested_function": _STR},
-                                  ["what", "suggested_function"]),
+        "problems": _objects(
+            {"problem": _STR, "solution": _STR, "category": _STR},
+            ["problem", "solution", "category"],
+        ),
+        "friction": _objects(
+            {
+                "what": _STR,
+                "cause_guess": _STR,
+                "turn_indices": {"type": "array", "items": {"type": "integer"}},
+            },
+            ["what", "cause_guess", "turn_indices"],
+        ),
+        "corrections": _objects(
+            {"what_user_said": _STR, "rule_candidate": _STR},
+            ["what_user_said", "rule_candidate"],
+        ),
+        "user_terms": _objects(
+            {"phrase": _STR, "established_term": _STR, "definition": _STR},
+            ["phrase", "established_term", "definition"],
+        ),
+        "agent_terms": _objects(
+            {"term": _STR, "definition": _STR}, ["term", "definition"]
+        ),
+        "skill_candidates": _objects(
+            {"name": _STR, "why": _STR, "recurrence_hint": _STR},
+            ["name", "why", "recurrence_hint"],
+        ),
+        "reusable_code": _objects(
+            {"what": _STR, "suggested_function": _STR}, ["what", "suggested_function"]
+        ),
         "notable_decisions": {"type": "array", "items": _STR},
     },
-    "required": ["goal", "outcome", "problems", "friction", "corrections", "user_terms",
-                 "agent_terms", "skill_candidates", "reusable_code", "notable_decisions"],
+    "required": [
+        "goal",
+        "outcome",
+        "problems",
+        "friction",
+        "corrections",
+        "user_terms",
+        "agent_terms",
+        "skill_candidates",
+        "reusable_code",
+        "notable_decisions",
+    ],
     "additionalProperties": False,
 }
 
@@ -115,38 +148,76 @@ JSON only.
 
 
 @lens(LENS_NAME, version=1, kind="L", incremental=True)
-def synopsis(session: dict, turns: list[dict], *, judge=None, from_index: int = 0,
-             prior: list[dict] | None = None, store=None, max_chars: int | None = None,
-             **ctx) -> list[dict]:
+def synopsis(
+    session: dict,
+    turns: list[dict],
+    *,
+    judge=None,
+    from_index: int = 0,
+    prior: list[dict] | None = None,
+    store=None,
+    max_chars: int | None = None,
+    **ctx,
+) -> list[dict]:
     """What this session was for, what went wrong, and what it suggests building."""
     if judge is None:
         raise ValueError("the synopsis lens needs judge= (see astern.judge)")
     prior_data = _prior_synopsis(prior)
-    view = session_view(session, turns, prior=prior_data,
-                        **({"max_chars": int(max_chars)} if max_chars else {}))
-    note = ("- The session already has a synopsis (above); cover ONLY the new turns and "
-            "report what they add.\n" if prior_data else "")
+    view = session_view(
+        session,
+        turns,
+        prior=prior_data,
+        **({"max_chars": int(max_chars)} if max_chars else {}),
+    )
+    note = (
+        "- The session already has a synopsis (above); cover ONLY the new turns and "
+        "report what they add.\n"
+        if prior_data
+        else ""
+    )
     prompt = PROMPT.format(view=view, prior_note=note)
     judgment = judge(prompt, schema=SCHEMA, system=SYSTEM)
     feats = _features(session, turns, view)
     feats.update(view_stats(view))
     feats["from_index"] = from_index
     _record(store, session, from_index, judgment, feats)
-    common = {"usage": dict(judgment.usage), "cost_usd": judgment.cost_usd,
-              "model": judgment.model, "view_chars": len(view),
-              "prompt_chars": judgment.prompt_chars, "from_index": from_index}
+    common = {
+        "usage": dict(judgment.usage),
+        "cost_usd": judgment.cost_usd,
+        "model": judgment.model,
+        "view_chars": len(view),
+        "prompt_chars": judgment.prompt_chars,
+        "from_index": from_index,
+    }
     if judgment.error or not isinstance(judgment.data, dict):
-        return [finding(LENS_NAME, session, kind="judge_error",
-                        evidence={"from_index": from_index, "view_chars": len(view),
-                                  "text": (judgment.text or "")[:300]},
-                        text=judgment.error or "judge returned no JSON object",
-                        error=judgment.error or "judge returned no JSON object",
-                        **{**common, "usage": {}})]
+        return [
+            finding(
+                LENS_NAME,
+                session,
+                kind="judge_error",
+                evidence={
+                    "from_index": from_index,
+                    "view_chars": len(view),
+                    "text": (judgment.text or "")[:300],
+                },
+                text=judgment.error or "judge returned no JSON object",
+                error=judgment.error or "judge returned no JSON object",
+                **{**common, "usage": {}},
+            )
+        ]
     data = dict(judgment.data)
-    return [finding(LENS_NAME, session, kind="synopsis", evidence=data,
-                    label=str(data.get("outcome") or ""),
-                    text=str(data.get("goal") or ""),
-                    turn=turns[0] if turns else None, **common)]
+    return [
+        finding(
+            LENS_NAME,
+            session,
+            kind="synopsis",
+            evidence=data,
+            label=str(data.get("outcome") or ""),
+            text=str(data.get("goal") or ""),
+            turn=turns[0] if turns else None,
+            **common,
+        )
+    ]
 
 
 def _prior_synopsis(prior: list[dict] | None) -> dict | None:

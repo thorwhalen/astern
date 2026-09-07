@@ -23,7 +23,14 @@ def _session_and_turns():
 def test_friction_kinds():
     session, turns = _session_and_turns()
     kinds = {f["kind"] for f in friction(session, turns)}
-    assert {"tool_error", "retry", "pivot", "compaction", "long_turn", "tool_search"} <= kinds
+    assert {
+        "tool_error",
+        "retry",
+        "pivot",
+        "compaction",
+        "long_turn",
+        "tool_search",
+    } <= kinds
 
 
 def test_rewrites_kinds():
@@ -60,7 +67,9 @@ def test_hygiene_finding():
     f = hygiene(session, turns)[0]
     assert f["kind"] == "hygiene"
     ev = f["evidence"]
-    assert ev["n_unread_edits"] == 2  # the Edit and the scratchpad Write, neither preceded by a Read
+    assert (
+        ev["n_unread_edits"] == 2
+    )  # the Edit and the scratchpad Write, neither preceded by a Read
     assert ev["version"] == "2.1.0"
     assert ev["n_edit"] == 1
     assert ev["n_write"] == 1

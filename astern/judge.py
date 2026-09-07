@@ -131,7 +131,9 @@ def _usage_record(usage: Mapping) -> dict:
     if isinstance(iters, list):
         out["n_iterations"] = len(iters)
     details = usage.get("output_tokens_details")
-    if isinstance(details, Mapping) and isinstance(details.get("thinking_tokens"), (int, float)):
+    if isinstance(details, Mapping) and isinstance(
+        details.get("thinking_tokens"), (int, float)
+    ):
         out["thinking_tokens"] = int(details["thinking_tokens"])
     return out
 
@@ -160,9 +162,16 @@ def _model_name(raw: Mapping, fallback: str) -> str:
     return fallback
 
 
-def claude_judge(prompt: str, *, schema: Mapping | None = None, model: str = DFLT_MODEL,
-                 effort: str | None = None, system: str | None = None,
-                 timeout_s: int = DFLT_TIMEOUT_S, claude_bin: str = "claude") -> Judgment:
+def claude_judge(
+    prompt: str,
+    *,
+    schema: Mapping | None = None,
+    model: str = DFLT_MODEL,
+    effort: str | None = None,
+    system: str | None = None,
+    timeout_s: int = DFLT_TIMEOUT_S,
+    claude_bin: str = "claude",
+) -> Judgment:
     """Run ``claude -p`` headless on ``prompt`` and return a :class:`Judgment`.
 
     Tools are disabled and customizations skipped (:data:`SANDBOX_FLAGS`): the judge
@@ -170,8 +179,12 @@ def claude_judge(prompt: str, *, schema: Mapping | None = None, model: str = DFL
     structured output, which comes back under ``structured_output``.
     """
     if shutil.which(claude_bin) is None:
-        return Judgment(text="", error=f"{claude_bin!r} not found on PATH", model=model,
-                        prompt_chars=len(prompt))
+        return Judgment(
+            text="",
+            error=f"{claude_bin!r} not found on PATH",
+            model=model,
+            prompt_chars=len(prompt),
+        )
     cmd = [claude_bin, "-p", *SANDBOX_FLAGS, "--output-format", "json", "--model", model]
     if effort:
         cmd += ["--effort", effort]
@@ -182,19 +195,38 @@ def claude_judge(prompt: str, *, schema: Mapping | None = None, model: str = DFL
     try:
         # check=False: a failed judge is data (it becomes the `error` below), never an
         # exception that takes the batch down with it.
-        proc = subprocess.run(cmd, input=prompt, capture_output=True, text=True,
-                              timeout=timeout_s, check=False)
+        proc = subprocess.run(
+            cmd,
+            input=prompt,
+            capture_output=True,
+            text=True,
+            timeout=timeout_s,
+            check=False,
+        )
     except subprocess.TimeoutExpired:
-        return Judgment(text="", error=f"timeout after {timeout_s}s", model=model,
-                        prompt_chars=len(prompt))
+        return Judgment(
+            text="",
+            error=f"timeout after {timeout_s}s",
+            model=model,
+            prompt_chars=len(prompt),
+        )
     raw = _parse_json_loose(proc.stdout)
     if not isinstance(raw, dict):
         detail = (proc.stderr or proc.stdout).strip()[:500]
-        return Judgment(text=proc.stdout, model=model, prompt_chars=len(prompt),
-                        error=f"exit {proc.returncode}: {detail}" if proc.returncode
-                        else "unparseable claude output")
+        return Judgment(
+            text=proc.stdout,
+            model=model,
+            prompt_chars=len(prompt),
+            error=f"exit {proc.returncode}: {detail}"
+            if proc.returncode
+            else "unparseable claude output",
+        )
     usage = _usage_record(raw.get("usage") or {})
-    text = raw["result"] if isinstance(raw.get("result"), str) else json.dumps(raw.get("result"))
+    text = (
+        raw["result"]
+        if isinstance(raw.get("result"), str)
+        else json.dumps(raw.get("result"))
+    )
     # The CLI exits 0 on an errored turn (an unauthenticated call returns
     # `is_error: true` and returncode 0), so the flag in the payload is the check.
     error = None
@@ -211,7 +243,9 @@ def claude_judge(prompt: str, *, schema: Mapping | None = None, model: str = DFL
         duration_ms=raw.get("duration_ms") or raw.get("duration_api_ms"),
         model=_model_name(raw, model),
         prompt_chars=len(prompt),
-        num_turns=int(raw.get("num_turns") or len((raw.get("usage") or {}).get("iterations") or [1])),
+        num_turns=int(
+            raw.get("num_turns") or len((raw.get("usage") or {}).get("iterations") or [1])
+        ),
         raw=raw,
         error=error,
     )
@@ -233,12 +267,25 @@ def replay_judge(answers: Mapping[str, str], *, default: str | None = None) -> J
     def judge(prompt: str, *, schema=None, **_) -> Judgment:
         text = answers.get(prompt, default)
         if text is None:
-            return Judgment(text="", model="replay", prompt_chars=len(prompt),
-                            error="no recorded answer")
-        return Judgment(text=text, data=_parse_json_loose(text) if schema is not None else None,
-                        usage={"input_tokens": max(1, len(prompt) // 4),
-                               "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0,
-                               "output_tokens": max(1, len(text) // 4)},
-                        cost_usd=0.0, duration_ms=0, model="replay", prompt_chars=len(prompt))
+            return Judgment(
+                text="",
+                model="replay",
+                prompt_chars=len(prompt),
+                error="no recorded answer",
+            )
+        return Judgment(
+            text=text,
+            data=_parse_json_loose(text) if schema is not None else None,
+            usage={
+                "input_tokens": max(1, len(prompt) // 4),
+                "cache_creation_input_tokens": 0,
+                "cache_read_input_tokens": 0,
+                "output_tokens": max(1, len(text) // 4),
+            },
+            cost_usd=0.0,
+            duration_ms=0,
+            model="replay",
+            prompt_chars=len(prompt),
+        )
 
     return judge

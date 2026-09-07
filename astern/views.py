@@ -101,9 +101,11 @@ def tool_summary(turn: dict, *, max_errors: int = 3, digest_chars: int = 70) -> 
     errs = [t for t in tools if t.get("is_error")]
     if not errs:
         return mix
-    shown = ", ".join(f'{t.get("name", "?")} "{_oneline(t.get("digest", ""), digest_chars)}"'
-                      for t in errs[:max_errors])
-    return f'{mix}, {len(errs)} error{"s" if len(errs) > 1 else ""}: {shown}'
+    shown = ", ".join(
+        f'{t.get("name", "?")} "{_oneline(t.get("digest", ""), digest_chars)}"'
+        for t in errs[:max_errors]
+    )
+    return f"{mix}, {len(errs)} error{'s' if len(errs) > 1 else ''}: {shown}"
 
 
 def _header(session: dict, *, n_turns: int, n_shown: int) -> str:
@@ -115,7 +117,9 @@ def _header(session: dict, *, n_turns: int, n_shown: int) -> str:
         facts.append(f"project: {session['project']}")
     if session.get("git_branch"):
         facts.append(f"branch: {session['git_branch']}")
-    span = " → ".join(x for x in (session.get("started_at", ""), session.get("ended_at", "")) if x)
+    span = " → ".join(
+        x for x in (session.get("started_at", ""), session.get("ended_at", "")) if x
+    )
     if span:
         facts.append(span)
     models = [m.split("-2")[0] for m in (session.get("models") or [])]
@@ -139,16 +143,25 @@ def _prior_block(prior: dict, *, limit: int = 1500) -> str:
         lines.append(f"goal: {_oneline(str(prior['goal']), 300)}")
     if prior.get("outcome"):
         lines.append(f"outcome so far: {prior['outcome']}")
-    for key, field in (("problems", "problem"), ("friction", "what"),
-                       ("corrections", "what_user_said"), ("skill_candidates", "name")):
+    for key, field in (
+        ("problems", "problem"),
+        ("friction", "what"),
+        ("corrections", "what_user_said"),
+        ("skill_candidates", "name"),
+    ):
         items = prior.get(key) or []
-        got = [_oneline(str(i.get(field, i) if isinstance(i, dict) else i), 90) for i in items[:4]]
+        got = [
+            _oneline(str(i.get(field, i) if isinstance(i, dict) else i), 90)
+            for i in items[:4]
+        ]
         if got:
             lines.append(f"{key}: " + "; ".join(got))
     return _clip("\n".join(lines), limit)
 
 
-def _turn_block(turn: dict, *, prompt_chars: int, reply_chars: int, max_errors: int) -> str:
+def _turn_block(
+    turn: dict, *, prompt_chars: int, reply_chars: int, max_errors: int
+) -> str:
     head = f"### turn {turn.get('index', '?')}"
     ts = turn.get("timestamp") or ""
     if ts:
@@ -159,7 +172,9 @@ def _turn_block(turn: dict, *, prompt_chars: int, reply_chars: int, max_errors: 
     tools = tool_summary(turn, max_errors=max_errors)
     if tools:
         parts.append(f"tools: {tools}")
-    reply = _clip(turn.get("assistant_full") or turn.get("assistant_summary", ""), reply_chars)
+    reply = _clip(
+        turn.get("assistant_full") or turn.get("assistant_summary", ""), reply_chars
+    )
     if reply:
         parts.append(f"assistant: {reply}")
     return "\n".join(parts)
@@ -176,9 +191,15 @@ def _assemble(header: str, prior_text: str, blocks: list[str], n_dropped: int) -
     return "\n\n".join(c for c in chunks if c).strip() + "\n"
 
 
-def session_view(session: dict, turns: list[dict], *, max_chars: int = DFLT_MAX_CHARS,
-                 prompt_chars: int = DFLT_PROMPT_CHARS, reply_chars: int = DFLT_REPLY_CHARS,
-                 prior: dict | None = None) -> str:
+def session_view(
+    session: dict,
+    turns: list[dict],
+    *,
+    max_chars: int = DFLT_MAX_CHARS,
+    prompt_chars: int = DFLT_PROMPT_CHARS,
+    reply_chars: int = DFLT_REPLY_CHARS,
+    prior: dict | None = None,
+) -> str:
     """A judge-sized markdown view of ``turns``, never longer than ``max_chars``.
 
     ``prior`` is the previous synopsis dict for the same session; when given, the
@@ -199,7 +220,9 @@ def session_view(session: dict, turns: list[dict], *, max_chars: int = DFLT_MAX_
     fixed = len(header) + len(prior_text) + 8
 
     def build(pc: int, rc: int, me: int, keep: list[dict], dropped: int) -> str:
-        blocks = [_turn_block(t, prompt_chars=pc, reply_chars=rc, max_errors=me) for t in keep]
+        blocks = [
+            _turn_block(t, prompt_chars=pc, reply_chars=rc, max_errors=me) for t in keep
+        ]
         head = _header(session, n_turns=n_turns, n_shown=len(keep))
         return _assemble(head, prior_text, blocks, dropped)
 
@@ -238,5 +261,9 @@ def view_stats(text: str) -> dict:
         if line.startswith("_… ") and "omitted" in line:
             head = line.split("_… ", 1)[1].split(" ", 1)[0]
             dropped = int(head) if head.isdigit() else 0
-    return {"chars": len(text), "tokens_est": len(text) // 4, "n_turns_shown": shown,
-            "n_turns_dropped": dropped}
+    return {
+        "chars": len(text),
+        "tokens_est": len(text) // 4,
+        "n_turns_shown": shown,
+        "n_turns_dropped": dropped,
+    }

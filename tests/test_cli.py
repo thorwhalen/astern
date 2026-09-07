@@ -24,7 +24,11 @@ def _run(args, *, home, data_dir):
     env["PYTHONPATH"] = str(REPO_ROOT) + os.pathsep + env.get("PYTHONPATH", "")
     return subprocess.run(
         [sys.executable, "-m", "astern", *args],
-        env=env, capture_output=True, text=True, timeout=60, check=False,
+        env=env,
+        capture_output=True,
+        text=True,
+        timeout=60,
+        check=False,
     )
 
 
@@ -39,7 +43,13 @@ def test_cli_lenses(tmp_path):
 def test_cli_sync_max_sessions(tmp_path):
     w = write_home(
         tmp_path,
-        sessions=[{"sid": "cli-sess-1", "cwd": "/tmp/proj-cli", "turns": [{"prompt": "hi", "final_text": "hey"}]}],
+        sessions=[
+            {
+                "sid": "cli-sess-1",
+                "cwd": "/tmp/proj-cli",
+                "turns": [{"prompt": "hi", "final_text": "hey"}],
+            }
+        ],
     )
     proc = _run(["sync", "--max-sessions", "1"], home=w.home, data_dir=tmp_path / "data")
     assert proc.returncode == 0, proc.stderr

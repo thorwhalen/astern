@@ -54,15 +54,30 @@ WRAPPER_TAGS = (
     "user-prompt-submit-hook",
     "task-notification",
 )
-_WRAPPER_PAIR_RE = re.compile(r"<(" + "|".join(WRAPPER_TAGS) + r")\b[^>]*>.*?</\1>", re.DOTALL)
+_WRAPPER_PAIR_RE = re.compile(
+    r"<(" + "|".join(WRAPPER_TAGS) + r")\b[^>]*>.*?</\1>", re.DOTALL
+)
 _WRAPPER_TAG_RE = re.compile(r"</?(?:" + "|".join(WRAPPER_TAGS) + r")\b[^>]*>")
 
 #: Which ``system`` subtypes are kept on the turn record (others are counted only).
-KEPT_SYSTEM_SUBTYPES = ("turn_duration", "compact_boundary", "away_summary", "stop_hook_summary")
+KEPT_SYSTEM_SUBTYPES = (
+    "turn_duration",
+    "compact_boundary",
+    "away_summary",
+    "stop_hook_summary",
+)
 
 #: Session-level records that are worth keeping as metadata, keyed by their type.
-META_TYPES = ("ai-title", "custom-title", "agent-name", "pr-link", "cost-state", "permission-mode",
-              "worktree-state", "frame-link")
+META_TYPES = (
+    "ai-title",
+    "custom-title",
+    "agent-name",
+    "pr-link",
+    "cost-state",
+    "permission-mode",
+    "worktree-state",
+    "frame-link",
+)
 
 DIGEST_CHARS = 200
 
@@ -91,8 +106,11 @@ def _text_blocks(content: Any) -> list[str]:
     if isinstance(content, str):
         return [content] if content.strip() else []
     if isinstance(content, list):
-        return [b["text"] for b in content
-                if isinstance(b, dict) and b.get("type") == "text" and b.get("text")]
+        return [
+            b["text"]
+            for b in content
+            if isinstance(b, dict) and b.get("type") == "text" and b.get("text")
+        ]
     return []
 
 
@@ -155,7 +173,16 @@ def tool_digest(name: str, inp: Any) -> str:
     """
     if not isinstance(inp, dict):
         return str(inp)[:DIGEST_CHARS]
-    for key in ("command", "file_path", "path", "query", "pattern", "prompt", "description", "skill"):
+    for key in (
+        "command",
+        "file_path",
+        "path",
+        "query",
+        "pattern",
+        "prompt",
+        "description",
+        "skill",
+    ):
         if inp.get(key):
             return str(inp[key])[:DIGEST_CHARS]
     # No known key: digest the *values*, never just the key names — a key-only digest
@@ -177,7 +204,15 @@ def tool_input_text(name: str, inp: Any) -> str:
     """
     if not isinstance(inp, dict):
         return str(inp)
-    for key in ("command", "content", "new_string", "query", "pattern", "prompt", "description"):
+    for key in (
+        "command",
+        "content",
+        "new_string",
+        "query",
+        "pattern",
+        "prompt",
+        "description",
+    ):
         if inp.get(key):
             return str(inp[key])
     return tool_digest(name, inp)
@@ -192,9 +227,15 @@ def _tools(turn: list[dict]) -> list[dict]:
                 tid = b.get("id") or f"anon{len(order)}"
                 name, inp = b.get("name", ""), b.get("input")
                 full_text = tool_input_text(name, inp)
-                uses[tid] = {"id": tid, "name": name, "digest": tool_digest(name, inp),
-                             "is_error": False, "result_chars": 0,
-                             "input_text": full_text[:MAX_INPUT_TEXT_CHARS], "input_chars": len(full_text)}
+                uses[tid] = {
+                    "id": tid,
+                    "name": name,
+                    "digest": tool_digest(name, inp),
+                    "is_error": False,
+                    "result_chars": 0,
+                    "input_text": full_text[:MAX_INPUT_TEXT_CHARS],
+                    "input_chars": len(full_text),
+                }
                 order.append(tid)
         elif m.get("type") == "user":
             for b in _blocks(m, "tool_result"):
@@ -228,8 +269,12 @@ def _system(turn: list[dict]) -> list[dict]:
     out = []
     for m in turn:
         if m.get("type") == "system" and m.get("subtype") in KEPT_SYSTEM_SUBTYPES:
-            keep = {k: v for k, v in m.items()
-                    if k in ("subtype", "durationMs", "content", "compactMetadata", "timestamp")}
+            keep = {
+                k: v
+                for k, v in m.items()
+                if k
+                in ("subtype", "durationMs", "content", "compactMetadata", "timestamp")
+            }
             out.append(keep)
     return out
 
@@ -247,15 +292,22 @@ def _models(turn: list[dict]) -> list[str]:
 def iter_turns(records: list[dict]) -> Iterator[dict]:
     """Yield one JSON-able record per turn. See the module docstring for the shape."""
     for index, (user_msg, turn) in enumerate(iter_turn_pairs(records)):
-        asst_texts = [t.strip() for m in turn if m.get("type") == "assistant"
-                      for t in _text_blocks(_content(m)) if t.strip()]
+        asst_texts = [
+            t.strip()
+            for m in turn
+            if m.get("type") == "assistant"
+            for t in _text_blocks(_content(m))
+            if t.strip()
+        ]
         tools = _tools(turn)
         yield {
             "index": index,
             "uuid": user_msg.get("uuid") or "",
             "timestamp": user_msg.get("timestamp") or "",
             "user_prompt": clean_prompt(" ".join(_text_blocks(_content(user_msg)))),
-            "user_prompt_chars_raw": sum(len(t) for t in _text_blocks(_content(user_msg))),
+            "user_prompt_chars_raw": sum(
+                len(t) for t in _text_blocks(_content(user_msg))
+            ),
             "assistant_summary": asst_texts[-1] if asst_texts else "",
             "assistant_full": "\n\n".join(asst_texts),
             "assistant_chars": sum(len(t) for t in asst_texts),
@@ -279,10 +331,24 @@ def session_meta(records: list[dict]) -> dict:
     ...   "cwd": "/p/x", "timestamp": "t", "version": "2.1", "message": {"content": "hi"}}])["title"]
     'Fix CI'
     """
-    meta: dict = {"session_id": "", "cwd": "", "project": "", "git_branch": "", "started_at": "",
-                  "ended_at": "", "version": "", "title": "", "ai_title": "", "custom_title": "",
-                  "agent_name": "", "prs": [], "cost_state": None, "permission_mode": "",
-                  "n_records": len(records), "record_types": {}}
+    meta: dict = {
+        "session_id": "",
+        "cwd": "",
+        "project": "",
+        "git_branch": "",
+        "started_at": "",
+        "ended_at": "",
+        "version": "",
+        "title": "",
+        "ai_title": "",
+        "custom_title": "",
+        "agent_name": "",
+        "prs": [],
+        "cost_state": None,
+        "permission_mode": "",
+        "n_records": len(records),
+        "record_types": {},
+    }
     for m in records:
         t = m.get("type")
         meta["record_types"][t] = meta["record_types"].get(t, 0) + 1
@@ -302,11 +368,17 @@ def session_meta(records: list[dict]) -> dict:
         elif t == "agent-name" and m.get("agentName"):
             meta["agent_name"] = str(m["agentName"])
         elif t == "pr-link":
-            pr = {"number": m.get("prNumber"), "url": m.get("prUrl"), "repo": m.get("prRepository")}
+            pr = {
+                "number": m.get("prNumber"),
+                "url": m.get("prUrl"),
+                "repo": m.get("prRepository"),
+            }
             if pr not in meta["prs"]:
                 meta["prs"].append(pr)
         elif t == "cost-state":
-            meta["cost_state"] = {k: v for k, v in m.items() if k not in ("type", "uuid", "sessionId")}
+            meta["cost_state"] = {
+                k: v for k, v in m.items() if k not in ("type", "uuid", "sessionId")
+            }
         elif t == "permission-mode" and m.get("permissionMode"):
             meta["permission_mode"] = m["permissionMode"]
     meta["title"] = (meta["custom_title"] or meta["ai_title"]).strip()

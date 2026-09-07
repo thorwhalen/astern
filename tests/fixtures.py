@@ -98,7 +98,9 @@ def mk_records(
         prompt = spec.get("prompt", "hello")
         if spec.get("wrap_reminder"):
             prompt = f"<system-reminder>context</system-reminder> {prompt}"
-        content = [{"type": "text", "text": prompt}] if spec.get("prompt_blocks") else prompt
+        content = (
+            [{"type": "text", "text": prompt}] if spec.get("prompt_blocks") else prompt
+        )
         records.append(
             {
                 "type": "user",
@@ -122,7 +124,12 @@ def mk_records(
 
         if tool_uses:
             blocks = [
-                {"type": "tool_use", "id": tid, "name": tu["name"], "input": tu.get("input", {})}
+                {
+                    "type": "tool_use",
+                    "id": tid,
+                    "name": tu["name"],
+                    "input": tu.get("input", {}),
+                }
                 for tid, tu in zip(tool_ids, tool_uses)
             ]
             records.append(
@@ -131,7 +138,12 @@ def mk_records(
                     "uuid": rid("a"),
                     "sessionId": sid,
                     "timestamp": ts(),
-                    "message": {"id": message_id, "model": model, "usage": usage, "content": blocks},
+                    "message": {
+                        "id": message_id,
+                        "model": model,
+                        "usage": usage,
+                        "content": blocks,
+                    },
                 }
             )
             if spec.get("repeat_usage"):
@@ -141,7 +153,12 @@ def mk_records(
                         "uuid": rid("a"),
                         "sessionId": sid,
                         "timestamp": ts(),
-                        "message": {"id": message_id, "model": model, "usage": usage, "content": []},
+                        "message": {
+                            "id": message_id,
+                            "model": model,
+                            "usage": usage,
+                            "content": [],
+                        },
                     }
                 )
             for tid, tu in zip(tool_ids, tool_uses):
@@ -232,7 +249,9 @@ def append_records(
     on size *and* mtime, and appending within the same wall-clock second could
     otherwise leave the fingerprint unchanged on a coarse filesystem clock).
     """
-    new_records = mk_records(sid, cwd, turns=turns, meta=meta, version=version, git_branch=git_branch)
+    new_records = mk_records(
+        sid, cwd, turns=turns, meta=meta, version=version, git_branch=git_branch
+    )
     with open(path, "a", encoding="utf-8") as f:
         f.writelines(json.dumps(r) + "\n" for r in new_records)
     if mtime is not None:
@@ -251,7 +270,9 @@ class WrittenHome:
     slugs: dict[str, str] = field(default_factory=dict)
 
 
-def write_home(tmp_path: Path, *, sessions: list[Mapping[str, Any]] = (), name: str = ".claude") -> WrittenHome:
+def write_home(
+    tmp_path: Path, *, sessions: list[Mapping[str, Any]] = (), name: str = ".claude"
+) -> WrittenHome:
     """Create a fake ``~/.claude``-shaped directory under ``tmp_path`` from session specs.
 
     Each item of ``sessions`` is a dict: ``sid``, ``cwd`` (required), ``turns``,
@@ -271,8 +292,12 @@ def write_home(tmp_path: Path, *, sessions: list[Mapping[str, Any]] = (), name: 
         git_branch = spec.get("git_branch", "main")
         proj_dir = home / "projects" / slug
         records = mk_records(
-            sid, cwd, turns=spec.get("turns", ()), meta=spec.get("meta", ()),
-            version=version, git_branch=git_branch,
+            sid,
+            cwd,
+            turns=spec.get("turns", ()),
+            meta=spec.get("meta", ()),
+            version=version,
+            git_branch=git_branch,
         )
         path = proj_dir / f"{sid}.jsonl"
         _write_jsonl(path, records, extra_lines=spec.get("extra_lines", ()))
@@ -284,8 +309,11 @@ def write_home(tmp_path: Path, *, sessions: list[Mapping[str, Any]] = (), name: 
             sub_sid = "agent-x"
             sub_path = proj_dir / sid / "subagents" / f"{sub_sid}.jsonl"
             sub_records = mk_records(
-                sub_sid, cwd, turns=spec.get("subagent_turns", spec.get("turns", ())),
-                version=version, git_branch=git_branch,
+                sub_sid,
+                cwd,
+                turns=spec.get("subagent_turns", spec.get("turns", ())),
+                version=version,
+                git_branch=git_branch,
             )
             _write_jsonl(sub_path, sub_records)
     return out
