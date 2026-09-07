@@ -1,0 +1,195 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astern.lenses.synopsis &mdash; astern 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="astern.lenses.timeline" href="timeline.html" />
+    <link rel="prev" title="astern.lenses.stats" href="stats.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            astern
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../astern.html">astern</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../__main__.html">astern.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../estimate.html">astern.estimate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../judge.html">astern.judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ledger.html">astern.ledger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lenses.html">astern.lenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands.html">astern.lenses.commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cost.html">astern.lenses.cost</a></li>
+<li class="toctree-l1"><a class="reference internal" href="friction.html">astern.lenses.friction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hygiene.html">astern.lenses.hygiene</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stats.html">astern.lenses.stats</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">astern.lenses.synopsis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#astern.lenses.synopsis.SCHEMA"><code class="docutils literal notranslate"><span class="pre">SCHEMA</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.lenses.synopsis.SYSTEM"><code class="docutils literal notranslate"><span class="pre">SYSTEM</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.lenses.synopsis.synopsis"><code class="docutils literal notranslate"><span class="pre">synopsis()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="timeline.html">astern.lenses.timeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report.html">astern.report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sources.html">astern.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../store.html">astern.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools.html">astern.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../turns.html">astern.turns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views.html">astern.views</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">astern</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">astern.lenses.synopsis</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/module_docs/astern/lenses/synopsis.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-astern.lenses.synopsis">
+<span id="astern-lenses-synopsis"></span><h1>astern.lenses.synopsis<a class="headerlink" href="#module-astern.lenses.synopsis" title="Link to this heading"></a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">synopsis</span></code>: one judge call per session — what it was for, and what it cost.</p>
+<p>The plan’s lens A, widened. One structured judgment over the compressed view from
+<a class="reference internal" href="../views.html#module-astern.views" title="astern.views"><code class="xref py py-mod docutils literal notranslate"><span class="pre">astern.views</span></code></a> answers, in a single call, the questions that all need the same
+reading of the session: the goal and outcome, the problems and their solutions, the
+friction, the corrections, the vocabulary gap in both directions, and the skills and
+functions the session suggests. Splitting these into six lenses would mean six
+readings of the same text, which is exactly the token waste astern exists to stop.</p>
+<p>Two invariants live here rather than in the prompt:</p>
+<ul class="simple">
+<li><p><strong>A failed judge call is not a covered session.</strong> An error returns a single
+<code class="docutils literal notranslate"><span class="pre">judge_error</span></code> finding carrying <code class="docutils literal notranslate"><span class="pre">error</span></code>, and <code class="xref py py-func docutils literal notranslate"><span class="pre">astern.tools._run_lens()</span></code>
+refuses to advance the ledger past a finding that carries one. Marking a session
+covered because the call failed is how a batch quietly skips the sessions it
+could not read.</p></li>
+<li><p><strong>Every call is recorded whole</strong>, under <code class="docutils literal notranslate"><span class="pre">judgments/synopsis/&lt;sid&gt;/&lt;from_index&gt;</span></code>,
+with the free features next to the usage the judge reported. That pairing is the
+only data <a class="reference internal" href="../estimate.html#module-astern.estimate" title="astern.estimate"><code class="xref py py-mod docutils literal notranslate"><span class="pre">astern.estimate</span></code></a> has, and it exists only if it is written at the
+moment of the call.</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">astern.judge</span><span class="w"> </span><span class="kn">import</span> <span class="n">replay_judge</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">astern.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">MemoryStore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">turns</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">'index'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'uuid'</span><span class="p">:</span> <span class="s1">'u0'</span><span class="p">,</span> <span class="s1">'user_prompt'</span><span class="p">:</span> <span class="s1">'why is CI red?'</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="s1">'assistant_full'</span><span class="p">:</span> <span class="s1">'A stale lockfile.'</span><span class="p">,</span> <span class="s1">'tools'</span><span class="p">:</span> <span class="p">[]}]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">store</span> <span class="o">=</span> <span class="n">MemoryStore</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">answer</span> <span class="o">=</span> <span class="s1">'{"goal": "unred the CI", "outcome": "done", "problems": [], "friction": [],'</span>\
+<span class="gp">... </span>         <span class="s1">' "corrections": [], "user_terms": [], "agent_terms": [],'</span>\
+<span class="gp">... </span>         <span class="s1">' "skill_candidates": [], "reusable_code": [], "notable_decisions": []}'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">synopsis</span><span class="p">({</span><span class="s1">'session_id'</span><span class="p">:</span> <span class="s1">'sid1'</span><span class="p">},</span> <span class="n">turns</span><span class="p">,</span> <span class="n">judge</span><span class="o">=</span><span class="n">replay_judge</span><span class="p">({},</span> <span class="n">default</span><span class="o">=</span><span class="n">answer</span><span class="p">),</span>
+<span class="gp">... </span>               <span class="n">store</span><span class="o">=</span><span class="n">store</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'kind'</span><span class="p">],</span> <span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'evidence'</span><span class="p">][</span><span class="s1">'goal'</span><span class="p">],</span> <span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'usage'</span><span class="p">][</span><span class="s1">'output_tokens'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<span class="go">('synopsis', 'unred the CI', True)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">store</span><span class="o">.</span><span class="n">judgments</span><span class="p">)</span>
+<span class="go">['synopsis/sid1/0']</span>
+</pre></div>
+</div>
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.lenses.synopsis.SCHEMA">
+<span class="sig-prename descclassname"><span class="pre">astern.lenses.synopsis.</span></span><span class="sig-name descname"><span class="pre">SCHEMA</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'additionalProperties':</span> <span class="pre">False,</span> <span class="pre">'properties':</span> <span class="pre">{'agent_terms':</span> <span class="pre">{'items':</span> <span class="pre">{'additionalProperties':</span> <span class="pre">False,</span> <span class="pre">'properties':</span> <span class="pre">{'definition':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'term':</span> <span class="pre">{'type':</span> <span class="pre">'string'}},</span> <span class="pre">'required':</span> <span class="pre">['term',</span> <span class="pre">'definition'],</span> <span class="pre">'type':</span> <span class="pre">'object'},</span> <span class="pre">'type':</span> <span class="pre">'array'},</span> <span class="pre">'corrections':</span> <span class="pre">{'items':</span> <span class="pre">{'additionalProperties':</span> <span class="pre">False,</span> <span class="pre">'properties':</span> <span class="pre">{'rule_candidate':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'what_user_said':</span> <span class="pre">{'type':</span> <span class="pre">'string'}},</span> <span class="pre">'required':</span> <span class="pre">['what_user_said',</span> <span class="pre">'rule_candidate'],</span> <span class="pre">'type':</span> <span class="pre">'object'},</span> <span class="pre">'type':</span> <span class="pre">'array'},</span> <span class="pre">'friction':</span> <span class="pre">{'items':</span> <span class="pre">{'additionalProperties':</span> <span class="pre">False,</span> <span class="pre">'properties':</span> <span class="pre">{'cause_guess':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'turn_indices':</span> <span class="pre">{'items':</span> <span class="pre">{'type':</span> <span class="pre">'integer'},</span> <span class="pre">'type':</span> <span class="pre">'array'},</span> <span class="pre">'what':</span> <span class="pre">{'type':</span> <span class="pre">'string'}},</span> <span class="pre">'required':</span> <span class="pre">['what',</span> <span class="pre">'cause_guess',</span> <span class="pre">'turn_indices'],</span> <span class="pre">'type':</span> <span class="pre">'object'},</span> <span class="pre">'type':</span> <span class="pre">'array'},</span> <span class="pre">'goal':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'notable_decisions':</span> <span class="pre">{'items':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'type':</span> <span class="pre">'array'},</span> <span class="pre">'outcome':</span> <span class="pre">{'enum':</span> <span class="pre">['done',</span> <span class="pre">'partly',</span> <span class="pre">'abandoned',</span> <span class="pre">'unclear'],</span> <span class="pre">'type':</span> <span class="pre">'string'},</span> <span class="pre">'problems':</span> <span class="pre">{'items':</span> <span class="pre">{'additionalProperties':</span> <span class="pre">False,</span> <span class="pre">'properties':</span> <span class="pre">{'category':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'problem':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'solution':</span> <span class="pre">{'type':</span> <span class="pre">'string'}},</span> <span class="pre">'required':</span> <span class="pre">['problem',</span> <span class="pre">'solution',</span> <span class="pre">'category'],</span> <span class="pre">'type':</span> <span class="pre">'object'},</span> <span class="pre">'type':</span> <span class="pre">'array'},</span> <span class="pre">'reusable_code':</span> <span class="pre">{'items':</span> <span class="pre">{'additionalProperties':</span> <span class="pre">False,</span> <span class="pre">'properties':</span> <span class="pre">{'suggested_function':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'what':</span> <span class="pre">{'type':</span> <span class="pre">'string'}},</span> <span class="pre">'required':</span> <span class="pre">['what',</span> <span class="pre">'suggested_function'],</span> <span class="pre">'type':</span> <span class="pre">'object'},</span> <span class="pre">'type':</span> <span class="pre">'array'},</span> <span class="pre">'skill_candidates':</span> <span class="pre">{'items':</span> <span class="pre">{'additionalProperties':</span> <span class="pre">False,</span> <span class="pre">'properties':</span> <span class="pre">{'name':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'recurrence_hint':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'why':</span> <span class="pre">{'type':</span> <span class="pre">'string'}},</span> <span class="pre">'required':</span> <span class="pre">['name',</span> <span class="pre">'why',</span> <span class="pre">'recurrence_hint'],</span> <span class="pre">'type':</span> <span class="pre">'object'},</span> <span class="pre">'type':</span> <span class="pre">'array'},</span> <span class="pre">'user_terms':</span> <span class="pre">{'items':</span> <span class="pre">{'additionalProperties':</span> <span class="pre">False,</span> <span class="pre">'properties':</span> <span class="pre">{'definition':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'established_term':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'phrase':</span> <span class="pre">{'type':</span> <span class="pre">'string'}},</span> <span class="pre">'required':</span> <span class="pre">['phrase',</span> <span class="pre">'established_term',</span> <span class="pre">'definition'],</span> <span class="pre">'type':</span> <span class="pre">'object'},</span> <span class="pre">'type':</span> <span class="pre">'array'}},</span> <span class="pre">'required':</span> <span class="pre">['goal',</span> <span class="pre">'outcome',</span> <span class="pre">'problems',</span> <span class="pre">'friction',</span> <span class="pre">'corrections',</span> <span class="pre">'user_terms',</span> <span class="pre">'agent_terms',</span> <span class="pre">'skill_candidates',</span> <span class="pre">'reusable_code',</span> <span class="pre">'notable_decisions'],</span> <span class="pre">'type':</span> <span class="pre">'object'}</span></span><a class="headerlink" href="#astern.lenses.synopsis.SCHEMA" title="Link to this definition"></a></dt>
+<dd><p>The synopsis schema. <code class="docutils literal notranslate"><span class="pre">additionalProperties:</span> <span class="pre">false</span></code> everywhere and every field
+required: a partially-filled object is indistinguishable from a session with
+nothing to say, and the difference matters for the recurrence lenses downstream.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.lenses.synopsis.SYSTEM">
+<span class="sig-prename descclassname"><span class="pre">astern.lenses.synopsis.</span></span><span class="sig-name descname"><span class="pre">SYSTEM</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'You</span> <span class="pre">analyse</span> <span class="pre">transcripts</span> <span class="pre">of</span> <span class="pre">coding</span> <span class="pre">sessions</span> <span class="pre">between</span> <span class="pre">a</span> <span class="pre">developer</span> <span class="pre">and</span> <span class="pre">an</span> <span class="pre">AI</span> <span class="pre">agent.</span> <span class="pre">You</span> <span class="pre">answer</span> <span class="pre">only</span> <span class="pre">with</span> <span class="pre">one</span> <span class="pre">JSON</span> <span class="pre">object</span> <span class="pre">matching</span> <span class="pre">the</span> <span class="pre">given</span> <span class="pre">schema.</span> <span class="pre">No</span> <span class="pre">prose,</span> <span class="pre">no</span> <span class="pre">markdown,</span> <span class="pre">no</span> <span class="pre">code</span> <span class="pre">fences.</span> <span class="pre">Unknown</span> <span class="pre">or</span> <span class="pre">absent:</span> <span class="pre">use</span> <span class="pre">an</span> <span class="pre">empty</span> <span class="pre">list</span> <span class="pre">or</span> <span class="pre">&quot;unclear&quot;.'</span></span><a class="headerlink" href="#astern.lenses.synopsis.SYSTEM" title="Link to this definition"></a></dt>
+<dd><p>What the judge is, in one line. Replacing the default system prompt drops ~4k
+tokens of Claude Code preamble from every call and, because nothing is then
+prompt-cached, puts the whole cost in <code class="docutils literal notranslate"><span class="pre">input_tokens</span></code> where a model can see it.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.lenses.synopsis.synopsis">
+<span class="sig-prename descclassname"><span class="pre">astern.lenses.synopsis.</span></span><span class="sig-name descname"><span class="pre">synopsis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">turns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">judge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prior</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_chars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ctx</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/astern/lenses/synopsis.html#synopsis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.lenses.synopsis.synopsis" title="Link to this definition"></a></dt>
+<dd><p>What this session was for, what went wrong, and what it suggests building.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="stats.html" class="btn btn-neutral float-left" title="astern.lenses.stats" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="timeline.html" class="btn btn-neutral float-right" title="astern.lenses.timeline" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

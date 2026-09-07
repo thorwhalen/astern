@@ -1,0 +1,4 @@
+astern.lenses.commands
+======================
+.. automodule:: astern.lenses.commands
+   :members:

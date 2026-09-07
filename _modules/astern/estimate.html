@@ -1,0 +1,424 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astern.estimate &mdash; astern 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            astern
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern.html">astern</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/__main__.html">astern.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/estimate.html">astern.estimate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/judge.html">astern.judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/ledger.html">astern.ledger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses.html">astern.lenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/commands.html">astern.lenses.commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/cost.html">astern.lenses.cost</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/friction.html">astern.lenses.friction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/hygiene.html">astern.lenses.hygiene</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/stats.html">astern.lenses.stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/synopsis.html">astern.lenses.synopsis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/timeline.html">astern.lenses.timeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/report.html">astern.report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/sources.html">astern.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/store.html">astern.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/tools.html">astern.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/turns.html">astern.turns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/views.html">astern.views</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">astern</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">astern.estimate</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for astern.estimate</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""What will judging this batch cost? — features, a fitted model, a prediction.</span>
+
+<span class="sd">The point of the whole package is to burn fewer tokens, so it must be able to say</span>
+<span class="sd">what a run *will* burn before it burns it. Every judged session stores its</span>
+<span class="sd">:func:`features` (all computable with no model at all) next to the usage the judge</span>
+<span class="sd">actually reported, which makes the cost model a plain regression of a measured</span>
+<span class="sd">quantity on free ones. :func:`fit` reads those pairs, :func:`predict` applies them,</span>
+<span class="sd">and ``astern judge --dry-run`` prices a batch without calling anything.</span>
+
+<span class="sd">Three decisions:</span>
+
+<span class="sd">- **The regressor is ``view_chars``, not ``bytes``.** The judge never sees the</span>
+<span class="sd">  transcript; it sees the view :mod:`astern.views` renders, and the view has a</span>
+<span class="sd">  ceiling. Session bytes vary 100x, view chars vary ~3x, and the second is what is</span>
+<span class="sd">  actually sent. ``bytes`` stays in the feature dict as the fallback proxy for</span>
+<span class="sd">  sessions with no view yet.</span>
+<span class="sd">- **Ordinary least squares, in stdlib.** ``numpy`` is not a dependency and three</span>
+<span class="sd">  columns do not justify one; the normal equations solved by Gaussian elimination</span>
+<span class="sd">  are twenty lines and exact enough for a token budget.</span>
+<span class="sd">- **The intercept is real and must not be forced through zero.** A tool-less call</span>
+<span class="sd">  with our own system prompt still costs ~1.1k input tokens before the view is</span>
+<span class="sd">  added, so a proportional model under-prices short sessions by a factor of two.</span>
+<span class="sd">- **Retries, not view size, are what the residual is made of.** Measured over ten</span>
+<span class="sd">  real sessions on haiku, two views within 6% of each other cost 4.8k and 20.8k</span>
+<span class="sd">  input tokens; the difference is the number of API round trips, because a</span>
+<span class="sd">  structured answer the schema rejects is retried with the whole conversation</span>
+<span class="sd">  resent. Restricted to the calls that took one round trip the same regression has</span>
+<span class="sd">  R² = 0.995 — so ``fit`` reports ``input_single_pass`` and ``retry_rate`` beside</span>
+<span class="sd">  the headline line, and a low overall R² has an explanation instead of a shrug.</span>
+<span class="sd">  :func:`predict` still uses the all-calls line, because retries are part of what a</span>
+<span class="sd">  batch actually costs.</span>
+
+<span class="sd">&gt;&gt;&gt; pts = [{'features': {'view_chars': c, 'n_turns': 2}, 'usage':</span>
+<span class="sd">...         {'input_tokens': 1000 + c // 4, 'output_tokens': 300}}</span>
+<span class="sd">...        for c in (2000, 6000, 12000, 20000)]</span>
+<span class="sd">&gt;&gt;&gt; m = fit(pts)</span>
+<span class="sd">&gt;&gt;&gt; m['n'], round(m['input']['per_1k_chars']), round(m['input']['r2'], 3)</span>
+<span class="sd">(4, 250, 1.0)</span>
+<span class="sd">&gt;&gt;&gt; p = predict(m, {'view_chars': 8000, 'n_turns': 3})</span>
+<span class="sd">&gt;&gt;&gt; p['input_tokens'], p['output_tokens']</span>
+<span class="sd">(3000, 300)</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">statistics</span><span class="w"> </span><span class="kn">import</span> <span class="n">mean</span><span class="p">,</span> <span class="n">pstdev</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">astern.judge</span><span class="w"> </span><span class="kn">import</span> <span class="n">input_tokens</span><span class="p">,</span> <span class="n">total_tokens</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astern.views</span><span class="w"> </span><span class="kn">import</span> <span class="n">DFLT_MAX_CHARS</span>
+
+<span class="c1">#: What one tool-less ``claude -p`` call costs before the view is added, and roughly</span>
+<span class="c1">#: how many input tokens a char of view buys (measured 2026-09-07 on haiku). Used</span>
+<span class="c1">#: only when nothing has been judged yet — a prior, replaced by the first real fit.</span>
+<span class="n">PRIOR_INPUT_INTERCEPT</span> <span class="o">=</span> <span class="mf">1100.0</span>
+<span class="n">PRIOR_INPUT_PER_CHAR</span> <span class="o">=</span> <span class="mf">0.27</span>
+<span class="n">PRIOR_OUTPUT_TOKENS</span> <span class="o">=</span> <span class="mf">900.0</span>
+
+<span class="c1">#: Below this many observations a slope is noise; :func:`fit` reports a ratio model</span>
+<span class="c1">#: instead and says so in ``method``.</span>
+<span class="n">MIN_POINTS_FOR_OLS</span> <span class="o">=</span> <span class="mi">3</span>
+
+
+<div class="viewcode-block" id="features">
+<a class="viewcode-back" href="../../module_docs/astern/estimate.html#astern.estimate.features">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">features</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">turns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="n">view_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Everything about a session that costs no tokens to know.</span>
+
+<span class="sd">    ``turns`` is the scope actually rendered (the new turns, on an incremental run),</span>
+<span class="sd">    so the features describe the same thing the usage will.</span>
+
+<span class="sd">    &gt;&gt;&gt; f = features({'source': {'size': 4096}}, [{'user_prompt': 'hi', 'assistant_chars': 10,</span>
+<span class="sd">    ...     'n_tool_calls': 2, 'n_errors': 1, 'tool_result_chars': 99, 'tools': []}], 'x' * 40)</span>
+<span class="sd">    &gt;&gt;&gt; f['bytes'], f['n_turns'], f['prose_chars'], f['view_chars'], f['view_tokens_est']</span>
+<span class="sd">    (4096, 1, 12, 40, 10)</span>
+<span class="sd">    """</span>
+    <span class="n">prompt_chars</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"user_prompt"</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">turns</span><span class="p">)</span>
+    <span class="n">assistant_chars</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"assistant_chars"</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">turns</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">"bytes"</span><span class="p">:</span> <span class="nb">int</span><span class="p">((</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"source"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"size"</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="s2">"n_turns"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">turns</span><span class="p">),</span>
+        <span class="s2">"n_tool_calls"</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"n_tool_calls"</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">turns</span><span class="p">),</span>
+        <span class="s2">"n_errors"</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"n_errors"</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">turns</span><span class="p">),</span>
+        <span class="s2">"prompt_chars"</span><span class="p">:</span> <span class="n">prompt_chars</span><span class="p">,</span>
+        <span class="s2">"assistant_chars"</span><span class="p">:</span> <span class="n">assistant_chars</span><span class="p">,</span>
+        <span class="s2">"prose_chars"</span><span class="p">:</span> <span class="n">prompt_chars</span> <span class="o">+</span> <span class="n">assistant_chars</span><span class="p">,</span>
+        <span class="s2">"tool_result_chars"</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tool_result_chars"</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">turns</span><span class="p">),</span>
+        <span class="s2">"view_chars"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">view_text</span><span class="p">),</span>
+        <span class="s2">"view_tokens_est"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">view_text</span><span class="p">)</span> <span class="o">//</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_solve</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span> <span class="n">b</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Gaussian elimination with partial pivoting; ``None`` if singular.</span>
+
+<span class="sd">    &gt;&gt;&gt; _solve([[2.0, 0.0], [0.0, 4.0]], [2.0, 8.0])</span>
+<span class="sd">    [1.0, 2.0]</span>
+<span class="sd">    """</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span><span class="p">[:]</span> <span class="o">+</span> <span class="p">[</span><span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">a</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">piv</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">col</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">piv</span><span class="p">][</span><span class="n">col</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mf">1e-12</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">m</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="n">piv</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="n">piv</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">r</span> <span class="o">==</span> <span class="n">col</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">/</span> <span class="n">m</span><span class="p">[</span><span class="n">col</span><span class="p">][</span><span class="n">col</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">m</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">-=</span> <span class="n">f</span> <span class="o">*</span> <span class="n">m</span><span class="p">[</span><span class="n">col</span><span class="p">][</span><span class="n">c</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">/</span> <span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_ols</span><span class="p">(</span><span class="n">rows</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span> <span class="n">y</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Least squares of ``y`` on ``rows`` (each row already carries its 1 intercept).</span>
+
+<span class="sd">    &gt;&gt;&gt; r = _ols([[1.0, 0.0], [1.0, 1.0], [1.0, 2.0]], [1.0, 3.0, 5.0])</span>
+<span class="sd">    &gt;&gt;&gt; [round(c, 6) for c in r['coef']], round(r['r2'], 6)</span>
+<span class="sd">    ([1.0, 2.0], 1.0)</span>
+<span class="sd">    """</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="n">k</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">xtx</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">sum</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">a</span><span class="p">]</span> <span class="o">*</span> <span class="n">rows</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">b</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span>
+    <span class="n">xty</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">a</span><span class="p">]</span> <span class="o">*</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span>
+    <span class="n">coef</span> <span class="o">=</span> <span class="n">_solve</span><span class="p">(</span><span class="n">xtx</span><span class="p">,</span> <span class="n">xty</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">coef</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">pred</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="n">v</span> <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">coef</span><span class="p">,</span> <span class="n">row</span><span class="p">))</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">]</span>
+    <span class="n">resid</span> <span class="o">=</span> <span class="p">[</span><span class="n">yi</span> <span class="o">-</span> <span class="n">pi</span> <span class="k">for</span> <span class="n">yi</span><span class="p">,</span> <span class="n">pi</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">pred</span><span class="p">)]</span>
+    <span class="n">ybar</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">ss_tot</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">((</span><span class="n">yi</span> <span class="o">-</span> <span class="n">ybar</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">yi</span> <span class="ow">in</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">ss_res</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">r</span> <span class="o">*</span> <span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">resid</span><span class="p">)</span>
+    <span class="n">dof</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="n">k</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"coef"</span><span class="p">:</span> <span class="n">coef</span><span class="p">,</span> <span class="s2">"n"</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span>
+            <span class="s2">"r2"</span><span class="p">:</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">ss_res</span> <span class="o">/</span> <span class="n">ss_tot</span> <span class="k">if</span> <span class="n">ss_tot</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s2">"resid_std"</span><span class="p">:</span> <span class="p">(</span><span class="n">ss_res</span> <span class="o">/</span> <span class="n">dof</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_points</span><span class="p">(</span><span class="n">judgments</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""(features, usage) pairs from stored judgment records; errored calls dropped."""</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">judgments</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span> <span class="n">j</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"error"</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">f</span><span class="p">,</span> <span class="n">u</span> <span class="o">=</span> <span class="n">j</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"features"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{},</span> <span class="n">j</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"usage"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"view_chars"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">total_tokens</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">f</span><span class="p">,</span> <span class="n">u</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<span class="c1">#: A *non-zero* cache read does not mean a retry. Two consecutive judge calls that each</span>
+<span class="c1">#: took exactly one round trip still read ~1.3k cached tokens: the system prompt and the</span>
+<span class="c1">#: schema are identical between invocations and the CLI's cache window outlives one call.</span>
+<span class="c1">#: Only a read comfortably above that block means the *conversation* was re-sent.</span>
+<span class="n">FIXED_CACHE_TOKENS</span> <span class="o">=</span> <span class="mi">2000</span>
+
+
+<div class="viewcode-block" id="round_trips">
+<a class="viewcode-back" href="../../module_docs/astern/estimate.html#astern.estimate.round_trips">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">round_trips</span><span class="p">(</span><span class="n">judgment</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""How many API calls one judge call took — recorded, else inferred from the cache.</span>
+
+<span class="sd">    ``n_iterations`` (recorded since the CLI's ``usage.iterations`` was captured) is</span>
+<span class="sd">    authoritative. Older records have only the cache read to go on, and the threshold</span>
+<span class="sd">    it is compared against is :data:`FIXED_CACHE_TOKENS`, not zero — see there.</span>
+
+<span class="sd">    &gt;&gt;&gt; round_trips({'usage': {'n_iterations': 3}})</span>
+<span class="sd">    3</span>
+<span class="sd">    &gt;&gt;&gt; round_trips({'usage': {'cache_read_input_tokens': 5197}})</span>
+<span class="sd">    2</span>
+<span class="sd">    &gt;&gt;&gt; round_trips({'usage': {'cache_read_input_tokens': 1319}})</span>
+<span class="sd">    1</span>
+<span class="sd">    """</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="p">(</span><span class="n">judgment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"usage"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"n_iterations"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">judgment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"num_turns"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">cached</span> <span class="o">=</span> <span class="p">(</span><span class="n">judgment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"usage"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"cache_read_input_tokens"</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">cached</span> <span class="o">&gt;</span> <span class="n">FIXED_CACHE_TOKENS</span> <span class="k">else</span> <span class="mi">1</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_spread</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"mean"</span><span class="p">:</span> <span class="n">mean</span><span class="p">(</span><span class="n">values</span><span class="p">),</span> <span class="s2">"std"</span><span class="p">:</span> <span class="n">pstdev</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">"n"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)}</span>
+
+
+<div class="viewcode-block" id="fit">
+<a class="viewcode-back" href="../../module_docs/astern/estimate.html#astern.estimate.fit">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="n">judgments</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Fit input tokens on view size; summarise output tokens, totals and cost.</span>
+
+<span class="sd">    ``judgments`` are the records :mod:`astern.lenses.synopsis` stores (each with</span>
+<span class="sd">    ``features`` and ``usage``). With fewer than :data:`MIN_POINTS_FOR_OLS` points</span>
+<span class="sd">    the slope is a ratio through the measured intercept, and ``method`` says so.</span>
+
+<span class="sd">    &gt;&gt;&gt; fit([])['method']</span>
+<span class="sd">    'prior'</span>
+<span class="sd">    &gt;&gt;&gt; fit([{'features': {'view_chars': 4000, 'n_turns': 2},</span>
+<span class="sd">    ...       'usage': {'input_tokens': 2200, 'output_tokens': 800}}])['method']</span>
+<span class="sd">    'ratio'</span>
+<span class="sd">    """</span>
+    <span class="n">pts</span> <span class="o">=</span> <span class="n">_points</span><span class="p">(</span><span class="n">judgments</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span>
+    <span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="s2">"view_chars"</span><span class="p">])</span> <span class="k">for</span> <span class="n">f</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">pts</span><span class="p">]</span>
+    <span class="n">ins</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">input_tokens</span><span class="p">(</span><span class="n">u</span><span class="p">))</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">pts</span><span class="p">]</span>
+    <span class="n">outs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"output_tokens"</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">pts</span><span class="p">]</span>
+    <span class="n">tots</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">o</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ins</span><span class="p">,</span> <span class="n">outs</span><span class="p">)]</span>
+    <span class="n">costs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"cost_usd"</span><span class="p">)</span> <span class="ow">or</span> <span class="mf">0.0</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">judgments</span>
+             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">j</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"error"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">j</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"cost_usd"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="n">model</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"n"</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span> <span class="s2">"method"</span><span class="p">:</span> <span class="s2">"prior"</span><span class="p">,</span> <span class="s2">"models"</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span>
+        <span class="p">{</span><span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"model"</span><span class="p">))</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">judgments</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">j</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"model"</span><span class="p">)})}</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">b0</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">resid</span> <span class="o">=</span> <span class="n">PRIOR_INPUT_INTERCEPT</span><span class="p">,</span> <span class="n">PRIOR_INPUT_PER_CHAR</span><span class="p">,</span> <span class="n">PRIOR_INPUT_INTERCEPT</span>
+        <span class="n">r2</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">MIN_POINTS_FOR_OLS</span><span class="p">:</span>
+        <span class="n">model</span><span class="p">[</span><span class="s2">"method"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"ratio"</span>
+        <span class="n">b0</span> <span class="o">=</span> <span class="n">PRIOR_INPUT_INTERCEPT</span>
+        <span class="n">b1</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">mean</span><span class="p">((</span><span class="n">i</span> <span class="o">-</span> <span class="n">b0</span><span class="p">)</span> <span class="o">/</span> <span class="n">x</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ins</span><span class="p">,</span> <span class="n">xs</span><span class="p">)))</span>
+        <span class="n">resid</span> <span class="o">=</span> <span class="n">pstdev</span><span class="p">(</span><span class="n">ins</span><span class="p">)</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">mean</span><span class="p">(</span><span class="n">ins</span><span class="p">)</span>
+        <span class="n">r2</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">model</span><span class="p">[</span><span class="s2">"method"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"ols"</span>
+        <span class="n">simple</span> <span class="o">=</span> <span class="n">_ols</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">],</span> <span class="n">ins</span><span class="p">)</span>
+        <span class="n">b0</span><span class="p">,</span> <span class="n">b1</span> <span class="o">=</span> <span class="n">simple</span><span class="p">[</span><span class="s2">"coef"</span><span class="p">]</span>
+        <span class="n">resid</span><span class="p">,</span> <span class="n">r2</span> <span class="o">=</span> <span class="n">simple</span><span class="p">[</span><span class="s2">"resid_std"</span><span class="p">],</span> <span class="n">simple</span><span class="p">[</span><span class="s2">"r2"</span><span class="p">]</span>
+        <span class="n">multi</span> <span class="o">=</span> <span class="n">_ols</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="s2">"n_turns"</span><span class="p">])]</span> <span class="k">for</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">_</span><span class="p">),</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pts</span><span class="p">,</span> <span class="n">xs</span><span class="p">)],</span> <span class="n">ins</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">multi</span><span class="p">:</span>
+            <span class="n">model</span><span class="p">[</span><span class="s2">"input_multi"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">"names"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"1"</span><span class="p">,</span> <span class="s2">"view_chars"</span><span class="p">,</span> <span class="s2">"n_turns"</span><span class="p">],</span>
+                <span class="s2">"coef"</span><span class="p">:</span> <span class="n">multi</span><span class="p">[</span><span class="s2">"coef"</span><span class="p">],</span> <span class="s2">"r2"</span><span class="p">:</span> <span class="n">multi</span><span class="p">[</span><span class="s2">"r2"</span><span class="p">],</span> <span class="s2">"resid_std"</span><span class="p">:</span> <span class="n">multi</span><span class="p">[</span><span class="s2">"resid_std"</span><span class="p">]}</span>
+    <span class="n">model</span><span class="p">[</span><span class="s2">"input"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"intercept"</span><span class="p">:</span> <span class="n">b0</span><span class="p">,</span> <span class="s2">"per_char"</span><span class="p">:</span> <span class="n">b1</span><span class="p">,</span> <span class="s2">"per_1k_chars"</span><span class="p">:</span> <span class="n">b1</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">,</span>
+                      <span class="s2">"r2"</span><span class="p">:</span> <span class="n">r2</span><span class="p">,</span> <span class="s2">"resid_std"</span><span class="p">:</span> <span class="n">resid</span><span class="p">,</span>
+                      <span class="s2">"reads_as"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"≈ </span><span class="si">{</span><span class="n">b1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1000</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> input tokens per 1k view chars"</span>
+                                  <span class="sa">f</span><span class="s2">" + </span><span class="si">{</span><span class="n">b0</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">}</span>
+    <span class="n">model</span><span class="p">[</span><span class="s2">"output"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_spread</span><span class="p">(</span><span class="n">outs</span><span class="p">)</span> <span class="k">if</span> <span class="n">outs</span> <span class="k">else</span> <span class="p">{</span><span class="s2">"mean"</span><span class="p">:</span> <span class="n">PRIOR_OUTPUT_TOKENS</span><span class="p">,</span> <span class="s2">"std"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">"n"</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+    <span class="n">model</span><span class="p">[</span><span class="s2">"total"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_spread</span><span class="p">(</span><span class="n">tots</span><span class="p">)</span> <span class="k">if</span> <span class="n">tots</span> <span class="k">else</span> <span class="p">{</span><span class="s2">"mean"</span><span class="p">:</span> <span class="n">PRIOR_INPUT_INTERCEPT</span> <span class="o">+</span> <span class="n">PRIOR_OUTPUT_TOKENS</span><span class="p">,</span>
+                                                 <span class="s2">"std"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">"n"</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+    <span class="n">model</span><span class="p">[</span><span class="s2">"cost_usd"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_spread</span><span class="p">(</span><span class="n">costs</span><span class="p">)</span> <span class="k">if</span> <span class="n">costs</span> <span class="k">else</span> <span class="p">{</span><span class="s2">"mean"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">"std"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">"n"</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+    <span class="c1"># Round trips are the variance nobody sees: a structured answer the schema rejects</span>
+    <span class="c1"># is retried with the whole conversation resent, so one session's input can be four</span>
+    <span class="c1"># times the view it was built from. Reported separately, so a low overall R² has an</span>
+    <span class="c1"># explanation rather than a shrug — and so the fix (fewer retries) is measurable.</span>
+    <span class="n">ok</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">judgments</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">j</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"error"</span><span class="p">)</span>
+          <span class="ow">and</span> <span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"features"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"view_chars"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">total_tokens</span><span class="p">(</span><span class="n">j</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"usage"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})]</span>
+    <span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+        <span class="n">trips</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">round_trips</span><span class="p">(</span><span class="n">j</span><span class="p">))</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">ok</span><span class="p">]</span>
+        <span class="n">model</span><span class="p">[</span><span class="s2">"iterations"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_spread</span><span class="p">(</span><span class="n">trips</span><span class="p">)</span>
+        <span class="n">model</span><span class="p">[</span><span class="s2">"retry_rate"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">trips</span> <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">trips</span><span class="p">)</span>
+        <span class="n">one</span> <span class="o">=</span> <span class="p">[(</span><span class="n">f</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">u</span><span class="p">),</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pts</span><span class="p">,</span> <span class="n">trips</span><span class="p">)</span> <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">one</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">MIN_POINTS_FOR_OLS</span><span class="p">:</span>
+            <span class="n">single</span> <span class="o">=</span> <span class="n">_ols</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="s2">"view_chars"</span><span class="p">])]</span> <span class="k">for</span> <span class="n">f</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">one</span><span class="p">],</span>
+                          <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">input_tokens</span><span class="p">(</span><span class="n">u</span><span class="p">))</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">one</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">single</span><span class="p">:</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">single</span><span class="p">[</span><span class="s2">"coef"</span><span class="p">]</span>
+                <span class="n">model</span><span class="p">[</span><span class="s2">"input_single_pass"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">"n"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">one</span><span class="p">),</span> <span class="s2">"intercept"</span><span class="p">:</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">"per_char"</span><span class="p">:</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="s2">"per_1k_chars"</span><span class="p">:</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">,</span> <span class="s2">"r2"</span><span class="p">:</span> <span class="n">single</span><span class="p">[</span><span class="s2">"r2"</span><span class="p">],</span>
+                    <span class="s2">"resid_std"</span><span class="p">:</span> <span class="n">single</span><span class="p">[</span><span class="s2">"resid_std"</span><span class="p">],</span>
+                    <span class="s2">"reads_as"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"≈ </span><span class="si">{</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1000</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> input tokens per 1k view chars"</span>
+                                <span class="sa">f</span><span class="s2">" + </span><span class="si">{</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">, on calls that took one round trip"</span><span class="p">}</span>
+    <span class="n">tot_tokens</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">tots</span><span class="p">)</span>
+    <span class="n">model</span><span class="p">[</span><span class="s2">"cost_per_total_token"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">costs</span><span class="p">)</span> <span class="o">/</span> <span class="n">tot_tokens</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">costs</span> <span class="ow">and</span> <span class="n">tot_tokens</span><span class="p">)</span> <span class="k">else</span> <span class="mf">0.0</span>
+    <span class="c1"># view_chars per source byte: the proxy for a session that has never been viewed.</span>
+    <span class="n">src</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"bytes"</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">pts</span><span class="p">]</span>
+    <span class="n">model</span><span class="p">[</span><span class="s2">"view_chars_per_byte"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">src</span><span class="p">))</span> <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="k">else</span> <span class="mf">0.0</span>
+    <span class="k">return</span> <span class="n">model</span></div>
+
+
+
+<div class="viewcode-block" id="predict">
+<a class="viewcode-back" href="../../module_docs/astern/estimate.html#astern.estimate.predict">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Predicted tokens (and cost) of judging one session, with a ±1σ band.</span>
+
+<span class="sd">    &gt;&gt;&gt; m = fit([])</span>
+<span class="sd">    &gt;&gt;&gt; p = predict(m, {'view_chars': 10000})</span>
+<span class="sd">    &gt;&gt;&gt; p['input_tokens'], p['total_tokens'] == p['input_tokens'] + p['output_tokens']</span>
+<span class="sd">    (3800, True)</span>
+<span class="sd">    &gt;&gt;&gt; p['low'] &lt;= p['total_tokens'] &lt;= p['high']</span>
+<span class="sd">    True</span>
+<span class="sd">    """</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"view_chars"</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span> <span class="ow">and</span> <span class="n">model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"view_chars_per_byte"</span><span class="p">):</span>
+        <span class="c1"># The bytes proxy must respect the ceiling the view itself has, or a 17 MB</span>
+        <span class="c1"># session is priced as if the judge would read all of it. It never does.</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"bytes"</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">model</span><span class="p">[</span><span class="s2">"view_chars_per_byte"</span><span class="p">],</span>
+                <span class="nb">float</span><span class="p">(</span><span class="n">DFLT_MAX_CHARS</span><span class="p">))</span>
+    <span class="n">inp</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="s2">"input"</span><span class="p">]</span>
+    <span class="n">y_in</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">inp</span><span class="p">[</span><span class="s2">"intercept"</span><span class="p">]</span> <span class="o">+</span> <span class="n">inp</span><span class="p">[</span><span class="s2">"per_char"</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">y_out</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="s2">"output"</span><span class="p">][</span><span class="s2">"mean"</span><span class="p">]))</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">y_in</span> <span class="o">+</span> <span class="n">y_out</span>
+    <span class="n">band</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">inp</span><span class="p">[</span><span class="s2">"resid_std"</span><span class="p">]</span> <span class="ow">or</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="s2">"output"</span><span class="p">][</span><span class="s2">"std"</span><span class="p">]</span> <span class="ow">or</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"input_tokens"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">y_in</span><span class="p">),</span> <span class="s2">"output_tokens"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">y_out</span><span class="p">),</span>
+            <span class="s2">"total_tokens"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">total</span><span class="p">),</span>
+            <span class="s2">"low"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">total</span> <span class="o">-</span> <span class="n">band</span><span class="p">)),</span> <span class="s2">"high"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">total</span> <span class="o">+</span> <span class="n">band</span><span class="p">),</span>
+            <span class="s2">"cost_usd"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">total</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"cost_per_total_token"</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="mi">6</span><span class="p">)}</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

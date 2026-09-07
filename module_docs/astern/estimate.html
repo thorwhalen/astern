@@ -1,0 +1,268 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astern.estimate &mdash; astern 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="astern.judge" href="judge.html" />
+    <link rel="prev" title="astern.__main__" href="__main__.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            astern
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../astern.html">astern</a></li>
+<li class="toctree-l1"><a class="reference internal" href="__main__.html">astern.__main__</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">astern.estimate</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#astern.estimate.FIXED_CACHE_TOKENS"><code class="docutils literal notranslate"><span class="pre">FIXED_CACHE_TOKENS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.estimate.MIN_POINTS_FOR_OLS"><code class="docutils literal notranslate"><span class="pre">MIN_POINTS_FOR_OLS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.estimate.PRIOR_INPUT_INTERCEPT"><code class="docutils literal notranslate"><span class="pre">PRIOR_INPUT_INTERCEPT</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.estimate.features"><code class="docutils literal notranslate"><span class="pre">features()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.estimate.fit"><code class="docutils literal notranslate"><span class="pre">fit()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.estimate.predict"><code class="docutils literal notranslate"><span class="pre">predict()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.estimate.round_trips"><code class="docutils literal notranslate"><span class="pre">round_trips()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="judge.html">astern.judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ledger.html">astern.ledger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses.html">astern.lenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/commands.html">astern.lenses.commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/cost.html">astern.lenses.cost</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/friction.html">astern.lenses.friction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/hygiene.html">astern.lenses.hygiene</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/stats.html">astern.lenses.stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/synopsis.html">astern.lenses.synopsis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/timeline.html">astern.lenses.timeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="report.html">astern.report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources.html">astern.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="store.html">astern.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">astern.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="turns.html">astern.turns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">astern.views</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">astern</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">astern.estimate</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/astern/estimate.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-astern.estimate">
+<span id="astern-estimate"></span><h1>astern.estimate<a class="headerlink" href="#module-astern.estimate" title="Link to this heading"></a></h1>
+<p>What will judging this batch cost? — features, a fitted model, a prediction.</p>
+<p>The point of the whole package is to burn fewer tokens, so it must be able to say
+what a run <em>will</em> burn before it burns it. Every judged session stores its
+<a class="reference internal" href="#astern.estimate.features" title="astern.estimate.features"><code class="xref py py-func docutils literal notranslate"><span class="pre">features()</span></code></a> (all computable with no model at all) next to the usage the judge
+actually reported, which makes the cost model a plain regression of a measured
+quantity on free ones. <a class="reference internal" href="#astern.estimate.fit" title="astern.estimate.fit"><code class="xref py py-func docutils literal notranslate"><span class="pre">fit()</span></code></a> reads those pairs, <a class="reference internal" href="#astern.estimate.predict" title="astern.estimate.predict"><code class="xref py py-func docutils literal notranslate"><span class="pre">predict()</span></code></a> applies them,
+and <code class="docutils literal notranslate"><span class="pre">astern</span> <span class="pre">judge</span> <span class="pre">--dry-run</span></code> prices a batch without calling anything.</p>
+<p>Three decisions:</p>
+<ul class="simple">
+<li><p><strong>The regressor is ``view_chars``, not ``bytes``.</strong> The judge never sees the
+transcript; it sees the view <a class="reference internal" href="views.html#module-astern.views" title="astern.views"><code class="xref py py-mod docutils literal notranslate"><span class="pre">astern.views</span></code></a> renders, and the view has a
+ceiling. Session bytes vary 100x, view chars vary ~3x, and the second is what is
+actually sent. <code class="docutils literal notranslate"><span class="pre">bytes</span></code> stays in the feature dict as the fallback proxy for
+sessions with no view yet.</p></li>
+<li><p><strong>Ordinary least squares, in stdlib.</strong> <code class="docutils literal notranslate"><span class="pre">numpy</span></code> is not a dependency and three
+columns do not justify one; the normal equations solved by Gaussian elimination
+are twenty lines and exact enough for a token budget.</p></li>
+<li><p><strong>The intercept is real and must not be forced through zero.</strong> A tool-less call
+with our own system prompt still costs ~1.1k input tokens before the view is
+added, so a proportional model under-prices short sessions by a factor of two.</p></li>
+<li><p><strong>Retries, not view size, are what the residual is made of.</strong> Measured over ten
+real sessions on haiku, two views within 6% of each other cost 4.8k and 20.8k
+input tokens; the difference is the number of API round trips, because a
+structured answer the schema rejects is retried with the whole conversation
+resent. Restricted to the calls that took one round trip the same regression has
+R² = 0.995 — so <code class="docutils literal notranslate"><span class="pre">fit</span></code> reports <code class="docutils literal notranslate"><span class="pre">input_single_pass</span></code> and <code class="docutils literal notranslate"><span class="pre">retry_rate</span></code> beside
+the headline line, and a low overall R² has an explanation instead of a shrug.
+<a class="reference internal" href="#astern.estimate.predict" title="astern.estimate.predict"><code class="xref py py-func docutils literal notranslate"><span class="pre">predict()</span></code></a> still uses the all-calls line, because retries are part of what a
+batch actually costs.</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pts</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">'features'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'view_chars'</span><span class="p">:</span> <span class="n">c</span><span class="p">,</span> <span class="s1">'n_turns'</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span> <span class="s1">'usage'</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s1">'input_tokens'</span><span class="p">:</span> <span class="mi">1000</span> <span class="o">+</span> <span class="n">c</span> <span class="o">//</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">'output_tokens'</span><span class="p">:</span> <span class="mi">300</span><span class="p">}}</span>
+<span class="gp">... </span>       <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">6000</span><span class="p">,</span> <span class="mi">12000</span><span class="p">,</span> <span class="mi">20000</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">fit</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="p">[</span><span class="s1">'n'</span><span class="p">],</span> <span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="s1">'input'</span><span class="p">][</span><span class="s1">'per_1k_chars'</span><span class="p">]),</span> <span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="s1">'input'</span><span class="p">][</span><span class="s1">'r2'</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span>
+<span class="go">(4, 250, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="p">{</span><span class="s1">'view_chars'</span><span class="p">:</span> <span class="mi">8000</span><span class="p">,</span> <span class="s1">'n_turns'</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="p">[</span><span class="s1">'input_tokens'</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="s1">'output_tokens'</span><span class="p">]</span>
+<span class="go">(3000, 300)</span>
+</pre></div>
+</div>
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.estimate.FIXED_CACHE_TOKENS">
+<span class="sig-prename descclassname"><span class="pre">astern.estimate.</span></span><span class="sig-name descname"><span class="pre">FIXED_CACHE_TOKENS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2000</span></span><a class="headerlink" href="#astern.estimate.FIXED_CACHE_TOKENS" title="Link to this definition"></a></dt>
+<dd><p>A <em>non-zero</em> cache read does not mean a retry. Two consecutive judge calls that each
+took exactly one round trip still read ~1.3k cached tokens: the system prompt and the
+schema are identical between invocations and the CLI’s cache window outlives one call.
+Only a read comfortably above that block means the <em>conversation</em> was re-sent.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.estimate.MIN_POINTS_FOR_OLS">
+<span class="sig-prename descclassname"><span class="pre">astern.estimate.</span></span><span class="sig-name descname"><span class="pre">MIN_POINTS_FOR_OLS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></span><a class="headerlink" href="#astern.estimate.MIN_POINTS_FOR_OLS" title="Link to this definition"></a></dt>
+<dd><p>Below this many observations a slope is noise; <a class="reference internal" href="#astern.estimate.fit" title="astern.estimate.fit"><code class="xref py py-func docutils literal notranslate"><span class="pre">fit()</span></code></a> reports a ratio model
+instead and says so in <code class="docutils literal notranslate"><span class="pre">method</span></code>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.estimate.PRIOR_INPUT_INTERCEPT">
+<span class="sig-prename descclassname"><span class="pre">astern.estimate.</span></span><span class="sig-name descname"><span class="pre">PRIOR_INPUT_INTERCEPT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1100.0</span></span><a class="headerlink" href="#astern.estimate.PRIOR_INPUT_INTERCEPT" title="Link to this definition"></a></dt>
+<dd><p>What one tool-less <code class="docutils literal notranslate"><span class="pre">claude</span> <span class="pre">-p</span></code> call costs before the view is added, and roughly
+how many input tokens a char of view buys (measured 2026-09-07 on haiku). Used
+only when nothing has been judged yet — a prior, replaced by the first real fit.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.estimate.features">
+<span class="sig-prename descclassname"><span class="pre">astern.estimate.</span></span><span class="sig-name descname"><span class="pre">features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">turns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">view_text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/astern/estimate.html#features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.estimate.features" title="Link to this definition"></a></dt>
+<dd><p>Everything about a session that costs no tokens to know.</p>
+<p><code class="docutils literal notranslate"><span class="pre">turns</span></code> is the scope actually rendered (the new turns, on an incremental run),
+so the features describe the same thing the usage will.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">features</span><span class="p">({</span><span class="s1">'source'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'size'</span><span class="p">:</span> <span class="mi">4096</span><span class="p">}},</span> <span class="p">[{</span><span class="s1">'user_prompt'</span><span class="p">:</span> <span class="s1">'hi'</span><span class="p">,</span> <span class="s1">'assistant_chars'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">'n_tool_calls'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'n_errors'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'tool_result_chars'</span><span class="p">:</span> <span class="mi">99</span><span class="p">,</span> <span class="s1">'tools'</span><span class="p">:</span> <span class="p">[]}],</span> <span class="s1">'x'</span> <span class="o">*</span> <span class="mi">40</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="p">[</span><span class="s1">'bytes'</span><span class="p">],</span> <span class="n">f</span><span class="p">[</span><span class="s1">'n_turns'</span><span class="p">],</span> <span class="n">f</span><span class="p">[</span><span class="s1">'prose_chars'</span><span class="p">],</span> <span class="n">f</span><span class="p">[</span><span class="s1">'view_chars'</span><span class="p">],</span> <span class="n">f</span><span class="p">[</span><span class="s1">'view_tokens_est'</span><span class="p">]</span>
+<span class="go">(4096, 1, 12, 40, 10)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.estimate.fit">
+<span class="sig-prename descclassname"><span class="pre">astern.estimate.</span></span><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">judgments</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/astern/estimate.html#fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.estimate.fit" title="Link to this definition"></a></dt>
+<dd><p>Fit input tokens on view size; summarise output tokens, totals and cost.</p>
+<p><code class="docutils literal notranslate"><span class="pre">judgments</span></code> are the records <a class="reference internal" href="lenses/synopsis.html#module-astern.lenses.synopsis" title="astern.lenses.synopsis"><code class="xref py py-mod docutils literal notranslate"><span class="pre">astern.lenses.synopsis</span></code></a> stores (each with
+<code class="docutils literal notranslate"><span class="pre">features</span></code> and <code class="docutils literal notranslate"><span class="pre">usage</span></code>). With fewer than <a class="reference internal" href="#astern.estimate.MIN_POINTS_FOR_OLS" title="astern.estimate.MIN_POINTS_FOR_OLS"><code class="xref py py-data docutils literal notranslate"><span class="pre">MIN_POINTS_FOR_OLS</span></code></a> points
+the slope is a ratio through the measured intercept, and <code class="docutils literal notranslate"><span class="pre">method</span></code> says so.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fit</span><span class="p">([])[</span><span class="s1">'method'</span><span class="p">]</span>
+<span class="go">'prior'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fit</span><span class="p">([{</span><span class="s1">'features'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'view_chars'</span><span class="p">:</span> <span class="mi">4000</span><span class="p">,</span> <span class="s1">'n_turns'</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+<span class="gp">... </span>      <span class="s1">'usage'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'input_tokens'</span><span class="p">:</span> <span class="mi">2200</span><span class="p">,</span> <span class="s1">'output_tokens'</span><span class="p">:</span> <span class="mi">800</span><span class="p">}}])[</span><span class="s1">'method'</span><span class="p">]</span>
+<span class="go">'ratio'</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.estimate.predict">
+<span class="sig-prename descclassname"><span class="pre">astern.estimate.</span></span><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/astern/estimate.html#predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.estimate.predict" title="Link to this definition"></a></dt>
+<dd><p>Predicted tokens (and cost) of judging one session, with a ±1σ band.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">fit</span><span class="p">([])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="p">{</span><span class="s1">'view_chars'</span><span class="p">:</span> <span class="mi">10000</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="p">[</span><span class="s1">'input_tokens'</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="s1">'total_tokens'</span><span class="p">]</span> <span class="o">==</span> <span class="n">p</span><span class="p">[</span><span class="s1">'input_tokens'</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="s1">'output_tokens'</span><span class="p">]</span>
+<span class="go">(3800, True)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="p">[</span><span class="s1">'low'</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">p</span><span class="p">[</span><span class="s1">'total_tokens'</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">p</span><span class="p">[</span><span class="s1">'high'</span><span class="p">]</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.estimate.round_trips">
+<span class="sig-prename descclassname"><span class="pre">astern.estimate.</span></span><span class="sig-name descname"><span class="pre">round_trips</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">judgment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../../_modules/astern/estimate.html#round_trips"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.estimate.round_trips" title="Link to this definition"></a></dt>
+<dd><p>How many API calls one judge call took — recorded, else inferred from the cache.</p>
+<p><code class="docutils literal notranslate"><span class="pre">n_iterations</span></code> (recorded since the CLI’s <code class="docutils literal notranslate"><span class="pre">usage.iterations</span></code> was captured) is
+authoritative. Older records have only the cache read to go on, and the threshold
+it is compared against is <a class="reference internal" href="#astern.estimate.FIXED_CACHE_TOKENS" title="astern.estimate.FIXED_CACHE_TOKENS"><code class="xref py py-data docutils literal notranslate"><span class="pre">FIXED_CACHE_TOKENS</span></code></a>, not zero — see there.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">round_trips</span><span class="p">({</span><span class="s1">'usage'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'n_iterations'</span><span class="p">:</span> <span class="mi">3</span><span class="p">}})</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">round_trips</span><span class="p">({</span><span class="s1">'usage'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'cache_read_input_tokens'</span><span class="p">:</span> <span class="mi">5197</span><span class="p">}})</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">round_trips</span><span class="p">({</span><span class="s1">'usage'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'cache_read_input_tokens'</span><span class="p">:</span> <span class="mi">1319</span><span class="p">}})</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="__main__.html" class="btn btn-neutral float-left" title="astern.__main__" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="judge.html" class="btn btn-neutral float-right" title="astern.judge" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

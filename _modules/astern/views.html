@@ -1,0 +1,376 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astern.views &mdash; astern 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            astern
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern.html">astern</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/__main__.html">astern.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/estimate.html">astern.estimate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/judge.html">astern.judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/ledger.html">astern.ledger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses.html">astern.lenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/commands.html">astern.lenses.commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/cost.html">astern.lenses.cost</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/friction.html">astern.lenses.friction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/hygiene.html">astern.lenses.hygiene</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/stats.html">astern.lenses.stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/synopsis.html">astern.lenses.synopsis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/timeline.html">astern.lenses.timeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/report.html">astern.report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/sources.html">astern.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/store.html">astern.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/tools.html">astern.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/turns.html">astern.turns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/views.html">astern.views</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">astern</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">astern.views</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for astern.views</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""The compressed markdown a judge reads instead of a transcript.</span>
+
+<span class="sd">A session file here is a median 1.2 MB and 88% of it is tool I/O. A judge does not</span>
+<span class="sd">need the tool I/O: it needs what was asked, what was done, and whether it worked.</span>
+<span class="sd">:func:`session_view` renders that — a header, then one block per turn carrying the</span>
+<span class="sd">human's prompt, a one-line tool summary and the assistant's closing text — and</span>
+<span class="sd">guarantees a ceiling on its own size, which is what makes the cost of a batch</span>
+<span class="sd">predictable at all.</span>
+
+<span class="sd">Shrinking happens in a fixed order, and the view says what it did, because a judge</span>
+<span class="sd">that is silently handed half a session will confidently synopsise half a session:</span>
+
+<span class="sd">1. per-turn budgets are scaled down proportionally (never below :data:`MIN_*`),</span>
+<span class="sd">2. then middle turns are dropped, keeping the first and the last ones — the goal is</span>
+<span class="sd">   usually stated at the start and the outcome shown at the end,</span>
+<span class="sd">3. and an explicit ``turns … omitted`` line goes into the view either way.</span>
+
+<span class="sd">When ``prior`` is given — the synopsis a previous run produced for the same session</span>
+<span class="sd">— the view opens with a short "Previously in this session" recap and then covers</span>
+<span class="sd">only the new turns. That is the incremental path: a resumed session pays for its</span>
+<span class="sd">new turns only.</span>
+
+<span class="sd">&gt;&gt;&gt; turns = [{'index': 0, 'timestamp': '2026-09-01T10:00:00Z', 'user_prompt': 'fix the build',</span>
+<span class="sd">...           'assistant_full': 'Fixed it.', 'tools': [</span>
+<span class="sd">...              {'name': 'Bash', 'digest': 'uv build', 'is_error': True},</span>
+<span class="sd">...              {'name': 'Bash', 'digest': 'uv build', 'is_error': False}]}]</span>
+<span class="sd">&gt;&gt;&gt; v = session_view({'session_id': 'abc123', 'title': 'Build fix'}, turns)</span>
+<span class="sd">&gt;&gt;&gt; print(v)  # doctest: +NORMALIZE_WHITESPACE</span>
+<span class="sd"># Session abc123 — Build fix</span>
+<span class="sd">&lt;BLANKLINE&gt;</span>
+<span class="sd">turns: 1 (showing 1)</span>
+<span class="sd">&lt;BLANKLINE&gt;</span>
+<span class="sd">### turn 0 (2026-09-01T10:00:00Z)</span>
+<span class="sd">user: fix the build</span>
+<span class="sd">tools: Bash×2, 1 error: Bash "uv build"</span>
+<span class="sd">assistant: Fixed it.</span>
+<span class="sd">&gt;&gt;&gt; view_stats(v)['n_turns_shown'], view_stats(v)['n_turns_dropped']</span>
+<span class="sd">(1, 0)</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+
+<span class="c1">#: A judge call is ~4 chars per token, so a 24k-char view is ~6k input tokens: under</span>
+<span class="c1">#: the plan's ≤8k-per-synopsis budget with room for the schema and the system prompt.</span>
+<span class="n">DFLT_MAX_CHARS</span> <span class="o">=</span> <span class="mi">24000</span>
+<span class="n">DFLT_PROMPT_CHARS</span> <span class="o">=</span> <span class="mi">1200</span>
+<span class="n">DFLT_REPLY_CHARS</span> <span class="o">=</span> <span class="mi">1500</span>
+
+<span class="c1">#: Floors for the proportional-shrink step. Below these a turn stops being evidence</span>
+<span class="c1">#: and becomes noise, so the next step (dropping whole turns) is the honest one.</span>
+<span class="n">MIN_PROMPT_CHARS</span> <span class="o">=</span> <span class="mi">160</span>
+<span class="n">MIN_REPLY_CHARS</span> <span class="o">=</span> <span class="mi">160</span>
+<span class="n">MIN_TOOL_ERRORS</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="n">_OMITTED</span> <span class="o">=</span> <span class="s2">"_… </span><span class="si">{n}</span><span class="s2"> turns omitted from the middle …_"</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_oneline</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Collapse whitespace and clip to ``limit``.</span>
+
+<span class="sd">    &gt;&gt;&gt; _oneline('a\\n  b', 10)</span>
+<span class="sd">    'a b'</span>
+<span class="sd">    &gt;&gt;&gt; _oneline('abcdef', 3)</span>
+<span class="sd">    'abc…'</span>
+<span class="sd">    """</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">text</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">text</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">limit</span> <span class="k">else</span> <span class="n">text</span><span class="p">[:</span><span class="n">limit</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="o">+</span> <span class="s2">"…"</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_clip</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Clip a block, saying how much was dropped (a judge must know it saw a part).</span>
+
+<span class="sd">    &gt;&gt;&gt; _clip('hello', 99)</span>
+<span class="sd">    'hello'</span>
+<span class="sd">    &gt;&gt;&gt; _clip('abcdefghij', 4)</span>
+<span class="sd">    'abcd… (+6 chars cut)'</span>
+<span class="sd">    """</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="p">(</span><span class="n">text</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">limit</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">text</span>
+    <span class="k">return</span> <span class="n">text</span><span class="p">[:</span><span class="n">limit</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">"… (+</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">limit</span><span class="si">}</span><span class="s2"> chars cut)"</span>
+
+
+<div class="viewcode-block" id="tool_summary">
+<a class="viewcode-back" href="../../module_docs/astern/views.html#astern.views.tool_summary">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">tool_summary</span><span class="p">(</span><span class="n">turn</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">max_errors</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">digest_chars</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">70</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""One line for a turn's tool calls: the mix, then the errors that matter.</span>
+
+<span class="sd">    &gt;&gt;&gt; tool_summary({'tools': [{'name': 'Bash', 'digest': 'ls', 'is_error': False},</span>
+<span class="sd">    ...                         {'name': 'Bash', 'digest': 'uv build', 'is_error': True},</span>
+<span class="sd">    ...                         {'name': 'Edit', 'digest': '/a.py', 'is_error': False}]})</span>
+<span class="sd">    'Bash×2 Edit, 1 error: Bash "uv build"'</span>
+<span class="sd">    &gt;&gt;&gt; tool_summary({'tools': []})</span>
+<span class="sd">    ''</span>
+<span class="sd">    """</span>
+    <span class="n">tools</span> <span class="o">=</span> <span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tools"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">tools</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">""</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"?"</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tools</span><span class="p">)</span>
+    <span class="n">mix</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">×</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">n</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">counts</span><span class="o">.</span><span class="n">most_common</span><span class="p">())</span>
+    <span class="n">errs</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tools</span> <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_error"</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">errs</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mix</span>
+    <span class="n">shown</span> <span class="o">=</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">,</span><span class="w"> </span><span class="s2">"?"</span><span class="p">)</span><span class="si">}</span><span class="s1"> "</span><span class="si">{</span><span class="n">_oneline</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"digest"</span><span class="p">,</span><span class="w"> </span><span class="s2">""</span><span class="p">),</span><span class="w"> </span><span class="n">digest_chars</span><span class="p">)</span><span class="si">}</span><span class="s1">"'</span>
+                      <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">errs</span><span class="p">[:</span><span class="n">max_errors</span><span class="p">])</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">mix</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">errs</span><span class="p">)</span><span class="si">}</span><span class="s1"> error</span><span class="si">{</span><span class="s2">"s"</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">errs</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s2">""</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">shown</span><span class="si">}</span><span class="s1">'</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_header</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">n_turns</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n_shown</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">sid</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"session_id"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"title"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"# Session </span><span class="si">{</span><span class="n">sid</span><span class="p">[:</span><span class="mi">8</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span> <span class="o">+</span> <span class="p">(</span><span class="sa">f</span><span class="s2">" — </span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="n">title</span> <span class="k">else</span> <span class="s2">""</span><span class="p">),</span> <span class="s2">""</span><span class="p">]</span>
+    <span class="n">facts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"project"</span><span class="p">):</span>
+        <span class="n">facts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"project: </span><span class="si">{</span><span class="n">session</span><span class="p">[</span><span class="s1">'project'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"git_branch"</span><span class="p">):</span>
+        <span class="n">facts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"branch: </span><span class="si">{</span><span class="n">session</span><span class="p">[</span><span class="s1">'git_branch'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">span</span> <span class="o">=</span> <span class="s2">" → "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"started_at"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ended_at"</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span> <span class="k">if</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">span</span><span class="p">:</span>
+        <span class="n">facts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">span</span><span class="p">)</span>
+    <span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"-2"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"models"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[])]</span>
+    <span class="k">if</span> <span class="n">models</span><span class="p">:</span>
+        <span class="n">facts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"models: "</span> <span class="o">+</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">models</span><span class="p">)))</span>
+    <span class="n">prs</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'repo'</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">''</span><span class="si">}</span><span class="s2">#</span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'number'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"prs"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[])]</span>
+    <span class="k">if</span> <span class="n">prs</span><span class="p">:</span>
+        <span class="n">facts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"PRs: "</span> <span class="o">+</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">prs</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">facts</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">" | "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">facts</span><span class="p">),</span> <span class="s2">""</span><span class="p">]</span>
+    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"turns: </span><span class="si">{</span><span class="n">n_turns</span><span class="si">}</span><span class="s2"> (showing </span><span class="si">{</span><span class="n">n_shown</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_prior_block</span><span class="p">(</span><span class="n">prior</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1500</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Render a previous synopsis briefly, so an increment extends rather than redoes."""</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">prior</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">""</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"## Previously in this session"</span><span class="p">,</span> <span class="s2">""</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">prior</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"goal"</span><span class="p">):</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"goal: </span><span class="si">{</span><span class="n">_oneline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">prior</span><span class="p">[</span><span class="s1">'goal'</span><span class="p">]),</span><span class="w"> </span><span class="mi">300</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">prior</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"outcome"</span><span class="p">):</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"outcome so far: </span><span class="si">{</span><span class="n">prior</span><span class="p">[</span><span class="s1">'outcome'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="p">((</span><span class="s2">"problems"</span><span class="p">,</span> <span class="s2">"problem"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"friction"</span><span class="p">,</span> <span class="s2">"what"</span><span class="p">),</span>
+                       <span class="p">(</span><span class="s2">"corrections"</span><span class="p">,</span> <span class="s2">"what_user_said"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"skill_candidates"</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">)):</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">got</span> <span class="o">=</span> <span class="p">[</span><span class="n">_oneline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="n">i</span><span class="p">),</span> <span class="mi">90</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">items</span><span class="p">[:</span><span class="mi">4</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="n">got</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: "</span> <span class="o">+</span> <span class="s2">"; "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">got</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">_clip</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">),</span> <span class="n">limit</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_turn_block</span><span class="p">(</span><span class="n">turn</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">prompt_chars</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">reply_chars</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">max_errors</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">head</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"### turn </span><span class="si">{</span><span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'index'</span><span class="p">,</span><span class="w"> </span><span class="s1">'?'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"timestamp"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+    <span class="k">if</span> <span class="n">ts</span><span class="p">:</span>
+        <span class="n">head</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">" (</span><span class="si">{</span><span class="n">ts</span><span class="si">}</span><span class="s2">)"</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">head</span><span class="p">]</span>
+    <span class="n">prompt</span> <span class="o">=</span> <span class="n">_clip</span><span class="p">(</span><span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"user_prompt"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span> <span class="n">prompt_chars</span><span class="p">)</span>
+    <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"user: </span><span class="si">{</span><span class="n">prompt</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="n">prompt</span> <span class="k">else</span> <span class="s2">"user: (no prose)"</span><span class="p">)</span>
+    <span class="n">tools</span> <span class="o">=</span> <span class="n">tool_summary</span><span class="p">(</span><span class="n">turn</span><span class="p">,</span> <span class="n">max_errors</span><span class="o">=</span><span class="n">max_errors</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">tools</span><span class="p">:</span>
+        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"tools: </span><span class="si">{</span><span class="n">tools</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">reply</span> <span class="o">=</span> <span class="n">_clip</span><span class="p">(</span><span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"assistant_full"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"assistant_summary"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span> <span class="n">reply_chars</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">reply</span><span class="p">:</span>
+        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"assistant: </span><span class="si">{</span><span class="n">reply</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_assemble</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">prior_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">blocks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">n_dropped</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">chunks</span> <span class="o">=</span> <span class="p">[</span><span class="n">header</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">prior_text</span><span class="p">:</span>
+        <span class="n">chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prior_text</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n_dropped</span><span class="p">:</span>
+        <span class="n">half</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">blocks</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">blocks</span> <span class="o">=</span> <span class="n">blocks</span><span class="p">[:</span><span class="n">half</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">_OMITTED</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n_dropped</span><span class="p">)]</span> <span class="o">+</span> <span class="n">blocks</span><span class="p">[</span><span class="n">half</span><span class="p">:]</span>
+    <span class="n">chunks</span> <span class="o">+=</span> <span class="n">blocks</span>
+    <span class="k">return</span> <span class="s2">"</span><span class="se">\n\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">chunks</span> <span class="k">if</span> <span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span>
+
+
+<div class="viewcode-block" id="session_view">
+<a class="viewcode-back" href="../../module_docs/astern/views.html#astern.views.session_view">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">session_view</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">turns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">max_chars</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DFLT_MAX_CHARS</span><span class="p">,</span>
+                 <span class="n">prompt_chars</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DFLT_PROMPT_CHARS</span><span class="p">,</span> <span class="n">reply_chars</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DFLT_REPLY_CHARS</span><span class="p">,</span>
+                 <span class="n">prior</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A judge-sized markdown view of ``turns``, never longer than ``max_chars``.</span>
+
+<span class="sd">    ``prior`` is the previous synopsis dict for the same session; when given, the</span>
+<span class="sd">    view recaps it and ``turns`` should be the new turns only.</span>
+
+<span class="sd">    &gt;&gt;&gt; ts = [{'index': i, 'user_prompt': 'x' * 400, 'assistant_full': 'y' * 400,</span>
+<span class="sd">    ...        'tools': []} for i in range(20)]</span>
+<span class="sd">    &gt;&gt;&gt; v = session_view({'session_id': 's'}, ts, max_chars=2000)</span>
+<span class="sd">    &gt;&gt;&gt; len(v) &lt;= 2000, view_stats(v)['n_turns_dropped'] &gt; 0</span>
+<span class="sd">    (True, True)</span>
+<span class="sd">    &gt;&gt;&gt; 'Previously in this session' in session_view({'session_id': 's'}, ts[:1],</span>
+<span class="sd">    ...                                              prior={'goal': 'ship it'})</span>
+<span class="sd">    True</span>
+<span class="sd">    """</span>
+    <span class="n">n_turns</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">turns</span><span class="p">)</span>
+    <span class="n">prior_text</span> <span class="o">=</span> <span class="n">_prior_block</span><span class="p">(</span><span class="n">prior</span> <span class="ow">or</span> <span class="p">{})</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="n">_header</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">n_turns</span><span class="o">=</span><span class="n">n_turns</span><span class="p">,</span> <span class="n">n_shown</span><span class="o">=</span><span class="n">n_turns</span><span class="p">)</span>
+    <span class="n">fixed</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">header</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">prior_text</span><span class="p">)</span> <span class="o">+</span> <span class="mi">8</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">build</span><span class="p">(</span><span class="n">pc</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">rc</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">me</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">keep</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="n">dropped</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">blocks</span> <span class="o">=</span> <span class="p">[</span><span class="n">_turn_block</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">prompt_chars</span><span class="o">=</span><span class="n">pc</span><span class="p">,</span> <span class="n">reply_chars</span><span class="o">=</span><span class="n">rc</span><span class="p">,</span> <span class="n">max_errors</span><span class="o">=</span><span class="n">me</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">keep</span><span class="p">]</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="n">_header</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">n_turns</span><span class="o">=</span><span class="n">n_turns</span><span class="p">,</span> <span class="n">n_shown</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">keep</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_assemble</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">prior_text</span><span class="p">,</span> <span class="n">blocks</span><span class="p">,</span> <span class="n">dropped</span><span class="p">)</span>
+
+    <span class="n">view</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="n">prompt_chars</span><span class="p">,</span> <span class="n">reply_chars</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">turns</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">view</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">max_chars</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">turns</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">view</span>
+    <span class="c1"># 1. shrink every turn proportionally before losing any turn entirely.</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">view</span><span class="p">)</span> <span class="o">-</span> <span class="n">fixed</span><span class="p">)</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">max_chars</span> <span class="o">-</span> <span class="n">fixed</span><span class="p">)</span> <span class="o">/</span> <span class="n">body</span><span class="p">)</span>
+    <span class="n">pc</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">MIN_PROMPT_CHARS</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">prompt_chars</span> <span class="o">*</span> <span class="n">scale</span><span class="p">))</span>
+    <span class="n">rc</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">MIN_REPLY_CHARS</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">reply_chars</span> <span class="o">*</span> <span class="n">scale</span><span class="p">))</span>
+    <span class="n">view</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="n">pc</span><span class="p">,</span> <span class="n">rc</span><span class="p">,</span> <span class="n">MIN_TOOL_ERRORS</span><span class="p">,</span> <span class="n">turns</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">view</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">max_chars</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">view</span>
+    <span class="c1"># 2. drop from the middle: the goal is stated first, the outcome shown last.</span>
+    <span class="n">keep</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">turns</span><span class="p">)</span>
+    <span class="n">dropped</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">keep</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">view</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_chars</span><span class="p">:</span>
+        <span class="n">keep</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">keep</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">dropped</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">view</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="n">pc</span><span class="p">,</span> <span class="n">rc</span><span class="p">,</span> <span class="n">MIN_TOOL_ERRORS</span><span class="p">,</span> <span class="n">keep</span><span class="p">,</span> <span class="n">dropped</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">view</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_chars</span><span class="p">:</span>  <span class="c1"># two turns that still do not fit: hard clip, and say so</span>
+        <span class="n">view</span> <span class="o">=</span> <span class="n">view</span><span class="p">[:</span> <span class="n">max_chars</span> <span class="o">-</span> <span class="mi">24</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n\n</span><span class="s2">_… view truncated …_</span><span class="se">\n</span><span class="s2">"</span>
+    <span class="k">return</span> <span class="n">view</span></div>
+
+
+
+<div class="viewcode-block" id="view_stats">
+<a class="viewcode-back" href="../../module_docs/astern/views.html#astern.views.view_stats">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">view_stats</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Size and coverage of a rendered view — the cost model's cheap regressor.</span>
+
+<span class="sd">    &gt;&gt;&gt; view_stats('# Session s\\n\\n### turn 0\\nuser: hi\\n')</span>
+<span class="sd">    {'chars': 33, 'tokens_est': 8, 'n_turns_shown': 1, 'n_turns_dropped': 0}</span>
+<span class="sd">    """</span>
+    <span class="n">shown</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">### turn "</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"### turn "</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">dropped</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"_… "</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">"omitted"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+            <span class="n">head</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"_… "</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">dropped</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">head</span><span class="p">)</span> <span class="k">if</span> <span class="n">head</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"chars"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">),</span> <span class="s2">"tokens_est"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">//</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">"n_turns_shown"</span><span class="p">:</span> <span class="n">shown</span><span class="p">,</span>
+            <span class="s2">"n_turns_dropped"</span><span class="p">:</span> <span class="n">dropped</span><span class="p">}</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,303 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astern.lenses.synopsis &mdash; astern 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            astern
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern.html">astern</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/__main__.html">astern.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/estimate.html">astern.estimate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/judge.html">astern.judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/ledger.html">astern.ledger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses.html">astern.lenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/commands.html">astern.lenses.commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/cost.html">astern.lenses.cost</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/friction.html">astern.lenses.friction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/hygiene.html">astern.lenses.hygiene</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/stats.html">astern.lenses.stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/synopsis.html">astern.lenses.synopsis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/timeline.html">astern.lenses.timeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/report.html">astern.report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/sources.html">astern.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/store.html">astern.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/tools.html">astern.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/turns.html">astern.turns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/views.html">astern.views</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">astern</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../lenses.html">astern.lenses</a></li>
+      <li class="breadcrumb-item active">astern.lenses.synopsis</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for astern.lenses.synopsis</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""``synopsis``: one judge call per session — what it was for, and what it cost.</span>
+
+<span class="sd">The plan's lens A, widened. One structured judgment over the compressed view from</span>
+<span class="sd">:mod:`astern.views` answers, in a single call, the questions that all need the same</span>
+<span class="sd">reading of the session: the goal and outcome, the problems and their solutions, the</span>
+<span class="sd">friction, the corrections, the vocabulary gap in both directions, and the skills and</span>
+<span class="sd">functions the session suggests. Splitting these into six lenses would mean six</span>
+<span class="sd">readings of the same text, which is exactly the token waste astern exists to stop.</span>
+
+<span class="sd">Two invariants live here rather than in the prompt:</span>
+
+<span class="sd">- **A failed judge call is not a covered session.** An error returns a single</span>
+<span class="sd">  ``judge_error`` finding carrying ``error``, and :func:`astern.tools._run_lens`</span>
+<span class="sd">  refuses to advance the ledger past a finding that carries one. Marking a session</span>
+<span class="sd">  covered because the call failed is how a batch quietly skips the sessions it</span>
+<span class="sd">  could not read.</span>
+<span class="sd">- **Every call is recorded whole**, under ``judgments/synopsis/&lt;sid&gt;/&lt;from_index&gt;``,</span>
+<span class="sd">  with the free features next to the usage the judge reported. That pairing is the</span>
+<span class="sd">  only data :mod:`astern.estimate` has, and it exists only if it is written at the</span>
+<span class="sd">  moment of the call.</span>
+
+<span class="sd">&gt;&gt;&gt; from astern.judge import replay_judge</span>
+<span class="sd">&gt;&gt;&gt; from astern.store import MemoryStore</span>
+<span class="sd">&gt;&gt;&gt; turns = [{'index': 0, 'uuid': 'u0', 'user_prompt': 'why is CI red?',</span>
+<span class="sd">...           'assistant_full': 'A stale lockfile.', 'tools': []}]</span>
+<span class="sd">&gt;&gt;&gt; store = MemoryStore()</span>
+<span class="sd">&gt;&gt;&gt; answer = '{"goal": "unred the CI", "outcome": "done", "problems": [], "friction": [],'\\</span>
+<span class="sd">...          ' "corrections": [], "user_terms": [], "agent_terms": [],'\\</span>
+<span class="sd">...          ' "skill_candidates": [], "reusable_code": [], "notable_decisions": []}'</span>
+<span class="sd">&gt;&gt;&gt; out = synopsis({'session_id': 'sid1'}, turns, judge=replay_judge({}, default=answer),</span>
+<span class="sd">...                store=store)</span>
+<span class="sd">&gt;&gt;&gt; out[0]['kind'], out[0]['evidence']['goal'], out[0]['usage']['output_tokens'] &gt; 0</span>
+<span class="sd">('synopsis', 'unred the CI', True)</span>
+<span class="sd">&gt;&gt;&gt; sorted(store.judgments)</span>
+<span class="sd">['synopsis/sid1/0']</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">astern.estimate</span><span class="w"> </span><span class="kn">import</span> <span class="n">features</span> <span class="k">as</span> <span class="n">_features</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astern.lenses</span><span class="w"> </span><span class="kn">import</span> <span class="n">finding</span><span class="p">,</span> <span class="n">lens</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astern.views</span><span class="w"> </span><span class="kn">import</span> <span class="n">session_view</span><span class="p">,</span> <span class="n">view_stats</span>
+
+<span class="n">LENS_NAME</span> <span class="o">=</span> <span class="s2">"synopsis"</span>
+
+<span class="c1">#: What the judge is, in one line. Replacing the default system prompt drops ~4k</span>
+<span class="c1">#: tokens of Claude Code preamble from every call and, because nothing is then</span>
+<span class="c1">#: prompt-cached, puts the whole cost in ``input_tokens`` where a model can see it.</span>
+<span class="n">SYSTEM</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">"You analyse transcripts of coding sessions between a developer and an AI agent. "</span>
+    <span class="s2">"You answer only with one JSON object matching the given schema. No prose, no "</span>
+    <span class="s2">"markdown, no code fences. Unknown or absent: use an empty list or </span><span class="se">\"</span><span class="s2">unclear</span><span class="se">\"</span><span class="s2">."</span>
+<span class="p">)</span>
+
+<span class="n">_STR</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_objects</span><span class="p">(</span><span class="n">props</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">required</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"array"</span><span class="p">,</span> <span class="s2">"items"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"object"</span><span class="p">,</span> <span class="s2">"properties"</span><span class="p">:</span> <span class="n">props</span><span class="p">,</span>
+                                       <span class="s2">"required"</span><span class="p">:</span> <span class="n">required</span><span class="p">,</span> <span class="s2">"additionalProperties"</span><span class="p">:</span> <span class="kc">False</span><span class="p">}}</span>
+
+
+<span class="c1">#: The synopsis schema. ``additionalProperties: false`` everywhere and every field</span>
+<span class="c1">#: required: a partially-filled object is indistinguishable from a session with</span>
+<span class="c1">#: nothing to say, and the difference matters for the recurrence lenses downstream.</span>
+<span class="n">SCHEMA</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"object"</span><span class="p">,</span>
+    <span class="s2">"properties"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"goal"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span>
+        <span class="s2">"outcome"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">,</span> <span class="s2">"enum"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"done"</span><span class="p">,</span> <span class="s2">"partly"</span><span class="p">,</span> <span class="s2">"abandoned"</span><span class="p">,</span> <span class="s2">"unclear"</span><span class="p">]},</span>
+        <span class="s2">"problems"</span><span class="p">:</span> <span class="n">_objects</span><span class="p">({</span><span class="s2">"problem"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"solution"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"category"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">},</span>
+                             <span class="p">[</span><span class="s2">"problem"</span><span class="p">,</span> <span class="s2">"solution"</span><span class="p">,</span> <span class="s2">"category"</span><span class="p">]),</span>
+        <span class="s2">"friction"</span><span class="p">:</span> <span class="n">_objects</span><span class="p">({</span><span class="s2">"what"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"cause_guess"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span>
+                              <span class="s2">"turn_indices"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"array"</span><span class="p">,</span> <span class="s2">"items"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"integer"</span><span class="p">}}},</span>
+                             <span class="p">[</span><span class="s2">"what"</span><span class="p">,</span> <span class="s2">"cause_guess"</span><span class="p">,</span> <span class="s2">"turn_indices"</span><span class="p">]),</span>
+        <span class="s2">"corrections"</span><span class="p">:</span> <span class="n">_objects</span><span class="p">({</span><span class="s2">"what_user_said"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"rule_candidate"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">},</span>
+                                <span class="p">[</span><span class="s2">"what_user_said"</span><span class="p">,</span> <span class="s2">"rule_candidate"</span><span class="p">]),</span>
+        <span class="s2">"user_terms"</span><span class="p">:</span> <span class="n">_objects</span><span class="p">({</span><span class="s2">"phrase"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"established_term"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"definition"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">},</span>
+                               <span class="p">[</span><span class="s2">"phrase"</span><span class="p">,</span> <span class="s2">"established_term"</span><span class="p">,</span> <span class="s2">"definition"</span><span class="p">]),</span>
+        <span class="s2">"agent_terms"</span><span class="p">:</span> <span class="n">_objects</span><span class="p">({</span><span class="s2">"term"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"definition"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">},</span> <span class="p">[</span><span class="s2">"term"</span><span class="p">,</span> <span class="s2">"definition"</span><span class="p">]),</span>
+        <span class="s2">"skill_candidates"</span><span class="p">:</span> <span class="n">_objects</span><span class="p">({</span><span class="s2">"name"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"why"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"recurrence_hint"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">},</span>
+                                     <span class="p">[</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"why"</span><span class="p">,</span> <span class="s2">"recurrence_hint"</span><span class="p">]),</span>
+        <span class="s2">"reusable_code"</span><span class="p">:</span> <span class="n">_objects</span><span class="p">({</span><span class="s2">"what"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"suggested_function"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">},</span>
+                                  <span class="p">[</span><span class="s2">"what"</span><span class="p">,</span> <span class="s2">"suggested_function"</span><span class="p">]),</span>
+        <span class="s2">"notable_decisions"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"array"</span><span class="p">,</span> <span class="s2">"items"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">},</span>
+    <span class="p">},</span>
+    <span class="s2">"required"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"goal"</span><span class="p">,</span> <span class="s2">"outcome"</span><span class="p">,</span> <span class="s2">"problems"</span><span class="p">,</span> <span class="s2">"friction"</span><span class="p">,</span> <span class="s2">"corrections"</span><span class="p">,</span> <span class="s2">"user_terms"</span><span class="p">,</span>
+                 <span class="s2">"agent_terms"</span><span class="p">,</span> <span class="s2">"skill_candidates"</span><span class="p">,</span> <span class="s2">"reusable_code"</span><span class="p">,</span> <span class="s2">"notable_decisions"</span><span class="p">],</span>
+    <span class="s2">"additionalProperties"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">PROMPT</span> <span class="o">=</span> <span class="s2">"""</span><span class="se">\</span>
+<span class="s2">Read the session below and return the JSON object the schema describes.</span>
+
+<span class="s2">Rules:</span>
+<span class="s2">- goal: one sentence, what the developer was trying to achieve.</span>
+<span class="s2">- outcome: done | partly | abandoned | unclear.</span>
+<span class="s2">- problems: concrete obstacles that were hit and how each was resolved (category is</span>
+<span class="s2">  a short slug such as "ci", "packaging", "api-misuse", "env").</span>
+<span class="s2">- friction: where the agent got stuck or wasted turns; turn_indices are the turn</span>
+<span class="s2">  numbers shown in the view.</span>
+<span class="s2">- corrections: places the developer redirected or contradicted the agent;</span>
+<span class="s2">  rule_candidate is the durable instruction that would have prevented it, or "".</span>
+<span class="s2">- user_terms: the developer's own phrasings that have an established name elsewhere.</span>
+<span class="s2">- agent_terms: terms the agent used that the developer did not.</span>
+<span class="s2">- skill_candidates / reusable_code: only where the session shows the same work being</span>
+<span class="s2">  done by hand that a skill or a function would have done.</span>
+<span class="s2">- Be specific and short. Empty lists are correct answers. Invent nothing.</span>
+<span class="si">{prior_note}</span>
+<span class="s2">JSON only.</span>
+
+<span class="s2">---</span>
+<span class="si">{view}</span>
+<span class="s2">"""</span>
+
+
+<div class="viewcode-block" id="synopsis">
+<a class="viewcode-back" href="../../../module_docs/astern/lenses/synopsis.html#astern.lenses.synopsis.synopsis">[docs]</a>
+<span class="nd">@lens</span><span class="p">(</span><span class="n">LENS_NAME</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"L"</span><span class="p">,</span> <span class="n">incremental</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">synopsis</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">turns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">judge</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">from_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+             <span class="n">prior</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_chars</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+             <span class="o">**</span><span class="n">ctx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""What this session was for, what went wrong, and what it suggests building."""</span>
+    <span class="k">if</span> <span class="n">judge</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"the synopsis lens needs judge= (see astern.judge)"</span><span class="p">)</span>
+    <span class="n">prior_data</span> <span class="o">=</span> <span class="n">_prior_synopsis</span><span class="p">(</span><span class="n">prior</span><span class="p">)</span>
+    <span class="n">view</span> <span class="o">=</span> <span class="n">session_view</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">turns</span><span class="p">,</span> <span class="n">prior</span><span class="o">=</span><span class="n">prior_data</span><span class="p">,</span>
+                        <span class="o">**</span><span class="p">({</span><span class="s2">"max_chars"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_chars</span><span class="p">)}</span> <span class="k">if</span> <span class="n">max_chars</span> <span class="k">else</span> <span class="p">{}))</span>
+    <span class="n">note</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"- The session already has a synopsis (above); cover ONLY the new turns and "</span>
+            <span class="s2">"report what they add.</span><span class="se">\n</span><span class="s2">"</span> <span class="k">if</span> <span class="n">prior_data</span> <span class="k">else</span> <span class="s2">""</span><span class="p">)</span>
+    <span class="n">prompt</span> <span class="o">=</span> <span class="n">PROMPT</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">view</span><span class="o">=</span><span class="n">view</span><span class="p">,</span> <span class="n">prior_note</span><span class="o">=</span><span class="n">note</span><span class="p">)</span>
+    <span class="n">judgment</span> <span class="o">=</span> <span class="n">judge</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">SCHEMA</span><span class="p">,</span> <span class="n">system</span><span class="o">=</span><span class="n">SYSTEM</span><span class="p">)</span>
+    <span class="n">feats</span> <span class="o">=</span> <span class="n">_features</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">turns</span><span class="p">,</span> <span class="n">view</span><span class="p">)</span>
+    <span class="n">feats</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">view_stats</span><span class="p">(</span><span class="n">view</span><span class="p">))</span>
+    <span class="n">feats</span><span class="p">[</span><span class="s2">"from_index"</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_index</span>
+    <span class="n">_record</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">from_index</span><span class="p">,</span> <span class="n">judgment</span><span class="p">,</span> <span class="n">feats</span><span class="p">)</span>
+    <span class="n">common</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"usage"</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">judgment</span><span class="o">.</span><span class="n">usage</span><span class="p">),</span> <span class="s2">"cost_usd"</span><span class="p">:</span> <span class="n">judgment</span><span class="o">.</span><span class="n">cost_usd</span><span class="p">,</span>
+              <span class="s2">"model"</span><span class="p">:</span> <span class="n">judgment</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="s2">"view_chars"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">view</span><span class="p">),</span>
+              <span class="s2">"prompt_chars"</span><span class="p">:</span> <span class="n">judgment</span><span class="o">.</span><span class="n">prompt_chars</span><span class="p">,</span> <span class="s2">"from_index"</span><span class="p">:</span> <span class="n">from_index</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">judgment</span><span class="o">.</span><span class="n">error</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">judgment</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">finding</span><span class="p">(</span><span class="n">LENS_NAME</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"judge_error"</span><span class="p">,</span>
+                        <span class="n">evidence</span><span class="o">=</span><span class="p">{</span><span class="s2">"from_index"</span><span class="p">:</span> <span class="n">from_index</span><span class="p">,</span> <span class="s2">"view_chars"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">view</span><span class="p">),</span>
+                                  <span class="s2">"text"</span><span class="p">:</span> <span class="p">(</span><span class="n">judgment</span><span class="o">.</span><span class="n">text</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)[:</span><span class="mi">300</span><span class="p">]},</span>
+                        <span class="n">text</span><span class="o">=</span><span class="n">judgment</span><span class="o">.</span><span class="n">error</span> <span class="ow">or</span> <span class="s2">"judge returned no JSON object"</span><span class="p">,</span>
+                        <span class="n">error</span><span class="o">=</span><span class="n">judgment</span><span class="o">.</span><span class="n">error</span> <span class="ow">or</span> <span class="s2">"judge returned no JSON object"</span><span class="p">,</span>
+                        <span class="o">**</span><span class="p">{</span><span class="o">**</span><span class="n">common</span><span class="p">,</span> <span class="s2">"usage"</span><span class="p">:</span> <span class="p">{}})]</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">judgment</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">finding</span><span class="p">(</span><span class="n">LENS_NAME</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"synopsis"</span><span class="p">,</span> <span class="n">evidence</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+                    <span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"outcome"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">),</span>
+                    <span class="n">text</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"goal"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">),</span>
+                    <span class="n">turn</span><span class="o">=</span><span class="n">turns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">turns</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">common</span><span class="p">)]</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_prior_synopsis</span><span class="p">(</span><span class="n">prior</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The last real synopsis among a lens's previous findings, if any.</span>
+
+<span class="sd">    &gt;&gt;&gt; _prior_synopsis([{'kind': 'judge_error'}, {'kind': 'synopsis', 'evidence': {'goal': 'g'}}])</span>
+<span class="sd">    {'goal': 'g'}</span>
+<span class="sd">    &gt;&gt;&gt; _prior_synopsis([]) is None</span>
+<span class="sd">    True</span>
+<span class="sd">    """</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">prior</span> <span class="ow">or</span> <span class="p">[])):</span>
+        <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"kind"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"synopsis"</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"evidence"</span><span class="p">),</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">f</span><span class="p">[</span><span class="s2">"evidence"</span><span class="p">]</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_record</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">from_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">judgment</span><span class="p">,</span> <span class="n">feats</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Store the raw call next to the free features — the cost model's only data."""</span>
+    <span class="k">if</span> <span class="n">store</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="s2">"judgments"</span><span class="p">):</span>
+        <span class="k">return</span>
+    <span class="n">rec</span> <span class="o">=</span> <span class="n">judgment</span><span class="o">.</span><span class="n">as_record</span><span class="p">()</span>
+    <span class="n">rec</span><span class="p">[</span><span class="s2">"features"</span><span class="p">]</span> <span class="o">=</span> <span class="n">feats</span>
+    <span class="n">rec</span><span class="p">[</span><span class="s2">"session_id"</span><span class="p">]</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"session_id"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+    <span class="n">rec</span><span class="p">[</span><span class="s2">"lens"</span><span class="p">]</span> <span class="o">=</span> <span class="n">LENS_NAME</span>
+    <span class="n">store</span><span class="o">.</span><span class="n">judgments</span><span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">LENS_NAME</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'session_id'</span><span class="p">,</span><span class="w"> </span><span class="s1">''</span><span class="p">)</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">from_index</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">rec</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

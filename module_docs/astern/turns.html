@@ -1,0 +1,273 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astern.turns &mdash; astern 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="astern.views" href="views.html" />
+    <link rel="prev" title="astern.tools" href="tools.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            astern
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../astern.html">astern</a></li>
+<li class="toctree-l1"><a class="reference internal" href="__main__.html">astern.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="estimate.html">astern.estimate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="judge.html">astern.judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ledger.html">astern.ledger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses.html">astern.lenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/commands.html">astern.lenses.commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/cost.html">astern.lenses.cost</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/friction.html">astern.lenses.friction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/hygiene.html">astern.lenses.hygiene</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/stats.html">astern.lenses.stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/synopsis.html">astern.lenses.synopsis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/timeline.html">astern.lenses.timeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="report.html">astern.report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources.html">astern.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="store.html">astern.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">astern.tools</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">astern.turns</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#astern.turns.KEPT_SYSTEM_SUBTYPES"><code class="docutils literal notranslate"><span class="pre">KEPT_SYSTEM_SUBTYPES</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.turns.MAX_INPUT_TEXT_CHARS"><code class="docutils literal notranslate"><span class="pre">MAX_INPUT_TEXT_CHARS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.turns.META_TYPES"><code class="docutils literal notranslate"><span class="pre">META_TYPES</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.turns.WRAPPER_TAGS"><code class="docutils literal notranslate"><span class="pre">WRAPPER_TAGS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.turns.clean_prompt"><code class="docutils literal notranslate"><span class="pre">clean_prompt()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.turns.is_user_prompt"><code class="docutils literal notranslate"><span class="pre">is_user_prompt()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.turns.iter_turn_pairs"><code class="docutils literal notranslate"><span class="pre">iter_turn_pairs()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.turns.iter_turns"><code class="docutils literal notranslate"><span class="pre">iter_turns()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.turns.session_meta"><code class="docutils literal notranslate"><span class="pre">session_meta()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.turns.tool_digest"><code class="docutils literal notranslate"><span class="pre">tool_digest()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.turns.tool_input_text"><code class="docutils literal notranslate"><span class="pre">tool_input_text()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">astern.views</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">astern</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">astern.turns</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/astern/turns.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-astern.turns">
+<span id="astern-turns"></span><h1>astern.turns<a class="headerlink" href="#module-astern.turns" title="Link to this heading"></a></h1>
+<p>From raw transcript records to one record per user→assistant turn, plus session meta.</p>
+<p>The turn record is the unit every lens works on. Its shape is the one <code class="docutils literal notranslate"><span class="pre">priv</span></code>’s
+<code class="docutils literal notranslate"><span class="pre">claude_transcripts</span></code> established and <code class="docutils literal notranslate"><span class="pre">ir</span></code> indexes, extended with what the mining
+lenses need and the indexer did not: the tool calls of the turn (name, a short
+digest of the input, whether the result was an error), the <code class="docutils literal notranslate"><span class="pre">system</span></code> records that
+fell inside the turn (<code class="docutils literal notranslate"><span class="pre">turn_duration</span></code>, <code class="docutils literal notranslate"><span class="pre">compact_boundary</span></code>), and API usage
+de-duplicated by <code class="docutils literal notranslate"><span class="pre">message.id</span></code> (one API turn spans several <code class="docutils literal notranslate"><span class="pre">assistant</span></code> lines that
+repeat the same <code class="docutils literal notranslate"><span class="pre">usage</span></code>; summing per line overcounts by an order of magnitude).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">recs</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"uuid"</span><span class="p">:</span> <span class="s2">"u1"</span><span class="p">,</span> <span class="s2">"sessionId"</span><span class="p">:</span> <span class="s2">"s"</span><span class="p">,</span> <span class="s2">"cwd"</span><span class="p">:</span> <span class="s2">"/p/x"</span><span class="p">,</span> <span class="s2">"timestamp"</span><span class="p">:</span> <span class="s2">"t0"</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="s2">"message"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"fix the bug"</span><span class="p">}},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"assistant"</span><span class="p">,</span> <span class="s2">"uuid"</span><span class="p">:</span> <span class="s2">"a1"</span><span class="p">,</span> <span class="s2">"sessionId"</span><span class="p">:</span> <span class="s2">"s"</span><span class="p">,</span> <span class="s2">"message"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="s2">"m1"</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"claude-x"</span><span class="p">,</span> <span class="s2">"usage"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"input_tokens"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">"output_tokens"</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
+<span class="gp">... </span>   <span class="s2">"content"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"tool_use"</span><span class="p">,</span> <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"t1"</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Bash"</span><span class="p">,</span> <span class="s2">"input"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"command"</span><span class="p">:</span> <span class="s2">"pytest"</span><span class="p">}}]}},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"uuid"</span><span class="p">:</span> <span class="s2">"u2"</span><span class="p">,</span> <span class="s2">"sessionId"</span><span class="p">:</span> <span class="s2">"s"</span><span class="p">,</span> <span class="s2">"message"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="s2">"content"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"tool_result"</span><span class="p">,</span> <span class="s2">"tool_use_id"</span><span class="p">:</span> <span class="s2">"t1"</span><span class="p">,</span> <span class="s2">"is_error"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"boom"</span><span class="p">}]}},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"assistant"</span><span class="p">,</span> <span class="s2">"uuid"</span><span class="p">:</span> <span class="s2">"a2"</span><span class="p">,</span> <span class="s2">"sessionId"</span><span class="p">:</span> <span class="s2">"s"</span><span class="p">,</span> <span class="s2">"message"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="s2">"m2"</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"claude-x"</span><span class="p">,</span> <span class="s2">"usage"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"input_tokens"</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">"output_tokens"</span><span class="p">:</span> <span class="mi">7</span><span class="p">},</span>
+<span class="gp">... </span>   <span class="s2">"content"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"Fixed."</span><span class="p">}]}},</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">iter_turns</span><span class="p">(</span><span class="n">recs</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="p">[</span><span class="s2">"index"</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="s2">"user_prompt"</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="s2">"assistant_summary"</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="s2">"n_errors"</span><span class="p">]</span>
+<span class="go">(0, 'fix the bug', 'Fixed.', 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="p">[</span><span class="s2">"tools"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"name"</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="s2">"tools"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"is_error"</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="s2">"usage"</span><span class="p">][</span><span class="s2">"input_tokens"</span><span class="p">]</span>
+<span class="go">('Bash', True, 30)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="p">[</span><span class="s2">"tools"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"input_text"</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="s2">"tools"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"input_chars"</span><span class="p">]</span>
+<span class="go">('pytest', 6)</span>
+</pre></div>
+</div>
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.turns.KEPT_SYSTEM_SUBTYPES">
+<span class="sig-prename descclassname"><span class="pre">astern.turns.</span></span><span class="sig-name descname"><span class="pre">KEPT_SYSTEM_SUBTYPES</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('turn_duration',</span> <span class="pre">'compact_boundary',</span> <span class="pre">'away_summary',</span> <span class="pre">'stop_hook_summary')</span></span><a class="headerlink" href="#astern.turns.KEPT_SYSTEM_SUBTYPES" title="Link to this definition"></a></dt>
+<dd><p>Which <code class="docutils literal notranslate"><span class="pre">system</span></code> subtypes are kept on the turn record (others are counted only).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.turns.MAX_INPUT_TEXT_CHARS">
+<span class="sig-prename descclassname"><span class="pre">astern.turns.</span></span><span class="sig-name descname"><span class="pre">MAX_INPUT_TEXT_CHARS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">20000</span></span><a class="headerlink" href="#astern.turns.MAX_INPUT_TEXT_CHARS" title="Link to this definition"></a></dt>
+<dd><p>How much of a tool’s full input text (a Bash command, a Write’s content) to keep
+verbatim on the turn record. Big enough for real scripts, capped so one pasted
+blob can’t blow up the store.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.turns.META_TYPES">
+<span class="sig-prename descclassname"><span class="pre">astern.turns.</span></span><span class="sig-name descname"><span class="pre">META_TYPES</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('ai-title',</span> <span class="pre">'custom-title',</span> <span class="pre">'agent-name',</span> <span class="pre">'pr-link',</span> <span class="pre">'cost-state',</span> <span class="pre">'permission-mode',</span> <span class="pre">'worktree-state',</span> <span class="pre">'frame-link')</span></span><a class="headerlink" href="#astern.turns.META_TYPES" title="Link to this definition"></a></dt>
+<dd><p>Session-level records that are worth keeping as metadata, keyed by their type.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.turns.WRAPPER_TAGS">
+<span class="sig-prename descclassname"><span class="pre">astern.turns.</span></span><span class="sig-name descname"><span class="pre">WRAPPER_TAGS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('command-name',</span> <span class="pre">'command-message',</span> <span class="pre">'command-args',</span> <span class="pre">'local-command-stdout',</span> <span class="pre">'local-command-stderr',</span> <span class="pre">'local-command-caveat',</span> <span class="pre">'bash-input',</span> <span class="pre">'bash-stdout',</span> <span class="pre">'bash-stderr',</span> <span class="pre">'system-reminder',</span> <span class="pre">'user-prompt-submit-hook',</span> <span class="pre">'task-notification')</span></span><a class="headerlink" href="#astern.turns.WRAPPER_TAGS" title="Link to this definition"></a></dt>
+<dd><p>XML-ish wrapper tags the CLI logs around non-prose user lines — slash-command
+echoes, local-command stdout, injected reminders. Stripped from the <em>user prompt</em>
+so it carries the human’s words, not tooling noise.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.turns.clean_prompt">
+<span class="sig-prename descclassname"><span class="pre">astern.turns.</span></span><span class="sig-name descname"><span class="pre">clean_prompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/astern/turns.html#clean_prompt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.turns.clean_prompt" title="Link to this definition"></a></dt>
+<dd><p>Strip CLI wrapper tags (and their content) from a user line → prose only.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clean_prompt</span><span class="p">(</span><span class="s1">'&lt;system-reminder&gt;x&lt;/system-reminder&gt; hello  world'</span><span class="p">)</span>
+<span class="go">'hello world'</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.turns.is_user_prompt">
+<span class="sig-prename descclassname"><span class="pre">astern.turns.</span></span><span class="sig-name descname"><span class="pre">is_user_prompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../_modules/astern/turns.html#is_user_prompt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.turns.is_user_prompt" title="Link to this definition"></a></dt>
+<dd><p>A real human prompt: a <code class="docutils literal notranslate"><span class="pre">user</span></code> line that is neither meta nor a tool result.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.turns.iter_turn_pairs">
+<span class="sig-prename descclassname"><span class="pre">astern.turns.</span></span><span class="sig-name descname"><span class="pre">iter_turn_pairs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">records</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/astern/turns.html#iter_turn_pairs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.turns.iter_turn_pairs" title="Link to this definition"></a></dt>
+<dd><p>Yield <code class="docutils literal notranslate"><span class="pre">(user_prompt_record,</span> <span class="pre">[records</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">turn])</span></code> up to the next real prompt.</p>
+<p>The turn’s records include assistant lines, the <code class="docutils literal notranslate"><span class="pre">tool_result</span></code> user lines that
+continue the same turn, and <code class="docutils literal notranslate"><span class="pre">system</span></code> lines that fell inside it.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.turns.iter_turns">
+<span class="sig-prename descclassname"><span class="pre">astern.turns.</span></span><span class="sig-name descname"><span class="pre">iter_turns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">records</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/astern/turns.html#iter_turns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.turns.iter_turns" title="Link to this definition"></a></dt>
+<dd><p>Yield one JSON-able record per turn. See the module docstring for the shape.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.turns.session_meta">
+<span class="sig-prename descclassname"><span class="pre">astern.turns.</span></span><span class="sig-name descname"><span class="pre">session_meta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">records</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/astern/turns.html#session_meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.turns.session_meta" title="Link to this definition"></a></dt>
+<dd><p>Session-level facts from the non-conversational records (last occurrence wins).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">session_meta</span><span class="p">([{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"ai-title"</span><span class="p">,</span> <span class="s2">"aiTitle"</span><span class="p">:</span> <span class="s2">"Fix CI"</span><span class="p">},</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"pr-link"</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s2">"prNumber"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"prUrl"</span><span class="p">:</span> <span class="s2">"u"</span><span class="p">,</span> <span class="s2">"prRepository"</span><span class="p">:</span> <span class="s2">"o/r"</span><span class="p">},</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"sessionId"</span><span class="p">:</span> <span class="s2">"s"</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s2">"cwd"</span><span class="p">:</span> <span class="s2">"/p/x"</span><span class="p">,</span> <span class="s2">"timestamp"</span><span class="p">:</span> <span class="s2">"t"</span><span class="p">,</span> <span class="s2">"version"</span><span class="p">:</span> <span class="s2">"2.1"</span><span class="p">,</span> <span class="s2">"message"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"content"</span><span class="p">:</span> <span class="s2">"hi"</span><span class="p">}}])[</span><span class="s2">"title"</span><span class="p">]</span>
+<span class="go">'Fix CI'</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.turns.tool_digest">
+<span class="sig-prename descclassname"><span class="pre">astern.turns.</span></span><span class="sig-name descname"><span class="pre">tool_digest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/astern/turns.html#tool_digest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.turns.tool_digest" title="Link to this definition"></a></dt>
+<dd><p>A short, comparable summary of a tool input: the command, the path, or the query.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tool_digest</span><span class="p">(</span><span class="s1">'Bash'</span><span class="p">,</span> <span class="p">{</span><span class="s1">'command'</span><span class="p">:</span> <span class="s1">'ls -la'</span><span class="p">})</span>
+<span class="go">'ls -la'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tool_digest</span><span class="p">(</span><span class="s1">'Edit'</span><span class="p">,</span> <span class="p">{</span><span class="s1">'file_path'</span><span class="p">:</span> <span class="s1">'/a/b.py'</span><span class="p">,</span> <span class="s1">'old_string'</span><span class="p">:</span> <span class="s1">'x'</span><span class="p">})</span>
+<span class="go">'/a/b.py'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tool_digest</span><span class="p">(</span><span class="s1">'SendMessage'</span><span class="p">,</span> <span class="p">{</span><span class="s1">'to'</span><span class="p">:</span> <span class="s1">'a'</span><span class="p">,</span> <span class="s1">'message'</span><span class="p">:</span> <span class="s1">'hi'</span><span class="p">})</span>
+<span class="go">'{"message": "hi", "to": "a"}'</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.turns.tool_input_text">
+<span class="sig-prename descclassname"><span class="pre">astern.turns.</span></span><span class="sig-name descname"><span class="pre">tool_input_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/astern/turns.html#tool_input_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.turns.tool_input_text" title="Link to this definition"></a></dt>
+<dd><p>The full text of a tool input worth keeping verbatim: a command, a file body.</p>
+<p>Unlike <a class="reference internal" href="#astern.turns.tool_digest" title="astern.turns.tool_digest"><code class="xref py py-func docutils literal notranslate"><span class="pre">tool_digest()</span></code></a> (a short label for display) this is uncapped source
+text — a rewrites lens needs the whole script, not its first 200 chars.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tool_input_text</span><span class="p">(</span><span class="s1">'Bash'</span><span class="p">,</span> <span class="p">{</span><span class="s1">'command'</span><span class="p">:</span> <span class="s1">'ls -la'</span><span class="p">})</span>
+<span class="go">'ls -la'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tool_input_text</span><span class="p">(</span><span class="s1">'Write'</span><span class="p">,</span> <span class="p">{</span><span class="s1">'file_path'</span><span class="p">:</span> <span class="s1">'/tmp/x.py'</span><span class="p">,</span> <span class="s1">'content'</span><span class="p">:</span> <span class="s1">'print(1)'</span><span class="p">})</span>
+<span class="go">'print(1)'</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tools.html" class="btn btn-neutral float-left" title="astern.tools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="views.html" class="btn btn-neutral float-right" title="astern.views" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

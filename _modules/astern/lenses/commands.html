@@ -1,0 +1,337 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astern.lenses.commands &mdash; astern 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            astern
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern.html">astern</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/__main__.html">astern.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/estimate.html">astern.estimate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/judge.html">astern.judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/ledger.html">astern.ledger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses.html">astern.lenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/commands.html">astern.lenses.commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/cost.html">astern.lenses.cost</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/friction.html">astern.lenses.friction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/hygiene.html">astern.lenses.hygiene</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/stats.html">astern.lenses.stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/synopsis.html">astern.lenses.synopsis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/timeline.html">astern.lenses.timeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/report.html">astern.report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/sources.html">astern.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/store.html">astern.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/tools.html">astern.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/turns.html">astern.turns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/views.html">astern.views</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">astern</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../lenses.html">astern.lenses</a></li>
+      <li class="breadcrumb-item active">astern.lenses.commands</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for astern.lenses.commands</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""``rewrites``: one-off code an agent wrote inline, instead of reusing a function.</span>
+
+<span class="sd">Three sources, one finding each (kind ``inline_script``):</span>
+
+<span class="sd">- a **Bash heredoc** (``python3 - &lt;&lt;'EOF' ... EOF``, ``cat &gt; file &lt;&lt;...``) — the body</span>
+<span class="sd">  between the markers is the script.</span>
+<span class="sd">- a **``Write``** whose path is under a scratchpad/tmp dir (``/scratchpad/`` or</span>
+<span class="sd">  ``/tmp/`` in the path) — the file's content is the script.</span>
+<span class="sd">- a **long Bash command** (over :data:`LONG_COMMAND_CHARS`) that is not a heredoc —</span>
+<span class="sd">  still worth flagging as one-off shell logic.</span>
+
+<span class="sd">Every finding carries a normalized ``fingerprint`` (:func:`fingerprint`) so</span>
+<span class="sd">:mod:`astern.report` can group near-duplicate scripts across sessions — that</span>
+<span class="sd">grouping is the whole point of the lens: a script rewritten in three different</span>
+<span class="sd">sessions is a function nobody has extracted yet.</span>
+
+<span class="sd">&gt;&gt;&gt; from astern.turns import iter_turns</span>
+<span class="sd">&gt;&gt;&gt; recs = [</span>
+<span class="sd">...   {"type": "user", "uuid": "u1", "sessionId": "s", "cwd": "/p/x", "timestamp": "t0",</span>
+<span class="sd">...    "message": {"role": "user", "content": "count the lines"}},</span>
+<span class="sd">...   {"type": "assistant", "uuid": "a1", "sessionId": "s", "message": {"id": "m1", "model": "x",</span>
+<span class="sd">...    "usage": {}, "content": [{"type": "tool_use", "id": "t1", "name": "Bash",</span>
+<span class="sd">...    "input": {"command": "python3 - &lt;&lt;'EOF'\\nprint(open('f').read().count(chr(10)))\\nEOF"}}]}},</span>
+<span class="sd">...   {"type": "user", "uuid": "u2", "sessionId": "s", "message": {"role": "user", "content":</span>
+<span class="sd">...    [{"type": "tool_result", "tool_use_id": "t1", "is_error": False, "content": "3"}]}},</span>
+<span class="sd">... ]</span>
+<span class="sd">&gt;&gt;&gt; t = list(iter_turns(recs))</span>
+<span class="sd">&gt;&gt;&gt; out = rewrites({"session_id": "s"}, t)</span>
+<span class="sd">&gt;&gt;&gt; out[0]["kind"], out[0]["evidence"]["language"], len(out[0]["evidence"]["fingerprint"])</span>
+<span class="sd">('inline_script', 'python', 12)</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterator</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">astern.lenses</span><span class="w"> </span><span class="kn">import</span> <span class="n">finding</span><span class="p">,</span> <span class="n">lens</span>
+
+<span class="c1">#: A Bash command longer than this is worth flagging as one-off shell logic even</span>
+<span class="c1">#: without a heredoc.</span>
+<span class="n">LONG_COMMAND_CHARS</span> <span class="o">=</span> <span class="mi">400</span>
+
+<span class="c1">#: File extension → language guess, checked before any content sniffing.</span>
+<span class="n">EXT_LANGUAGE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">".py"</span><span class="p">:</span> <span class="s2">"python"</span><span class="p">,</span> <span class="s2">".sh"</span><span class="p">:</span> <span class="s2">"bash"</span><span class="p">,</span> <span class="s2">".js"</span><span class="p">:</span> <span class="s2">"javascript"</span><span class="p">,</span> <span class="s2">".ts"</span><span class="p">:</span> <span class="s2">"typescript"</span><span class="p">,</span>
+    <span class="s2">".json"</span><span class="p">:</span> <span class="s2">"json"</span><span class="p">,</span> <span class="s2">".md"</span><span class="p">:</span> <span class="s2">"markdown"</span><span class="p">,</span> <span class="s2">".sql"</span><span class="p">:</span> <span class="s2">"sql"</span><span class="p">,</span> <span class="s2">".yaml"</span><span class="p">:</span> <span class="s2">"yaml"</span><span class="p">,</span> <span class="s2">".yml"</span><span class="p">:</span> <span class="s2">"yaml"</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">_HEREDOC_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"&lt;&lt;-?\s*(['</span><span class="se">\"</span><span class="s2">]?)(\w+)\1"</span><span class="p">)</span>
+<span class="n">_QUOTED_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"</span><span class="se">\"</span><span class="s2">[^</span><span class="se">\"</span><span class="s2">]*</span><span class="se">\"</span><span class="s2">|'[^']*'"</span><span class="p">)</span>
+<span class="n">_DIGIT_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\d+"</span><span class="p">)</span>
+<span class="n">_WS_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\s+"</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="heredoc_body">
+<a class="viewcode-back" href="../../../module_docs/astern/lenses/commands.html#astern.lenses.commands.heredoc_body">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">heredoc_body</span><span class="p">(</span><span class="n">command</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The text between a heredoc's opening marker and its closing line, or ``None``.</span>
+
+<span class="sd">    &gt;&gt;&gt; heredoc_body("python3 - &lt;&lt;'EOF'\\nprint(1)\\nEOF")</span>
+<span class="sd">    'print(1)'</span>
+<span class="sd">    &gt;&gt;&gt; heredoc_body("ls -la") is None</span>
+<span class="sd">    True</span>
+<span class="sd">    """</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">_HEREDOC_RE</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">marker</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">rest</span> <span class="o">=</span> <span class="n">command</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">end</span><span class="p">():]</span>
+    <span class="n">rest</span> <span class="o">=</span> <span class="n">rest</span><span class="o">.</span><span class="n">removeprefix</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">lines</span><span class="p">,</span> <span class="n">body</span> <span class="o">=</span> <span class="n">rest</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">),</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="n">marker</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">body</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">body</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">or</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="normalize_script">
+<a class="viewcode-back" href="../../../module_docs/astern/lenses/commands.html#astern.lenses.commands.normalize_script">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">normalize_script</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Lowercase, quoted strings and digits replaced by placeholders, whitespace collapsed.</span>
+
+<span class="sd">    &gt;&gt;&gt; normalize_script('print("hi") 42')</span>
+<span class="sd">    'print(&lt;str&gt;) &lt;num&gt;'</span>
+<span class="sd">    """</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">_QUOTED_RE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">"&lt;str&gt;"</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">_DIGIT_RE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">"&lt;num&gt;"</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_WS_RE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="fingerprint">
+<a class="viewcode-back" href="../../../module_docs/astern/lenses/commands.html#astern.lenses.commands.fingerprint">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fingerprint</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A short hash of the normalized script, stable across trivial edits.</span>
+
+<span class="sd">    &gt;&gt;&gt; fingerprint('print(1)') == fingerprint('print(2)')</span>
+<span class="sd">    True</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">(</span><span class="n">normalize_script</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[:</span><span class="mi">12</span><span class="p">]</span></div>
+
+
+
+<span class="c1">#: Heredoc interpreter word → language, checked before content sniffing.</span>
+<span class="n">INTERPRETER_LANGUAGE</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"python"</span><span class="p">:</span> <span class="s2">"python"</span><span class="p">,</span> <span class="s2">"python3"</span><span class="p">:</span> <span class="s2">"python"</span><span class="p">,</span> <span class="s2">"python2"</span><span class="p">:</span> <span class="s2">"python"</span><span class="p">,</span>
+                        <span class="s2">"node"</span><span class="p">:</span> <span class="s2">"javascript"</span><span class="p">,</span> <span class="s2">"bash"</span><span class="p">:</span> <span class="s2">"bash"</span><span class="p">,</span> <span class="s2">"sh"</span><span class="p">:</span> <span class="s2">"bash"</span><span class="p">,</span> <span class="s2">"zsh"</span><span class="p">:</span> <span class="s2">"bash"</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="interpreter_hint">
+<a class="viewcode-back" href="../../../module_docs/astern/lenses/commands.html#astern.lenses.commands.interpreter_hint">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">interpreter_hint</span><span class="p">(</span><span class="n">command</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The language implied by the word before a heredoc operator, or ``''``.</span>
+
+<span class="sd">    &gt;&gt;&gt; interpreter_hint("python3 - &lt;&lt;'EOF'")</span>
+<span class="sd">    'python'</span>
+<span class="sd">    &gt;&gt;&gt; interpreter_hint("cat &gt; f &lt;&lt;EOF")</span>
+<span class="sd">    ''</span>
+<span class="sd">    """</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"&lt;&lt;"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">tok</span> <span class="ow">in</span> <span class="n">prefix</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+        <span class="n">lang</span> <span class="o">=</span> <span class="n">INTERPRETER_LANGUAGE</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tok</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">lang</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">lang</span>
+    <span class="k">return</span> <span class="s2">""</span></div>
+
+
+
+<div class="viewcode-block" id="guess_language">
+<a class="viewcode-back" href="../../../module_docs/astern/lenses/commands.html#astern.lenses.commands.guess_language">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">guess_language</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span> <span class="n">hint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Best-effort language guess: path extension, then an interpreter hint, then content.</span>
+
+<span class="sd">    &gt;&gt;&gt; guess_language('', path='/tmp/x.py')</span>
+<span class="sd">    'python'</span>
+<span class="sd">    &gt;&gt;&gt; guess_language('print(1)', hint='python')</span>
+<span class="sd">    'python'</span>
+<span class="sd">    &gt;&gt;&gt; guess_language('import os\\nprint(os.getcwd())')</span>
+<span class="sd">    'python'</span>
+<span class="sd">    """</span>
+    <span class="k">for</span> <span class="n">ext</span><span class="p">,</span> <span class="n">lang</span> <span class="ow">in</span> <span class="n">EXT_LANGUAGE</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">ext</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">lang</span>
+    <span class="k">if</span> <span class="n">hint</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">hint</span>
+    <span class="n">head</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()[:</span><span class="mi">200</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">"import "</span> <span class="ow">in</span> <span class="n">head</span> <span class="ow">or</span> <span class="s2">"def "</span> <span class="ow">in</span> <span class="n">head</span> <span class="ow">or</span> <span class="n">head</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"#!/usr/bin/env python"</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">"python"</span>
+    <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\bfunction\b|\bconst \w+\s*=|=&gt;"</span><span class="p">,</span> <span class="n">head</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">"javascript"</span>
+    <span class="k">return</span> <span class="s2">"bash"</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_first_line</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()[:</span><span class="mi">200</span><span class="p">]</span>
+    <span class="k">return</span> <span class="s2">""</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_script_finding</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">turn</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tool</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">script</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="n">hint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">finding</span><span class="p">(</span><span class="s2">"rewrites"</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"inline_script"</span><span class="p">,</span> <span class="n">turn</span><span class="o">=</span><span class="n">turn</span><span class="p">,</span>
+                   <span class="n">evidence</span><span class="o">=</span><span class="p">{</span><span class="s2">"tool"</span><span class="p">:</span> <span class="n">tool</span><span class="p">,</span> <span class="s2">"path"</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span> <span class="s2">"first_line"</span><span class="p">:</span> <span class="n">_first_line</span><span class="p">(</span><span class="n">script</span><span class="p">),</span>
+                            <span class="s2">"fingerprint"</span><span class="p">:</span> <span class="n">fingerprint</span><span class="p">(</span><span class="n">script</span><span class="p">),</span> <span class="s2">"chars"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">script</span><span class="p">),</span>
+                            <span class="s2">"language"</span><span class="p">:</span> <span class="n">guess_language</span><span class="p">(</span><span class="n">script</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span> <span class="n">hint</span><span class="o">=</span><span class="n">hint</span><span class="p">)})</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_bash_findings</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">turn</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">tc</span> <span class="ow">in</span> <span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tools"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]:</span>
+        <span class="k">if</span> <span class="n">tc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">"Bash"</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">tc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"input_text"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">tc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"digest"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="n">heredoc_body</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">body</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">_script_finding</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">turn</span><span class="p">,</span> <span class="n">tool</span><span class="o">=</span><span class="s2">"Bash"</span><span class="p">,</span> <span class="n">script</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                  <span class="n">hint</span><span class="o">=</span><span class="n">interpreter_hint</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">LONG_COMMAND_CHARS</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">_script_finding</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">turn</span><span class="p">,</span> <span class="n">tool</span><span class="o">=</span><span class="s2">"Bash"</span><span class="p">,</span> <span class="n">script</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_write_findings</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">turn</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">tc</span> <span class="ow">in</span> <span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tools"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]:</span>
+        <span class="k">if</span> <span class="n">tc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">"Write"</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">tc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"digest"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+        <span class="k">if</span> <span class="s2">"/scratchpad/"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">path</span> <span class="ow">and</span> <span class="s2">"/tmp/"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">tc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"input_text"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">yield</span> <span class="n">_script_finding</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">turn</span><span class="p">,</span> <span class="n">tool</span><span class="o">=</span><span class="s2">"Write"</span><span class="p">,</span> <span class="n">script</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="rewrites">
+<a class="viewcode-back" href="../../../module_docs/astern/lenses/commands.html#astern.lenses.commands.rewrites">[docs]</a>
+<span class="nd">@lens</span><span class="p">(</span><span class="s2">"rewrites"</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"H"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rewrites</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">turns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="o">**</span><span class="n">ctx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Inline scripts (Bash heredocs, long Bash commands, scratchpad Writes), fingerprinted."""</span>
+    <span class="n">out</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">turns</span><span class="p">:</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_bash_findings</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_write_findings</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

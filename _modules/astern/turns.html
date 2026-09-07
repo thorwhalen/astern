@@ -1,0 +1,459 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astern.turns &mdash; astern 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            astern
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern.html">astern</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/__main__.html">astern.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/estimate.html">astern.estimate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/judge.html">astern.judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/ledger.html">astern.ledger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses.html">astern.lenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/commands.html">astern.lenses.commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/cost.html">astern.lenses.cost</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/friction.html">astern.lenses.friction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/hygiene.html">astern.lenses.hygiene</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/stats.html">astern.lenses.stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/synopsis.html">astern.lenses.synopsis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/timeline.html">astern.lenses.timeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/report.html">astern.report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/sources.html">astern.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/store.html">astern.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/tools.html">astern.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/turns.html">astern.turns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/views.html">astern.views</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">astern</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">astern.turns</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for astern.turns</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""From raw transcript records to one record per user→assistant turn, plus session meta.</span>
+
+<span class="sd">The turn record is the unit every lens works on. Its shape is the one ``priv``'s</span>
+<span class="sd">``claude_transcripts`` established and ``ir`` indexes, extended with what the mining</span>
+<span class="sd">lenses need and the indexer did not: the tool calls of the turn (name, a short</span>
+<span class="sd">digest of the input, whether the result was an error), the ``system`` records that</span>
+<span class="sd">fell inside the turn (``turn_duration``, ``compact_boundary``), and API usage</span>
+<span class="sd">de-duplicated by ``message.id`` (one API turn spans several ``assistant`` lines that</span>
+<span class="sd">repeat the same ``usage``; summing per line overcounts by an order of magnitude).</span>
+
+<span class="sd">&gt;&gt;&gt; recs = [</span>
+<span class="sd">...   {"type": "user", "uuid": "u1", "sessionId": "s", "cwd": "/p/x", "timestamp": "t0",</span>
+<span class="sd">...    "message": {"role": "user", "content": "fix the bug"}},</span>
+<span class="sd">...   {"type": "assistant", "uuid": "a1", "sessionId": "s", "message": {"id": "m1",</span>
+<span class="sd">...    "model": "claude-x", "usage": {"input_tokens": 10, "output_tokens": 5},</span>
+<span class="sd">...    "content": [{"type": "tool_use", "id": "t1", "name": "Bash", "input": {"command": "pytest"}}]}},</span>
+<span class="sd">...   {"type": "user", "uuid": "u2", "sessionId": "s", "message": {"role": "user",</span>
+<span class="sd">...    "content": [{"type": "tool_result", "tool_use_id": "t1", "is_error": True, "content": "boom"}]}},</span>
+<span class="sd">...   {"type": "assistant", "uuid": "a2", "sessionId": "s", "message": {"id": "m2",</span>
+<span class="sd">...    "model": "claude-x", "usage": {"input_tokens": 20, "output_tokens": 7},</span>
+<span class="sd">...    "content": [{"type": "text", "text": "Fixed."}]}},</span>
+<span class="sd">... ]</span>
+<span class="sd">&gt;&gt;&gt; t = list(iter_turns(recs))[0]</span>
+<span class="sd">&gt;&gt;&gt; t["index"], t["user_prompt"], t["assistant_summary"], t["n_errors"]</span>
+<span class="sd">(0, 'fix the bug', 'Fixed.', 1)</span>
+<span class="sd">&gt;&gt;&gt; t["tools"][0]["name"], t["tools"][0]["is_error"], t["usage"]["input_tokens"]</span>
+<span class="sd">('Bash', True, 30)</span>
+<span class="sd">&gt;&gt;&gt; t["tools"][0]["input_text"], t["tools"][0]["input_chars"]</span>
+<span class="sd">('pytest', 6)</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Mapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="c1">#: XML-ish wrapper tags the CLI logs around non-prose user lines — slash-command</span>
+<span class="c1">#: echoes, local-command stdout, injected reminders. Stripped from the *user prompt*</span>
+<span class="c1">#: so it carries the human's words, not tooling noise.</span>
+<span class="n">WRAPPER_TAGS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">"command-name"</span><span class="p">,</span>
+    <span class="s2">"command-message"</span><span class="p">,</span>
+    <span class="s2">"command-args"</span><span class="p">,</span>
+    <span class="s2">"local-command-stdout"</span><span class="p">,</span>
+    <span class="s2">"local-command-stderr"</span><span class="p">,</span>
+    <span class="s2">"local-command-caveat"</span><span class="p">,</span>
+    <span class="s2">"bash-input"</span><span class="p">,</span>
+    <span class="s2">"bash-stdout"</span><span class="p">,</span>
+    <span class="s2">"bash-stderr"</span><span class="p">,</span>
+    <span class="s2">"system-reminder"</span><span class="p">,</span>
+    <span class="s2">"user-prompt-submit-hook"</span><span class="p">,</span>
+    <span class="s2">"task-notification"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">_WRAPPER_PAIR_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"&lt;("</span> <span class="o">+</span> <span class="s2">"|"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">WRAPPER_TAGS</span><span class="p">)</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">")\b[^&gt;]*&gt;.*?&lt;/\1&gt;"</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+<span class="n">_WRAPPER_TAG_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"&lt;/?(?:"</span> <span class="o">+</span> <span class="s2">"|"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">WRAPPER_TAGS</span><span class="p">)</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">")\b[^&gt;]*&gt;"</span><span class="p">)</span>
+
+<span class="c1">#: Which ``system`` subtypes are kept on the turn record (others are counted only).</span>
+<span class="n">KEPT_SYSTEM_SUBTYPES</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"turn_duration"</span><span class="p">,</span> <span class="s2">"compact_boundary"</span><span class="p">,</span> <span class="s2">"away_summary"</span><span class="p">,</span> <span class="s2">"stop_hook_summary"</span><span class="p">)</span>
+
+<span class="c1">#: Session-level records that are worth keeping as metadata, keyed by their type.</span>
+<span class="n">META_TYPES</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"ai-title"</span><span class="p">,</span> <span class="s2">"custom-title"</span><span class="p">,</span> <span class="s2">"agent-name"</span><span class="p">,</span> <span class="s2">"pr-link"</span><span class="p">,</span> <span class="s2">"cost-state"</span><span class="p">,</span> <span class="s2">"permission-mode"</span><span class="p">,</span>
+              <span class="s2">"worktree-state"</span><span class="p">,</span> <span class="s2">"frame-link"</span><span class="p">)</span>
+
+<span class="n">DIGEST_CHARS</span> <span class="o">=</span> <span class="mi">200</span>
+
+<span class="c1">#: How much of a tool's full input text (a Bash command, a Write's content) to keep</span>
+<span class="c1">#: verbatim on the turn record. Big enough for real scripts, capped so one pasted</span>
+<span class="c1">#: blob can't blow up the store.</span>
+<span class="n">MAX_INPUT_TEXT_CHARS</span> <span class="o">=</span> <span class="mi">20000</span>
+
+
+<div class="viewcode-block" id="clean_prompt">
+<a class="viewcode-back" href="../../module_docs/astern/turns.html#astern.turns.clean_prompt">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">clean_prompt</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Strip CLI wrapper tags (and their content) from a user line → prose only.</span>
+
+<span class="sd">    &gt;&gt;&gt; clean_prompt('&lt;system-reminder&gt;x&lt;/system-reminder&gt; hello  world')</span>
+<span class="sd">    'hello world'</span>
+<span class="sd">    """</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">_WRAPPER_PAIR_RE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">_WRAPPER_TAG_RE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">())</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_content</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"message"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"content"</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_text_blocks</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">content</span><span class="p">]</span> <span class="k">if</span> <span class="n">content</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">else</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">b</span><span class="p">[</span><span class="s2">"text"</span><span class="p">]</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">content</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"text"</span> <span class="ow">and</span> <span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"text"</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="p">[]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_blocks</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">_content</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">b</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">c</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">==</span> <span class="n">kind</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">is_tool_result</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">_blocks</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="s2">"tool_result"</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="is_user_prompt">
+<a class="viewcode-back" href="../../module_docs/astern/turns.html#astern.turns.is_user_prompt">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_user_prompt</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A real human prompt: a ``user`` line that is neither meta nor a tool result."""</span>
+    <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">"user"</span> <span class="ow">or</span> <span class="n">msg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"isMeta"</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">is_tool_result</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">_text_blocks</span><span class="p">(</span><span class="n">_content</span><span class="p">(</span><span class="n">msg</span><span class="p">)))</span></div>
+
+
+
+<div class="viewcode-block" id="iter_turn_pairs">
+<a class="viewcode-back" href="../../module_docs/astern/turns.html#astern.turns.iter_turn_pairs">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">iter_turn_pairs</span><span class="p">(</span><span class="n">records</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">"""Yield ``(user_prompt_record, [records of the turn])`` up to the next real prompt.</span>
+
+<span class="sd">    The turn's records include assistant lines, the ``tool_result`` user lines that</span>
+<span class="sd">    continue the same turn, and ``system`` lines that fell inside it.</span>
+<span class="sd">    """</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">records</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_user_prompt</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">continue</span>
+        <span class="n">turn</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+            <span class="n">mj</span> <span class="o">=</span> <span class="n">records</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">mj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span>
+            <span class="n">is_prompt</span> <span class="o">=</span> <span class="n">t</span> <span class="o">==</span> <span class="s2">"user"</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_tool_result</span><span class="p">(</span><span class="n">mj</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">mj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"isMeta"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">is_prompt</span> <span class="ow">and</span> <span class="n">_text_blocks</span><span class="p">(</span><span class="n">_content</span><span class="p">(</span><span class="n">mj</span><span class="p">)):</span>
+                <span class="k">break</span>
+            <span class="k">if</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"assistant"</span><span class="p">,</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"system"</span><span class="p">):</span>
+                <span class="n">turn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mj</span><span class="p">)</span>
+            <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">yield</span> <span class="n">msg</span><span class="p">,</span> <span class="n">turn</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">j</span></div>
+
+
+
+<div class="viewcode-block" id="tool_digest">
+<a class="viewcode-back" href="../../module_docs/astern/turns.html#astern.turns.tool_digest">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">tool_digest</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">inp</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A short, comparable summary of a tool input: the command, the path, or the query.</span>
+
+<span class="sd">    &gt;&gt;&gt; tool_digest('Bash', {'command': 'ls -la'})</span>
+<span class="sd">    'ls -la'</span>
+<span class="sd">    &gt;&gt;&gt; tool_digest('Edit', {'file_path': '/a/b.py', 'old_string': 'x'})</span>
+<span class="sd">    '/a/b.py'</span>
+<span class="sd">    &gt;&gt;&gt; tool_digest('SendMessage', {'to': 'a', 'message': 'hi'})</span>
+<span class="sd">    '{"message": "hi", "to": "a"}'</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">inp</span><span class="p">)[:</span><span class="n">DIGEST_CHARS</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"command"</span><span class="p">,</span> <span class="s2">"file_path"</span><span class="p">,</span> <span class="s2">"path"</span><span class="p">,</span> <span class="s2">"query"</span><span class="p">,</span> <span class="s2">"pattern"</span><span class="p">,</span> <span class="s2">"prompt"</span><span class="p">,</span> <span class="s2">"description"</span><span class="p">,</span> <span class="s2">"skill"</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">inp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">inp</span><span class="p">[</span><span class="n">key</span><span class="p">])[:</span><span class="n">DIGEST_CHARS</span><span class="p">]</span>
+    <span class="c1"># No known key: digest the *values*, never just the key names — a key-only digest</span>
+    <span class="c1"># made every distinct SendMessage call in a session collapse onto one string, which</span>
+    <span class="c1"># the friction lens then read as a 200-fold retry.</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">)[:</span><span class="n">DIGEST_CHARS</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="tool_input_text">
+<a class="viewcode-back" href="../../module_docs/astern/turns.html#astern.turns.tool_input_text">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">tool_input_text</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">inp</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The full text of a tool input worth keeping verbatim: a command, a file body.</span>
+
+<span class="sd">    Unlike :func:`tool_digest` (a short label for display) this is uncapped source</span>
+<span class="sd">    text — a rewrites lens needs the whole script, not its first 200 chars.</span>
+
+<span class="sd">    &gt;&gt;&gt; tool_input_text('Bash', {'command': 'ls -la'})</span>
+<span class="sd">    'ls -la'</span>
+<span class="sd">    &gt;&gt;&gt; tool_input_text('Write', {'file_path': '/tmp/x.py', 'content': 'print(1)'})</span>
+<span class="sd">    'print(1)'</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"command"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">,</span> <span class="s2">"new_string"</span><span class="p">,</span> <span class="s2">"query"</span><span class="p">,</span> <span class="s2">"pattern"</span><span class="p">,</span> <span class="s2">"prompt"</span><span class="p">,</span> <span class="s2">"description"</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">inp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">inp</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">tool_digest</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_tools</span><span class="p">(</span><span class="n">turn</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="n">uses</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">order</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">turn</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"assistant"</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">_blocks</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">"tool_use"</span><span class="p">):</span>
+                <span class="n">tid</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"id"</span><span class="p">)</span> <span class="ow">or</span> <span class="sa">f</span><span class="s2">"anon</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">order</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+                <span class="n">name</span><span class="p">,</span> <span class="n">inp</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span> <span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"input"</span><span class="p">)</span>
+                <span class="n">full_text</span> <span class="o">=</span> <span class="n">tool_input_text</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">inp</span><span class="p">)</span>
+                <span class="n">uses</span><span class="p">[</span><span class="n">tid</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="n">tid</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s2">"digest"</span><span class="p">:</span> <span class="n">tool_digest</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">inp</span><span class="p">),</span>
+                             <span class="s2">"is_error"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">"result_chars"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                             <span class="s2">"input_text"</span><span class="p">:</span> <span class="n">full_text</span><span class="p">[:</span><span class="n">MAX_INPUT_TEXT_CHARS</span><span class="p">],</span> <span class="s2">"input_chars"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">full_text</span><span class="p">)}</span>
+                <span class="n">order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tid</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"user"</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">_blocks</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">"tool_result"</span><span class="p">):</span>
+                <span class="n">tid</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tool_use_id"</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">tid</span> <span class="ow">in</span> <span class="n">uses</span><span class="p">:</span>
+                    <span class="n">uses</span><span class="p">[</span><span class="n">tid</span><span class="p">][</span><span class="s2">"is_error"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_error"</span><span class="p">))</span>
+                    <span class="n">uses</span><span class="p">[</span><span class="n">tid</span><span class="p">][</span><span class="s2">"result_chars"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"content"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">uses</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">order</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_usage</span><span class="p">(</span><span class="n">turn</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""API usage for the turn, de-duplicated by ``message.id``."""</span>
+    <span class="n">seen</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">turn</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">"assistant"</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"message"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"usage"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">seen</span><span class="p">[</span><span class="n">msg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"id"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"uuid"</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seen</span><span class="p">))]</span> <span class="o">=</span> <span class="n">u</span>
+    <span class="n">tot</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">seen</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">u</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+                <span class="n">tot</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">tot</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="n">tot</span><span class="p">[</span><span class="s2">"api_calls"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seen</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tot</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_system</span><span class="p">(</span><span class="n">turn</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">turn</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"system"</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"subtype"</span><span class="p">)</span> <span class="ow">in</span> <span class="n">KEPT_SYSTEM_SUBTYPES</span><span class="p">:</span>
+            <span class="n">keep</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"subtype"</span><span class="p">,</span> <span class="s2">"durationMs"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">,</span> <span class="s2">"compactMetadata"</span><span class="p">,</span> <span class="s2">"timestamp"</span><span class="p">)}</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">keep</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_models</span><span class="p">(</span><span class="n">turn</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="n">seen</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">turn</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"assistant"</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"message"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"model"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">model</span> <span class="ow">and</span> <span class="n">model</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+                <span class="n">seen</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">seen</span>
+
+
+<div class="viewcode-block" id="iter_turns">
+<a class="viewcode-back" href="../../module_docs/astern/turns.html#astern.turns.iter_turns">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">iter_turns</span><span class="p">(</span><span class="n">records</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Yield one JSON-able record per turn. See the module docstring for the shape."""</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">user_msg</span><span class="p">,</span> <span class="n">turn</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">iter_turn_pairs</span><span class="p">(</span><span class="n">records</span><span class="p">)):</span>
+        <span class="n">asst_texts</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">turn</span> <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"assistant"</span>
+                      <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">_text_blocks</span><span class="p">(</span><span class="n">_content</span><span class="p">(</span><span class="n">m</span><span class="p">))</span> <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
+        <span class="n">tools</span> <span class="o">=</span> <span class="n">_tools</span><span class="p">(</span><span class="n">turn</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="p">{</span>
+            <span class="s2">"index"</span><span class="p">:</span> <span class="n">index</span><span class="p">,</span>
+            <span class="s2">"uuid"</span><span class="p">:</span> <span class="n">user_msg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"uuid"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+            <span class="s2">"timestamp"</span><span class="p">:</span> <span class="n">user_msg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"timestamp"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+            <span class="s2">"user_prompt"</span><span class="p">:</span> <span class="n">clean_prompt</span><span class="p">(</span><span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_text_blocks</span><span class="p">(</span><span class="n">_content</span><span class="p">(</span><span class="n">user_msg</span><span class="p">)))),</span>
+            <span class="s2">"user_prompt_chars_raw"</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">_text_blocks</span><span class="p">(</span><span class="n">_content</span><span class="p">(</span><span class="n">user_msg</span><span class="p">))),</span>
+            <span class="s2">"assistant_summary"</span><span class="p">:</span> <span class="n">asst_texts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">asst_texts</span> <span class="k">else</span> <span class="s2">""</span><span class="p">,</span>
+            <span class="s2">"assistant_full"</span><span class="p">:</span> <span class="s2">"</span><span class="se">\n\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">asst_texts</span><span class="p">),</span>
+            <span class="s2">"assistant_chars"</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">asst_texts</span><span class="p">),</span>
+            <span class="s2">"tools"</span><span class="p">:</span> <span class="n">tools</span><span class="p">,</span>
+            <span class="s2">"n_tool_calls"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">tools</span><span class="p">),</span>
+            <span class="s2">"n_errors"</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tools</span> <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="s2">"is_error"</span><span class="p">]),</span>
+            <span class="s2">"tool_result_chars"</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="s2">"result_chars"</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tools</span><span class="p">),</span>
+            <span class="s2">"system"</span><span class="p">:</span> <span class="n">_system</span><span class="p">(</span><span class="n">turn</span><span class="p">),</span>
+            <span class="s2">"models"</span><span class="p">:</span> <span class="n">_models</span><span class="p">(</span><span class="n">turn</span><span class="p">),</span>
+            <span class="s2">"usage"</span><span class="p">:</span> <span class="n">_usage</span><span class="p">(</span><span class="n">turn</span><span class="p">),</span>
+            <span class="s2">"is_sidechain"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">user_msg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"isSidechain"</span><span class="p">)),</span>
+            <span class="s2">"git_branch"</span><span class="p">:</span> <span class="n">user_msg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"gitBranch"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="session_meta">
+<a class="viewcode-back" href="../../module_docs/astern/turns.html#astern.turns.session_meta">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">session_meta</span><span class="p">(</span><span class="n">records</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Session-level facts from the non-conversational records (last occurrence wins).</span>
+
+<span class="sd">    &gt;&gt;&gt; session_meta([{"type": "ai-title", "aiTitle": "Fix CI"}, {"type": "pr-link",</span>
+<span class="sd">    ...   "prNumber": 3, "prUrl": "u", "prRepository": "o/r"}, {"type": "user", "sessionId": "s",</span>
+<span class="sd">    ...   "cwd": "/p/x", "timestamp": "t", "version": "2.1", "message": {"content": "hi"}}])["title"]</span>
+<span class="sd">    'Fix CI'</span>
+<span class="sd">    """</span>
+    <span class="n">meta</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"session_id"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">"cwd"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">"project"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">"git_branch"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">"started_at"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+                  <span class="s2">"ended_at"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">"version"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">"title"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">"ai_title"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">"custom_title"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+                  <span class="s2">"agent_name"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">"prs"</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">"cost_state"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"permission_mode"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+                  <span class="s2">"n_records"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">),</span> <span class="s2">"record_types"</span><span class="p">:</span> <span class="p">{}}</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">"record_types"</span><span class="p">][</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">"record_types"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"sessionId"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"cwd"</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">meta</span><span class="p">[</span><span class="s2">"session_id"</span><span class="p">]:</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">"session_id"</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="s2">"sessionId"</span><span class="p">]</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">"cwd"</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="s2">"cwd"</span><span class="p">]</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">"project"</span><span class="p">]</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="s2">"cwd"</span><span class="p">])</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">"git_branch"</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"gitBranch"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">"started_at"</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"timestamp"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">"version"</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"version"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+        <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"timestamp"</span><span class="p">):</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">"ended_at"</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="s2">"timestamp"</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="s2">"ai-title"</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"aiTitle"</span><span class="p">):</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">"ai_title"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="s2">"aiTitle"</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">t</span> <span class="o">==</span> <span class="s2">"custom-title"</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"customTitle"</span><span class="p">):</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">"custom_title"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="s2">"customTitle"</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">t</span> <span class="o">==</span> <span class="s2">"agent-name"</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"agentName"</span><span class="p">):</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">"agent_name"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="s2">"agentName"</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">t</span> <span class="o">==</span> <span class="s2">"pr-link"</span><span class="p">:</span>
+            <span class="n">pr</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"number"</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"prNumber"</span><span class="p">),</span> <span class="s2">"url"</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"prUrl"</span><span class="p">),</span> <span class="s2">"repo"</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"prRepository"</span><span class="p">)}</span>
+            <span class="k">if</span> <span class="n">pr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">meta</span><span class="p">[</span><span class="s2">"prs"</span><span class="p">]:</span>
+                <span class="n">meta</span><span class="p">[</span><span class="s2">"prs"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pr</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">t</span> <span class="o">==</span> <span class="s2">"cost-state"</span><span class="p">:</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">"cost_state"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"type"</span><span class="p">,</span> <span class="s2">"uuid"</span><span class="p">,</span> <span class="s2">"sessionId"</span><span class="p">)}</span>
+        <span class="k">elif</span> <span class="n">t</span> <span class="o">==</span> <span class="s2">"permission-mode"</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"permissionMode"</span><span class="p">):</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">"permission_mode"</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="s2">"permissionMode"</span><span class="p">]</span>
+    <span class="n">meta</span><span class="p">[</span><span class="s2">"title"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">meta</span><span class="p">[</span><span class="s2">"custom_title"</span><span class="p">]</span> <span class="ow">or</span> <span class="n">meta</span><span class="p">[</span><span class="s2">"ai_title"</span><span class="p">])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">meta</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

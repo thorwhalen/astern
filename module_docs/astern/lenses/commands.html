@@ -1,0 +1,257 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astern.lenses.commands &mdash; astern 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="astern.lenses.cost" href="cost.html" />
+    <link rel="prev" title="astern.lenses" href="../lenses.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            astern
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../astern.html">astern</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../__main__.html">astern.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../estimate.html">astern.estimate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../judge.html">astern.judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ledger.html">astern.ledger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../lenses.html">astern.lenses</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">astern.lenses.commands</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#astern.lenses.commands.EXT_LANGUAGE"><code class="docutils literal notranslate"><span class="pre">EXT_LANGUAGE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.lenses.commands.INTERPRETER_LANGUAGE"><code class="docutils literal notranslate"><span class="pre">INTERPRETER_LANGUAGE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.lenses.commands.LONG_COMMAND_CHARS"><code class="docutils literal notranslate"><span class="pre">LONG_COMMAND_CHARS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.lenses.commands.fingerprint"><code class="docutils literal notranslate"><span class="pre">fingerprint()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.lenses.commands.guess_language"><code class="docutils literal notranslate"><span class="pre">guess_language()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.lenses.commands.heredoc_body"><code class="docutils literal notranslate"><span class="pre">heredoc_body()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.lenses.commands.interpreter_hint"><code class="docutils literal notranslate"><span class="pre">interpreter_hint()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.lenses.commands.normalize_script"><code class="docutils literal notranslate"><span class="pre">normalize_script()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.lenses.commands.rewrites"><code class="docutils literal notranslate"><span class="pre">rewrites()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cost.html">astern.lenses.cost</a></li>
+<li class="toctree-l1"><a class="reference internal" href="friction.html">astern.lenses.friction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hygiene.html">astern.lenses.hygiene</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stats.html">astern.lenses.stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="synopsis.html">astern.lenses.synopsis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="timeline.html">astern.lenses.timeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report.html">astern.report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sources.html">astern.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../store.html">astern.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools.html">astern.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../turns.html">astern.turns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../views.html">astern.views</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">astern</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">astern.lenses.commands</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/module_docs/astern/lenses/commands.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-astern.lenses.commands">
+<span id="astern-lenses-commands"></span><h1>astern.lenses.commands<a class="headerlink" href="#module-astern.lenses.commands" title="Link to this heading"></a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">rewrites</span></code>: one-off code an agent wrote inline, instead of reusing a function.</p>
+<p>Three sources, one finding each (kind <code class="docutils literal notranslate"><span class="pre">inline_script</span></code>):</p>
+<ul class="simple">
+<li><p>a <strong>Bash heredoc</strong> (<code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">-</span> <span class="pre">&lt;&lt;'EOF'</span> <span class="pre">...</span> <span class="pre">EOF</span></code>, <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">&gt;</span> <span class="pre">file</span> <span class="pre">&lt;&lt;...</span></code>) — the body
+between the markers is the script.</p></li>
+<li><p>a <strong>``Write``</strong> whose path is under a scratchpad/tmp dir (<code class="docutils literal notranslate"><span class="pre">/scratchpad/</span></code> or
+<code class="docutils literal notranslate"><span class="pre">/tmp/</span></code> in the path) — the file’s content is the script.</p></li>
+<li><p>a <strong>long Bash command</strong> (over <a class="reference internal" href="#astern.lenses.commands.LONG_COMMAND_CHARS" title="astern.lenses.commands.LONG_COMMAND_CHARS"><code class="xref py py-data docutils literal notranslate"><span class="pre">LONG_COMMAND_CHARS</span></code></a>) that is not a heredoc —
+still worth flagging as one-off shell logic.</p></li>
+</ul>
+<p>Every finding carries a normalized <code class="docutils literal notranslate"><span class="pre">fingerprint</span></code> (<a class="reference internal" href="#astern.lenses.commands.fingerprint" title="astern.lenses.commands.fingerprint"><code class="xref py py-func docutils literal notranslate"><span class="pre">fingerprint()</span></code></a>) so
+<a class="reference internal" href="../report.html#module-astern.report" title="astern.report"><code class="xref py py-mod docutils literal notranslate"><span class="pre">astern.report</span></code></a> can group near-duplicate scripts across sessions — that
+grouping is the whole point of the lens: a script rewritten in three different
+sessions is a function nobody has extracted yet.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">astern.turns</span><span class="w"> </span><span class="kn">import</span> <span class="n">iter_turns</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">recs</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"uuid"</span><span class="p">:</span> <span class="s2">"u1"</span><span class="p">,</span> <span class="s2">"sessionId"</span><span class="p">:</span> <span class="s2">"s"</span><span class="p">,</span> <span class="s2">"cwd"</span><span class="p">:</span> <span class="s2">"/p/x"</span><span class="p">,</span> <span class="s2">"timestamp"</span><span class="p">:</span> <span class="s2">"t0"</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="s2">"message"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"count the lines"</span><span class="p">}},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"assistant"</span><span class="p">,</span> <span class="s2">"uuid"</span><span class="p">:</span> <span class="s2">"a1"</span><span class="p">,</span> <span class="s2">"sessionId"</span><span class="p">:</span> <span class="s2">"s"</span><span class="p">,</span> <span class="s2">"message"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="s2">"m1"</span><span class="p">,</span> <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"x"</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="s2">"usage"</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">"content"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"tool_use"</span><span class="p">,</span> <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"t1"</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Bash"</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="s2">"input"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"command"</span><span class="p">:</span> <span class="s2">"python3 - &lt;&lt;'EOF'</span><span class="se">\n</span><span class="s2">print(open('f').read().count(chr(10)))</span><span class="se">\n</span><span class="s2">EOF"</span><span class="p">}}]}},</span>
+<span class="gp">... </span>  <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"uuid"</span><span class="p">:</span> <span class="s2">"u2"</span><span class="p">,</span> <span class="s2">"sessionId"</span><span class="p">:</span> <span class="s2">"s"</span><span class="p">,</span> <span class="s2">"message"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span>
+<span class="gp">... </span>   <span class="p">[{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"tool_result"</span><span class="p">,</span> <span class="s2">"tool_use_id"</span><span class="p">:</span> <span class="s2">"t1"</span><span class="p">,</span> <span class="s2">"is_error"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"3"</span><span class="p">}]}},</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">iter_turns</span><span class="p">(</span><span class="n">recs</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">rewrites</span><span class="p">({</span><span class="s2">"session_id"</span><span class="p">:</span> <span class="s2">"s"</span><span class="p">},</span> <span class="n">t</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"kind"</span><span class="p">],</span> <span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"evidence"</span><span class="p">][</span><span class="s2">"language"</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"evidence"</span><span class="p">][</span><span class="s2">"fingerprint"</span><span class="p">])</span>
+<span class="go">('inline_script', 'python', 12)</span>
+</pre></div>
+</div>
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.lenses.commands.EXT_LANGUAGE">
+<span class="sig-prename descclassname"><span class="pre">astern.lenses.commands.</span></span><span class="sig-name descname"><span class="pre">EXT_LANGUAGE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'.js':</span> <span class="pre">'javascript',</span> <span class="pre">'.json':</span> <span class="pre">'json',</span> <span class="pre">'.md':</span> <span class="pre">'markdown',</span> <span class="pre">'.py':</span> <span class="pre">'python',</span> <span class="pre">'.sh':</span> <span class="pre">'bash',</span> <span class="pre">'.sql':</span> <span class="pre">'sql',</span> <span class="pre">'.ts':</span> <span class="pre">'typescript',</span> <span class="pre">'.yaml':</span> <span class="pre">'yaml',</span> <span class="pre">'.yml':</span> <span class="pre">'yaml'}</span></span><a class="headerlink" href="#astern.lenses.commands.EXT_LANGUAGE" title="Link to this definition"></a></dt>
+<dd><p>File extension → language guess, checked before any content sniffing.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.lenses.commands.INTERPRETER_LANGUAGE">
+<span class="sig-prename descclassname"><span class="pre">astern.lenses.commands.</span></span><span class="sig-name descname"><span class="pre">INTERPRETER_LANGUAGE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'bash':</span> <span class="pre">'bash',</span> <span class="pre">'node':</span> <span class="pre">'javascript',</span> <span class="pre">'python':</span> <span class="pre">'python',</span> <span class="pre">'python2':</span> <span class="pre">'python',</span> <span class="pre">'python3':</span> <span class="pre">'python',</span> <span class="pre">'sh':</span> <span class="pre">'bash',</span> <span class="pre">'zsh':</span> <span class="pre">'bash'}</span></span><a class="headerlink" href="#astern.lenses.commands.INTERPRETER_LANGUAGE" title="Link to this definition"></a></dt>
+<dd><p>Heredoc interpreter word → language, checked before content sniffing.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.lenses.commands.LONG_COMMAND_CHARS">
+<span class="sig-prename descclassname"><span class="pre">astern.lenses.commands.</span></span><span class="sig-name descname"><span class="pre">LONG_COMMAND_CHARS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">400</span></span><a class="headerlink" href="#astern.lenses.commands.LONG_COMMAND_CHARS" title="Link to this definition"></a></dt>
+<dd><p>A Bash command longer than this is worth flagging as one-off shell logic even
+without a heredoc.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.lenses.commands.fingerprint">
+<span class="sig-prename descclassname"><span class="pre">astern.lenses.commands.</span></span><span class="sig-name descname"><span class="pre">fingerprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../_modules/astern/lenses/commands.html#fingerprint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.lenses.commands.fingerprint" title="Link to this definition"></a></dt>
+<dd><p>A short hash of the normalized script, stable across trivial edits.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fingerprint</span><span class="p">(</span><span class="s1">'print(1)'</span><span class="p">)</span> <span class="o">==</span> <span class="n">fingerprint</span><span class="p">(</span><span class="s1">'print(2)'</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.lenses.commands.guess_language">
+<span class="sig-prename descclassname"><span class="pre">astern.lenses.commands.</span></span><span class="sig-name descname"><span class="pre">guess_language</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../_modules/astern/lenses/commands.html#guess_language"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.lenses.commands.guess_language" title="Link to this definition"></a></dt>
+<dd><p>Best-effort language guess: path extension, then an interpreter hint, then content.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">guess_language</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">'/tmp/x.py'</span><span class="p">)</span>
+<span class="go">'python'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">guess_language</span><span class="p">(</span><span class="s1">'print(1)'</span><span class="p">,</span> <span class="n">hint</span><span class="o">=</span><span class="s1">'python'</span><span class="p">)</span>
+<span class="go">'python'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">guess_language</span><span class="p">(</span><span class="s1">'import os</span><span class="se">\n</span><span class="s1">print(os.getcwd())'</span><span class="p">)</span>
+<span class="go">'python'</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.lenses.commands.heredoc_body">
+<span class="sig-prename descclassname"><span class="pre">astern.lenses.commands.</span></span><span class="sig-name descname"><span class="pre">heredoc_body</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/astern/lenses/commands.html#heredoc_body"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.lenses.commands.heredoc_body" title="Link to this definition"></a></dt>
+<dd><p>The text between a heredoc’s opening marker and its closing line, or <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">heredoc_body</span><span class="p">(</span><span class="s2">"python3 - &lt;&lt;'EOF'</span><span class="se">\n</span><span class="s2">print(1)</span><span class="se">\n</span><span class="s2">EOF"</span><span class="p">)</span>
+<span class="go">'print(1)'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">heredoc_body</span><span class="p">(</span><span class="s2">"ls -la"</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.lenses.commands.interpreter_hint">
+<span class="sig-prename descclassname"><span class="pre">astern.lenses.commands.</span></span><span class="sig-name descname"><span class="pre">interpreter_hint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../_modules/astern/lenses/commands.html#interpreter_hint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.lenses.commands.interpreter_hint" title="Link to this definition"></a></dt>
+<dd><p>The language implied by the word before a heredoc operator, or <code class="docutils literal notranslate"><span class="pre">''</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">interpreter_hint</span><span class="p">(</span><span class="s2">"python3 - &lt;&lt;'EOF'"</span><span class="p">)</span>
+<span class="go">'python'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">interpreter_hint</span><span class="p">(</span><span class="s2">"cat &gt; f &lt;&lt;EOF"</span><span class="p">)</span>
+<span class="go">''</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.lenses.commands.normalize_script">
+<span class="sig-prename descclassname"><span class="pre">astern.lenses.commands.</span></span><span class="sig-name descname"><span class="pre">normalize_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../_modules/astern/lenses/commands.html#normalize_script"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.lenses.commands.normalize_script" title="Link to this definition"></a></dt>
+<dd><p>Lowercase, quoted strings and digits replaced by placeholders, whitespace collapsed.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">normalize_script</span><span class="p">(</span><span class="s1">'print("hi") 42'</span><span class="p">)</span>
+<span class="go">'print(&lt;str&gt;) &lt;num&gt;'</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.lenses.commands.rewrites">
+<span class="sig-prename descclassname"><span class="pre">astern.lenses.commands.</span></span><span class="sig-name descname"><span class="pre">rewrites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">turns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ctx</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/astern/lenses/commands.html#rewrites"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.lenses.commands.rewrites" title="Link to this definition"></a></dt>
+<dd><p>Inline scripts (Bash heredocs, long Bash commands, scratchpad Writes), fingerprinted.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../lenses.html" class="btn btn-neutral float-left" title="astern.lenses" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cost.html" class="btn btn-neutral float-right" title="astern.lenses.cost" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

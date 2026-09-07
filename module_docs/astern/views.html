@@ -1,0 +1,236 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astern.views &mdash; astern 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="astern.turns" href="turns.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            astern
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../astern.html">astern</a></li>
+<li class="toctree-l1"><a class="reference internal" href="__main__.html">astern.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="estimate.html">astern.estimate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="judge.html">astern.judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ledger.html">astern.ledger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses.html">astern.lenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/commands.html">astern.lenses.commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/cost.html">astern.lenses.cost</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/friction.html">astern.lenses.friction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/hygiene.html">astern.lenses.hygiene</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/stats.html">astern.lenses.stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/synopsis.html">astern.lenses.synopsis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/timeline.html">astern.lenses.timeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="report.html">astern.report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources.html">astern.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="store.html">astern.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">astern.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="turns.html">astern.turns</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">astern.views</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#astern.views.DFLT_MAX_CHARS"><code class="docutils literal notranslate"><span class="pre">DFLT_MAX_CHARS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.views.MIN_PROMPT_CHARS"><code class="docutils literal notranslate"><span class="pre">MIN_PROMPT_CHARS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.views.session_view"><code class="docutils literal notranslate"><span class="pre">session_view()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.views.tool_summary"><code class="docutils literal notranslate"><span class="pre">tool_summary()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.views.view_stats"><code class="docutils literal notranslate"><span class="pre">view_stats()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">astern</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">astern.views</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/astern/views.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-astern.views">
+<span id="astern-views"></span><h1>astern.views<a class="headerlink" href="#module-astern.views" title="Link to this heading"></a></h1>
+<p>The compressed markdown a judge reads instead of a transcript.</p>
+<p>A session file here is a median 1.2 MB and 88% of it is tool I/O. A judge does not
+need the tool I/O: it needs what was asked, what was done, and whether it worked.
+<a class="reference internal" href="#astern.views.session_view" title="astern.views.session_view"><code class="xref py py-func docutils literal notranslate"><span class="pre">session_view()</span></code></a> renders that — a header, then one block per turn carrying the
+human’s prompt, a one-line tool summary and the assistant’s closing text — and
+guarantees a ceiling on its own size, which is what makes the cost of a batch
+predictable at all.</p>
+<p>Shrinking happens in a fixed order, and the view says what it did, because a judge
+that is silently handed half a session will confidently synopsise half a session:</p>
+<ol class="arabic simple">
+<li><p>per-turn budgets are scaled down proportionally (never below <code class="xref py py-data docutils literal notranslate"><span class="pre">MIN_*</span></code>),</p></li>
+<li><p>then middle turns are dropped, keeping the first and the last ones — the goal is
+usually stated at the start and the outcome shown at the end,</p></li>
+<li><p>and an explicit <code class="docutils literal notranslate"><span class="pre">turns</span> <span class="pre">…</span> <span class="pre">omitted</span></code> line goes into the view either way.</p></li>
+</ol>
+<p>When <code class="docutils literal notranslate"><span class="pre">prior</span></code> is given — the synopsis a previous run produced for the same session
+— the view opens with a short “Previously in this session” recap and then covers
+only the new turns. That is the incremental path: a resumed session pays for its
+new turns only.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">turns</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">'index'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'timestamp'</span><span class="p">:</span> <span class="s1">'2026-09-01T10:00:00Z'</span><span class="p">,</span> <span class="s1">'user_prompt'</span><span class="p">:</span> <span class="s1">'fix the build'</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="s1">'assistant_full'</span><span class="p">:</span> <span class="s1">'Fixed it.'</span><span class="p">,</span> <span class="s1">'tools'</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>             <span class="p">{</span><span class="s1">'name'</span><span class="p">:</span> <span class="s1">'Bash'</span><span class="p">,</span> <span class="s1">'digest'</span><span class="p">:</span> <span class="s1">'uv build'</span><span class="p">,</span> <span class="s1">'is_error'</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+<span class="gp">... </span>             <span class="p">{</span><span class="s1">'name'</span><span class="p">:</span> <span class="s1">'Bash'</span><span class="p">,</span> <span class="s1">'digest'</span><span class="p">:</span> <span class="s1">'uv build'</span><span class="p">,</span> <span class="s1">'is_error'</span><span class="p">:</span> <span class="kc">False</span><span class="p">}]}]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">session_view</span><span class="p">({</span><span class="s1">'session_id'</span><span class="p">:</span> <span class="s1">'abc123'</span><span class="p">,</span> <span class="s1">'title'</span><span class="p">:</span> <span class="s1">'Build fix'</span><span class="p">},</span> <span class="n">turns</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="go"># Session abc123 — Build fix</span>
+
+<span class="go">turns: 1 (showing 1)</span>
+
+<span class="go">### turn 0 (2026-09-01T10:00:00Z)</span>
+<span class="go">user: fix the build</span>
+<span class="go">tools: Bash×2, 1 error: Bash "uv build"</span>
+<span class="go">assistant: Fixed it.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">view_stats</span><span class="p">(</span><span class="n">v</span><span class="p">)[</span><span class="s1">'n_turns_shown'</span><span class="p">],</span> <span class="n">view_stats</span><span class="p">(</span><span class="n">v</span><span class="p">)[</span><span class="s1">'n_turns_dropped'</span><span class="p">]</span>
+<span class="go">(1, 0)</span>
+</pre></div>
+</div>
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.views.DFLT_MAX_CHARS">
+<span class="sig-prename descclassname"><span class="pre">astern.views.</span></span><span class="sig-name descname"><span class="pre">DFLT_MAX_CHARS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">24000</span></span><a class="headerlink" href="#astern.views.DFLT_MAX_CHARS" title="Link to this definition"></a></dt>
+<dd><p>under
+the plan’s ≤8k-per-synopsis budget with room for the schema and the system prompt.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A judge call is ~4 chars per token, so a 24k-char view is ~6k input tokens</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.views.MIN_PROMPT_CHARS">
+<span class="sig-prename descclassname"><span class="pre">astern.views.</span></span><span class="sig-name descname"><span class="pre">MIN_PROMPT_CHARS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">160</span></span><a class="headerlink" href="#astern.views.MIN_PROMPT_CHARS" title="Link to this definition"></a></dt>
+<dd><p>Floors for the proportional-shrink step. Below these a turn stops being evidence
+and becomes noise, so the next step (dropping whole turns) is the honest one.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.views.session_view">
+<span class="sig-prename descclassname"><span class="pre">astern.views.</span></span><span class="sig-name descname"><span class="pre">session_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">turns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_chars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">24000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_chars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reply_chars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prior</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/astern/views.html#session_view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.views.session_view" title="Link to this definition"></a></dt>
+<dd><p>A judge-sized markdown view of <code class="docutils literal notranslate"><span class="pre">turns</span></code>, never longer than <code class="docutils literal notranslate"><span class="pre">max_chars</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">prior</span></code> is the previous synopsis dict for the same session; when given, the
+view recaps it and <code class="docutils literal notranslate"><span class="pre">turns</span></code> should be the new turns only.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">'index'</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span> <span class="s1">'user_prompt'</span><span class="p">:</span> <span class="s1">'x'</span> <span class="o">*</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">'assistant_full'</span><span class="p">:</span> <span class="s1">'y'</span> <span class="o">*</span> <span class="mi">400</span><span class="p">,</span>
+<span class="gp">... </span>       <span class="s1">'tools'</span><span class="p">:</span> <span class="p">[]}</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">session_view</span><span class="p">({</span><span class="s1">'session_id'</span><span class="p">:</span> <span class="s1">'s'</span><span class="p">},</span> <span class="n">ts</span><span class="p">,</span> <span class="n">max_chars</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2000</span><span class="p">,</span> <span class="n">view_stats</span><span class="p">(</span><span class="n">v</span><span class="p">)[</span><span class="s1">'n_turns_dropped'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<span class="go">(True, True)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'Previously in this session'</span> <span class="ow">in</span> <span class="n">session_view</span><span class="p">({</span><span class="s1">'session_id'</span><span class="p">:</span> <span class="s1">'s'</span><span class="p">},</span> <span class="n">ts</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>                                             <span class="n">prior</span><span class="o">=</span><span class="p">{</span><span class="s1">'goal'</span><span class="p">:</span> <span class="s1">'ship it'</span><span class="p">})</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.views.tool_summary">
+<span class="sig-prename descclassname"><span class="pre">astern.views.</span></span><span class="sig-name descname"><span class="pre">tool_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">turn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_errors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digest_chars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">70</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/astern/views.html#tool_summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.views.tool_summary" title="Link to this definition"></a></dt>
+<dd><p>One line for a turn’s tool calls: the mix, then the errors that matter.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tool_summary</span><span class="p">({</span><span class="s1">'tools'</span><span class="p">:</span> <span class="p">[{</span><span class="s1">'name'</span><span class="p">:</span> <span class="s1">'Bash'</span><span class="p">,</span> <span class="s1">'digest'</span><span class="p">:</span> <span class="s1">'ls'</span><span class="p">,</span> <span class="s1">'is_error'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+<span class="gp">... </span>                        <span class="p">{</span><span class="s1">'name'</span><span class="p">:</span> <span class="s1">'Bash'</span><span class="p">,</span> <span class="s1">'digest'</span><span class="p">:</span> <span class="s1">'uv build'</span><span class="p">,</span> <span class="s1">'is_error'</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+<span class="gp">... </span>                        <span class="p">{</span><span class="s1">'name'</span><span class="p">:</span> <span class="s1">'Edit'</span><span class="p">,</span> <span class="s1">'digest'</span><span class="p">:</span> <span class="s1">'/a.py'</span><span class="p">,</span> <span class="s1">'is_error'</span><span class="p">:</span> <span class="kc">False</span><span class="p">}]})</span>
+<span class="go">'Bash×2 Edit, 1 error: Bash "uv build"'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tool_summary</span><span class="p">({</span><span class="s1">'tools'</span><span class="p">:</span> <span class="p">[]})</span>
+<span class="go">''</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.views.view_stats">
+<span class="sig-prename descclassname"><span class="pre">astern.views.</span></span><span class="sig-name descname"><span class="pre">view_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/astern/views.html#view_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.views.view_stats" title="Link to this definition"></a></dt>
+<dd><p>Size and coverage of a rendered view — the cost model’s cheap regressor.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">view_stats</span><span class="p">(</span><span class="s1">'# Session s</span><span class="se">\n\n</span><span class="s1">### turn 0</span><span class="se">\n</span><span class="s1">user: hi</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+<span class="go">{'chars': 33, 'tokens_est': 8, 'n_turns_shown': 1, 'n_turns_dropped': 0}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="turns.html" class="btn btn-neutral float-left" title="astern.turns" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

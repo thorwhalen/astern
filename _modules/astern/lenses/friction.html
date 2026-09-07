@@ -1,0 +1,263 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astern.lenses.friction &mdash; astern 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            astern
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern.html">astern</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/__main__.html">astern.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/estimate.html">astern.estimate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/judge.html">astern.judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/ledger.html">astern.ledger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses.html">astern.lenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/commands.html">astern.lenses.commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/cost.html">astern.lenses.cost</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/friction.html">astern.lenses.friction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/hygiene.html">astern.lenses.hygiene</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/stats.html">astern.lenses.stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/synopsis.html">astern.lenses.synopsis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/timeline.html">astern.lenses.timeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/lenses/tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/report.html">astern.report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/sources.html">astern.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/store.html">astern.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/tools.html">astern.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/turns.html">astern.turns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/astern/views.html">astern.views</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">astern</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../lenses.html">astern.lenses</a></li>
+      <li class="breadcrumb-item active">astern.lenses.friction</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for astern.lenses.friction</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""``friction``: where an agent got stuck. Zero tokens; pure pattern detection.</span>
+
+<span class="sd">One finding per stuck moment, all pointing back at the turn that produced it</span>
+<span class="sd">(``finding(..., turn=turn)``). Six kinds:</span>
+
+<span class="sd">- ``tool_error``    a tool result came back with ``is_error``.</span>
+<span class="sd">- ``retry``         the same ``(tool, digest)`` pair recurs in the same turn or in</span>
+<span class="sd">                    consecutive turns — the shape of "try again, slightly differently".</span>
+<span class="sd">- ``pivot``         assistant prose contains a phrase that signals a change of plan</span>
+<span class="sd">                    (:data:`PIVOT_PHRASES`).</span>
+<span class="sd">- ``compaction``    a ``compact_boundary`` system record — context got full enough to</span>
+<span class="sd">                    summarize away.</span>
+<span class="sd">- ``long_turn``     a turn's wall-clock duration (``turn_duration`` system record)</span>
+<span class="sd">                    is at or above :data:`LONG_TURN_MS`.</span>
+<span class="sd">- ``tool_search``   a ``ToolSearch`` call — a deferred tool had to be looked up before</span>
+<span class="sd">                    it could be used at all.</span>
+
+<span class="sd">&gt;&gt;&gt; from astern.turns import iter_turns</span>
+<span class="sd">&gt;&gt;&gt; recs = [</span>
+<span class="sd">...   {"type": "user", "uuid": "u1", "sessionId": "s", "cwd": "/p/x", "timestamp": "t0",</span>
+<span class="sd">...    "message": {"role": "user", "content": "fix it"}},</span>
+<span class="sd">...   {"type": "assistant", "uuid": "a1", "sessionId": "s", "message": {"id": "m1", "model": "x",</span>
+<span class="sd">...    "usage": {}, "content": [{"type": "tool_use", "id": "t1", "name": "Bash",</span>
+<span class="sd">...    "input": {"command": "pytest -q"}}, {"type": "text",</span>
+<span class="sd">...    "text": "That didn't work, let me try another approach."}]}},</span>
+<span class="sd">...   {"type": "user", "uuid": "u2", "sessionId": "s", "message": {"role": "user", "content":</span>
+<span class="sd">...    [{"type": "tool_result", "tool_use_id": "t1", "is_error": True, "content": "boom"}]}},</span>
+<span class="sd">... ]</span>
+<span class="sd">&gt;&gt;&gt; t = list(iter_turns(recs))</span>
+<span class="sd">&gt;&gt;&gt; kinds = sorted({f["kind"] for f in friction({"session_id": "s"}, t)})</span>
+<span class="sd">&gt;&gt;&gt; "pivot" in kinds and "tool_error" in kinds</span>
+<span class="sd">True</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterator</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">astern.lenses</span><span class="w"> </span><span class="kn">import</span> <span class="n">finding</span><span class="p">,</span> <span class="n">lens</span>
+
+<span class="c1">#: A turn at or above this wall-clock duration is "long" enough to be friction on</span>
+<span class="c1">#: its own, independent of whether anything errored.</span>
+<span class="n">LONG_TURN_MS</span> <span class="o">=</span> <span class="mi">120_000</span>
+
+<span class="c1">#: Substrings in assistant prose that signal an in-flight change of plan. Lowercase;</span>
+<span class="c1">#: matched against lowercased text.</span>
+<span class="n">PIVOT_PHRASES</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">"let me try another approach"</span><span class="p">,</span>
+    <span class="s2">"that didn't work"</span><span class="p">,</span>
+    <span class="s2">"instead, i'll"</span><span class="p">,</span>
+    <span class="s2">"hmm"</span><span class="p">,</span>
+    <span class="s2">"wait,"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1">#: A retry run needs at least this many attempts to be worth reporting.</span>
+<span class="n">MIN_RETRY_ATTEMPTS</span> <span class="o">=</span> <span class="mi">2</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_error_findings</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">turn</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">tc</span> <span class="ow">in</span> <span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tools"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]:</span>
+        <span class="k">if</span> <span class="n">tc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_error"</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">finding</span><span class="p">(</span><span class="s2">"friction"</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"tool_error"</span><span class="p">,</span> <span class="n">turn</span><span class="o">=</span><span class="n">turn</span><span class="p">,</span>
+                          <span class="n">evidence</span><span class="o">=</span><span class="p">{</span><span class="s2">"tool"</span><span class="p">:</span> <span class="n">tc</span><span class="p">[</span><span class="s2">"name"</span><span class="p">],</span> <span class="s2">"digest"</span><span class="p">:</span> <span class="n">tc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"digest"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)})</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_pivot_findings</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">turn</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="p">(</span><span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"assistant_full"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span>
+    <span class="n">low</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">phrase</span> <span class="ow">in</span> <span class="n">PIVOT_PHRASES</span><span class="p">:</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">low</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">phrase</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">finding</span><span class="p">(</span><span class="s2">"friction"</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"pivot"</span><span class="p">,</span> <span class="n">turn</span><span class="o">=</span><span class="n">turn</span><span class="p">,</span>
+                          <span class="n">evidence</span><span class="o">=</span><span class="p">{</span><span class="s2">"phrase"</span><span class="p">:</span> <span class="n">phrase</span><span class="p">,</span> <span class="s2">"snippet"</span><span class="p">:</span> <span class="n">text</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">idx</span> <span class="o">-</span> <span class="mi">40</span><span class="p">):</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">80</span><span class="p">]})</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_compaction_findings</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">turn</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"system"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]:</span>
+        <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"subtype"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"compact_boundary"</span><span class="p">:</span>
+            <span class="n">meta</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"compactMetadata"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+            <span class="k">yield</span> <span class="n">finding</span><span class="p">(</span><span class="s2">"friction"</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"compaction"</span><span class="p">,</span> <span class="n">turn</span><span class="o">=</span><span class="n">turn</span><span class="p">,</span>
+                          <span class="n">evidence</span><span class="o">=</span><span class="p">{</span><span class="s2">"pre_tokens"</span><span class="p">:</span> <span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"preTokens"</span><span class="p">),</span> <span class="s2">"post_tokens"</span><span class="p">:</span> <span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"postTokens"</span><span class="p">)})</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_long_turn_findings</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">turn</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">threshold_ms</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">LONG_TURN_MS</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"system"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]:</span>
+        <span class="n">is_duration</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"subtype"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"turn_duration"</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"durationMs"</span><span class="p">),</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">is_duration</span> <span class="ow">and</span> <span class="n">s</span><span class="p">[</span><span class="s2">"durationMs"</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">threshold_ms</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">finding</span><span class="p">(</span><span class="s2">"friction"</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"long_turn"</span><span class="p">,</span> <span class="n">turn</span><span class="o">=</span><span class="n">turn</span><span class="p">,</span>
+                          <span class="n">evidence</span><span class="o">=</span><span class="p">{</span><span class="s2">"duration_ms"</span><span class="p">:</span> <span class="n">s</span><span class="p">[</span><span class="s2">"durationMs"</span><span class="p">],</span> <span class="s2">"threshold_ms"</span><span class="p">:</span> <span class="n">threshold_ms</span><span class="p">})</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_tool_search_findings</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">turn</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">tc</span> <span class="ow">in</span> <span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tools"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]:</span>
+        <span class="k">if</span> <span class="n">tc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"ToolSearch"</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">finding</span><span class="p">(</span><span class="s2">"friction"</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"tool_search"</span><span class="p">,</span> <span class="n">turn</span><span class="o">=</span><span class="n">turn</span><span class="p">,</span>
+                          <span class="n">evidence</span><span class="o">=</span><span class="p">{</span><span class="s2">"query"</span><span class="p">:</span> <span class="n">tc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"digest"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)})</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_retry_findings</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">turns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Same ``(tool, digest)`` appearing again in the same turn, or in the next one."""</span>
+    <span class="n">occurrences</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">by_index</span> <span class="o">=</span> <span class="p">{</span><span class="n">t</span><span class="p">[</span><span class="s2">"index"</span><span class="p">]:</span> <span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">turns</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">turns</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">tc</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tools"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]:</span>
+            <span class="n">occurrences</span><span class="p">[(</span><span class="n">tc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span> <span class="n">tc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"digest"</span><span class="p">,</span> <span class="s2">""</span><span class="p">))]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="s2">"index"</span><span class="p">])</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">digest</span><span class="p">),</span> <span class="n">idxs</span> <span class="ow">in</span> <span class="n">occurrences</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">idxs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">idxs</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">idxs</span><span class="p">):</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="k">while</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">idxs</span><span class="p">)</span> <span class="ow">and</span> <span class="n">idxs</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">idxs</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">run</span> <span class="o">=</span> <span class="n">idxs</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">run</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">MIN_RETRY_ATTEMPTS</span><span class="p">:</span>
+                <span class="n">last_turn</span> <span class="o">=</span> <span class="n">by_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">run</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">yield</span> <span class="n">finding</span><span class="p">(</span><span class="s2">"friction"</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"retry"</span><span class="p">,</span> <span class="n">turn</span><span class="o">=</span><span class="n">last_turn</span><span class="p">,</span>
+                              <span class="n">evidence</span><span class="o">=</span><span class="p">{</span><span class="s2">"tool"</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s2">"digest"</span><span class="p">:</span> <span class="n">digest</span><span class="p">,</span> <span class="s2">"attempts"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">run</span><span class="p">),</span>
+                                       <span class="s2">"turn_indices"</span><span class="p">:</span> <span class="n">run</span><span class="p">})</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span>
+
+
+<div class="viewcode-block" id="friction">
+<a class="viewcode-back" href="../../../module_docs/astern/lenses/friction.html#astern.lenses.friction.friction">[docs]</a>
+<span class="nd">@lens</span><span class="p">(</span><span class="s2">"friction"</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"H"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">friction</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">turns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="o">**</span><span class="n">ctx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Detect stuck moments: errors, retries, pivots, compactions, long turns, tool search."""</span>
+    <span class="n">out</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">turns</span><span class="p">:</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_error_findings</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_pivot_findings</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_compaction_findings</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_long_turn_findings</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_tool_search_findings</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
+    <span class="n">out</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_retry_findings</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">turns</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

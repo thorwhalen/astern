@@ -1,0 +1,4 @@
+astern.lenses.stats
+===================
+.. automodule:: astern.lenses.stats
+   :members:

@@ -1,0 +1,4 @@
+astern.estimate
+===============
+.. automodule:: astern.estimate
+   :members:

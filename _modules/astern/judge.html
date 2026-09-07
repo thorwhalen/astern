@@ -1,0 +1,384 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astern.judge &mdash; astern 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            astern
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern.html">astern</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/__main__.html">astern.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/estimate.html">astern.estimate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/judge.html">astern.judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/ledger.html">astern.ledger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses.html">astern.lenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/commands.html">astern.lenses.commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/cost.html">astern.lenses.cost</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/friction.html">astern.lenses.friction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/hygiene.html">astern.lenses.hygiene</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/stats.html">astern.lenses.stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/synopsis.html">astern.lenses.synopsis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/timeline.html">astern.lenses.timeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/report.html">astern.report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/sources.html">astern.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/store.html">astern.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/tools.html">astern.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/turns.html">astern.turns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/views.html">astern.views</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">astern</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">astern.judge</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for astern.judge</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""The ``judge=`` seam: an LLM call that returns text or JSON *and says what it cost*.</span>
+
+<span class="sd">The default judge is the local ``claude`` CLI run headless (``claude -p``). That is a</span>
+<span class="sd">deliberate choice, not a shortcut: astern is used from Claude Code, by someone on a</span>
+<span class="sd">Claude subscription, so the subscription is the budget and the CLI is the only</span>
+<span class="sd">client that draws on it. ``--output-format json`` reports the usage of every call,</span>
+<span class="sd">which is exactly the dependent variable the cost model in :mod:`astern.estimate`</span>
+<span class="sd">needs. ``--no-session-persistence`` keeps the judge's own calls out of</span>
+<span class="sd">``~/.claude/projects`` (verified by counting transcripts before and after), so the</span>
+<span class="sd">miner does not grow the corpus it mines.</span>
+
+<span class="sd">Four things about the flags, each measured against the real CLI on 2026-09-07 and</span>
+<span class="sd">each load-bearing:</span>
+
+<span class="sd">- **Not** ``--bare``. Its own help says Anthropic auth is *strictly*</span>
+<span class="sd">  ``ANTHROPIC_API_KEY`` or an ``apiKeyHelper`` — "OAuth and keychain are never</span>
+<span class="sd">  read" — so on a subscription every ``--bare`` call comes back</span>
+<span class="sd">  ``"Not logged in · Please run /login"``. :data:`SANDBOX_FLAGS` uses</span>
+<span class="sd">  ``--safe-mode`` instead, which disables the same customizations (CLAUDE.md,</span>
+<span class="sd">  skills, hooks, plugins, MCP) and leaves authentication alone.</span>
+<span class="sd">- ``--tools ""`` really does empty the tool set: same prompt, same system prompt,</span>
+<span class="sd">  1,109 input tokens with it against 14,925 without. (Asking the model what tools</span>
+<span class="sd">  it has is not a test — it confidently lists six it does not have.)</span>
+<span class="sd">- A failed call **exits 0**. The "not logged in" answer above came back on</span>
+<span class="sd">  ``returncode == 0`` with ``is_error: true`` in the JSON, so the return code alone</span>
+<span class="sd">  is not a success check.</span>
+<span class="sd">- ``--json-schema`` is honoured and the parsed object lands under</span>
+<span class="sd">  ``structured_output``; ``result`` still holds the text. Passing our own</span>
+<span class="sd">  ``--system-prompt`` also removes the ~4k-token default preamble from every call</span>
+<span class="sd">  and moves the whole input into ``input_tokens`` (nothing is prompt-cached), which</span>
+<span class="sd">  is what makes the regression in :mod:`astern.estimate` a straight line.</span>
+
+<span class="sd">A replacement is any callable with the same signature returning a :class:`Judgment`</span>
+<span class="sd">— an ``aix.prompt_func`` for API billing, or a recorded-replay judge for tests.</span>
+
+<span class="sd">&gt;&gt;&gt; j = replay_judge({'hello': '{"answer": 1}'})</span>
+<span class="sd">&gt;&gt;&gt; r = j('hello', schema={'type': 'object'})</span>
+<span class="sd">&gt;&gt;&gt; r.data, r.usage['input_tokens'] &gt; 0, r.error</span>
+<span class="sd">({'answer': 1}, True, None)</span>
+<span class="sd">&gt;&gt;&gt; total_tokens(r.usage) == r.usage['input_tokens'] + r.usage['output_tokens']</span>
+<span class="sd">True</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Mapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">asdict</span><span class="p">,</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+
+<span class="n">DFLT_MODEL</span> <span class="o">=</span> <span class="s2">"haiku"</span>
+<span class="n">DFLT_TIMEOUT_S</span> <span class="o">=</span> <span class="mi">900</span>
+
+<span class="c1">#: Flags that make one headless call a stateless, tool-less, corpus-neutral judge.</span>
+<span class="c1">#: ``--safe-mode`` (not ``--bare``: see the module docstring) drops CLAUDE.md, skills,</span>
+<span class="c1">#: hooks, plugins and MCP; ``--tools ""`` empties the tool set; the persistence flag</span>
+<span class="c1">#: keeps the call out of ``~/.claude/projects``.</span>
+<span class="n">SANDBOX_FLAGS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"--safe-mode"</span><span class="p">,</span> <span class="s2">"--no-session-persistence"</span><span class="p">,</span> <span class="s2">"--tools"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+
+<span class="c1">#: The usage keys that are billed as input. ``input_tokens`` alone under-reports by</span>
+<span class="c1">#: an order of magnitude whenever the default system prompt is cached.</span>
+<span class="n">INPUT_KEYS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"input_tokens"</span><span class="p">,</span> <span class="s2">"cache_creation_input_tokens"</span><span class="p">,</span> <span class="s2">"cache_read_input_tokens"</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Judgment">
+<a class="viewcode-back" href="../../module_docs/astern/judge.html#astern.judge.Judgment">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Judgment</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""What one judge call returned and what it cost."""</span>
+
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">list</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">usage</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="n">cost_usd</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">duration_ms</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="n">prompt_chars</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1">#: How many API round trips the CLI made for this one call. It is normally 1, but a</span>
+    <span class="c1">#: structured answer the schema rejects is retried with the whole conversation</span>
+    <span class="c1">#: resent, so this is the multiplier on the input the view actually explains — the</span>
+    <span class="c1">#: single largest source of variance in the cost model, and invisible without it.</span>
+    <span class="n">num_turns</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">raw</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">error</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">as_record</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">asdict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"raw"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"input_tokens"</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_tokens</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">usage</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"output_tokens"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">usage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"output_tokens"</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">d</span><span class="p">[</span><span class="s2">"total_tokens"</span><span class="p">]</span> <span class="o">=</span> <span class="n">total_tokens</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">usage</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">d</span></div>
+
+
+
+<span class="n">Judge</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Judgment</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="input_tokens">
+<a class="viewcode-back" href="../../module_docs/astern/judge.html#astern.judge.input_tokens">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">input_tokens</span><span class="p">(</span><span class="n">usage</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Billed input of one call: fresh input plus both halves of the cache.</span>
+
+<span class="sd">    &gt;&gt;&gt; input_tokens({'input_tokens': 9, 'cache_creation_input_tokens': 4241})</span>
+<span class="sd">    4250</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">usage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">INPUT_KEYS</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="total_tokens">
+<a class="viewcode-back" href="../../module_docs/astern/judge.html#astern.judge.total_tokens">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">total_tokens</span><span class="p">(</span><span class="n">usage</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Input (all three flavours) plus output.</span>
+
+<span class="sd">    &gt;&gt;&gt; total_tokens({'input_tokens': 10, 'output_tokens': 5})</span>
+<span class="sd">    15</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">input_tokens</span><span class="p">(</span><span class="n">usage</span><span class="p">)</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">usage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"output_tokens"</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_usage_record</span><span class="p">(</span><span class="n">usage</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Keep the scalar usage fields (cache ones included); drop the nested detail.</span>
+
+<span class="sd">    The CLI nests ``iterations``, ``cache_creation`` and ``server_tool_use`` inside</span>
+<span class="sd">    ``usage``; a cost model regresses on numbers, and a store keyed by session should</span>
+<span class="sd">    not carry a per-request log.</span>
+
+<span class="sd">    &gt;&gt;&gt; sorted(_usage_record({'input_tokens': 1, 'iterations': [{'x': 2}], 'speed': 's'}))</span>
+<span class="sd">    ['cache_creation_input_tokens', 'cache_read_input_tokens', 'input_tokens', 'n_iterations', 'output_tokens']</span>
+<span class="sd">    """</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">usage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">INPUT_KEYS</span><span class="p">}</span>
+    <span class="n">out</span><span class="p">[</span><span class="s2">"output_tokens"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">usage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"output_tokens"</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">usage</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">out</span><span class="p">:</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+    <span class="n">iters</span> <span class="o">=</span> <span class="n">usage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"iterations"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iters</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">out</span><span class="p">[</span><span class="s2">"n_iterations"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">iters</span><span class="p">)</span>
+    <span class="n">details</span> <span class="o">=</span> <span class="n">usage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"output_tokens_details"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">details</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">details</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"thinking_tokens"</span><span class="p">),</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+        <span class="n">out</span><span class="p">[</span><span class="s2">"thinking_tokens"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">details</span><span class="p">[</span><span class="s2">"thinking_tokens"</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_parse_json_loose</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"```"</span><span class="p">):</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"`"</span><span class="p">)</span><span class="o">.</span><span class="n">removeprefix</span><span class="p">(</span><span class="s2">"json"</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"{"</span><span class="p">),</span> <span class="n">text</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s2">"}"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="n">start</span> <span class="p">:</span> <span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_model_name</span><span class="p">(</span><span class="n">raw</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">fallback</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The model the CLI actually used, from ``modelUsage``'s single key."""</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"modelUsage"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">)</span> <span class="ow">and</span> <span class="n">mu</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">mu</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">fallback</span>
+
+
+<div class="viewcode-block" id="claude_judge">
+<a class="viewcode-back" href="../../module_docs/astern/judge.html#astern.judge.claude_judge">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">claude_judge</span><span class="p">(</span><span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="n">Mapping</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DFLT_MODEL</span><span class="p">,</span>
+                 <span class="n">effort</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">system</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">timeout_s</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DFLT_TIMEOUT_S</span><span class="p">,</span> <span class="n">claude_bin</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"claude"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Judgment</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Run ``claude -p`` headless on ``prompt`` and return a :class:`Judgment`.</span>
+
+<span class="sd">    Tools are disabled and customizations skipped (:data:`SANDBOX_FLAGS`): the judge</span>
+<span class="sd">    reads what it is given and answers; it never explores. ``schema`` requests</span>
+<span class="sd">    structured output, which comes back under ``structured_output``.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="n">claude_bin</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Judgment</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">claude_bin</span><span class="si">!r}</span><span class="s2"> not found on PATH"</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+                        <span class="n">prompt_chars</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">))</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="n">claude_bin</span><span class="p">,</span> <span class="s2">"-p"</span><span class="p">,</span> <span class="o">*</span><span class="n">SANDBOX_FLAGS</span><span class="p">,</span> <span class="s2">"--output-format"</span><span class="p">,</span> <span class="s2">"json"</span><span class="p">,</span> <span class="s2">"--model"</span><span class="p">,</span> <span class="n">model</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">effort</span><span class="p">:</span>
+        <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"--effort"</span><span class="p">,</span> <span class="n">effort</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">system</span><span class="p">:</span>
+        <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"--system-prompt"</span><span class="p">,</span> <span class="n">system</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"--json-schema"</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">schema</span><span class="p">))]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># check=False: a failed judge is data (it becomes the `error` below), never an</span>
+        <span class="c1"># exception that takes the batch down with it.</span>
+        <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="nb">input</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                              <span class="n">timeout</span><span class="o">=</span><span class="n">timeout_s</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">TimeoutExpired</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Judgment</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="sa">f</span><span class="s2">"timeout after </span><span class="si">{</span><span class="n">timeout_s</span><span class="si">}</span><span class="s2">s"</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+                        <span class="n">prompt_chars</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">))</span>
+    <span class="n">raw</span> <span class="o">=</span> <span class="n">_parse_json_loose</span><span class="p">(</span><span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">detail</span> <span class="o">=</span> <span class="p">(</span><span class="n">proc</span><span class="o">.</span><span class="n">stderr</span> <span class="ow">or</span> <span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()[:</span><span class="mi">500</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">Judgment</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">prompt_chars</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">),</span>
+                        <span class="n">error</span><span class="o">=</span><span class="sa">f</span><span class="s2">"exit </span><span class="si">{</span><span class="n">proc</span><span class="o">.</span><span class="n">returncode</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">detail</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span>
+                        <span class="k">else</span> <span class="s2">"unparseable claude output"</span><span class="p">)</span>
+    <span class="n">usage</span> <span class="o">=</span> <span class="n">_usage_record</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"usage"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">raw</span><span class="p">[</span><span class="s2">"result"</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"result"</span><span class="p">),</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"result"</span><span class="p">))</span>
+    <span class="c1"># The CLI exits 0 on an errored turn (an unauthenticated call returns</span>
+    <span class="c1"># `is_error: true` and returncode 0), so the flag in the payload is the check.</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_error"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'subtype'</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">'error'</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="p">(</span><span class="n">text</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">''</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()[:</span><span class="mi">300</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"structured_output"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">error</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">_parse_json_loose</span><span class="p">(</span><span class="n">text</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Judgment</span><span class="p">(</span>
+        <span class="n">text</span><span class="o">=</span><span class="n">text</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="n">usage</span><span class="o">=</span><span class="n">usage</span><span class="p">,</span>
+        <span class="n">cost_usd</span><span class="o">=</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"total_cost_usd"</span><span class="p">),</span>
+        <span class="n">duration_ms</span><span class="o">=</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"duration_ms"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"duration_api_ms"</span><span class="p">),</span>
+        <span class="n">model</span><span class="o">=</span><span class="n">_model_name</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">model</span><span class="p">),</span>
+        <span class="n">prompt_chars</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">),</span>
+        <span class="n">num_turns</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"num_turns"</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">((</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"usage"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"iterations"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[</span><span class="mi">1</span><span class="p">])),</span>
+        <span class="n">raw</span><span class="o">=</span><span class="n">raw</span><span class="p">,</span>
+        <span class="n">error</span><span class="o">=</span><span class="n">error</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="replay_judge">
+<a class="viewcode-back" href="../../module_docs/astern/judge.html#astern.judge.replay_judge">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">replay_judge</span><span class="p">(</span><span class="n">answers</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Judge</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A judge that answers from a mapping of prompt → text; for tests and dry runs.</span>
+
+<span class="sd">    A prompt with no recorded answer is an *error* judgment unless ``default`` is</span>
+<span class="sd">    given — silently answering ``""`` would let a test mistake a missing recording</span>
+<span class="sd">    for a real (empty) verdict, which is the one thing a replay judge must not do.</span>
+
+<span class="sd">    &gt;&gt;&gt; replay_judge({})('unseen').error</span>
+<span class="sd">    'no recorded answer'</span>
+<span class="sd">    &gt;&gt;&gt; replay_judge({}, default='{}')('unseen').error is None</span>
+<span class="sd">    True</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">judge</span><span class="p">(</span><span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">_</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Judgment</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">answers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Judgment</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">"replay"</span><span class="p">,</span> <span class="n">prompt_chars</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">),</span>
+                            <span class="n">error</span><span class="o">=</span><span class="s2">"no recorded answer"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Judgment</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">_parse_json_loose</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="n">usage</span><span class="o">=</span><span class="p">{</span><span class="s2">"input_tokens"</span><span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span> <span class="o">//</span> <span class="mi">4</span><span class="p">),</span>
+                               <span class="s2">"cache_creation_input_tokens"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"cache_read_input_tokens"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                               <span class="s2">"output_tokens"</span><span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">//</span> <span class="mi">4</span><span class="p">)},</span>
+                        <span class="n">cost_usd</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">duration_ms</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">"replay"</span><span class="p">,</span> <span class="n">prompt_chars</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">judge</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,4 @@
+astern.lenses.synopsis
+======================
+.. automodule:: astern.lenses.synopsis
+   :members:

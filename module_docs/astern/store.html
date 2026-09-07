@@ -1,0 +1,182 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astern.store &mdash; astern 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="astern.tools" href="tools.html" />
+    <link rel="prev" title="astern.sources" href="sources.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            astern
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../astern.html">astern</a></li>
+<li class="toctree-l1"><a class="reference internal" href="__main__.html">astern.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="estimate.html">astern.estimate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="judge.html">astern.judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ledger.html">astern.ledger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses.html">astern.lenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/commands.html">astern.lenses.commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/cost.html">astern.lenses.cost</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/friction.html">astern.lenses.friction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/hygiene.html">astern.lenses.hygiene</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/stats.html">astern.lenses.stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/synopsis.html">astern.lenses.synopsis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/timeline.html">astern.lenses.timeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="report.html">astern.report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources.html">astern.sources</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">astern.store</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#astern.store.MemoryStore"><code class="docutils literal notranslate"><span class="pre">MemoryStore</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.store.Store"><code class="docutils literal notranslate"><span class="pre">Store</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.store.data_dir"><code class="docutils literal notranslate"><span class="pre">data_dir()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.store.mk_store"><code class="docutils literal notranslate"><span class="pre">mk_store()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">astern.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="turns.html">astern.turns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">astern.views</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">astern</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">astern.store</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/astern/store.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-astern.store">
+<span id="astern-store"></span><h1>astern.store<a class="headerlink" href="#module-astern.store" title="Link to this heading"></a></h1>
+<p>Where records, findings and the ledger live: one directory, several JSON stores.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">store=</span></code> seam. The default is files under <code class="docutils literal notranslate"><span class="pre">~/.local/share/astern/</span></code> (or
+<code class="docutils literal notranslate"><span class="pre">$ASTERN_DATA_DIR</span></code>) through <code class="docutils literal notranslate"><span class="pre">dol.JsonFiles</span></code>, which is a real store, not a stub:
+it survives restarts, is greppable, and a session’s turns are one file you can open.
+Any other <code class="docutils literal notranslate"><span class="pre">MutableMapping</span></code> of the same key shape serves the same code — a dict for
+tests, an S3 store when the corpus outgrows a laptop.</p>
+<p>Key shapes (all end in <code class="docutils literal notranslate"><span class="pre">.json</span></code> on disk; keys are relative paths):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sessions</span></code>   <code class="docutils literal notranslate"><span class="pre">&lt;sid&gt;</span></code>                   session meta (see <a class="reference internal" href="turns.html#astern.turns.session_meta" title="astern.turns.session_meta"><code class="xref py py-func docutils literal notranslate"><span class="pre">astern.turns.session_meta()</span></code></a>) + source facts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">turns</span></code>      <code class="docutils literal notranslate"><span class="pre">&lt;sid&gt;</span></code>                   the list of turn records of that session</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">findings</span></code>   <code class="docutils literal notranslate"><span class="pre">&lt;lens&gt;/&lt;sid&gt;</span></code>            the list of findings one lens produced for one session</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ledger</span></code>     <code class="docutils literal notranslate"><span class="pre">&lt;sid&gt;</span></code>                   what has been analyzed, by which lens version, through which turn</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">judgments</span></code>  <code class="docutils literal notranslate"><span class="pre">&lt;lens&gt;/&lt;sid&gt;/&lt;n&gt;</span></code>        raw judge calls: prompt size, output, usage — the cost model’s data</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">MemoryStore</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">sessions</span><span class="p">[</span><span class="s1">'abc'</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'title'</span><span class="p">:</span> <span class="s1">'x'</span><span class="p">};</span> <span class="n">s</span><span class="o">.</span><span class="n">sessions</span><span class="p">[</span><span class="s1">'abc'</span><span class="p">][</span><span class="s1">'title'</span><span class="p">]</span>
+<span class="go">'x'</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="astern.store.MemoryStore">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astern.store.</span></span><span class="sig-name descname"><span class="pre">MemoryStore</span></span><a class="reference internal" href="../../_modules/astern/store.html#MemoryStore"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.store.MemoryStore" title="Link to this definition"></a></dt>
+<dd><p>The same five stores as dicts; what tests and dry runs use.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astern.store.Store">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astern.store.</span></span><span class="sig-name descname"><span class="pre">Store</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astern/store.html#Store"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.store.Store" title="Link to this definition"></a></dt>
+<dd><p>The five stores, lazily opened under one data directory.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.store.data_dir">
+<span class="sig-prename descclassname"><span class="pre">astern.store.</span></span><span class="sig-name descname"><span class="pre">data_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="../../_modules/astern/store.html#data_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.store.data_dir" title="Link to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">root</span></code> → <code class="docutils literal notranslate"><span class="pre">$ASTERN_DATA_DIR</span></code> → <code class="docutils literal notranslate"><span class="pre">~/.local/share/astern</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.store.mk_store">
+<span class="sig-prename descclassname"><span class="pre">astern.store.</span></span><span class="sig-name descname"><span class="pre">mk_store</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#astern.store.Store" title="astern.store.Store"><span class="pre">Store</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#astern.store.Store" title="astern.store.Store"><span class="pre">Store</span></a></span></span><a class="reference internal" href="../../_modules/astern/store.html#mk_store"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.store.mk_store" title="Link to this definition"></a></dt>
+<dd><p>Resolve the <code class="docutils literal notranslate"><span class="pre">store=</span></code> seam: a <a class="reference internal" href="#astern.store.Store" title="astern.store.Store"><code class="xref py py-class docutils literal notranslate"><span class="pre">Store</span></code></a>, a directory, or the default.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="sources.html" class="btn btn-neutral float-left" title="astern.sources" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tools.html" class="btn btn-neutral float-right" title="astern.tools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

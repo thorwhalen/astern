@@ -1,0 +1,181 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astern.lenses &mdash; astern 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="astern.lenses.commands" href="lenses/commands.html" />
+    <link rel="prev" title="astern.ledger" href="ledger.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            astern
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../astern.html">astern</a></li>
+<li class="toctree-l1"><a class="reference internal" href="__main__.html">astern.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="estimate.html">astern.estimate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="judge.html">astern.judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ledger.html">astern.ledger</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">astern.lenses</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#astern.lenses.BUILTIN_MODULES"><code class="docutils literal notranslate"><span class="pre">BUILTIN_MODULES</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.lenses.Lens"><code class="docutils literal notranslate"><span class="pre">Lens</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.lenses.finding"><code class="docutils literal notranslate"><span class="pre">finding()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.lenses.lens"><code class="docutils literal notranslate"><span class="pre">lens()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/commands.html">astern.lenses.commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/cost.html">astern.lenses.cost</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/friction.html">astern.lenses.friction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/hygiene.html">astern.lenses.hygiene</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/stats.html">astern.lenses.stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/synopsis.html">astern.lenses.synopsis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/timeline.html">astern.lenses.timeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="report.html">astern.report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources.html">astern.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="store.html">astern.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">astern.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="turns.html">astern.turns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">astern.views</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">astern</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">astern.lenses</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/astern/lenses.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-astern.lenses">
+<span id="astern-lenses"></span><h1>astern.lenses<a class="headerlink" href="#module-astern.lenses" title="Link to this heading"></a></h1>
+<p>Lenses: one question asked of a session, answered as a list of findings.</p>
+<p>A lens is a plain function <code class="docutils literal notranslate"><span class="pre">(session:</span> <span class="pre">dict,</span> <span class="pre">turns:</span> <span class="pre">list[dict],</span> <span class="pre">**ctx)</span> <span class="pre">-&gt;</span> <span class="pre">list[dict]</span></code>
+registered with <a class="reference internal" href="#astern.lenses.lens" title="astern.lenses.lens"><code class="xref py py-func docutils literal notranslate"><span class="pre">lens()</span></code></a>. <code class="docutils literal notranslate"><span class="pre">kind</span></code> is <code class="docutils literal notranslate"><span class="pre">'H'</span></code> (heuristic, zero tokens) or <code class="docutils literal notranslate"><span class="pre">'L'</span></code>
+(LLM-judged; receives <code class="docutils literal notranslate"><span class="pre">judge=</span></code> in <code class="docutils literal notranslate"><span class="pre">ctx</span></code> and must return findings <em>and</em> record the
+judge’s usage on them). <code class="docutils literal notranslate"><span class="pre">incremental=True</span></code> means the lens can be given only the
+turns from <code class="docutils literal notranslate"><span class="pre">ctx['from_index']</span></code> onward plus its own previous findings (<code class="docutils literal notranslate"><span class="pre">ctx['prior']</span></code>)
+and extend rather than redo — the ledger only offers that to lenses that say so.</p>
+<p>A finding is a JSON-able dict made by <a class="reference internal" href="#astern.lenses.finding" title="astern.lenses.finding"><code class="xref py py-func docutils literal notranslate"><span class="pre">finding()</span></code></a>. It always carries evidence
+that points back into the transcript (session, turn index and uuid, tool-use id),
+because a claim about a pattern is worth nothing without the turns it came from.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@lens</span><span class="p">(</span><span class="s1">'demo'</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span><span class="w"> </span><span class="nf">demo</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">turns</span><span class="p">,</span> <span class="o">**</span><span class="n">ctx</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="p">[</span><span class="n">finding</span><span class="p">(</span><span class="s1">'demo'</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">'hello'</span><span class="p">,</span> <span class="n">evidence</span><span class="o">=</span><span class="p">{</span><span class="s1">'n'</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">turns</span><span class="p">)})]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LENSES</span><span class="p">[</span><span class="s1">'demo'</span><span class="p">]</span><span class="o">.</span><span class="n">kind</span><span class="p">,</span> <span class="n">demo</span><span class="p">({</span><span class="s1">'session_id'</span><span class="p">:</span> <span class="s1">'s'</span><span class="p">},</span> <span class="p">[])[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'evidence'</span><span class="p">]</span>
+<span class="go">('H', {'n': 0})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">LENSES</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'demo'</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.lenses.BUILTIN_MODULES">
+<span class="sig-prename descclassname"><span class="pre">astern.lenses.</span></span><span class="sig-name descname"><span class="pre">BUILTIN_MODULES</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('stats',</span> <span class="pre">'friction',</span> <span class="pre">'commands',</span> <span class="pre">'timeline',</span> <span class="pre">'cost',</span> <span class="pre">'hygiene',</span> <span class="pre">'tooling',</span> <span class="pre">'synopsis')</span></span><a class="headerlink" href="#astern.lenses.BUILTIN_MODULES" title="Link to this definition"></a></dt>
+<dd><p>Built-in lens modules, imported on demand so that registering is one import away
+and a broken optional lens cannot take the registry down with it.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astern.lenses.Lens">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astern.lenses.</span></span><span class="sig-name descname"><span class="pre">Lens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'int'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'Callable[...,</span> <span class="pre">list[dict]]'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incremental</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'bool'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astern/lenses.html#Lens"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.lenses.Lens" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.lenses.finding">
+<span class="sig-prename descclassname"><span class="pre">astern.lenses.</span></span><span class="sig-name descname"><span class="pre">finding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lens_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evidence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">turn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/astern/lenses.html#finding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.lenses.finding" title="Link to this definition"></a></dt>
+<dd><p>Make one finding. <code class="docutils literal notranslate"><span class="pre">turn</span></code> (a turn record) fills the evidence pointer.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.lenses.lens">
+<span class="sig-prename descclassname"><span class="pre">astern.lenses.</span></span><span class="sig-name descname"><span class="pre">lens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'H'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incremental</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astern/lenses.html#lens"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.lenses.lens" title="Link to this definition"></a></dt>
+<dd><p>Register a lens function under <code class="docutils literal notranslate"><span class="pre">name</span></code>. Bump <code class="docutils literal notranslate"><span class="pre">version</span></code> when its output changes.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ledger.html" class="btn btn-neutral float-left" title="astern.ledger" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="lenses/commands.html" class="btn btn-neutral float-right" title="astern.lenses.commands" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

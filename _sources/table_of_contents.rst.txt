@@ -1,0 +1,24 @@
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   module_docs/astern
+   module_docs/astern/__main__
+   module_docs/astern/estimate
+   module_docs/astern/judge
+   module_docs/astern/ledger
+   module_docs/astern/lenses
+   module_docs/astern/lenses/commands
+   module_docs/astern/lenses/cost
+   module_docs/astern/lenses/friction
+   module_docs/astern/lenses/hygiene
+   module_docs/astern/lenses/stats
+   module_docs/astern/lenses/synopsis
+   module_docs/astern/lenses/timeline
+   module_docs/astern/lenses/tooling
+   module_docs/astern/report
+   module_docs/astern/sources
+   module_docs/astern/store
+   module_docs/astern/tools
+   module_docs/astern/turns
+   module_docs/astern/views

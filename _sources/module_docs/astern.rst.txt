@@ -1,0 +1,4 @@
+astern
+======
+.. automodule:: astern
+   :members:
