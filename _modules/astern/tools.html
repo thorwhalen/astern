@@ -60,6 +60,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/synopsis.html">astern.lenses.synopsis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/timeline.html">astern.lenses.timeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/provenance.html">astern.provenance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/recall.html">astern.recall</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/report.html">astern.report</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/skills.html">astern.skills</a></li>
@@ -110,9 +111,11 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">astern</span><span class="w"> </span><span class="kn">import</span> <span class="n">estimate</span> <span class="k">as</span> <span class="n">_estimate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astern</span><span class="w"> </span><span class="kn">import</span> <span class="n">ledger</span> <span class="k">as</span> <span class="n">_ledger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astern</span><span class="w"> </span><span class="kn">import</span> <span class="n">provenance</span> <span class="k">as</span> <span class="n">_prov</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astern</span><span class="w"> </span><span class="kn">import</span> <span class="n">report</span> <span class="k">as</span> <span class="n">_report</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astern</span><span class="w"> </span><span class="kn">import</span> <span class="n">views</span> <span class="k">as</span> <span class="n">_views</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astern.lenses</span><span class="w"> </span><span class="kn">import</span> <span class="n">LENSES</span><span class="p">,</span> <span class="n">load_builtin_lenses</span>
@@ -128,7 +131,13 @@
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_session_record</span><span class="p">(</span><span class="n">sf</span><span class="p">:</span> <span class="n">SessionFile</span><span class="p">,</span> <span class="n">records</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
     <span class="n">meta</span> <span class="o">=</span> <span class="n">session_meta</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
-    <span class="n">meta</span><span class="p">[</span><span class="s2">"session_id"</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s2">"session_id"</span><span class="p">]</span> <span class="ow">or</span> <span class="n">sf</span><span class="o">.</span><span class="n">session_id</span>
+    <span class="c1"># A nested transcript's records carry the *parent's* ``sessionId`` -- only the file</span>
+    <span class="c1"># name and the ``agentId`` field identify the subagent. Trusting the record here</span>
+    <span class="c1"># would file every subagent under its parent's id, and a provenance hit would then</span>
+    <span class="c1"># name the wrong transcript. For anything nested, the file stem is the identity.</span>
+    <span class="n">meta</span><span class="p">[</span><span class="s2">"session_id"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">sf</span><span class="o">.</span><span class="n">session_id</span> <span class="k">if</span> <span class="n">sf</span><span class="o">.</span><span class="n">kind</span> <span class="o">!=</span> <span class="s2">"session"</span> <span class="k">else</span> <span class="p">(</span><span class="n">meta</span><span class="p">[</span><span class="s2">"session_id"</span><span class="p">]</span> <span class="ow">or</span> <span class="n">sf</span><span class="o">.</span><span class="n">session_id</span><span class="p">)</span>
+    <span class="p">)</span>
     <span class="n">meta</span><span class="p">[</span><span class="s2">"home"</span><span class="p">]</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">home</span>
     <span class="n">meta</span><span class="p">[</span><span class="s2">"kind"</span><span class="p">]</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">kind</span>
     <span class="n">meta</span><span class="p">[</span><span class="s2">"parent_id"</span><span class="p">]</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">parent_id</span>
@@ -227,6 +236,14 @@
 <span class="sd">    re-read; a lens that already covered every turn is not re-run (``force`` re-runs</span>
 <span class="sd">    the lenses, never the LLM ones — those go through :func:`judge`). ``lenses`` is</span>
 <span class="sd">    ``'H'`` (all heuristic lenses), ``'none'``, or a comma-separated list of names.</span>
+
+<span class="sd">    ``kinds`` defaults to ``'session'`` — top-level transcripts only — on measurement,</span>
+<span class="sd">    not on principle. :func:`why` genuinely needs ``'session,subagent'`` (a delegating</span>
+<span class="sd">    session's own turns never contain the code its subagents wrote), but on this</span>
+<span class="sd">    machine's corpus (290 top-level sessions, 4547 nested transcripts, 2.1 GB of</span>
+<span class="sd">    JSONL) that is 50.7 s and a 330 MB store — 442 MB on disk, because 36,000 small</span>
+<span class="sd">    JSON files round up hard — against 7.6 s and 87 MB for sessions alone. Too big to</span>
+<span class="sd">    impose on every ``sync``, so :func:`why` says when it needs it instead.</span>
 <span class="sd">    """</span>
     <span class="n">store</span> <span class="o">=</span> <span class="n">mk_store</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
     <span class="n">load_builtin_lenses</span><span class="p">()</span>
@@ -973,6 +990,190 @@
     <span class="n">recall</span><span class="p">,</span>
     <span class="n">install_skills</span><span class="p">,</span>
 <span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_split_target</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""``'a/b.py:42'`` → ``('a/b.py', 42)``; an explicit ``line`` always wins.</span>
+
+<span class="sd">    &gt;&gt;&gt; _split_target('a/b.py:42', None)</span>
+<span class="sd">    ('a/b.py', 42)</span>
+<span class="sd">    &gt;&gt;&gt; _split_target('a/b.py', '7')</span>
+<span class="sd">    ('a/b.py', 7)</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">line</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="n">head</span><span class="p">,</span> <span class="n">sep</span><span class="p">,</span> <span class="n">tail</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s2">":"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">tail</span><span class="p">))</span> <span class="k">if</span> <span class="n">sep</span> <span class="ow">and</span> <span class="n">tail</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="k">else</span> <span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_rel_to_repo</span><span class="p">(</span><span class="n">root</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""``path`` as the repo-relative path git wants, whether or not it was absolute."""</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">p</span><span class="o">.</span><span class="n">is_absolute</span><span class="p">():</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span> <span class="o">/</span> <span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span> <span class="k">if</span> <span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span> <span class="o">/</span> <span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="k">else</span> <span class="n">p</span>
+    <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">is_absolute</span><span class="p">():</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">root</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()))</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_candidates</span><span class="p">(</span>
+    <span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">bridge_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">root</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">when</span><span class="p">,</span>
+    <span class="n">window_days</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">notes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""The session ids to search, and the notes explaining how they were chosen."""</span>
+    <span class="n">base</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">bridge_id</span><span class="p">:</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">_prov</span><span class="o">.</span><span class="n">sessions_for_bridge</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">bridge_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">base</span><span class="p">:</span>
+            <span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"the trailer names claude.ai session </span><span class="si">{</span><span class="n">bridge_id</span><span class="si">!r}</span><span class="s2">, but no synced "</span>
+                <span class="s2">"transcript carries that bridge id (another machine or account, or "</span>
+                <span class="s2">"not synced yet) — falling back to a repo-wide scan"</span>
+            <span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">base</span><span class="p">:</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">_prov</span><span class="o">.</span><span class="n">sessions_in_repo</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">around</span><span class="o">=</span><span class="n">when</span><span class="p">,</span> <span class="n">window_days</span><span class="o">=</span><span class="n">window_days</span><span class="p">)</span>
+        <span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"scanned </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">base</span><span class="p">)</span><span class="si">}</span><span class="s2"> session(s) whose cwd is inside the repo"</span>
+            <span class="o">+</span> <span class="p">(</span><span class="sa">f</span><span class="s2">", within </span><span class="si">{</span><span class="n">window_days</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2"> days of the commit"</span> <span class="k">if</span> <span class="n">when</span> <span class="k">else</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">base</span>
+    <span class="n">with_subs</span> <span class="o">=</span> <span class="n">_prov</span><span class="o">.</span><span class="n">with_subagents</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">with_subs</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">base</span><span class="p">):</span>
+        <span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="s2">"no subagent transcripts for this session are in the store; a session "</span>
+            <span class="s2">"that delegated wrote the line from a subagent transcript, so re-run "</span>
+            <span class="s2">"`astern sync --kinds session,subagent`"</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">with_subs</span>
+
+
+<div class="viewcode-block" id="why">
+<a class="viewcode-back" href="../../module_docs/astern/tools.html#astern.tools.why">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">why</span><span class="p">(</span>
+    <span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">line</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">commit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">store</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Store</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">repo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">window_days</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">14.0</span><span class="p">,</span>
+    <span class="n">max_hits</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">entire</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Why does this line exist? — the commit, the session, and the turn that wrote it.</span>
+
+<span class="sd">    ``target`` is ``&lt;file&gt;:&lt;line&gt;`` (a file plus ``--line`` works too) or, with</span>
+<span class="sd">    ``--commit``, a commit-ish. A target that names no readable file and *does*</span>
+<span class="sd">    resolve as a revision is read as a commit without the flag, so</span>
+<span class="sd">    ``astern why 589f17a`` and ``astern why HEAD --commit`` are the same question:</span>
+<span class="sd">    the commit's trailer names the session, and the hits are that session's tool</span>
+<span class="sd">    calls against the files the commit touched.</span>
+
+<span class="sd">    (``target`` is positional and therefore required, which is why ``--commit`` is a</span>
+<span class="sd">    flag over it rather than an option carrying the sha: argh's grammar — the one</span>
+<span class="sd">    ``cw`` reproduces — makes any parameter with a default an *option*, and</span>
+<span class="sd">    ``astern why -t astern/judge.py:115`` is the wrong headline.)</span>
+
+<span class="sd">    Two commits are reported, never one: ``blame`` is the last hand to touch the line</span>
+<span class="sd">    (a CI ``ruff format`` pass owns a lot of them) and ``introduced`` is the commit</span>
+<span class="sd">    whose diff first contained the text. When they differ, ``introduced`` is the one</span>
+<span class="sd">    whose ``Claude-Session:`` trailer is worth following.</span>
+
+<span class="sd">    When the Entire CLI is installed and this repo is enabled, its generation-time</span>
+<span class="sd">    answer is included verbatim under ``entire``; astern's own retroactive chain runs</span>
+<span class="sd">    either way, because Entire only speaks for work done after it was enabled.</span>
+<span class="sd">    """</span>
+    <span class="n">store</span> <span class="o">=</span> <span class="n">mk_store</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
+    <span class="n">max_hits</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_hits</span><span class="p">)</span>
+    <span class="n">window_days</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">window_days</span><span class="p">)</span>
+    <span class="n">notes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">raw</span><span class="p">,</span> <span class="n">line_no</span> <span class="o">=</span> <span class="n">_split_target</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">repo</span> <span class="ow">or</span> <span class="n">_prov</span><span class="o">.</span><span class="n">repo_root</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">())</span>
+    <span class="n">rel</span> <span class="o">=</span> <span class="n">_rel_to_repo</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">raw</span><span class="p">)</span>
+    <span class="n">as_commit</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">commit</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">line_no</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">root</span><span class="p">)</span> <span class="o">/</span> <span class="n">rel</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">())</span>
+    <span class="n">text</span><span class="p">,</span> <span class="n">blame</span><span class="p">,</span> <span class="n">introduced</span><span class="p">,</span> <span class="n">sha</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">as_commit</span><span class="p">:</span>
+        <span class="n">sha</span><span class="p">,</span> <span class="n">rel</span> <span class="o">=</span> <span class="n">raw</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="n">introduced</span> <span class="o">=</span> <span class="n">_prov</span><span class="o">.</span><span class="n">commit_record</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">sha</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">introduced</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">target</span><span class="si">!r}</span><span class="s2"> is neither a readable file in </span><span class="si">{</span><span class="n">root</span><span class="si">}</span><span class="s2"> nor a commit there"</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">line_no</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">target</span><span class="si">!r}</span><span class="s2"> needs a line: &lt;file&gt;:&lt;line&gt;, or --line N"</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">_prov</span><span class="o">.</span><span class="n">line_text</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">rel</span><span class="p">,</span> <span class="n">line_no</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span>
+            <span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">rel</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">line_no</span><span class="si">}</span><span class="s2"> is not readable in the working tree"</span><span class="p">)</span>
+        <span class="n">blame</span> <span class="o">=</span> <span class="n">_prov</span><span class="o">.</span><span class="n">commit_record</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">_prov</span><span class="o">.</span><span class="n">blame_commit</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">rel</span><span class="p">,</span> <span class="n">line_no</span><span class="p">))</span>
+        <span class="n">introduced</span> <span class="o">=</span> <span class="n">_prov</span><span class="o">.</span><span class="n">commit_record</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">_prov</span><span class="o">.</span><span class="n">introducing_commit</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">rel</span><span class="p">,</span> <span class="n">text</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">blame</span> <span class="ow">and</span> <span class="n">introduced</span> <span class="ow">and</span> <span class="n">blame</span><span class="p">[</span><span class="s2">"sha"</span><span class="p">]</span> <span class="o">!=</span> <span class="n">introduced</span><span class="p">[</span><span class="s2">"sha"</span><span class="p">]:</span>
+            <span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"blame says </span><span class="si">{</span><span class="n">blame</span><span class="p">[</span><span class="s1">'short_sha'</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">blame</span><span class="p">[</span><span class="s1">'subject'</span><span class="p">][:</span><span class="mi">60</span><span class="p">]</span><span class="si">}</span><span class="s2">) but the "</span>
+                <span class="sa">f</span><span class="s2">"text was introduced by </span><span class="si">{</span><span class="n">introduced</span><span class="p">[</span><span class="s1">'short_sha'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+    <span class="n">carrier</span> <span class="o">=</span> <span class="n">introduced</span> <span class="ow">or</span> <span class="n">blame</span>
+    <span class="n">bridge_id</span> <span class="o">=</span> <span class="p">(</span><span class="n">carrier</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"session_id"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">bridge_id</span><span class="p">:</span>
+        <span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"no Claude-Session trailer on the commit"</span><span class="p">)</span>
+    <span class="n">when</span> <span class="o">=</span> <span class="n">_iso</span><span class="p">((</span><span class="n">carrier</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"date"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span>
+    <span class="n">sids</span> <span class="o">=</span> <span class="n">_candidates</span><span class="p">(</span>
+        <span class="n">store</span><span class="p">,</span>
+        <span class="n">bridge_id</span><span class="o">=</span><span class="n">bridge_id</span><span class="p">,</span>
+        <span class="n">root</span><span class="o">=</span><span class="n">root</span><span class="p">,</span>
+        <span class="n">when</span><span class="o">=</span><span class="n">when</span><span class="p">,</span>
+        <span class="n">window_days</span><span class="o">=</span><span class="n">window_days</span><span class="p">,</span>
+        <span class="n">notes</span><span class="o">=</span><span class="n">notes</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">hits</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">text</span><span class="p">:</span>
+        <span class="n">hits</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_prov</span><span class="o">.</span><span class="n">iter_hits</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">sids</span><span class="p">,</span> <span class="n">text</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># No line to match, so match the commit's files against each call's digest.</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">_prov</span><span class="o">.</span><span class="n">changed_files</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">sha</span><span class="p">):</span>
+            <span class="n">hits</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                <span class="n">_prov</span><span class="o">.</span><span class="n">iter_hits</span><span class="p">(</span>
+                    <span class="n">store</span><span class="p">,</span>
+                    <span class="n">sids</span><span class="p">,</span>
+                    <span class="n">path</span><span class="p">,</span>
+                    <span class="n">fields</span><span class="o">=</span><span class="p">(</span><span class="s2">"digest"</span><span class="p">,),</span>
+                    <span class="n">min_chars</span><span class="o">=</span><span class="n">_prov</span><span class="o">.</span><span class="n">MIN_PATH_CHARS</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">hits</span> <span class="ow">and</span> <span class="n">text</span><span class="p">:</span>
+        <span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="s2">"no tool call in those transcripts contains the line — it may predate "</span>
+            <span class="s2">"the corpus, or have been written on another machine"</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">"repo"</span><span class="p">:</span> <span class="n">root</span><span class="p">,</span>
+        <span class="s2">"file"</span><span class="p">:</span> <span class="n">rel</span><span class="p">,</span>
+        <span class="s2">"line"</span><span class="p">:</span> <span class="n">line_no</span><span class="p">,</span>
+        <span class="s2">"text"</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span>
+        <span class="s2">"commits"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"blame"</span><span class="p">:</span> <span class="n">blame</span><span class="p">,</span> <span class="s2">"introduced"</span><span class="p">:</span> <span class="n">introduced</span><span class="p">},</span>
+        <span class="s2">"session_id"</span><span class="p">:</span> <span class="n">bridge_id</span><span class="p">,</span>
+        <span class="s2">"searched"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">sids</span><span class="p">),</span>
+        <span class="s2">"hits"</span><span class="p">:</span> <span class="n">_prov</span><span class="o">.</span><span class="n">rank_hits</span><span class="p">(</span><span class="n">hits</span><span class="p">)[:</span><span class="n">max_hits</span><span class="p">],</span>
+        <span class="s2">"entire"</span><span class="p">:</span> <span class="p">(</span>
+            <span class="n">_prov</span><span class="o">.</span><span class="n">entire_why</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">rel</span><span class="p">,</span> <span class="n">line_no</span><span class="p">)</span> <span class="k">if</span> <span class="n">entire</span> <span class="ow">and</span> <span class="n">rel</span> <span class="ow">and</span> <span class="n">line_no</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="s2">"notes"</span><span class="p">:</span> <span class="n">notes</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+
+<span class="c1">#: Per-parameter ``add_argument`` overrides for the CLI (``cw``'s ``config=`` seam).</span>
+<span class="n">_dispatch_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="n">_dispatch_funcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">sync</span><span class="p">,</span> <span class="n">sessions</span><span class="p">,</span> <span class="n">show</span><span class="p">,</span> <span class="n">lenses</span><span class="p">,</span> <span class="n">report</span><span class="p">,</span> <span class="n">judge</span><span class="p">,</span> <span class="n">estimate</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">recall</span><span class="p">,</span> <span class="n">install_skills</span><span class="p">,</span> <span class="n">why</span><span class="p">]</span>
 </pre></div>
 
            </div>

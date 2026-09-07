@@ -1,0 +1,362 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astern.provenance &mdash; astern 0.0.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=282f96c0"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="astern.recall" href="recall.html" />
+    <link rel="prev" title="astern.lenses.tooling" href="lenses/tooling.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            astern
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../astern.html">astern</a></li>
+<li class="toctree-l1"><a class="reference internal" href="__main__.html">astern.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="estimate.html">astern.estimate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="judge.html">astern.judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ledger.html">astern.ledger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses.html">astern.lenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/commands.html">astern.lenses.commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/cost.html">astern.lenses.cost</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/friction.html">astern.lenses.friction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/hygiene.html">astern.lenses.hygiene</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/stats.html">astern.lenses.stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/synopsis.html">astern.lenses.synopsis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/timeline.html">astern.lenses.timeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lenses/tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">astern.provenance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#astern.provenance.MIN_NEEDLE_CHARS"><code class="docutils literal notranslate"><span class="pre">MIN_NEEDLE_CHARS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.provenance.MIN_PATH_CHARS"><code class="docutils literal notranslate"><span class="pre">MIN_PATH_CHARS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.provenance.PROMPT_CHARS"><code class="docutils literal notranslate"><span class="pre">PROMPT_CHARS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.provenance.WRITE_TOOLS"><code class="docutils literal notranslate"><span class="pre">WRITE_TOOLS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.provenance.blame_commit"><code class="docutils literal notranslate"><span class="pre">blame_commit()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.provenance.bridge_key"><code class="docutils literal notranslate"><span class="pre">bridge_key()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.provenance.changed_files"><code class="docutils literal notranslate"><span class="pre">changed_files()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.provenance.commit_record"><code class="docutils literal notranslate"><span class="pre">commit_record()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.provenance.entire_available"><code class="docutils literal notranslate"><span class="pre">entire_available()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.provenance.entire_why"><code class="docutils literal notranslate"><span class="pre">entire_why()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.provenance.introducing_commit"><code class="docutils literal notranslate"><span class="pre">introducing_commit()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.provenance.iter_hits"><code class="docutils literal notranslate"><span class="pre">iter_hits()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.provenance.line_text"><code class="docutils literal notranslate"><span class="pre">line_text()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.provenance.loose"><code class="docutils literal notranslate"><span class="pre">loose()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.provenance.normalize"><code class="docutils literal notranslate"><span class="pre">normalize()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.provenance.rank_hits"><code class="docutils literal notranslate"><span class="pre">rank_hits()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.provenance.repo_root"><code class="docutils literal notranslate"><span class="pre">repo_root()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.provenance.session_id_from_trailer"><code class="docutils literal notranslate"><span class="pre">session_id_from_trailer()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.provenance.sessions_for_bridge"><code class="docutils literal notranslate"><span class="pre">sessions_for_bridge()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.provenance.sessions_in_repo"><code class="docutils literal notranslate"><span class="pre">sessions_in_repo()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.provenance.with_subagents"><code class="docutils literal notranslate"><span class="pre">with_subagents()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="recall.html">astern.recall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="report.html">astern.report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="skills.html">astern.skills</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources.html">astern.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="store.html">astern.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">astern.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="turns.html">astern.turns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">astern.views</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">astern</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">astern.provenance</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/astern/provenance.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-astern.provenance">
+<span id="astern-provenance"></span><h1>astern.provenance<a class="headerlink" href="#module-astern.provenance" title="Link to this heading"></a></h1>
+<p>From a line of code back to the session turn that wrote it.</p>
+<p>The chain, and why each link is needed:</p>
+<ol class="arabic simple">
+<li><p><strong>git</strong> — <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">blame</span> <span class="pre">-L</span></code> names the <em>last</em> commit to touch the line, which after
+a CI <code class="docutils literal notranslate"><span class="pre">ruff</span> <span class="pre">format</span></code> pass is a bot; <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">log</span> <span class="pre">-S</span></code> names the commit that
+<em>introduced</em> the text. Both are reported, because when they differ the second is
+almost always the one you wanted.</p></li>
+<li><p><strong>the trailer</strong> — a <code class="docutils literal notranslate"><span class="pre">Claude-Session:</span> <span class="pre">https://claude.ai/code/session_&lt;id&gt;</span></code> line in
+the commit message. That <code class="docutils literal notranslate"><span class="pre">&lt;id&gt;</span></code> is the <em>claude.ai</em> session id, which is <strong>not</strong>
+the local transcript’s <code class="docutils literal notranslate"><span class="pre">sessionId</span></code>: the transcript carries a <code class="docutils literal notranslate"><span class="pre">bridge-session</span></code>
+record (<code class="docutils literal notranslate"><span class="pre">{&quot;sessionId&quot;:</span> <span class="pre">&lt;uuid&gt;,</span> <span class="pre">&quot;bridgeSessionId&quot;:</span> <span class="pre">&quot;cse_&lt;id&gt;&quot;}</span></code>) that joins the
+two, and <a class="reference internal" href="turns.html#astern.turns.session_meta" title="astern.turns.session_meta"><code class="xref py py-func docutils literal notranslate"><span class="pre">astern.turns.session_meta()</span></code></a> keeps it as <code class="docutils literal notranslate"><span class="pre">bridge_session_id</span></code>.</p></li>
+<li><p><strong>the store</strong> — the session’s turns <em>and its subagents’</em> turns are searched for the
+<code class="docutils literal notranslate"><span class="pre">Edit</span></code> / <code class="docutils literal notranslate"><span class="pre">Write</span></code> / <code class="docutils literal notranslate"><span class="pre">Bash</span></code> call whose <code class="docutils literal notranslate"><span class="pre">input_text</span></code> contains the line. The
+subagent half is not optional: an agent that delegates writes the code from the
+subagent transcript, and the parent’s turns never contain the line.</p></li>
+</ol>
+<p>With no trailer (older work, another machine) step 2 has nothing to say, so step 3
+runs over every session whose <code class="docutils literal notranslate"><span class="pre">cwd</span></code> is inside the repo, narrowed to a date window
+around the commit.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">normalize</span><span class="p">(</span><span class="s1">'  return  sum(x)   '</span><span class="p">)</span>
+<span class="go">'return sum(x)'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loose</span><span class="p">(</span><span class="s2">"f('a', 12)"</span><span class="p">)</span>
+<span class="go">"f('a', 0)"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">session_id_from_trailer</span><span class="p">(</span><span class="s1">'feat: x</span><span class="se">\n\n</span><span class="s1">Claude-Session: https://claude.ai/code/session_01ABC'</span><span class="p">)</span>
+<span class="go">'01ABC'</span>
+</pre></div>
+</div>
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.provenance.MIN_NEEDLE_CHARS">
+<span class="sig-prename descclassname"><span class="pre">astern.provenance.</span></span><span class="sig-name descname"><span class="pre">MIN_NEEDLE_CHARS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8</span></span><a class="headerlink" href="#astern.provenance.MIN_NEEDLE_CHARS" title="Link to this definition"></a></dt>
+<dd><p>A line shorter than this matches too much to be evidence of anything.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.provenance.MIN_PATH_CHARS">
+<span class="sig-prename descclassname"><span class="pre">astern.provenance.</span></span><span class="sig-name descname"><span class="pre">MIN_PATH_CHARS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></span><a class="headerlink" href="#astern.provenance.MIN_PATH_CHARS" title="Link to this definition"></a></dt>
+<dd><p>The same floor for a <em>path</em> needle, which is specific at a length a line is not.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.provenance.PROMPT_CHARS">
+<span class="sig-prename descclassname"><span class="pre">astern.provenance.</span></span><span class="sig-name descname"><span class="pre">PROMPT_CHARS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">300</span></span><a class="headerlink" href="#astern.provenance.PROMPT_CHARS" title="Link to this definition"></a></dt>
+<dd><p>How much of the turn’s prose to carry back, per the answer’s contract.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.provenance.WRITE_TOOLS">
+<span class="sig-prename descclassname"><span class="pre">astern.provenance.</span></span><span class="sig-name descname"><span class="pre">WRITE_TOOLS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('Write',</span> <span class="pre">'Edit',</span> <span class="pre">'MultiEdit',</span> <span class="pre">'NotebookEdit')</span></span><a class="headerlink" href="#astern.provenance.WRITE_TOOLS" title="Link to this definition"></a></dt>
+<dd><p>The tools whose <code class="docutils literal notranslate"><span class="pre">input_text</span></code> can carry a line of source, best first. A <code class="docutils literal notranslate"><span class="pre">Write</span></code>
+or <code class="docutils literal notranslate"><span class="pre">Edit</span></code> <em>is</em> the line; a <code class="docutils literal notranslate"><span class="pre">Bash</span></code> heredoc merely might be, so it ranks lower.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.provenance.blame_commit">
+<span class="sig-prename descclassname"><span class="pre">astern.provenance.</span></span><span class="sig-name descname"><span class="pre">blame_commit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rel_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/astern/provenance.html#blame_commit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.provenance.blame_commit" title="Link to this definition"></a></dt>
+<dd><p>The sha of the commit that last touched <code class="docutils literal notranslate"><span class="pre">line</span></code> (<code class="docutils literal notranslate"><span class="pre">''</span></code> when blame fails).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.provenance.bridge_key">
+<span class="sig-prename descclassname"><span class="pre">astern.provenance.</span></span><span class="sig-name descname"><span class="pre">bridge_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/astern/provenance.html#bridge_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.provenance.bridge_key" title="Link to this definition"></a></dt>
+<dd><p>The comparable half of a bridge id: <code class="docutils literal notranslate"><span class="pre">cse_01AB</span></code> and <code class="docutils literal notranslate"><span class="pre">session_01AB</span></code> agree.</p>
+<p>The transcript’s <code class="docutils literal notranslate"><span class="pre">bridge-session</span></code> record prefixes the id <code class="docutils literal notranslate"><span class="pre">cse_</span></code>; the commit
+trailer’s URL prefixes the same id <code class="docutils literal notranslate"><span class="pre">session_</span></code>. Only the tail is the identity.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bridge_key</span><span class="p">(</span><span class="s1">'cse_01AB'</span><span class="p">),</span> <span class="n">bridge_key</span><span class="p">(</span><span class="s1">'session_01AB'</span><span class="p">),</span> <span class="n">bridge_key</span><span class="p">(</span><span class="s1">'01AB'</span><span class="p">)</span>
+<span class="go">('01AB', '01AB', '01AB')</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.provenance.changed_files">
+<span class="sig-prename descclassname"><span class="pre">astern.provenance.</span></span><span class="sig-name descname"><span class="pre">changed_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sha</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/astern/provenance.html#changed_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.provenance.changed_files" title="Link to this definition"></a></dt>
+<dd><p>The paths one commit touched.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.provenance.commit_record">
+<span class="sig-prename descclassname"><span class="pre">astern.provenance.</span></span><span class="sig-name descname"><span class="pre">commit_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sha</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/astern/provenance.html#commit_record"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.provenance.commit_record" title="Link to this definition"></a></dt>
+<dd><p>One commit as <code class="docutils literal notranslate"><span class="pre">{sha,</span> <span class="pre">short_sha,</span> <span class="pre">subject,</span> <span class="pre">author,</span> <span class="pre">date,</span> <span class="pre">session_id}</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.provenance.entire_available">
+<span class="sig-prename descclassname"><span class="pre">astern.provenance.</span></span><span class="sig-name descname"><span class="pre">entire_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../_modules/astern/provenance.html#entire_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.provenance.entire_available" title="Link to this definition"></a></dt>
+<dd><p>Is the <code class="docutils literal notranslate"><span class="pre">entire</span></code> binary on PATH <em>and</em> enabled in this repo?</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.provenance.entire_why">
+<span class="sig-prename descclassname"><span class="pre">astern.provenance.</span></span><span class="sig-name descname"><span class="pre">entire_why</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rel_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">60.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astern/provenance.html#entire_why"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.provenance.entire_why" title="Link to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">entire</span> <span class="pre">why</span> <span class="pre">&lt;file&gt;:&lt;line&gt;</span> <span class="pre">--json</span></code>, verbatim; <code class="docutils literal notranslate"><span class="pre">None</span></code> when unavailable.</p>
+<p>Generation-time provenance, and therefore the better answer when it exists —
+Entire recorded the checkpoint as the line was written. It only speaks for work
+done after the repo was enabled, which is why astern’s own chain runs regardless.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.provenance.introducing_commit">
+<span class="sig-prename descclassname"><span class="pre">astern.provenance.</span></span><span class="sig-name descname"><span class="pre">introducing_commit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rel_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/astern/provenance.html#introducing_commit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.provenance.introducing_commit" title="Link to this definition"></a></dt>
+<dd><p>The oldest commit whose diff changed the count of <code class="docutils literal notranslate"><span class="pre">text</span></code> in <code class="docutils literal notranslate"><span class="pre">rel_path</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.provenance.iter_hits">
+<span class="sig-prename descclassname"><span class="pre">astern.provenance.</span></span><span class="sig-name descname"><span class="pre">iter_hits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="store.html#astern.store.Store" title="astern.store.Store"><span class="pre">Store</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">session_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">('input_text',)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_chars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/astern/provenance.html#iter_hits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.provenance.iter_hits" title="Link to this definition"></a></dt>
+<dd><p>Every tool call in those sessions whose input text contains <code class="docutils literal notranslate"><span class="pre">text</span></code>.</p>
+<p>Two passes over each candidate: the whitespace-normalized line (<code class="docutils literal notranslate"><span class="pre">match='exact'</span></code>)
+and then <a class="reference internal" href="#astern.provenance.loose" title="astern.provenance.loose"><code class="xref py py-func docutils literal notranslate"><span class="pre">loose()</span></code></a> (<code class="docutils literal notranslate"><span class="pre">match='loose'</span></code>), so a reformatted or renumbered line is
+still found, and the answer says which pass found it.</p>
+<p><code class="docutils literal notranslate"><span class="pre">fields</span></code> says which part of the recorded tool call to search. <code class="docutils literal notranslate"><span class="pre">input_text</span></code> is
+the body a <code class="docutils literal notranslate"><span class="pre">Write</span></code> wrote or an <code class="docutils literal notranslate"><span class="pre">Edit</span></code> inserted, and is what a <em>line</em> is found
+in; <code class="docutils literal notranslate"><span class="pre">digest</span></code> is the call’s short label (a path, a command), and is what a <em>file</em>
+is found in — a <code class="docutils literal notranslate"><span class="pre">Write</span></code>’s body never contains its own path.</p>
+<p><code class="docutils literal notranslate"><span class="pre">min_chars</span></code> is the floor below which a needle matches too much to be evidence.
+It is lower for a path than for a line: <code class="docutils literal notranslate"><span class="pre">mod.py</span></code> is short but still specific,
+where a six-character <em>line</em> is not.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.provenance.line_text">
+<span class="sig-prename descclassname"><span class="pre">astern.provenance.</span></span><span class="sig-name descname"><span class="pre">line_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rel_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/astern/provenance.html#line_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.provenance.line_text" title="Link to this definition"></a></dt>
+<dd><p>Line <code class="docutils literal notranslate"><span class="pre">line</span></code> of the working-tree file (1-based), or <code class="docutils literal notranslate"><span class="pre">''</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.provenance.loose">
+<span class="sig-prename descclassname"><span class="pre">astern.provenance.</span></span><span class="sig-name descname"><span class="pre">loose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/astern/provenance.html#loose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.provenance.loose" title="Link to this definition"></a></dt>
+<dd><p><a class="reference internal" href="#astern.provenance.normalize" title="astern.provenance.normalize"><code class="xref py py-func docutils literal notranslate"><span class="pre">normalize()</span></code></a>, then flatten quote style and every integer literal.</p>
+<p>A formatter rewrites <code class="docutils literal notranslate"><span class="pre">'x'</span></code> to <code class="docutils literal notranslate"><span class="pre">&quot;x&quot;</span></code> and a refactor renumbers a constant
+without either being a different line; this is the second pass that still finds it.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">loose</span><span class="p">(</span><span class="s1">'assert n == 42, "boom"'</span><span class="p">)</span>
+<span class="go">"assert n == 0, 'boom'"</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.provenance.normalize">
+<span class="sig-prename descclassname"><span class="pre">astern.provenance.</span></span><span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/astern/provenance.html#normalize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.provenance.normalize" title="Link to this definition"></a></dt>
+<dd><p>Collapse every run of whitespace, so indentation and reflow stop mattering.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">normalize</span><span class="p">(</span><span class="s1">'a</span><span class="se">\t</span><span class="s1"> b</span><span class="se">\n</span><span class="s1">  c '</span><span class="p">)</span>
+<span class="go">'a b c'</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.provenance.rank_hits">
+<span class="sig-prename descclassname"><span class="pre">astern.provenance.</span></span><span class="sig-name descname"><span class="pre">rank_hits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/astern/provenance.html#rank_hits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.provenance.rank_hits" title="Link to this definition"></a></dt>
+<dd><p>Best evidence first: an exact match, from a writing tool, earliest in time.</p>
+<p>Earliest wins because the question is <em>who wrote this line</em>, and a later turn
+that merely re-wrote the same file is the answer to a different question.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'match'</span><span class="p">:</span> <span class="s1">'loose'</span><span class="p">,</span> <span class="s1">'tool'</span><span class="p">:</span> <span class="s1">'Write'</span><span class="p">,</span> <span class="s1">'timestamp'</span><span class="p">:</span> <span class="s1">'2026-01-01'</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'match'</span><span class="p">:</span> <span class="s1">'exact'</span><span class="p">,</span> <span class="s1">'tool'</span><span class="p">:</span> <span class="s1">'Bash'</span><span class="p">,</span> <span class="s1">'timestamp'</span><span class="p">:</span> <span class="s1">'2026-01-02'</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'match'</span><span class="p">:</span> <span class="s1">'exact'</span><span class="p">,</span> <span class="s1">'tool'</span><span class="p">:</span> <span class="s1">'Write'</span><span class="p">,</span> <span class="s1">'timestamp'</span><span class="p">:</span> <span class="s1">'2026-01-03'</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">h</span><span class="p">[</span><span class="s1">'tool'</span><span class="p">]</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">rank_hits</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">])]</span>
+<span class="go">['Write', 'Bash', 'Write']</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.provenance.repo_root">
+<span class="sig-prename descclassname"><span class="pre">astern.provenance.</span></span><span class="sig-name descname"><span class="pre">repo_root</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/astern/provenance.html#repo_root"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.provenance.repo_root" title="Link to this definition"></a></dt>
+<dd><p>The work tree containing <code class="docutils literal notranslate"><span class="pre">path</span></code> (a file or a directory), or <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.provenance.session_id_from_trailer">
+<span class="sig-prename descclassname"><span class="pre">astern.provenance.</span></span><span class="sig-name descname"><span class="pre">session_id_from_trailer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/astern/provenance.html#session_id_from_trailer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.provenance.session_id_from_trailer" title="Link to this definition"></a></dt>
+<dd><p>The claude.ai session id in a commit message’s <code class="docutils literal notranslate"><span class="pre">Claude-Session:</span></code> trailer.</p>
+<p>Accepts the URL form and a bare <code class="docutils literal notranslate"><span class="pre">session_&lt;id&gt;</span></code>; returns the id without prefix.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">session_id_from_trailer</span><span class="p">(</span><span class="s1">'no trailer here'</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">session_id_from_trailer</span><span class="p">(</span><span class="s1">'x</span><span class="se">\n\n</span><span class="s1">Claude-Session: session_01Z9'</span><span class="p">)</span>
+<span class="go">'01Z9'</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.provenance.sessions_for_bridge">
+<span class="sig-prename descclassname"><span class="pre">astern.provenance.</span></span><span class="sig-name descname"><span class="pre">sessions_for_bridge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="store.html#astern.store.Store" title="astern.store.Store"><span class="pre">Store</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">bridge_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/astern/provenance.html#sessions_for_bridge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.provenance.sessions_for_bridge" title="Link to this definition"></a></dt>
+<dd><p>Local session ids whose <code class="docutils literal notranslate"><span class="pre">bridge_session_id</span></code> is the trailer’s claude.ai id.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.provenance.sessions_in_repo">
+<span class="sig-prename descclassname"><span class="pre">astern.provenance.</span></span><span class="sig-name descname"><span class="pre">sessions_in_repo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="store.html#astern.store.Store" title="astern.store.Store"><span class="pre">Store</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">around</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_days</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">14.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/astern/provenance.html#sessions_in_repo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.provenance.sessions_in_repo" title="Link to this definition"></a></dt>
+<dd><p>Session ids whose <code class="docutils literal notranslate"><span class="pre">cwd</span></code> is inside <code class="docutils literal notranslate"><span class="pre">repo</span></code>, optionally near a commit date.</p>
+<p>A worktree session’s <code class="docutils literal notranslate"><span class="pre">cwd</span></code> is still under the repo root, so this keeps them;
+a session that edited the repo from somewhere else is what the date window and
+the whole-store scan are for.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.provenance.with_subagents">
+<span class="sig-prename descclassname"><span class="pre">astern.provenance.</span></span><span class="sig-name descname"><span class="pre">with_subagents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="store.html#astern.store.Store" title="astern.store.Store"><span class="pre">Store</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">session_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/astern/provenance.html#with_subagents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.provenance.with_subagents" title="Link to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">session_ids</span></code> plus every stored transcript nested under one of them.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="lenses/tooling.html" class="btn btn-neutral float-left" title="astern.lenses.tooling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="recall.html" class="btn btn-neutral float-right" title="astern.recall" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

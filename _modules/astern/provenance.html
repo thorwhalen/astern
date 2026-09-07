@@ -1,0 +1,569 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astern.provenance &mdash; astern 0.0.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=282f96c0"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            astern
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern.html">astern</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/__main__.html">astern.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/estimate.html">astern.estimate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/judge.html">astern.judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/ledger.html">astern.ledger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses.html">astern.lenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/commands.html">astern.lenses.commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/cost.html">astern.lenses.cost</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/friction.html">astern.lenses.friction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/hygiene.html">astern.lenses.hygiene</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/stats.html">astern.lenses.stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/synopsis.html">astern.lenses.synopsis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/timeline.html">astern.lenses.timeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/lenses/tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/provenance.html">astern.provenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/recall.html">astern.recall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/report.html">astern.report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/skills.html">astern.skills</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/sources.html">astern.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/store.html">astern.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/tools.html">astern.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/turns.html">astern.turns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/astern/views.html">astern.views</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">astern</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">astern.provenance</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for astern.provenance</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""From a line of code back to the session turn that wrote it.</span>
+
+<span class="sd">The chain, and why each link is needed:</span>
+
+<span class="sd">1. **git** — ``git blame -L`` names the *last* commit to touch the line, which after</span>
+<span class="sd">   a CI ``ruff format`` pass is a bot; ``git log -S`` names the commit that</span>
+<span class="sd">   *introduced* the text. Both are reported, because when they differ the second is</span>
+<span class="sd">   almost always the one you wanted.</span>
+<span class="sd">2. **the trailer** — a ``Claude-Session: https://claude.ai/code/session_&lt;id&gt;`` line in</span>
+<span class="sd">   the commit message. That ``&lt;id&gt;`` is the *claude.ai* session id, which is **not**</span>
+<span class="sd">   the local transcript's ``sessionId``: the transcript carries a ``bridge-session``</span>
+<span class="sd">   record (``{"sessionId": &lt;uuid&gt;, "bridgeSessionId": "cse_&lt;id&gt;"}``) that joins the</span>
+<span class="sd">   two, and :func:`astern.turns.session_meta` keeps it as ``bridge_session_id``.</span>
+<span class="sd">3. **the store** — the session's turns *and its subagents'* turns are searched for the</span>
+<span class="sd">   ``Edit`` / ``Write`` / ``Bash`` call whose ``input_text`` contains the line. The</span>
+<span class="sd">   subagent half is not optional: an agent that delegates writes the code from the</span>
+<span class="sd">   subagent transcript, and the parent's turns never contain the line.</span>
+
+<span class="sd">With no trailer (older work, another machine) step 2 has nothing to say, so step 3</span>
+<span class="sd">runs over every session whose ``cwd`` is inside the repo, narrowed to a date window</span>
+<span class="sd">around the commit.</span>
+
+<span class="sd">&gt;&gt;&gt; normalize('  return  sum(x)   ')</span>
+<span class="sd">'return sum(x)'</span>
+<span class="sd">&gt;&gt;&gt; loose("f('a', 12)")</span>
+<span class="sd">"f('a', 0)"</span>
+<span class="sd">&gt;&gt;&gt; session_id_from_trailer('feat: x\\n\\nClaude-Session: https://claude.ai/code/session_01ABC')</span>
+<span class="sd">'01ABC'</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Iterator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">astern.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">Store</span>
+
+<span class="c1">#: The tools whose ``input_text`` can carry a line of source, best first. A ``Write``</span>
+<span class="c1">#: or ``Edit`` *is* the line; a ``Bash`` heredoc merely might be, so it ranks lower.</span>
+<span class="n">WRITE_TOOLS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"Write"</span><span class="p">,</span> <span class="s2">"Edit"</span><span class="p">,</span> <span class="s2">"MultiEdit"</span><span class="p">,</span> <span class="s2">"NotebookEdit"</span><span class="p">)</span>
+<span class="n">SHELL_TOOLS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"Bash"</span><span class="p">,)</span>
+
+<span class="c1">#: How much of the turn's prose to carry back, per the answer's contract.</span>
+<span class="n">PROMPT_CHARS</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">EXCERPT_CHARS</span> <span class="o">=</span> <span class="mi">500</span>
+
+<span class="c1">#: A line shorter than this matches too much to be evidence of anything.</span>
+<span class="n">MIN_NEEDLE_CHARS</span> <span class="o">=</span> <span class="mi">8</span>
+
+<span class="c1">#: The same floor for a *path* needle, which is specific at a length a line is not.</span>
+<span class="n">MIN_PATH_CHARS</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="n">_TRAILER_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"Claude-Session:\s*(\S+)"</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+<span class="n">_SESSION_IN_URL_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"session_([A-Za-z0-9]+)"</span><span class="p">)</span>
+<span class="n">_QUOTES_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"[</span><span class="se">\"</span><span class="s2">'`]"</span><span class="p">)</span>
+<span class="n">_DIGITS_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\d+"</span><span class="p">)</span>
+
+
+<span class="c1"># --- normalization ------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="normalize">
+<a class="viewcode-back" href="../../module_docs/astern/provenance.html#astern.provenance.normalize">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">normalize</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Collapse every run of whitespace, so indentation and reflow stop mattering.</span>
+
+<span class="sd">    &gt;&gt;&gt; normalize('a\\t b\\n  c ')</span>
+<span class="sd">    'a b c'</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">())</span></div>
+
+
+
+<div class="viewcode-block" id="loose">
+<a class="viewcode-back" href="../../module_docs/astern/provenance.html#astern.provenance.loose">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">loose</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">""":func:`normalize`, then flatten quote style and every integer literal.</span>
+
+<span class="sd">    A formatter rewrites ``'x'`` to ``"x"`` and a refactor renumbers a constant</span>
+<span class="sd">    without either being a different line; this is the second pass that still finds it.</span>
+
+<span class="sd">    &gt;&gt;&gt; loose('assert n == 42, "boom"')</span>
+<span class="sd">    "assert n == 0, 'boom'"</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">_DIGITS_RE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">"0"</span><span class="p">,</span> <span class="n">_QUOTES_RE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">"'"</span><span class="p">,</span> <span class="n">normalize</span><span class="p">(</span><span class="n">text</span><span class="p">)))</span></div>
+
+
+
+<span class="c1"># --- git ----------------------------------------------------------------------</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_git</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">60.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Run one ``git`` command in ``repo``; empty string if it fails at all."""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+            <span class="p">[</span><span class="s2">"git"</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">],</span>
+            <span class="n">cwd</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">repo</span><span class="p">),</span>
+            <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">SubprocessError</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">""</span>
+    <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="n">stdout</span> <span class="k">if</span> <span class="n">out</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">""</span>
+
+
+<div class="viewcode-block" id="repo_root">
+<a class="viewcode-back" href="../../module_docs/astern/provenance.html#astern.provenance.repo_root">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">repo_root</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The work tree containing ``path`` (a file or a directory), or ``None``."""</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">p</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span> <span class="k">else</span> <span class="n">p</span><span class="o">.</span><span class="n">parent</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">_git</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="s2">"rev-parse"</span><span class="p">,</span> <span class="s2">"--show-toplevel"</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">root</span> <span class="ow">or</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="session_id_from_trailer">
+<a class="viewcode-back" href="../../module_docs/astern/provenance.html#astern.provenance.session_id_from_trailer">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">session_id_from_trailer</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The claude.ai session id in a commit message's ``Claude-Session:`` trailer.</span>
+
+<span class="sd">    Accepts the URL form and a bare ``session_&lt;id&gt;``; returns the id without prefix.</span>
+
+<span class="sd">    &gt;&gt;&gt; session_id_from_trailer('no trailer here') is None</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; session_id_from_trailer('x\\n\\nClaude-Session: session_01Z9')</span>
+<span class="sd">    '01Z9'</span>
+<span class="sd">    """</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">_TRAILER_RE</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">message</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">found</span> <span class="o">=</span> <span class="n">_SESSION_IN_URL_RE</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">found</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">found</span> <span class="k">else</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">or</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="bridge_key">
+<a class="viewcode-back" href="../../module_docs/astern/provenance.html#astern.provenance.bridge_key">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">bridge_key</span><span class="p">(</span><span class="n">raw</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The comparable half of a bridge id: ``cse_01AB`` and ``session_01AB`` agree.</span>
+
+<span class="sd">    The transcript's ``bridge-session`` record prefixes the id ``cse_``; the commit</span>
+<span class="sd">    trailer's URL prefixes the same id ``session_``. Only the tail is the identity.</span>
+
+<span class="sd">    &gt;&gt;&gt; bridge_key('cse_01AB'), bridge_key('session_01AB'), bridge_key('01AB')</span>
+<span class="sd">    ('01AB', '01AB', '01AB')</span>
+<span class="sd">    """</span>
+    <span class="n">raw</span> <span class="o">=</span> <span class="p">(</span><span class="n">raw</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">raw</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">"_"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="s2">"_"</span> <span class="ow">in</span> <span class="n">raw</span> <span class="k">else</span> <span class="n">raw</span></div>
+
+
+
+<div class="viewcode-block" id="commit_record">
+<a class="viewcode-back" href="../../module_docs/astern/provenance.html#astern.provenance.commit_record">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">commit_record</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span> <span class="n">sha</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""One commit as ``{sha, short_sha, subject, author, date, session_id}``."""</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sha</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">_git</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="s2">"show"</span><span class="p">,</span> <span class="s2">"-s"</span><span class="p">,</span> <span class="s2">"--format=%H</span><span class="si">%x</span><span class="s2">00</span><span class="si">%h%</span><span class="s2">x00</span><span class="si">%s%x</span><span class="s2">00</span><span class="si">%a</span><span class="s2">n</span><span class="si">%x</span><span class="s2">00</span><span class="si">%a</span><span class="s2">I</span><span class="si">%x</span><span class="s2">00%B"</span><span class="p">,</span> <span class="n">sha</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">out</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\x00</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">"sha"</span><span class="p">:</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+        <span class="s2">"short_sha"</span><span class="p">:</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+        <span class="s2">"subject"</span><span class="p">:</span> <span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+        <span class="s2">"author"</span><span class="p">:</span> <span class="n">parts</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+        <span class="s2">"date"</span><span class="p">:</span> <span class="n">parts</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+        <span class="s2">"session_id"</span><span class="p">:</span> <span class="n">session_id_from_trailer</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">5</span><span class="p">]),</span>
+    <span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="blame_commit">
+<a class="viewcode-back" href="../../module_docs/astern/provenance.html#astern.provenance.blame_commit">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">blame_commit</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span> <span class="n">rel_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The sha of the commit that last touched ``line`` (``''`` when blame fails)."""</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">_git</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="s2">"blame"</span><span class="p">,</span> <span class="s2">"-L"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"--porcelain"</span><span class="p">,</span> <span class="s2">"--"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">rel_path</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">out</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">""</span>
+    <span class="n">first</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="s2">""</span> <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">first</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="s2">"0"</span><span class="p">}</span> <span class="k">else</span> <span class="n">first</span></div>
+
+
+
+<div class="viewcode-block" id="introducing_commit">
+<a class="viewcode-back" href="../../module_docs/astern/provenance.html#astern.provenance.introducing_commit">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">introducing_commit</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span> <span class="n">rel_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The oldest commit whose diff changed the count of ``text`` in ``rel_path``."""</span>
+    <span class="n">needle</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">needle</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">MIN_NEEDLE_CHARS</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">""</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">_git</span><span class="p">(</span>
+        <span class="n">repo</span><span class="p">,</span>
+        <span class="s2">"log"</span><span class="p">,</span>
+        <span class="s2">"--reverse"</span><span class="p">,</span>
+        <span class="s2">"--format=%H"</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">"-S</span><span class="si">{</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="s2">"--"</span><span class="p">,</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">rel_path</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span> <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
+    <span class="k">return</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">lines</span> <span class="k">else</span> <span class="s2">""</span></div>
+
+
+
+<div class="viewcode-block" id="line_text">
+<a class="viewcode-back" href="../../module_docs/astern/provenance.html#astern.provenance.line_text">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">line_text</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span> <span class="n">rel_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Line ``line`` of the working-tree file (1-based), or ``''``."""</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span> <span class="o">/</span> <span class="n">rel_path</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">"replace"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">raw</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">raw</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">""</span>
+    <span class="k">return</span> <span class="s2">""</span></div>
+
+
+
+<div class="viewcode-block" id="changed_files">
+<a class="viewcode-back" href="../../module_docs/astern/provenance.html#astern.provenance.changed_files">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">changed_files</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span> <span class="n">sha</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""The paths one commit touched."""</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">_git</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="s2">"show"</span><span class="p">,</span> <span class="s2">"--name-only"</span><span class="p">,</span> <span class="s2">"--format="</span><span class="p">,</span> <span class="n">sha</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span> <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span></div>
+
+
+
+<span class="c1"># --- the Entire CLI, when this repo is enabled ---------------------------------</span>
+
+
+<div class="viewcode-block" id="entire_available">
+<a class="viewcode-back" href="../../module_docs/astern/provenance.html#astern.provenance.entire_available">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">entire_available</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Is the ``entire`` binary on PATH *and* enabled in this repo?"""</span>
+    <span class="k">if</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">"entire"</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span> <span class="o">/</span> <span class="s2">".entire"</span> <span class="o">/</span> <span class="s2">"settings.json"</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="entire_why">
+<a class="viewcode-back" href="../../module_docs/astern/provenance.html#astern.provenance.entire_why">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">entire_why</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span> <span class="n">rel_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">60.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""``entire why &lt;file&gt;:&lt;line&gt; --json``, verbatim; ``None`` when unavailable.</span>
+
+<span class="sd">    Generation-time provenance, and therefore the better answer when it exists —</span>
+<span class="sd">    Entire recorded the checkpoint as the line was written. It only speaks for work</span>
+<span class="sd">    done after the repo was enabled, which is why astern's own chain runs regardless.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">entire_available</span><span class="p">(</span><span class="n">repo</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+            <span class="p">[</span><span class="s2">"entire"</span><span class="p">,</span> <span class="s2">"why"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">rel_path</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"--json"</span><span class="p">],</span>
+            <span class="n">cwd</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">repo</span><span class="p">),</span>
+            <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">SubprocessError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"error"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">out</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"error"</span><span class="p">:</span> <span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">stderr</span> <span class="ow">or</span> <span class="n">out</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()[:</span><span class="mi">500</span><span class="p">]}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"error"</span><span class="p">:</span> <span class="s2">"entire why --json did not return JSON"</span><span class="p">}</span></div>
+
+
+
+<span class="c1"># --- searching the store ------------------------------------------------------</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_iso</span><span class="p">(</span><span class="n">ts</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">((</span><span class="n">ts</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"Z"</span><span class="p">,</span> <span class="s2">"+00:00"</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="sessions_for_bridge">
+<a class="viewcode-back" href="../../module_docs/astern/provenance.html#astern.provenance.sessions_for_bridge">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">sessions_for_bridge</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span> <span class="n">bridge_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Local session ids whose ``bridge_session_id`` is the trailer's claude.ai id."""</span>
+    <span class="n">want</span> <span class="o">=</span> <span class="n">bridge_key</span><span class="p">(</span><span class="n">bridge_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">sid</span>
+        <span class="k">for</span> <span class="n">sid</span> <span class="ow">in</span> <span class="n">store</span><span class="o">.</span><span class="n">sessions</span>
+        <span class="k">if</span> <span class="n">bridge_key</span><span class="p">(</span><span class="n">store</span><span class="o">.</span><span class="n">sessions</span><span class="p">[</span><span class="n">sid</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"bridge_session_id"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span> <span class="o">==</span> <span class="n">want</span> <span class="ow">and</span> <span class="n">want</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="with_subagents">
+<a class="viewcode-back" href="../../module_docs/astern/provenance.html#astern.provenance.with_subagents">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">with_subagents</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span> <span class="n">session_ids</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""``session_ids`` plus every stored transcript nested under one of them."""</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">session_ids</span><span class="p">))</span>
+    <span class="n">parents</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">sid</span> <span class="ow">in</span> <span class="n">store</span><span class="o">.</span><span class="n">sessions</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sid</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">store</span><span class="o">.</span><span class="n">sessions</span><span class="p">[</span><span class="n">sid</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"parent_id"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">:</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sid</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+
+<div class="viewcode-block" id="sessions_in_repo">
+<a class="viewcode-back" href="../../module_docs/astern/provenance.html#astern.provenance.sessions_in_repo">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">sessions_in_repo</span><span class="p">(</span>
+    <span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span> <span class="n">repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">around</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">window_days</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">14.0</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Session ids whose ``cwd`` is inside ``repo``, optionally near a commit date.</span>
+
+<span class="sd">    A worktree session's ``cwd`` is still under the repo root, so this keeps them;</span>
+<span class="sd">    a session that edited the repo from somewhere else is what the date window and</span>
+<span class="sd">    the whole-store scan are for.</span>
+<span class="sd">    """</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>
+    <span class="n">lo</span> <span class="o">=</span> <span class="n">hi</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">around</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="n">around</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">window_days</span><span class="p">),</span> <span class="n">around</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">sid</span> <span class="ow">in</span> <span class="n">store</span><span class="o">.</span><span class="n">sessions</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">sessions</span><span class="p">[</span><span class="n">sid</span><span class="p">]</span>
+        <span class="n">cwd</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"cwd"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cwd</span> <span class="ow">or</span> <span class="ow">not</span> <span class="p">(</span><span class="n">cwd</span> <span class="o">==</span> <span class="n">root</span> <span class="ow">or</span> <span class="n">cwd</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">root</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="p">)):</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">lo</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">when</span> <span class="o">=</span> <span class="n">_iso</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ended_at"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span> <span class="ow">or</span> <span class="n">_iso</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"started_at"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">when</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="p">(</span><span class="n">lo</span> <span class="o">&lt;=</span> <span class="n">when</span> <span class="o">&lt;=</span> <span class="n">hi</span><span class="p">):</span>
+                <span class="k">continue</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sid</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_tool_rank</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">WRITE_TOOLS</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">SHELL_TOOLS</span> <span class="k">else</span> <span class="mi">2</span>
+
+
+<div class="viewcode-block" id="iter_hits">
+<a class="viewcode-back" href="../../module_docs/astern/provenance.html#astern.provenance.iter_hits">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">iter_hits</span><span class="p">(</span>
+    <span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span>
+    <span class="n">session_ids</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">fields</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"input_text"</span><span class="p">,),</span>
+    <span class="n">min_chars</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">MIN_NEEDLE_CHARS</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Every tool call in those sessions whose input text contains ``text``.</span>
+
+<span class="sd">    Two passes over each candidate: the whitespace-normalized line (``match='exact'``)</span>
+<span class="sd">    and then :func:`loose` (``match='loose'``), so a reformatted or renumbered line is</span>
+<span class="sd">    still found, and the answer says which pass found it.</span>
+
+<span class="sd">    ``fields`` says which part of the recorded tool call to search. ``input_text`` is</span>
+<span class="sd">    the body a ``Write`` wrote or an ``Edit`` inserted, and is what a *line* is found</span>
+<span class="sd">    in; ``digest`` is the call's short label (a path, a command), and is what a *file*</span>
+<span class="sd">    is found in — a ``Write``'s body never contains its own path.</span>
+
+<span class="sd">    ``min_chars`` is the floor below which a needle matches too much to be evidence.</span>
+<span class="sd">    It is lower for a path than for a line: ``mod.py`` is short but still specific,</span>
+<span class="sd">    where a six-character *line* is not.</span>
+<span class="sd">    """</span>
+    <span class="n">strict</span><span class="p">,</span> <span class="n">fuzzy</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">text</span><span class="p">),</span> <span class="n">loose</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">strict</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">min_chars</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="k">for</span> <span class="n">sid</span> <span class="ow">in</span> <span class="n">session_ids</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">store</span><span class="o">.</span><span class="n">turns</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">sessions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sid</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">for</span> <span class="n">turn</span> <span class="ow">in</span> <span class="n">store</span><span class="o">.</span><span class="n">turns</span><span class="p">[</span><span class="n">sid</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tools"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">():</span>
+                <span class="n">body</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">body</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">strict</span> <span class="ow">in</span> <span class="n">normalize</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+                    <span class="n">match</span> <span class="o">=</span> <span class="s2">"exact"</span>
+                <span class="k">elif</span> <span class="n">fuzzy</span> <span class="ow">in</span> <span class="n">loose</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+                    <span class="n">match</span> <span class="o">=</span> <span class="s2">"loose"</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">yield</span> <span class="p">{</span>
+                    <span class="s2">"session_id"</span><span class="p">:</span> <span class="n">sid</span><span class="p">,</span>
+                    <span class="s2">"parent_id"</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"parent_id"</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s2">"turn_index"</span><span class="p">:</span> <span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"index"</span><span class="p">),</span>
+                    <span class="s2">"timestamp"</span><span class="p">:</span> <span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"timestamp"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+                    <span class="s2">"tool"</span><span class="p">:</span> <span class="n">tool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+                    <span class="s2">"digest"</span><span class="p">:</span> <span class="n">tool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"digest"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+                    <span class="s2">"match"</span><span class="p">:</span> <span class="n">match</span><span class="p">,</span>
+                    <span class="s2">"user_prompt"</span><span class="p">:</span> <span class="p">(</span><span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"user_prompt"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)[:</span><span class="n">PROMPT_CHARS</span><span class="p">],</span>
+                    <span class="s2">"assistant_excerpt"</span><span class="p">:</span> <span class="p">(</span>
+                        <span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"assistant_full"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"assistant_summary"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+                    <span class="p">)[:</span><span class="n">EXCERPT_CHARS</span><span class="p">],</span>
+                <span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="rank_hits">
+<a class="viewcode-back" href="../../module_docs/astern/provenance.html#astern.provenance.rank_hits">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">rank_hits</span><span class="p">(</span><span class="n">hits</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Best evidence first: an exact match, from a writing tool, earliest in time.</span>
+
+<span class="sd">    Earliest wins because the question is *who wrote this line*, and a later turn</span>
+<span class="sd">    that merely re-wrote the same file is the answer to a different question.</span>
+
+<span class="sd">    &gt;&gt;&gt; a = {'match': 'loose', 'tool': 'Write', 'timestamp': '2026-01-01'}</span>
+<span class="sd">    &gt;&gt;&gt; b = {'match': 'exact', 'tool': 'Bash', 'timestamp': '2026-01-02'}</span>
+<span class="sd">    &gt;&gt;&gt; c = {'match': 'exact', 'tool': 'Write', 'timestamp': '2026-01-03'}</span>
+<span class="sd">    &gt;&gt;&gt; [h['tool'] for h in rank_hits([a, b, c])]</span>
+<span class="sd">    ['Write', 'Bash', 'Write']</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span>
+        <span class="n">hits</span><span class="p">,</span>
+        <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">h</span><span class="p">:</span> <span class="p">(</span>
+            <span class="mi">0</span> <span class="k">if</span> <span class="n">h</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"match"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"exact"</span> <span class="k">else</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">_tool_rank</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tool"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">),</span>
+            <span class="n">h</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"timestamp"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

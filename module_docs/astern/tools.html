@@ -63,6 +63,7 @@
 <li class="toctree-l1"><a class="reference internal" href="lenses/synopsis.html">astern.lenses.synopsis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lenses/timeline.html">astern.lenses.timeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lenses/tooling.html">astern.lenses.tooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="provenance.html">astern.provenance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="recall.html">astern.recall</a></li>
 <li class="toctree-l1"><a class="reference internal" href="report.html">astern.report</a></li>
 <li class="toctree-l1"><a class="reference internal" href="skills.html">astern.skills</a></li>
@@ -79,6 +80,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#astern.tools.sessions"><code class="docutils literal notranslate"><span class="pre">sessions()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#astern.tools.show"><code class="docutils literal notranslate"><span class="pre">show()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#astern.tools.sync"><code class="docutils literal notranslate"><span class="pre">sync()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#astern.tools.why"><code class="docutils literal notranslate"><span class="pre">why()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="turns.html">astern.turns</a></li>
@@ -214,6 +216,36 @@ the same underlying aggregate dict there instead.</p>
 re-read; a lens that already covered every turn is not re-run (<code class="docutils literal notranslate"><span class="pre">force</span></code> re-runs
 the lenses, never the LLM ones — those go through <a class="reference internal" href="#astern.tools.judge" title="astern.tools.judge"><code class="xref py py-func docutils literal notranslate"><span class="pre">judge()</span></code></a>). <code class="docutils literal notranslate"><span class="pre">lenses</span></code> is
 <code class="docutils literal notranslate"><span class="pre">'H'</span></code> (all heuristic lenses), <code class="docutils literal notranslate"><span class="pre">'none'</span></code>, or a comma-separated list of names.</p>
+<p><code class="docutils literal notranslate"><span class="pre">kinds</span></code> defaults to <code class="docutils literal notranslate"><span class="pre">'session'</span></code> — top-level transcripts only — on measurement,
+not on principle. <a class="reference internal" href="#astern.tools.why" title="astern.tools.why"><code class="xref py py-func docutils literal notranslate"><span class="pre">why()</span></code></a> genuinely needs <code class="docutils literal notranslate"><span class="pre">'session,subagent'</span></code> (a delegating
+session’s own turns never contain the code its subagents wrote), but on this
+machine’s corpus (290 top-level sessions, 4547 nested transcripts, 2.1 GB of
+JSONL) that is 50.7 s and a 330 MB store — 442 MB on disk, because 36,000 small
+JSON files round up hard — against 7.6 s and 87 MB for sessions alone. Too big to
+impose on every <code class="docutils literal notranslate"><span class="pre">sync</span></code>, so <a class="reference internal" href="#astern.tools.why" title="astern.tools.why"><code class="xref py py-func docutils literal notranslate"><span class="pre">why()</span></code></a> says when it needs it instead.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.tools.why">
+<span class="sig-prename descclassname"><span class="pre">astern.tools.</span></span><span class="sig-name descname"><span class="pre">why</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">commit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="store.html#astern.store.Store" title="astern.store.Store"><span class="pre">Store</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_days</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">14.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_hits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entire</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/astern/tools.html#why"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.tools.why" title="Link to this definition"></a></dt>
+<dd><p>Why does this line exist? — the commit, the session, and the turn that wrote it.</p>
+<p><code class="docutils literal notranslate"><span class="pre">target</span></code> is <code class="docutils literal notranslate"><span class="pre">&lt;file&gt;:&lt;line&gt;</span></code> (a file plus <code class="docutils literal notranslate"><span class="pre">--line</span></code> works too) or, with
+<code class="docutils literal notranslate"><span class="pre">--commit</span></code>, a commit-ish. A target that names no readable file and <em>does</em>
+resolve as a revision is read as a commit without the flag, so
+<code class="docutils literal notranslate"><span class="pre">astern</span> <span class="pre">why</span> <span class="pre">589f17a</span></code> and <code class="docutils literal notranslate"><span class="pre">astern</span> <span class="pre">why</span> <span class="pre">HEAD</span> <span class="pre">--commit</span></code> are the same question:
+the commit’s trailer names the session, and the hits are that session’s tool
+calls against the files the commit touched.</p>
+<p>(<code class="docutils literal notranslate"><span class="pre">target</span></code> is positional and therefore required, which is why <code class="docutils literal notranslate"><span class="pre">--commit</span></code> is a
+flag over it rather than an option carrying the sha: argh’s grammar — the one
+<code class="docutils literal notranslate"><span class="pre">cw</span></code> reproduces — makes any parameter with a default an <em>option</em>, and
+<code class="docutils literal notranslate"><span class="pre">astern</span> <span class="pre">why</span> <span class="pre">-t</span> <span class="pre">astern/judge.py:115</span></code> is the wrong headline.)</p>
+<p>Two commits are reported, never one: <code class="docutils literal notranslate"><span class="pre">blame</span></code> is the last hand to touch the line
+(a CI <code class="docutils literal notranslate"><span class="pre">ruff</span> <span class="pre">format</span></code> pass owns a lot of them) and <code class="docutils literal notranslate"><span class="pre">introduced</span></code> is the commit
+whose diff first contained the text. When they differ, <code class="docutils literal notranslate"><span class="pre">introduced</span></code> is the one
+whose <code class="docutils literal notranslate"><span class="pre">Claude-Session:</span></code> trailer is worth following.</p>
+<p>When the Entire CLI is installed and this repo is enabled, its generation-time
+answer is included verbatim under <code class="docutils literal notranslate"><span class="pre">entire</span></code>; astern’s own retroactive chain runs
+either way, because Entire only speaks for work done after it was enabled.</p>
 </dd></dl>
 
 </section>
