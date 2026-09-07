@@ -214,9 +214,7 @@ def test_subagent_turns_includes_only_subagent_and_workflow_sessions(
 def test_subagent_turns_carries_kind_parent_id_and_the_parents_title_project(
     store_with_subagent,
 ):
-    recs = {
-        r["id"]: r for r in R.records("subagent_turns", store=store_with_subagent)
-    }
+    recs = {r["id"]: r for r in R.records("subagent_turns", store=store_with_subagent)}
     sub = recs["sub1:su0"]
     assert sub["kind"] == "subagent"
     assert sub["parent_id"] == "s1"
@@ -227,7 +225,11 @@ def test_subagent_turns_carries_kind_parent_id_and_the_parents_title_project(
 
 def test_subagent_turns_tolerates_a_missing_parent():
     store = MemoryStore()
-    store.sessions["sub1"] = {"session_id": "sub1", "kind": "subagent", "parent_id": "gone"}
+    store.sessions["sub1"] = {
+        "session_id": "sub1",
+        "kind": "subagent",
+        "parent_id": "gone",
+    }
     store.turns["sub1"] = [_turn(0, "u0", "do a thing", "did it")]
     (rec,) = list(R.records("subagent_turns", store=store))
     assert rec["parent_title"] == "" and rec["parent_project"] == ""
