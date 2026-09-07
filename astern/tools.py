@@ -86,6 +86,9 @@ def sync(
     """
     store = mk_store(store)
     load_builtin_lenses()
+    # CLI adapters hand Optional[int] through as str; coerce here, once, for every surface.
+    max_sessions = int(max_sessions) if max_sessions is not None else None
+    since_days = float(since_days) if since_days is not None else None
     names = _lens_names(lenses, kind="H")
     seen = read = skipped = 0
     per_lens: dict[str, dict] = {}
