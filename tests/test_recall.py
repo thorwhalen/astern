@@ -168,6 +168,80 @@ def test_records_rejects_an_unknown_grain(store):
         list(R.records("episodes", store=store))
 
 
+# --- the session_turns / subagent_turns split ---------------------------------
+
+
+@pytest.fixture
+def store_with_subagent(store):
+    """``store`` plus a subagent and a workflow transcript delegated by ``s1``."""
+    store.sessions["sub1"] = {
+        "session_id": "sub1",
+        "kind": "subagent",
+        "parent_id": "s1",
+        "title": "",  # a subagent almost never has its own ai-title
+        "project": "astern",
+        "cwd": "/p/astern",
+        "ended_at": "2026-09-01T11:00:00Z",
+    }
+    store.turns["sub1"] = [
+        _turn(0, "su0", "fix the ledger bug in astern/ledger.py", "fixed it")
+    ]
+    store.sessions["wf1"] = {
+        "session_id": "wf1",
+        "kind": "workflow",
+        "parent_id": "s1",
+        "project": "astern",
+        "cwd": "/p/astern",
+        "ended_at": "2026-09-01T11:30:00Z",
+    }
+    store.turns["wf1"] = [_turn(0, "wu0", "run the release workflow", "released")]
+    return store
+
+
+def test_session_turns_excludes_subagent_and_workflow_sessions(store_with_subagent):
+    ids = {r["id"] for r in R.records("session_turns", store=store_with_subagent)}
+    assert ids == {"s1:u0", "s2:u0"}  # sub1 and wf1 never leak into session_turns
+    assert "sub1:su0" not in ids and "wf1:wu0" not in ids
+
+
+def test_subagent_turns_includes_only_subagent_and_workflow_sessions(
+    store_with_subagent,
+):
+    recs = list(R.records("subagent_turns", store=store_with_subagent))
+    assert {r["id"] for r in recs} == {"sub1:su0", "wf1:wu0"}
+
+
+def test_subagent_turns_carries_kind_parent_id_and_the_parents_title_project(
+    store_with_subagent,
+):
+    recs = {
+        r["id"]: r for r in R.records("subagent_turns", store=store_with_subagent)
+    }
+    sub = recs["sub1:su0"]
+    assert sub["kind"] == "subagent"
+    assert sub["parent_id"] == "s1"
+    assert sub["parent_title"] == "Ledger and resumed sessions"
+    assert sub["parent_project"] == "astern"
+    assert recs["wf1:wu0"]["kind"] == "workflow"
+
+
+def test_subagent_turns_tolerates_a_missing_parent():
+    store = MemoryStore()
+    store.sessions["sub1"] = {"session_id": "sub1", "kind": "subagent", "parent_id": "gone"}
+    store.turns["sub1"] = [_turn(0, "u0", "do a thing", "did it")]
+    (rec,) = list(R.records("subagent_turns", store=store))
+    assert rec["parent_title"] == "" and rec["parent_project"] == ""
+
+
+def test_a_session_missing_the_kind_field_defaults_to_session():
+    """Older stores (and every other fixture here) never set ``kind`` at all."""
+    store = MemoryStore()
+    store.sessions["s"] = {"session_id": "s"}  # no 'kind' key
+    store.turns["s"] = [_turn(0, "u0", "hi", "hello")]
+    assert [r["id"] for r in R.records("session_turns", store=store)] == ["s:u0"]
+    assert list(R.records("subagent_turns", store=store)) == []
+
+
 def test_fetchers_read_the_default_store(tmp_path, monkeypatch):
     """The registry holds a *name*, so the fetcher must find the store by env."""
     w = write_home(
@@ -277,8 +351,9 @@ def fake_ir(monkeypatch):
 
 def test_index_registers_then_builds_each_grain(fake_ir):
     out = R.index(store=MemoryStore().root)
-    assert [c[0] for c in fake_ir] == ["register", "build", "register", "build"]
+    assert [c[0] for c in fake_ir] == ["register", "build"] * len(R.GRAINS)
     assert set(out["corpora"]) == set(R.GRAINS)
+    assert "subagent_turns" in out["corpora"]  # index(grain='all') builds it too
     assert out["corpora"]["session_turns"]["n_records"] == 2
 
 
@@ -350,6 +425,52 @@ def test_recall_since_days_becomes_a_timestamp_filter(fake_ir):
     R.recall("x", since_days=30)
     (_, _corpora, kwargs) = next(c for c in fake_ir if c[0] == "discover")
     assert "$gte" in kwargs["filter"]["timestamp"]
+
+
+# --- default grains exclude subagent_turns ------------------------------------
+
+
+def test_recall_default_grains_exclude_subagent_turns(monkeypatch):
+    calls: list = []
+    monkeypatch.setitem(
+        sys.modules,
+        "ir",
+        _fake_ir(
+            built=("session_synopses", "session_turns", "subagent_turns"),
+            calls=calls,
+        ),
+    )
+    R.recall("x")
+    (_, corpora, _kw) = next(c for c in calls if c[0] == "discover")
+    assert "subagent_turns" not in corpora
+    assert set(corpora) == {"session_synopses", "session_turns"}
+
+
+def test_recall_include_subagents_true_adds_the_grain(monkeypatch):
+    calls: list = []
+    monkeypatch.setitem(
+        sys.modules,
+        "ir",
+        _fake_ir(
+            built=("session_synopses", "session_turns", "subagent_turns"),
+            calls=calls,
+        ),
+    )
+    R.recall("x", include_subagents=True)
+    (_, corpora, _kw) = next(c for c in calls if c[0] == "discover")
+    assert "subagent_turns" in corpora
+
+
+def test_recall_grains_naming_subagent_turns_includes_it_without_the_flag(monkeypatch):
+    calls: list = []
+    monkeypatch.setitem(
+        sys.modules,
+        "ir",
+        _fake_ir(built=("subagent_turns",), calls=calls),
+    )
+    R.recall("x", grains="subagent_turns")
+    (_, corpora, _kw) = next(c for c in calls if c[0] == "discover")
+    assert corpora == ("subagent_turns",)
 
 
 def test_missing_ir_says_what_to_install(monkeypatch):

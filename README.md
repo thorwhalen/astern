@@ -58,18 +58,21 @@ Session handoffs (`Q`) are deliberately not a lens here — that's `openloops`, 
 
 `astern recall "<query>"` answers *what did we already think, try and decide about X* without re-reading a transcript. astern is only the **record source** here: `ir` owns the indexing and the search, and the multi-hop search loop belongs to `raglab`. Install the extra (`pip install "astern[recall]"`), run `astern index` after a `sync`, and ask.
 
-Two grains, indexed as two `ir` corpora because they answer different questions:
+Three grains, indexed as three `ir` corpora because they answer different questions:
 
 | Corpus | One record is | Best for |
 |---|---|---|
 | `session_synopses` | a whole session as the `synopsis` lens distilled it — goal, problems and solutions, decisions, corrections | **what was decided** |
-| `session_turns` | one turn: the prompt and the assistant's closing text | **what was actually tried** |
+| `session_turns` | one turn of a top-level session (`kind == "session"`): the prompt and the assistant's closing text | **what was actually tried** |
+| `subagent_turns` | one turn of a delegated transcript (`kind in ("subagent", "workflow")`), carrying `parent_id` and the parent's title/project | **what an agent did** |
+
+`astern index` (`grain='all'`) builds all three; `astern recall` searches only `session_synopses` and `session_turns` by default. `subagent_turns` is opt-in (name it in `--grains`, e.g. `--grains subagent_turns`, or pass `include_subagents=True` to `astern.recall.recall`): a subagent's "user prompt" is the *parent* session's task instruction, not a human asking a question, so mixed in unfiltered it duplicates the parent's own content and drowns it out — it answers *what did an agent do*, not *what did we decide*.
 
 Unfiltered, a recall also reaches the `skills` and `reports` corpora when this machine has them (weighted below the sessions, so they inform rather than crowd out). `--project X` and `--since-days N` are hard metadata filters; a project is resolved *through the store* into its session ids, because a session about a project often runs from a group dir or a worktree whose name says nothing about it.
 
 Embedding is local and offline: ir's `all-MiniLM-L6-v2` by default — **no API key, no per-query cost** — with `--embedder light` (numpy-only hashing) for a build with no model download. Each hit carries a `pointer`, the `astern show` command that fetches the full record: a hit is an address, not an answer. The shipped `astern-recall` skill drives the whole loop, ending in a briefing written to the repo the question was about.
 
-`episodes` — a third grain, consecutive turns on one topic — is deliberately not built yet (issue #7).
+`episodes` — a fourth grain, consecutive turns on one topic — is deliberately not built yet (issue #7).
 
 ## Never spending a token twice
 
