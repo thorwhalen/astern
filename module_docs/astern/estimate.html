@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>astern.estimate &mdash; astern 0.0.1 documentation</title>
+  <title>astern.estimate &mdash; astern 0.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -132,9 +132,14 @@ input tokens; the difference is the number of API round trips, because a
 structured answer the schema rejects is retried with the whole conversation
 resent. Restricted to the calls that took one round trip the same regression has
 R² = 0.995 — so <code class="docutils literal notranslate"><span class="pre">fit</span></code> reports <code class="docutils literal notranslate"><span class="pre">input_single_pass</span></code> and <code class="docutils literal notranslate"><span class="pre">retry_rate</span></code> beside
-the headline line, and a low overall R² has an explanation instead of a shrug.
-<a class="reference internal" href="#astern.estimate.predict" title="astern.estimate.predict"><code class="xref py py-func docutils literal notranslate"><span class="pre">predict()</span></code></a> still uses the all-calls line, because retries are part of what a
-batch actually costs.</p></li>
+the headline line. <code class="docutils literal notranslate"><span class="pre">astern.judge.claude_judge</span></code> now defaults to
+<code class="docutils literal notranslate"><span class="pre">strict_schema=False</span></code>, which is what makes a 0% retry rate the normal case
+rather than the exception: <a class="reference internal" href="#astern.estimate.predict" title="astern.estimate.predict"><code class="xref py py-func docutils literal notranslate"><span class="pre">predict()</span></code></a> uses the <code class="docutils literal notranslate"><span class="pre">input_single_pass</span></code> line
+whenever the stored judgments’ <code class="docutils literal notranslate"><span class="pre">retry_rate</span></code> for the current settings is 0 (a
+batch that has not retried once), and falls back to the all-calls <code class="docutils literal notranslate"><span class="pre">input</span></code> line
+the moment even one retry is on record — a low overall R² then has an
+explanation instead of a shrug, and a prediction says in its own output
+(<code class="docutils literal notranslate"><span class="pre">input_model</span></code>) which line priced it.</p></li>
 </ul>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pts</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">'features'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'view_chars'</span><span class="p">:</span> <span class="n">c</span><span class="p">,</span> <span class="s1">'n_turns'</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span> <span class="s1">'usage'</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="p">{</span><span class="s1">'input_tokens'</span><span class="p">:</span> <span class="mi">1000</span> <span class="o">+</span> <span class="n">c</span> <span class="o">//</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">'output_tokens'</span><span class="p">:</span> <span class="mi">300</span><span class="p">}}</span>
@@ -205,12 +210,17 @@ the slope is a ratio through the measured intercept, and <code class="docutils l
 <dt class="sig sig-object py" id="astern.estimate.predict">
 <span class="sig-prename descclassname"><span class="pre">astern.estimate.</span></span><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/astern/estimate.html#predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astern.estimate.predict" title="Link to this definition"></a></dt>
 <dd><p>Predicted tokens (and cost) of judging one session, with a ±1σ band.</p>
+<p><code class="docutils literal notranslate"><span class="pre">input_model</span></code> in the result says which regression priced it — <code class="docutils literal notranslate"><span class="pre">single_pass</span></code>
+when the judged batch this model was fit on never retried, <code class="docutils literal notranslate"><span class="pre">all_calls</span></code>
+otherwise (see <code class="xref py py-func docutils literal notranslate"><span class="pre">_input_model()</span></code>).</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">fit</span><span class="p">([])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="p">{</span><span class="s1">'view_chars'</span><span class="p">:</span> <span class="mi">10000</span><span class="p">})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="p">[</span><span class="s1">'input_tokens'</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="s1">'total_tokens'</span><span class="p">]</span> <span class="o">==</span> <span class="n">p</span><span class="p">[</span><span class="s1">'input_tokens'</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="s1">'output_tokens'</span><span class="p">]</span>
 <span class="go">(3800, True)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="p">[</span><span class="s1">'low'</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">p</span><span class="p">[</span><span class="s1">'total_tokens'</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">p</span><span class="p">[</span><span class="s1">'high'</span><span class="p">]</span>
 <span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="p">[</span><span class="s1">'input_model'</span><span class="p">]</span>
+<span class="go">'all_calls'</span>
 </pre></div>
 </div>
 </dd></dl>

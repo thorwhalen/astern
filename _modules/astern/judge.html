@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>astern.judge &mdash; astern 0.0.1 documentation</title>
+  <title>astern.judge &mdash; astern 0.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -104,7 +104,7 @@
 <span class="sd">``~/.claude/projects`` (verified by counting transcripts before and after), so the</span>
 <span class="sd">miner does not grow the corpus it mines.</span>
 
-<span class="sd">Four things about the flags, each measured against the real CLI on 2026-09-07 and</span>
+<span class="sd">Five things about the flags, each measured against the real CLI on 2026-09-07 and</span>
 <span class="sd">each load-bearing:</span>
 
 <span class="sd">- **Not** ``--bare``. Its own help says Anthropic auth is *strictly*</span>
@@ -124,6 +124,18 @@
 <span class="sd">  ``--system-prompt`` also removes the ~4k-token default preamble from every call</span>
 <span class="sd">  and moves the whole input into ``input_tokens`` (nothing is prompt-cached), which</span>
 <span class="sd">  is what makes the regression in :mod:`astern.estimate` a straight line.</span>
+<span class="sd">- **``--json-schema`` is the retry driver, not a safety net.** When the model's</span>
+<span class="sd">  structured answer fails the CLI's own schema validation, the CLI retries by</span>
+<span class="sd">  re-sending the *whole* conversation — measured at a 40% retry rate on plain</span>
+<span class="sd">  haiku calls and 100% on ``--effort low`` ones, multiplying input tokens 3-4x for</span>
+<span class="sd">  work a single pass does for a fraction of the cost. :func:`claude_judge` defaults</span>
+<span class="sd">  to ``strict_schema=False``: the schema is embedded in the prompt as an</span>
+<span class="sd">  instruction instead of passed as ``--json-schema``, and the answer is parsed</span>
+<span class="sd">  with :func:`_parse_json_loose`. There is no CLI-side retry to fail, so a slightly</span>
+<span class="sd">  malformed answer costs one round trip and a ``judge_error`` finding — not three</span>
+<span class="sd">  round trips and the same finding. ``strict_schema=True`` restores the old</span>
+<span class="sd">  behaviour for callers that need CLI-side schema enforcement more than they need</span>
+<span class="sd">  a predictable bill.</span>
 
 <span class="sd">A replacement is any callable with the same signature returning a :class:`Judgment`</span>
 <span class="sd">— an ``aix.prompt_func`` for API billing, or a recorded-replay judge for tests.</span>
@@ -235,7 +247,9 @@
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iters</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="n">out</span><span class="p">[</span><span class="s2">"n_iterations"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">iters</span><span class="p">)</span>
     <span class="n">details</span> <span class="o">=</span> <span class="n">usage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"output_tokens_details"</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">details</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">details</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"thinking_tokens"</span><span class="p">),</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">details</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
+        <span class="n">details</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"thinking_tokens"</span><span class="p">),</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="p">):</span>
         <span class="n">out</span><span class="p">[</span><span class="s2">"thinking_tokens"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">details</span><span class="p">[</span><span class="s2">"thinking_tokens"</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">out</span>
 
@@ -264,51 +278,154 @@
     <span class="k">return</span> <span class="n">fallback</span>
 
 
-<div class="viewcode-block" id="claude_judge">
-<a class="viewcode-back" href="../../module_docs/astern/judge.html#astern.judge.claude_judge">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">claude_judge</span><span class="p">(</span><span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="n">Mapping</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DFLT_MODEL</span><span class="p">,</span>
-                 <span class="n">effort</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">system</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">timeout_s</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DFLT_TIMEOUT_S</span><span class="p">,</span> <span class="n">claude_bin</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"claude"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Judgment</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">"""Run ``claude -p`` headless on ``prompt`` and return a :class:`Judgment`.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_schema_note</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A terse, compact-JSON instruction standing in for ``--json-schema`` in loose mode.</span>
 
-<span class="sd">    Tools are disabled and customizations skipped (:data:`SANDBOX_FLAGS`): the judge</span>
-<span class="sd">    reads what it is given and answers; it never explores. ``schema`` requests</span>
-<span class="sd">    structured output, which comes back under ``structured_output``.</span>
+<span class="sd">    &gt;&gt;&gt; note = _schema_note({'type': 'object', 'properties': {'x': {'type': 'string'}}})</span>
+<span class="sd">    &gt;&gt;&gt; note.startswith('Respond with')</span>
+<span class="sd">    True</span>
 <span class="sd">    """</span>
-    <span class="k">if</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="n">claude_bin</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">Judgment</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">claude_bin</span><span class="si">!r}</span><span class="s2"> not found on PATH"</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
-                        <span class="n">prompt_chars</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">))</span>
+    <span class="n">compact</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">schema</span><span class="p">),</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s2">","</span><span class="p">,</span> <span class="s2">":"</span><span class="p">))</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="s2">"Respond with a single JSON object matching this JSON Schema, and nothing "</span>
+        <span class="sa">f</span><span class="s2">"else (no prose, no markdown, no code fences): </span><span class="si">{</span><span class="n">compact</span><span class="si">}</span><span class="s2">"</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_command</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">claude_bin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">effort</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">system</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">schema</span><span class="p">:</span> <span class="n">Mapping</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">strict_schema</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Build the ``claude -p`` argv for one judge call (the prompt itself goes on stdin).</span>
+
+<span class="sd">    Factored out of :func:`claude_judge` so a test can assert on the built command</span>
+<span class="sd">    without running ``claude`` — in particular, that ``--json-schema`` is only ever</span>
+<span class="sd">    added when ``strict_schema=True``.</span>
+
+<span class="sd">    &gt;&gt;&gt; _command(claude_bin='claude', model='haiku', effort=None, system=None,</span>
+<span class="sd">    ...          schema={'type': 'object'}, strict_schema=False)[-2:]</span>
+<span class="sd">    ['--model', 'haiku']</span>
+<span class="sd">    &gt;&gt;&gt; '--json-schema' in _command(claude_bin='claude', model='haiku', effort=None,</span>
+<span class="sd">    ...                            system=None, schema={'type': 'object'}, strict_schema=True)</span>
+<span class="sd">    True</span>
+<span class="sd">    """</span>
     <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="n">claude_bin</span><span class="p">,</span> <span class="s2">"-p"</span><span class="p">,</span> <span class="o">*</span><span class="n">SANDBOX_FLAGS</span><span class="p">,</span> <span class="s2">"--output-format"</span><span class="p">,</span> <span class="s2">"json"</span><span class="p">,</span> <span class="s2">"--model"</span><span class="p">,</span> <span class="n">model</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">effort</span><span class="p">:</span>
         <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"--effort"</span><span class="p">,</span> <span class="n">effort</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">system</span><span class="p">:</span>
         <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"--system-prompt"</span><span class="p">,</span> <span class="n">system</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">strict_schema</span> <span class="ow">and</span> <span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"--json-schema"</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">schema</span><span class="p">))]</span>
+    <span class="k">return</span> <span class="n">cmd</span>
+
+
+<div class="viewcode-block" id="claude_judge">
+<a class="viewcode-back" href="../../module_docs/astern/judge.html#astern.judge.claude_judge">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">claude_judge</span><span class="p">(</span>
+    <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">schema</span><span class="p">:</span> <span class="n">Mapping</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DFLT_MODEL</span><span class="p">,</span>
+    <span class="n">effort</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">system</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">timeout_s</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DFLT_TIMEOUT_S</span><span class="p">,</span>
+    <span class="n">claude_bin</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"claude"</span><span class="p">,</span>
+    <span class="n">strict_schema</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Judgment</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Run ``claude -p`` headless on ``prompt`` and return a :class:`Judgment`.</span>
+
+<span class="sd">    Tools are disabled and customizations skipped (:data:`SANDBOX_FLAGS`): the judge</span>
+<span class="sd">    reads what it is given and answers; it never explores. ``schema`` requests</span>
+<span class="sd">    structured output.</span>
+
+<span class="sd">    By default (``strict_schema=False``, see the module docstring) ``schema`` is</span>
+<span class="sd">    never passed to the CLI as ``--json-schema`` — that is what triggers the CLI's</span>
+<span class="sd">    own retry-with-full-conversation behaviour on a rejected answer. Instead the</span>
+<span class="sd">    schema is embedded in the prompt (or the system prompt, when one is given) as a</span>
+<span class="sd">    terse instruction, and the answer is parsed with :func:`_parse_json_loose`. An</span>
+<span class="sd">    answer that still does not parse is not retried; it comes back as a</span>
+<span class="sd">    ``Judgment`` with ``error='unparseable JSON'`` and ``data=None`` — the usage the</span>
+<span class="sd">    call actually spent is still recorded, because the call still happened.</span>
+
+<span class="sd">    With ``strict_schema=True``, ``schema`` is passed as ``--json-schema`` and the</span>
+<span class="sd">    parsed object comes back under ``structured_output`` — today's behaviour,</span>
+<span class="sd">    retries included.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="n">claude_bin</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Judgment</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span>
+            <span class="n">error</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">claude_bin</span><span class="si">!r}</span><span class="s2"> not found on PATH"</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+            <span class="n">prompt_chars</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">strict_schema</span><span class="p">:</span>
+        <span class="n">note</span> <span class="o">=</span> <span class="n">_schema_note</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">system</span><span class="p">:</span>
+            <span class="n">system</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">system</span><span class="si">}</span><span class="se">\n\n</span><span class="si">{</span><span class="n">note</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">prompt</span><span class="si">}</span><span class="se">\n\n</span><span class="si">{</span><span class="n">note</span><span class="si">}</span><span class="s2">"</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="n">_command</span><span class="p">(</span>
+        <span class="n">claude_bin</span><span class="o">=</span><span class="n">claude_bin</span><span class="p">,</span>
+        <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+        <span class="n">effort</span><span class="o">=</span><span class="n">effort</span><span class="p">,</span>
+        <span class="n">system</span><span class="o">=</span><span class="n">system</span><span class="p">,</span>
+        <span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">,</span>
+        <span class="n">strict_schema</span><span class="o">=</span><span class="n">strict_schema</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># check=False: a failed judge is data (it becomes the `error` below), never an</span>
         <span class="c1"># exception that takes the batch down with it.</span>
-        <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="nb">input</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                              <span class="n">timeout</span><span class="o">=</span><span class="n">timeout_s</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+            <span class="n">cmd</span><span class="p">,</span>
+            <span class="nb">input</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
+            <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">timeout_s</span><span class="p">,</span>
+            <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
     <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">TimeoutExpired</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">Judgment</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="sa">f</span><span class="s2">"timeout after </span><span class="si">{</span><span class="n">timeout_s</span><span class="si">}</span><span class="s2">s"</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
-                        <span class="n">prompt_chars</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Judgment</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span>
+            <span class="n">error</span><span class="o">=</span><span class="sa">f</span><span class="s2">"timeout after </span><span class="si">{</span><span class="n">timeout_s</span><span class="si">}</span><span class="s2">s"</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+            <span class="n">prompt_chars</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">),</span>
+        <span class="p">)</span>
     <span class="n">raw</span> <span class="o">=</span> <span class="n">_parse_json_loose</span><span class="p">(</span><span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="n">detail</span> <span class="o">=</span> <span class="p">(</span><span class="n">proc</span><span class="o">.</span><span class="n">stderr</span> <span class="ow">or</span> <span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()[:</span><span class="mi">500</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">Judgment</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">prompt_chars</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">),</span>
-                        <span class="n">error</span><span class="o">=</span><span class="sa">f</span><span class="s2">"exit </span><span class="si">{</span><span class="n">proc</span><span class="o">.</span><span class="n">returncode</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">detail</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span>
-                        <span class="k">else</span> <span class="s2">"unparseable claude output"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Judgment</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+            <span class="n">prompt_chars</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">),</span>
+            <span class="n">error</span><span class="o">=</span><span class="sa">f</span><span class="s2">"exit </span><span class="si">{</span><span class="n">proc</span><span class="o">.</span><span class="n">returncode</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">detail</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span>
+            <span class="k">else</span> <span class="s2">"unparseable claude output"</span><span class="p">,</span>
+        <span class="p">)</span>
     <span class="n">usage</span> <span class="o">=</span> <span class="n">_usage_record</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"usage"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="n">raw</span><span class="p">[</span><span class="s2">"result"</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"result"</span><span class="p">),</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"result"</span><span class="p">))</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">raw</span><span class="p">[</span><span class="s2">"result"</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"result"</span><span class="p">),</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="k">else</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"result"</span><span class="p">))</span>
+    <span class="p">)</span>
     <span class="c1"># The CLI exits 0 on an errored turn (an unauthenticated call returns</span>
     <span class="c1"># `is_error: true` and returncode 0), so the flag in the payload is the check.</span>
     <span class="n">error</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_error"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">error</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'subtype'</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">'error'</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="p">(</span><span class="n">text</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">''</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()[:</span><span class="mi">300</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"structured_output"</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">error</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">strict_schema</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"structured_output"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">_parse_json_loose</span><span class="p">(</span><span class="n">text</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">error</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">_parse_json_loose</span><span class="p">(</span><span class="n">text</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="s2">"unparseable JSON"</span>
     <span class="k">return</span> <span class="n">Judgment</span><span class="p">(</span>
         <span class="n">text</span><span class="o">=</span><span class="n">text</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
         <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
@@ -317,7 +434,9 @@
         <span class="n">duration_ms</span><span class="o">=</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"duration_ms"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"duration_api_ms"</span><span class="p">),</span>
         <span class="n">model</span><span class="o">=</span><span class="n">_model_name</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">model</span><span class="p">),</span>
         <span class="n">prompt_chars</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">),</span>
-        <span class="n">num_turns</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"num_turns"</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">((</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"usage"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"iterations"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[</span><span class="mi">1</span><span class="p">])),</span>
+        <span class="n">num_turns</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span>
+            <span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"num_turns"</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">((</span><span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"usage"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"iterations"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="p">),</span>
         <span class="n">raw</span><span class="o">=</span><span class="n">raw</span><span class="p">,</span>
         <span class="n">error</span><span class="o">=</span><span class="n">error</span><span class="p">,</span>
     <span class="p">)</span></div>
@@ -342,13 +461,26 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">judge</span><span class="p">(</span><span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">_</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Judgment</span><span class="p">:</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">answers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Judgment</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">"replay"</span><span class="p">,</span> <span class="n">prompt_chars</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">),</span>
-                            <span class="n">error</span><span class="o">=</span><span class="s2">"no recorded answer"</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Judgment</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">_parse_json_loose</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-                        <span class="n">usage</span><span class="o">=</span><span class="p">{</span><span class="s2">"input_tokens"</span><span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span> <span class="o">//</span> <span class="mi">4</span><span class="p">),</span>
-                               <span class="s2">"cache_creation_input_tokens"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"cache_read_input_tokens"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                               <span class="s2">"output_tokens"</span><span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">//</span> <span class="mi">4</span><span class="p">)},</span>
-                        <span class="n">cost_usd</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">duration_ms</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">"replay"</span><span class="p">,</span> <span class="n">prompt_chars</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">Judgment</span><span class="p">(</span>
+                <span class="n">text</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span>
+                <span class="n">model</span><span class="o">=</span><span class="s2">"replay"</span><span class="p">,</span>
+                <span class="n">prompt_chars</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">),</span>
+                <span class="n">error</span><span class="o">=</span><span class="s2">"no recorded answer"</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">Judgment</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">_parse_json_loose</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">usage</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">"input_tokens"</span><span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span> <span class="o">//</span> <span class="mi">4</span><span class="p">),</span>
+                <span class="s2">"cache_creation_input_tokens"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">"cache_read_input_tokens"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">"output_tokens"</span><span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">//</span> <span class="mi">4</span><span class="p">),</span>
+            <span class="p">},</span>
+            <span class="n">cost_usd</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">duration_ms</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="s2">"replay"</span><span class="p">,</span>
+            <span class="n">prompt_chars</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">),</span>
+        <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">judge</span></div>
 

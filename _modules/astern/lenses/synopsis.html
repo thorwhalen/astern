@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>astern.lenses.synopsis &mdash; astern 0.0.1 documentation</title>
+  <title>astern.lenses.synopsis &mdash; astern 0.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../../_static/documentation_options.js?v=e3a6060d"></script>
       <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -145,44 +145,62 @@
 <span class="n">SYSTEM</span> <span class="o">=</span> <span class="p">(</span>
     <span class="s2">"You analyse transcripts of coding sessions between a developer and an AI agent. "</span>
     <span class="s2">"You answer only with one JSON object matching the given schema. No prose, no "</span>
-    <span class="s2">"markdown, no code fences. Unknown or absent: use an empty list or </span><span class="se">\"</span><span class="s2">unclear</span><span class="se">\"</span><span class="s2">."</span>
+    <span class="s1">'markdown, no code fences. Unknown or absent: use an empty list or "unclear".'</span>
 <span class="p">)</span>
 
 <span class="n">_STR</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">}</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_objects</span><span class="p">(</span><span class="n">props</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">required</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"array"</span><span class="p">,</span> <span class="s2">"items"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"object"</span><span class="p">,</span> <span class="s2">"properties"</span><span class="p">:</span> <span class="n">props</span><span class="p">,</span>
-                                       <span class="s2">"required"</span><span class="p">:</span> <span class="n">required</span><span class="p">,</span> <span class="s2">"additionalProperties"</span><span class="p">:</span> <span class="kc">False</span><span class="p">}}</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_objects</span><span class="p">(</span><span class="n">props</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"array"</span><span class="p">,</span> <span class="s2">"items"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"object"</span><span class="p">,</span> <span class="s2">"properties"</span><span class="p">:</span> <span class="n">props</span><span class="p">}}</span>
 
 
-<span class="c1">#: The synopsis schema. ``additionalProperties: false`` everywhere and every field</span>
-<span class="c1">#: required: a partially-filled object is indistinguishable from a session with</span>
-<span class="c1">#: nothing to say, and the difference matters for the recurrence lenses downstream.</span>
+<span class="c1">#: The synopsis schema. Every list field is optional (defaults to empty) and</span>
+<span class="c1">#: ``outcome`` is a free string, not an enum: in loose (non-strict) mode nothing</span>
+<span class="c1">#: enforces this on the CLI side anyway, and even in strict mode a schema this</span>
+<span class="c1">#: forgiving means a slightly-off answer is a slightly-off finding, not a failed</span>
+<span class="c1">#: call. :func:`_coerce_synopsis` does the real tolerance work in Python — filling</span>
+<span class="c1">#: missing keys with defaults and dropping list items that are not dict-shaped —</span>
+<span class="c1">#: so this schema is documentation for the model, not a gate on the judgment.</span>
 <span class="n">SCHEMA</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"object"</span><span class="p">,</span>
     <span class="s2">"properties"</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">"goal"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span>
-        <span class="s2">"outcome"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">,</span> <span class="s2">"enum"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"done"</span><span class="p">,</span> <span class="s2">"partly"</span><span class="p">,</span> <span class="s2">"abandoned"</span><span class="p">,</span> <span class="s2">"unclear"</span><span class="p">]},</span>
-        <span class="s2">"problems"</span><span class="p">:</span> <span class="n">_objects</span><span class="p">({</span><span class="s2">"problem"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"solution"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"category"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">},</span>
-                             <span class="p">[</span><span class="s2">"problem"</span><span class="p">,</span> <span class="s2">"solution"</span><span class="p">,</span> <span class="s2">"category"</span><span class="p">]),</span>
-        <span class="s2">"friction"</span><span class="p">:</span> <span class="n">_objects</span><span class="p">({</span><span class="s2">"what"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"cause_guess"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span>
-                              <span class="s2">"turn_indices"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"array"</span><span class="p">,</span> <span class="s2">"items"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"integer"</span><span class="p">}}},</span>
-                             <span class="p">[</span><span class="s2">"what"</span><span class="p">,</span> <span class="s2">"cause_guess"</span><span class="p">,</span> <span class="s2">"turn_indices"</span><span class="p">]),</span>
-        <span class="s2">"corrections"</span><span class="p">:</span> <span class="n">_objects</span><span class="p">({</span><span class="s2">"what_user_said"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"rule_candidate"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">},</span>
-                                <span class="p">[</span><span class="s2">"what_user_said"</span><span class="p">,</span> <span class="s2">"rule_candidate"</span><span class="p">]),</span>
-        <span class="s2">"user_terms"</span><span class="p">:</span> <span class="n">_objects</span><span class="p">({</span><span class="s2">"phrase"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"established_term"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"definition"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">},</span>
-                               <span class="p">[</span><span class="s2">"phrase"</span><span class="p">,</span> <span class="s2">"established_term"</span><span class="p">,</span> <span class="s2">"definition"</span><span class="p">]),</span>
-        <span class="s2">"agent_terms"</span><span class="p">:</span> <span class="n">_objects</span><span class="p">({</span><span class="s2">"term"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"definition"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">},</span> <span class="p">[</span><span class="s2">"term"</span><span class="p">,</span> <span class="s2">"definition"</span><span class="p">]),</span>
-        <span class="s2">"skill_candidates"</span><span class="p">:</span> <span class="n">_objects</span><span class="p">({</span><span class="s2">"name"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"why"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"recurrence_hint"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">},</span>
-                                     <span class="p">[</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"why"</span><span class="p">,</span> <span class="s2">"recurrence_hint"</span><span class="p">]),</span>
-        <span class="s2">"reusable_code"</span><span class="p">:</span> <span class="n">_objects</span><span class="p">({</span><span class="s2">"what"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"suggested_function"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">},</span>
-                                  <span class="p">[</span><span class="s2">"what"</span><span class="p">,</span> <span class="s2">"suggested_function"</span><span class="p">]),</span>
+        <span class="s2">"outcome"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span>
+        <span class="s2">"problems"</span><span class="p">:</span> <span class="n">_objects</span><span class="p">({</span><span class="s2">"problem"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"solution"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"category"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">}),</span>
+        <span class="s2">"friction"</span><span class="p">:</span> <span class="n">_objects</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">"what"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span>
+                <span class="s2">"cause_guess"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span>
+                <span class="s2">"turn_indices"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"array"</span><span class="p">,</span> <span class="s2">"items"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"integer"</span><span class="p">}},</span>
+            <span class="p">}</span>
+        <span class="p">),</span>
+        <span class="s2">"corrections"</span><span class="p">:</span> <span class="n">_objects</span><span class="p">({</span><span class="s2">"what_user_said"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"rule_candidate"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">}),</span>
+        <span class="s2">"user_terms"</span><span class="p">:</span> <span class="n">_objects</span><span class="p">(</span>
+            <span class="p">{</span><span class="s2">"phrase"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"established_term"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"definition"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">}</span>
+        <span class="p">),</span>
+        <span class="s2">"agent_terms"</span><span class="p">:</span> <span class="n">_objects</span><span class="p">({</span><span class="s2">"term"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"definition"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">}),</span>
+        <span class="s2">"skill_candidates"</span><span class="p">:</span> <span class="n">_objects</span><span class="p">(</span>
+            <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"why"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"recurrence_hint"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">}</span>
+        <span class="p">),</span>
+        <span class="s2">"reusable_code"</span><span class="p">:</span> <span class="n">_objects</span><span class="p">({</span><span class="s2">"what"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">,</span> <span class="s2">"suggested_function"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">}),</span>
         <span class="s2">"notable_decisions"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"array"</span><span class="p">,</span> <span class="s2">"items"</span><span class="p">:</span> <span class="n">_STR</span><span class="p">},</span>
     <span class="p">},</span>
-    <span class="s2">"required"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"goal"</span><span class="p">,</span> <span class="s2">"outcome"</span><span class="p">,</span> <span class="s2">"problems"</span><span class="p">,</span> <span class="s2">"friction"</span><span class="p">,</span> <span class="s2">"corrections"</span><span class="p">,</span> <span class="s2">"user_terms"</span><span class="p">,</span>
-                 <span class="s2">"agent_terms"</span><span class="p">,</span> <span class="s2">"skill_candidates"</span><span class="p">,</span> <span class="s2">"reusable_code"</span><span class="p">,</span> <span class="s2">"notable_decisions"</span><span class="p">],</span>
-    <span class="s2">"additionalProperties"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1">#: outcome, normalized. Anything the model writes that is not one of these maps to</span>
+<span class="c1">#: 'unclear' rather than failing the finding.</span>
+<span class="n">OUTCOMES</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"done"</span><span class="p">,</span> <span class="s2">"partly"</span><span class="p">,</span> <span class="s2">"abandoned"</span><span class="p">,</span> <span class="s2">"unclear"</span><span class="p">)</span>
+
+<span class="c1">#: field -&gt; {sub-key: 'str' | 'int_list'}, the shape :func:`_coerce_item` fills.</span>
+<span class="n">_LIST_SPECS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"problems"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"problem"</span><span class="p">:</span> <span class="s2">"str"</span><span class="p">,</span> <span class="s2">"solution"</span><span class="p">:</span> <span class="s2">"str"</span><span class="p">,</span> <span class="s2">"category"</span><span class="p">:</span> <span class="s2">"str"</span><span class="p">},</span>
+    <span class="s2">"friction"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"what"</span><span class="p">:</span> <span class="s2">"str"</span><span class="p">,</span> <span class="s2">"cause_guess"</span><span class="p">:</span> <span class="s2">"str"</span><span class="p">,</span> <span class="s2">"turn_indices"</span><span class="p">:</span> <span class="s2">"int_list"</span><span class="p">},</span>
+    <span class="s2">"corrections"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"what_user_said"</span><span class="p">:</span> <span class="s2">"str"</span><span class="p">,</span> <span class="s2">"rule_candidate"</span><span class="p">:</span> <span class="s2">"str"</span><span class="p">},</span>
+    <span class="s2">"user_terms"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"phrase"</span><span class="p">:</span> <span class="s2">"str"</span><span class="p">,</span> <span class="s2">"established_term"</span><span class="p">:</span> <span class="s2">"str"</span><span class="p">,</span> <span class="s2">"definition"</span><span class="p">:</span> <span class="s2">"str"</span><span class="p">},</span>
+    <span class="s2">"agent_terms"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"term"</span><span class="p">:</span> <span class="s2">"str"</span><span class="p">,</span> <span class="s2">"definition"</span><span class="p">:</span> <span class="s2">"str"</span><span class="p">},</span>
+    <span class="s2">"skill_candidates"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"str"</span><span class="p">,</span> <span class="s2">"why"</span><span class="p">:</span> <span class="s2">"str"</span><span class="p">,</span> <span class="s2">"recurrence_hint"</span><span class="p">:</span> <span class="s2">"str"</span><span class="p">},</span>
+    <span class="s2">"reusable_code"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"what"</span><span class="p">:</span> <span class="s2">"str"</span><span class="p">,</span> <span class="s2">"suggested_function"</span><span class="p">:</span> <span class="s2">"str"</span><span class="p">},</span>
 <span class="p">}</span>
 
 <span class="n">PROMPT</span> <span class="o">=</span> <span class="s2">"""</span><span class="se">\</span>
@@ -213,39 +231,145 @@
 <div class="viewcode-block" id="synopsis">
 <a class="viewcode-back" href="../../../module_docs/astern/lenses/synopsis.html#astern.lenses.synopsis.synopsis">[docs]</a>
 <span class="nd">@lens</span><span class="p">(</span><span class="n">LENS_NAME</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"L"</span><span class="p">,</span> <span class="n">incremental</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">synopsis</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">turns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">judge</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">from_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-             <span class="n">prior</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_chars</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-             <span class="o">**</span><span class="n">ctx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">synopsis</span><span class="p">(</span>
+    <span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">turns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">judge</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">from_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">prior</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">store</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">max_chars</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">ctx</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">"""What this session was for, what went wrong, and what it suggests building."""</span>
     <span class="k">if</span> <span class="n">judge</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"the synopsis lens needs judge= (see astern.judge)"</span><span class="p">)</span>
     <span class="n">prior_data</span> <span class="o">=</span> <span class="n">_prior_synopsis</span><span class="p">(</span><span class="n">prior</span><span class="p">)</span>
-    <span class="n">view</span> <span class="o">=</span> <span class="n">session_view</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">turns</span><span class="p">,</span> <span class="n">prior</span><span class="o">=</span><span class="n">prior_data</span><span class="p">,</span>
-                        <span class="o">**</span><span class="p">({</span><span class="s2">"max_chars"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_chars</span><span class="p">)}</span> <span class="k">if</span> <span class="n">max_chars</span> <span class="k">else</span> <span class="p">{}))</span>
-    <span class="n">note</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"- The session already has a synopsis (above); cover ONLY the new turns and "</span>
-            <span class="s2">"report what they add.</span><span class="se">\n</span><span class="s2">"</span> <span class="k">if</span> <span class="n">prior_data</span> <span class="k">else</span> <span class="s2">""</span><span class="p">)</span>
+    <span class="n">view</span> <span class="o">=</span> <span class="n">session_view</span><span class="p">(</span>
+        <span class="n">session</span><span class="p">,</span>
+        <span class="n">turns</span><span class="p">,</span>
+        <span class="n">prior</span><span class="o">=</span><span class="n">prior_data</span><span class="p">,</span>
+        <span class="o">**</span><span class="p">({</span><span class="s2">"max_chars"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_chars</span><span class="p">)}</span> <span class="k">if</span> <span class="n">max_chars</span> <span class="k">else</span> <span class="p">{}),</span>
+    <span class="p">)</span>
+    <span class="n">note</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">"- The session already has a synopsis (above); cover ONLY the new turns and "</span>
+        <span class="s2">"report what they add.</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="k">if</span> <span class="n">prior_data</span>
+        <span class="k">else</span> <span class="s2">""</span>
+    <span class="p">)</span>
     <span class="n">prompt</span> <span class="o">=</span> <span class="n">PROMPT</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">view</span><span class="o">=</span><span class="n">view</span><span class="p">,</span> <span class="n">prior_note</span><span class="o">=</span><span class="n">note</span><span class="p">)</span>
     <span class="n">judgment</span> <span class="o">=</span> <span class="n">judge</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">SCHEMA</span><span class="p">,</span> <span class="n">system</span><span class="o">=</span><span class="n">SYSTEM</span><span class="p">)</span>
     <span class="n">feats</span> <span class="o">=</span> <span class="n">_features</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">turns</span><span class="p">,</span> <span class="n">view</span><span class="p">)</span>
     <span class="n">feats</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">view_stats</span><span class="p">(</span><span class="n">view</span><span class="p">))</span>
     <span class="n">feats</span><span class="p">[</span><span class="s2">"from_index"</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_index</span>
     <span class="n">_record</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">from_index</span><span class="p">,</span> <span class="n">judgment</span><span class="p">,</span> <span class="n">feats</span><span class="p">)</span>
-    <span class="n">common</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"usage"</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">judgment</span><span class="o">.</span><span class="n">usage</span><span class="p">),</span> <span class="s2">"cost_usd"</span><span class="p">:</span> <span class="n">judgment</span><span class="o">.</span><span class="n">cost_usd</span><span class="p">,</span>
-              <span class="s2">"model"</span><span class="p">:</span> <span class="n">judgment</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="s2">"view_chars"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">view</span><span class="p">),</span>
-              <span class="s2">"prompt_chars"</span><span class="p">:</span> <span class="n">judgment</span><span class="o">.</span><span class="n">prompt_chars</span><span class="p">,</span> <span class="s2">"from_index"</span><span class="p">:</span> <span class="n">from_index</span><span class="p">}</span>
+    <span class="n">common</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"usage"</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">judgment</span><span class="o">.</span><span class="n">usage</span><span class="p">),</span>
+        <span class="s2">"cost_usd"</span><span class="p">:</span> <span class="n">judgment</span><span class="o">.</span><span class="n">cost_usd</span><span class="p">,</span>
+        <span class="s2">"model"</span><span class="p">:</span> <span class="n">judgment</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+        <span class="s2">"view_chars"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">view</span><span class="p">),</span>
+        <span class="s2">"prompt_chars"</span><span class="p">:</span> <span class="n">judgment</span><span class="o">.</span><span class="n">prompt_chars</span><span class="p">,</span>
+        <span class="s2">"from_index"</span><span class="p">:</span> <span class="n">from_index</span><span class="p">,</span>
+    <span class="p">}</span>
     <span class="k">if</span> <span class="n">judgment</span><span class="o">.</span><span class="n">error</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">judgment</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">finding</span><span class="p">(</span><span class="n">LENS_NAME</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"judge_error"</span><span class="p">,</span>
-                        <span class="n">evidence</span><span class="o">=</span><span class="p">{</span><span class="s2">"from_index"</span><span class="p">:</span> <span class="n">from_index</span><span class="p">,</span> <span class="s2">"view_chars"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">view</span><span class="p">),</span>
-                                  <span class="s2">"text"</span><span class="p">:</span> <span class="p">(</span><span class="n">judgment</span><span class="o">.</span><span class="n">text</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)[:</span><span class="mi">300</span><span class="p">]},</span>
-                        <span class="n">text</span><span class="o">=</span><span class="n">judgment</span><span class="o">.</span><span class="n">error</span> <span class="ow">or</span> <span class="s2">"judge returned no JSON object"</span><span class="p">,</span>
-                        <span class="n">error</span><span class="o">=</span><span class="n">judgment</span><span class="o">.</span><span class="n">error</span> <span class="ow">or</span> <span class="s2">"judge returned no JSON object"</span><span class="p">,</span>
-                        <span class="o">**</span><span class="p">{</span><span class="o">**</span><span class="n">common</span><span class="p">,</span> <span class="s2">"usage"</span><span class="p">:</span> <span class="p">{}})]</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">judgment</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">finding</span><span class="p">(</span><span class="n">LENS_NAME</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"synopsis"</span><span class="p">,</span> <span class="n">evidence</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
-                    <span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"outcome"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">),</span>
-                    <span class="n">text</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"goal"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">),</span>
-                    <span class="n">turn</span><span class="o">=</span><span class="n">turns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">turns</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">common</span><span class="p">)]</span></div>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">finding</span><span class="p">(</span>
+                <span class="n">LENS_NAME</span><span class="p">,</span>
+                <span class="n">session</span><span class="p">,</span>
+                <span class="n">kind</span><span class="o">=</span><span class="s2">"judge_error"</span><span class="p">,</span>
+                <span class="n">evidence</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s2">"from_index"</span><span class="p">:</span> <span class="n">from_index</span><span class="p">,</span>
+                    <span class="s2">"view_chars"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">view</span><span class="p">),</span>
+                    <span class="s2">"text"</span><span class="p">:</span> <span class="p">(</span><span class="n">judgment</span><span class="o">.</span><span class="n">text</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)[:</span><span class="mi">300</span><span class="p">],</span>
+                <span class="p">},</span>
+                <span class="n">text</span><span class="o">=</span><span class="n">judgment</span><span class="o">.</span><span class="n">error</span> <span class="ow">or</span> <span class="s2">"judge returned no JSON object"</span><span class="p">,</span>
+                <span class="n">error</span><span class="o">=</span><span class="n">judgment</span><span class="o">.</span><span class="n">error</span> <span class="ow">or</span> <span class="s2">"judge returned no JSON object"</span><span class="p">,</span>
+                <span class="o">**</span><span class="p">{</span><span class="o">**</span><span class="n">common</span><span class="p">,</span> <span class="s2">"usage"</span><span class="p">:</span> <span class="p">{}},</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">_coerce_synopsis</span><span class="p">(</span><span class="n">judgment</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">finding</span><span class="p">(</span>
+            <span class="n">LENS_NAME</span><span class="p">,</span>
+            <span class="n">session</span><span class="p">,</span>
+            <span class="n">kind</span><span class="o">=</span><span class="s2">"synopsis"</span><span class="p">,</span>
+            <span class="n">evidence</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"outcome"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">),</span>
+            <span class="n">text</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"goal"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">),</span>
+            <span class="n">turn</span><span class="o">=</span><span class="n">turns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">turns</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">common</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">]</span></div>
 
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_coerce_outcome</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Normalize the judge's ``outcome`` to one of :data:`OUTCOMES`; anything else is unclear.</span>
+
+<span class="sd">    &gt;&gt;&gt; _coerce_outcome('Done'), _coerce_outcome('kinda'), _coerce_outcome(None)</span>
+<span class="sd">    ('done', 'unclear', 'unclear')</span>
+<span class="sd">    """</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">v</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">OUTCOMES</span> <span class="k">else</span> <span class="s2">"unclear"</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_coerce_item</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">spec</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""One list item coerced to ``spec``'s shape; ``None`` if it is not usable at all.</span>
+
+<span class="sd">    A non-dict item (the model answered with a bare string, say) carries nothing worth</span>
+<span class="sd">    keeping and is dropped rather than failing the whole call. A dict item keeps its</span>
+<span class="sd">    fields, missing ones defaulted, so a partially-filled item is still evidence.</span>
+
+<span class="sd">    &gt;&gt;&gt; _coerce_item({'problem': 'p', 'solution': 's'}, {'problem': 'str', 'solution': 'str',</span>
+<span class="sd">    ...                                                  'category': 'str'})</span>
+<span class="sd">    {'problem': 'p', 'solution': 's', 'category': ''}</span>
+<span class="sd">    &gt;&gt;&gt; _coerce_item('oops', {'problem': 'str'}) is None</span>
+<span class="sd">    True</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">out</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">kind</span> <span class="ow">in</span> <span class="n">spec</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"int_list"</span><span class="p">:</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))]</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+                <span class="k">else</span> <span class="p">[]</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">""</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_coerce_synopsis</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Fill missing keys with defaults and drop malformed list items — never fail the call.</span>
+
+<span class="sd">    &gt;&gt;&gt; out = _coerce_synopsis({'goal': 'x', 'outcome': 'weird',</span>
+<span class="sd">    ...                        'problems': [{'problem': 'p', 'solution': 's', 'category': 'c'},</span>
+<span class="sd">    ...                                     'not a dict']})</span>
+<span class="sd">    &gt;&gt;&gt; out['outcome'], out['problems']</span>
+<span class="sd">    ('unclear', [{'problem': 'p', 'solution': 's', 'category': 'c'}])</span>
+<span class="sd">    &gt;&gt;&gt; _coerce_synopsis({})['friction']</span>
+<span class="sd">    []</span>
+<span class="sd">    """</span>
+    <span class="n">out</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"goal"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"goal"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">),</span>
+        <span class="s2">"outcome"</span><span class="p">:</span> <span class="n">_coerce_outcome</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"outcome"</span><span class="p">)),</span>
+        <span class="s2">"notable_decisions"</span><span class="p">:</span> <span class="p">[</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"notable_decisions"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[])</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span>
+        <span class="p">],</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">_LIST_SPECS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+        <span class="n">coerced</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">[</span><span class="n">_coerce_item</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">spec</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">items</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="p">)</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">coerced</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">out</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_prior_synopsis</span><span class="p">(</span><span class="n">prior</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
