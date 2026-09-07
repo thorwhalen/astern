@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>astern.recall &mdash; astern 0.0.7 documentation</title>
+  <title>astern.recall &mdash; astern 0.0.8 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=bbaf98b3"></script>
+      <script src="../../_static/documentation_options.js?v=53b53b71"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -102,19 +102,30 @@
 <span class="sd">astern is the **record source**; ``ir`` owns indexing and search; the multi-hop</span>
 <span class="sd">loop belongs to ``raglab``. This module is that seam, and nothing more: it</span>
 <span class="sd">renders the store into JSON-able records (:func:`records`), registers them with</span>
-<span class="sd">``ir`` as two named corpora and builds them (:func:`index`), and asks ``ir`` to</span>
+<span class="sd">``ir`` as named corpora and builds them (:func:`index`), and asks ``ir`` to</span>
 <span class="sd">search them (:func:`recall`).</span>
 
-<span class="sd">Two grains, deliberately separate corpora rather than one mixed pile:</span>
+<span class="sd">Three grains, deliberately separate corpora rather than one mixed pile:</span>
 
 <span class="sd">- ``session_synopses`` — one record per session, from the ``synopsis`` lens's</span>
 <span class="sd">  findings: goal, problems and their solutions, decisions, corrections, rendered</span>
 <span class="sd">  as short prose. Small, LLM-distilled, and the best hit for *what was decided*.</span>
 <span class="sd">- ``session_turns`` — one record per turn (prompt + the assistant's closing</span>
-<span class="sd">  text). Free, fine-grained, and the best hit for *what was actually tried*;</span>
-<span class="sd">  this is the shape ``ir``'s :class:`ir.ClaudeTurn` strategy already indexes.</span>
+<span class="sd">  text) of a top-level session (``kind == "session"``). Free, fine-grained, and</span>
+<span class="sd">  the best hit for *what was actually tried*; this is the shape ``ir``'s</span>
+<span class="sd">  :class:`ir.ClaudeTurn` strategy already indexes.</span>
+<span class="sd">- ``subagent_turns`` — the same shape as ``session_turns``, but for the</span>
+<span class="sd">  transcripts a session delegates to (``kind in ("subagent", "workflow")``).</span>
+<span class="sd">  A subagent's "user prompt" is the *parent's* task instruction, not a human</span>
+<span class="sd">  asking a question, so unfiltered it duplicates the parent's own content and</span>
+<span class="sd">  drowns it out — indexing it as a **separate** corpus keeps that duplication</span>
+<span class="sd">  from ever reaching ``session_turns`` while still making it searchable on</span>
+<span class="sd">  purpose. It answers *what did an agent do*, which is a different question</span>
+<span class="sd">  from *what did we decide*; :func:`recall` therefore excludes it by default</span>
+<span class="sd">  and includes it only when asked (``grains`` names it, or</span>
+<span class="sd">  ``include_subagents=True``).</span>
 
-<span class="sd">A third grain, ``episodes`` (consecutive turns on one topic), is the natural</span>
+<span class="sd">A fourth grain, ``episodes`` (consecutive turns on one topic), is the natural</span>
 <span class="sd">unit for "the thinking around X" and is deliberately **not** here — see</span>
 <span class="sd">thorwhalen/astern#7.</span>
 
@@ -140,8 +151,20 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">astern.store</span><span class="w"> </span><span class="kn">import</span> <span class="n">Store</span><span class="p">,</span> <span class="n">mk_store</span>
 
-<span class="c1">#: The two grains astern indexes, and the ir corpus name each becomes.</span>
-<span class="n">GRAINS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"session_synopses"</span><span class="p">,</span> <span class="s2">"session_turns"</span><span class="p">)</span>
+<span class="c1">#: The grains astern indexes, and the ir corpus name each becomes.</span>
+<span class="n">GRAINS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"session_synopses"</span><span class="p">,</span> <span class="s2">"session_turns"</span><span class="p">,</span> <span class="s2">"subagent_turns"</span><span class="p">)</span>
+
+<span class="c1">#: A session's own ``kind`` field (see ``astern.sources.KINDS``) selects which</span>
+<span class="c1">#: grain its turns feed. Missing/empty defaults to ``"session"`` — older stores,</span>
+<span class="c1">#: and every synthetic test fixture, never set it.</span>
+<span class="n">SESSION_KINDS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">"session"</span><span class="p">})</span>
+<span class="n">SUBAGENT_KINDS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">"subagent"</span><span class="p">,</span> <span class="s2">"workflow"</span><span class="p">})</span>
+
+<span class="c1">#: The grains :func:`recall` searches when ``grains="all"`` (the default) and</span>
+<span class="c1">#: ``include_subagents`` is not set — the two that answer "what was decided" /</span>
+<span class="c1">#: "what was actually tried" by *this* session. ``subagent_turns`` joins only</span>
+<span class="c1">#: when named explicitly or ``include_subagents=True``.</span>
+<span class="n">DFLT_RECALL_GRAINS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"session_synopses"</span><span class="p">,</span> <span class="s2">"session_turns"</span><span class="p">)</span>
 
 <span class="c1"># seam candidate: `episodes` — consecutive turns on one topic, split on</span>
 <span class="c1"># embedding-distance jumps and file-set overlap (plus compact_boundary /</span>
@@ -197,6 +220,18 @@
         <span class="s2">"tools"</span><span class="p">,</span>
         <span class="s2">"files"</span><span class="p">,</span>
         <span class="s2">"title"</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="s2">"subagent_turns"</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s2">"turn_index"</span><span class="p">,</span>
+        <span class="s2">"n_errors"</span><span class="p">,</span>
+        <span class="s2">"n_tool_calls"</span><span class="p">,</span>
+        <span class="s2">"tools"</span><span class="p">,</span>
+        <span class="s2">"files"</span><span class="p">,</span>
+        <span class="s2">"title"</span><span class="p">,</span>
+        <span class="s2">"kind"</span><span class="p">,</span>
+        <span class="s2">"parent_id"</span><span class="p">,</span>
+        <span class="s2">"parent_title"</span><span class="p">,</span>
+        <span class="s2">"parent_project"</span><span class="p">,</span>
     <span class="p">),</span>
 <span class="p">}</span>
 
@@ -282,15 +317,32 @@
     <span class="k">return</span> <span class="n">ts</span><span class="p">[:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="s2">"+00:00"</span><span class="p">)]</span> <span class="o">+</span> <span class="s2">"Z"</span> <span class="k">if</span> <span class="n">ts</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"+00:00"</span><span class="p">)</span> <span class="k">else</span> <span class="n">ts</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_kind_of</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A session's own ``kind``, defaulting to ``"session"`` when unset."""</span>
+    <span class="k">return</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"kind"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">"session"</span>
+
+
 <span class="k">def</span><span class="w"> </span><span class="nf">_sessions</span><span class="p">(</span>
-    <span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">project</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">since_days</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">project</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">since_days</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">kinds</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">"""The synced sessions passing the filters, as ``(session_id, meta)``."""</span>
+<span class="w">    </span><span class="sd">"""The synced sessions passing the filters, as ``(session_id, meta)``.</span>
+
+<span class="sd">    ``kinds`` restricts by :func:`_kind_of`; ``None`` means no restriction — used</span>
+<span class="sd">    when resolving a project filter (:func:`_filter`), because that filter is</span>
+<span class="sd">    shared across whichever grains a search names and must not silently drop a</span>
+<span class="sd">    ``subagent_turns`` session for being the wrong kind.</span>
+<span class="sd">    """</span>
     <span class="n">cutoff</span> <span class="o">=</span> <span class="n">_iso_cutoff</span><span class="p">(</span><span class="n">since_days</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">sid</span> <span class="ow">in</span> <span class="n">store</span><span class="o">.</span><span class="n">sessions</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">session</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">sessions</span><span class="p">[</span><span class="n">sid</span><span class="p">]</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>  <span class="c1"># a half-written file is not a reason to stop</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">kinds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">_kind_of</span><span class="p">(</span><span class="n">session</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kinds</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="k">if</span> <span class="n">_matches</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="n">cutoff</span><span class="p">):</span>
             <span class="k">yield</span> <span class="n">sid</span><span class="p">,</span> <span class="n">session</span>
@@ -429,10 +481,45 @@
     <span class="k">return</span> <span class="n">out</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_parent_fields</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""``kind`` + ``parent_id`` + the *parent's* title/project, for a subagent record.</span>
+
+<span class="sd">    A subagent transcript almost never carries its own ``ai-title`` /</span>
+<span class="sd">    ``custom-title`` record (only a top-level session gets titled), so the field</span>
+<span class="sd">    worth indexing is the parent's — without it a subagent hit is an address with</span>
+<span class="sd">    no context: whose task was this?</span>
+<span class="sd">    """</span>
+    <span class="n">parent_id</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"parent_id"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+    <span class="n">parent_title</span> <span class="o">=</span> <span class="n">parent_project</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="k">if</span> <span class="n">parent_id</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">parent</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">sessions</span><span class="p">[</span><span class="n">parent_id</span><span class="p">]</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+            <span class="n">parent</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">parent</span><span class="p">:</span>
+            <span class="n">parent_title</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"title"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+            <span class="n">parent_project</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"project"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">"kind"</span><span class="p">:</span> <span class="n">_kind_of</span><span class="p">(</span><span class="n">session</span><span class="p">),</span>
+        <span class="s2">"parent_id"</span><span class="p">:</span> <span class="n">parent_id</span><span class="p">,</span>
+        <span class="s2">"parent_title"</span><span class="p">:</span> <span class="n">parent_title</span><span class="p">,</span>
+        <span class="s2">"parent_project"</span><span class="p">:</span> <span class="n">parent_project</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
 <span class="k">def</span><span class="w"> </span><span class="nf">_turn_records</span><span class="p">(</span>
-    <span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span> <span class="n">sid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">include_full</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">store</span><span class="p">:</span> <span class="n">Store</span><span class="p">,</span>
+    <span class="n">sid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">session</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">include_full</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">extra</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">"""One record per turn that carries prose; the shape ``ir.ClaudeTurn`` indexes."""</span>
+<span class="w">    </span><span class="sd">"""One record per turn that carries prose; the shape ``ir.ClaudeTurn`` indexes.</span>
+
+<span class="sd">    ``extra`` merges in extra metadata (:func:`_parent_fields`, for</span>
+<span class="sd">    ``subagent_turns``) without disturbing the fields every turn record carries.</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">sid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">store</span><span class="o">.</span><span class="n">turns</span><span class="p">:</span>
         <span class="k">return</span>
     <span class="k">try</span><span class="p">:</span>
@@ -463,6 +550,8 @@
             <span class="s2">"has_tool_use"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">tools</span><span class="p">),</span>
             <span class="s2">"pointer"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"astern show </span><span class="si">{</span><span class="n">sid</span><span class="si">}</span><span class="s2"> --turns </span><span class="si">{</span><span class="p">(</span><span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'index'</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
         <span class="p">}</span>
+        <span class="k">if</span> <span class="n">extra</span><span class="p">:</span>
+            <span class="n">record</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">extra</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">include_full</span><span class="p">:</span>
             <span class="n">record</span><span class="p">[</span><span class="s2">"assistant_full"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">turn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"assistant_full"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="k">yield</span> <span class="n">record</span>
@@ -497,11 +586,19 @@
     <span class="k">if</span> <span class="n">grain</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">GRAINS</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"unknown grain </span><span class="si">{</span><span class="n">grain</span><span class="si">!r}</span><span class="s2">; known: </span><span class="si">{</span><span class="n">GRAINS</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="n">store</span> <span class="o">=</span> <span class="n">mk_store</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">sid</span><span class="p">,</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">_sessions</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">since_days</span><span class="o">=</span><span class="n">since_days</span><span class="p">):</span>
+    <span class="n">kinds</span> <span class="o">=</span> <span class="n">SUBAGENT_KINDS</span> <span class="k">if</span> <span class="n">grain</span> <span class="o">==</span> <span class="s2">"subagent_turns"</span> <span class="k">else</span> <span class="n">SESSION_KINDS</span>
+    <span class="k">for</span> <span class="n">sid</span><span class="p">,</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">_sessions</span><span class="p">(</span>
+        <span class="n">store</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">since_days</span><span class="o">=</span><span class="n">since_days</span><span class="p">,</span> <span class="n">kinds</span><span class="o">=</span><span class="n">kinds</span>
+    <span class="p">):</span>
         <span class="k">if</span> <span class="n">grain</span> <span class="o">==</span> <span class="s2">"session_synopses"</span><span class="p">:</span>
             <span class="k">yield from</span> <span class="n">_synopsis_records</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">sid</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">grain</span> <span class="o">==</span> <span class="s2">"session_turns"</span><span class="p">:</span>
+            <span class="k">yield from</span> <span class="n">_turn_records</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">sid</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">include_full</span><span class="o">=</span><span class="n">include_full</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">yield from</span> <span class="n">_turn_records</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">sid</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">include_full</span><span class="o">=</span><span class="n">include_full</span><span class="p">)</span></div>
+            <span class="n">extra</span> <span class="o">=</span> <span class="n">_parent_fields</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+            <span class="k">yield from</span> <span class="n">_turn_records</span><span class="p">(</span>
+                <span class="n">store</span><span class="p">,</span> <span class="n">sid</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">include_full</span><span class="o">=</span><span class="n">include_full</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="n">extra</span>
+            <span class="p">)</span></div>
 
 
 
@@ -523,8 +620,21 @@
 <div class="viewcode-block" id="turn_records">
 <a class="viewcode-back" href="../../module_docs/astern/recall.html#astern.recall.turn_records">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">turn_records</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">"""Every turn record in the default store — ``ir``'s fetcher (see above)."""</span>
+<span class="w">    </span><span class="sd">"""Every top-level-session turn record in the default store — ``ir``'s fetcher."""</span>
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">records</span><span class="p">(</span><span class="s2">"session_turns"</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="subagent_turn_records">
+<a class="viewcode-back" href="../../module_docs/astern/recall.html#astern.recall.subagent_turn_records">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">subagent_turn_records</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Every subagent/workflow turn record in the default store — ``ir``'s fetcher.</span>
+
+<span class="sd">    Kept as its own corpus (never merged into :func:`turn_records`) so a</span>
+<span class="sd">    subagent's turns — whose "user prompt" is the parent session's task</span>
+<span class="sd">    instruction, not a human asking a question — never dilute ``session_turns``.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">records</span><span class="p">(</span><span class="s2">"subagent_turns"</span><span class="p">))</span></div>
 
 
 
@@ -543,6 +653,12 @@
         <span class="s2">"strategy"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"ClaudeTurn"</span><span class="p">,</span> <span class="s2">"params"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"include_full"</span><span class="p">:</span> <span class="kc">False</span><span class="p">}},</span>
         <span class="s2">"metadata_keys"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">METADATA_KEYS</span><span class="p">[</span><span class="s2">"session_turns"</span><span class="p">]),</span>
     <span class="p">},</span>
+    <span class="s2">"subagent_turns"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"kind"</span><span class="p">:</span> <span class="s2">"records"</span><span class="p">,</span>
+        <span class="s2">"fetcher"</span><span class="p">:</span> <span class="s2">"astern.recall:subagent_turn_records"</span><span class="p">,</span>
+        <span class="s2">"strategy"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"ClaudeTurn"</span><span class="p">,</span> <span class="s2">"params"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"include_full"</span><span class="p">:</span> <span class="kc">False</span><span class="p">}},</span>
+        <span class="s2">"metadata_keys"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">METADATA_KEYS</span><span class="p">[</span><span class="s2">"subagent_turns"</span><span class="p">]),</span>
+    <span class="p">},</span>
 <span class="p">}</span>
 
 
@@ -552,10 +668,12 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_grains</span><span class="p">(</span><span class="n">grain</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">"""``'all'`` or a comma-separated list -&gt; grain names.</span>
+<span class="w">    </span><span class="sd">"""``'all'`` or a comma-separated list -&gt; grain names. Used by :func:`index`,</span>
+<span class="sd">    where ``'all'`` means every grain — :func:`recall` resolves ``'all'``</span>
+<span class="sd">    differently (see :func:`_recall_grain_names`).</span>
 
 <span class="sd">    &gt;&gt;&gt; _grains('all')</span>
-<span class="sd">    ['session_synopses', 'session_turns']</span>
+<span class="sd">    ['session_synopses', 'session_turns', 'subagent_turns']</span>
 <span class="sd">    &gt;&gt;&gt; _grains('session_turns')</span>
 <span class="sd">    ['session_turns']</span>
 <span class="sd">    """</span>
@@ -566,6 +684,29 @@
     <span class="k">if</span> <span class="n">unknown</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"unknown grain(s) </span><span class="si">{</span><span class="n">unknown</span><span class="si">}</span><span class="s2">; known: </span><span class="si">{</span><span class="n">GRAINS</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">names</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_recall_grain_names</span><span class="p">(</span><span class="n">grains</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">include_subagents</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Resolve :func:`recall`'s ``grains=`` seam.</span>
+
+<span class="sd">    ``'all'`` (the default) means :data:`DFLT_RECALL_GRAINS` — ``subagent_turns``</span>
+<span class="sd">    joins only when named explicitly or ``include_subagents=True``. A named list</span>
+<span class="sd">    is honoured verbatim, ``subagent_turns`` included, because naming it *is* the</span>
+<span class="sd">    ask.</span>
+
+<span class="sd">    &gt;&gt;&gt; _recall_grain_names('all', include_subagents=False)</span>
+<span class="sd">    ['session_synopses', 'session_turns']</span>
+<span class="sd">    &gt;&gt;&gt; _recall_grain_names('all', include_subagents=True)</span>
+<span class="sd">    ['session_synopses', 'session_turns', 'subagent_turns']</span>
+<span class="sd">    &gt;&gt;&gt; _recall_grain_names('subagent_turns', include_subagents=False)</span>
+<span class="sd">    ['subagent_turns']</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">grains</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"all"</span><span class="p">,</span> <span class="s2">"*"</span><span class="p">,</span> <span class="s2">""</span><span class="p">):</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">DFLT_RECALL_GRAINS</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">include_subagents</span> <span class="ow">and</span> <span class="s2">"subagent_turns"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+            <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"subagent_turns"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">names</span>
+    <span class="k">return</span> <span class="n">_grains</span><span class="p">(</span><span class="n">grains</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="index">
@@ -697,9 +838,13 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">pointer</span> <span class="ow">and</span> <span class="n">sid</span><span class="p">:</span>
         <span class="n">pointer</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"astern show </span><span class="si">{</span><span class="n">sid</span><span class="si">}</span><span class="s2">"</span>
     <span class="c1"># A session hit is named by its session's title (often empty — sessions are</span>
-    <span class="c1"># not always titled); only a non-session hit falls back to the artifact name,</span>
-    <span class="c1"># where the name is a skill or a file path and means something.</span>
-    <span class="n">title</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"title"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"session_title"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+    <span class="c1"># not always titled); a subagent hit falls back to its *parent's* title</span>
+    <span class="c1"># (its own is almost never set — see _parent_fields); only a non-session hit</span>
+    <span class="c1"># falls back to the artifact name, where the name is a skill or a file path</span>
+    <span class="c1"># and means something.</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"title"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"session_title"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"parent_title"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+    <span class="p">)</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="s2">"grain"</span><span class="p">:</span> <span class="n">disclosure</span><span class="o">.</span><span class="n">source</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
         <span class="s2">"score"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">disclosure</span><span class="o">.</span><span class="n">score</span><span class="p">),</span> <span class="mi">4</span><span class="p">),</span>
@@ -725,20 +870,28 @@
     <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">store</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Store</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">companions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">include_subagents</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""What past sessions already thought about ``query`` — ``ir`` federated over the grains.</span>
 
-<span class="sd">    Searches ``session_synopses`` and ``session_turns`` (whichever are built),</span>
-<span class="sd">    and — when no project/date filter is set — the ``skills`` and ``reports``</span>
-<span class="sd">    corpora if this machine has them. A filter excludes those two deliberately</span>
-<span class="sd">    rather than silently: they carry no ``session_id`` or ``timestamp`` metadata,</span>
-<span class="sd">    so a hard filter would drop every one of their hits without saying so.</span>
+<span class="sd">    Searches ``session_synopses`` and ``session_turns`` (whichever are built) by</span>
+<span class="sd">    default, and — when no project/date filter is set — the ``skills`` and</span>
+<span class="sd">    ``reports`` corpora if this machine has them. A filter excludes those two</span>
+<span class="sd">    deliberately rather than silently: they carry no ``session_id`` or</span>
+<span class="sd">    ``timestamp`` metadata, so a hard filter would drop every one of their hits</span>
+<span class="sd">    without saying so.</span>
+
+<span class="sd">    ``subagent_turns`` (what a delegated agent did, not what was decided) is</span>
+<span class="sd">    excluded by default — a subagent's "user prompt" is the parent's task</span>
+<span class="sd">    instruction, and unfiltered it duplicates the parent's own turns and drowns</span>
+<span class="sd">    them out. Name it in ``grains`` or pass ``include_subagents=True`` to search</span>
+<span class="sd">    it too.</span>
 
 <span class="sd">    Returns hits with a ``pointer`` — the command that fetches the full record —</span>
 <span class="sd">    because the point is to read the few that matter, not to paste prose here.</span>
 <span class="sd">    """</span>
     <span class="n">ir</span> <span class="o">=</span> <span class="n">_ir</span><span class="p">()</span>
-    <span class="n">names</span> <span class="o">=</span> <span class="n">_grains</span><span class="p">(</span><span class="n">grains</span><span class="p">)</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="n">_recall_grain_names</span><span class="p">(</span><span class="n">grains</span><span class="p">,</span> <span class="n">include_subagents</span><span class="o">=</span><span class="n">include_subagents</span><span class="p">)</span>
     <span class="n">filter_</span> <span class="o">=</span> <span class="n">_filter</span><span class="p">(</span><span class="n">mk_store</span><span class="p">(</span><span class="n">store</span><span class="p">),</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">since_days</span><span class="o">=</span><span class="n">since_days</span><span class="p">)</span>
     <span class="n">notes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">project</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="n">filter_</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"session_id"</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"$in"</span><span class="p">):</span>
