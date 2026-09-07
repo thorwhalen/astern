@@ -7,6 +7,7 @@ whose id is the claude.ai session, not the local one.
 
 from __future__ import annotations
 
+import os
 import shutil
 import subprocess
 
@@ -165,12 +166,17 @@ def _git_repo(tmp_path, *, trailer: bool):
     """A one-commit repo whose file holds ``LINE``, with or without the trailer."""
     repo = tmp_path / "repo"
     repo.mkdir()
+    # Inherit the real environment (git has to be findable on every platform) but
+    # point the identity and the global/system config at throwaway paths, so the
+    # developer's own gitconfig -- hooks, templates, gpg signing -- cannot reach in.
     env = {
+        **os.environ,
         "GIT_AUTHOR_NAME": "T",
         "GIT_AUTHOR_EMAIL": "t@example.invalid",
         "GIT_COMMITTER_NAME": "T",
         "GIT_COMMITTER_EMAIL": "t@example.invalid",
-        "PATH": "/usr/bin:/bin:/usr/local/bin:/opt/homebrew/bin",
+        "GIT_CONFIG_GLOBAL": str(tmp_path / "no-such-gitconfig"),
+        "GIT_CONFIG_SYSTEM": str(tmp_path / "no-such-gitconfig"),
         "HOME": str(tmp_path),
     }
 
