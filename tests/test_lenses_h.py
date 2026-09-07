@@ -112,12 +112,18 @@ def test_retry_identical_bash_command_twice_is_a_retry():
     records = [
         user("u0", "run the tests", ts="t0a"),
         assistant(
-            "a0", "m0", ts="t0b", blocks=[tool_use("t1", "Bash", {"command": "pytest -q"})]
+            "a0",
+            "m0",
+            ts="t0b",
+            blocks=[tool_use("t1", "Bash", {"command": "pytest -q"})],
         ),
         tool_result("r0", "t1", is_error=False, content="3 passed", ts="t0c"),
         user("u1", "run them again", ts="t1a"),
         assistant(
-            "a1", "m1", ts="t1b", blocks=[tool_use("t2", "Bash", {"command": "pytest -q"})]
+            "a1",
+            "m1",
+            ts="t1b",
+            blocks=[tool_use("t2", "Bash", {"command": "pytest -q"})],
         ),
         tool_result("r1", "t2", is_error=False, content="3 passed", ts="t1c"),
     ]
@@ -142,7 +148,9 @@ def test_retry_edit_same_path_different_content_is_not_a_retry():
             ts="t0b",
             blocks=[
                 tool_use(
-                    "t1", "Edit", {"file_path": path, "old_string": "x", "new_string": "y"}
+                    "t1",
+                    "Edit",
+                    {"file_path": path, "old_string": "x", "new_string": "y"},
                 )
             ],
         ),
@@ -153,7 +161,9 @@ def test_retry_edit_same_path_different_content_is_not_a_retry():
             ts="t0d",
             blocks=[
                 tool_use(
-                    "t2", "Edit", {"file_path": path, "old_string": "y", "new_string": "z"}
+                    "t2",
+                    "Edit",
+                    {"file_path": path, "old_string": "y", "new_string": "z"},
                 )
             ],
         ),
@@ -173,7 +183,9 @@ def test_retry_edit_after_error_on_same_path_is_a_retry():
             ts="t0b",
             blocks=[
                 tool_use(
-                    "t1", "Edit", {"file_path": path, "old_string": "x", "new_string": "y"}
+                    "t1",
+                    "Edit",
+                    {"file_path": path, "old_string": "x", "new_string": "y"},
                 )
             ],
         ),
@@ -184,7 +196,9 @@ def test_retry_edit_after_error_on_same_path_is_a_retry():
             ts="t0d",
             blocks=[
                 tool_use(
-                    "t2", "Edit", {"file_path": path, "old_string": "w", "new_string": "y"}
+                    "t2",
+                    "Edit",
+                    {"file_path": path, "old_string": "w", "new_string": "y"},
                 )
             ],
         ),
@@ -203,9 +217,13 @@ def test_retry_read_same_path_twice_is_not_a_retry_unless_after_an_error():
     path = "/home/dev/proj/demo/a.py"
     ok_records = [
         user("u0", "read it twice", ts="t0a"),
-        assistant("a0", "m0", ts="t0b", blocks=[tool_use("t1", "Read", {"file_path": path})]),
+        assistant(
+            "a0", "m0", ts="t0b", blocks=[tool_use("t1", "Read", {"file_path": path})]
+        ),
         tool_result("r0", "t1", is_error=False, content="...", ts="t0c"),
-        assistant("a0b", "m0b", ts="t0d", blocks=[tool_use("t2", "Read", {"file_path": path})]),
+        assistant(
+            "a0b", "m0b", ts="t0d", blocks=[tool_use("t2", "Read", {"file_path": path})]
+        ),
         tool_result("r0b", "t2", is_error=False, content="...", ts="t0e"),
     ]
     session, turns = _from_records(ok_records)
@@ -213,9 +231,13 @@ def test_retry_read_same_path_twice_is_not_a_retry_unless_after_an_error():
 
     err_records = [
         user("u0", "read it after a failed read", ts="t0a"),
-        assistant("a0", "m0", ts="t0b", blocks=[tool_use("t1", "Read", {"file_path": path})]),
+        assistant(
+            "a0", "m0", ts="t0b", blocks=[tool_use("t1", "Read", {"file_path": path})]
+        ),
         tool_result("r0", "t1", is_error=True, content="not found", ts="t0c"),
-        assistant("a0b", "m0b", ts="t0d", blocks=[tool_use("t2", "Read", {"file_path": path})]),
+        assistant(
+            "a0b", "m0b", ts="t0d", blocks=[tool_use("t2", "Read", {"file_path": path})]
+        ),
         tool_result("r0b", "t2", is_error=False, content="...", ts="t0e"),
     ]
     session, turns = _from_records(err_records)
@@ -233,7 +255,9 @@ def test_long_turn_uses_session_percentile_not_just_the_floor():
     records = []
     for i, d in enumerate(durations):
         records.append(user(f"u{i}", f"do thing {i}", ts=f"t{i}a"))
-        records.append(assistant(f"a{i}", f"m{i}", ts=f"t{i}b", blocks=[text(f"done {i}")]))
+        records.append(
+            assistant(f"a{i}", f"m{i}", ts=f"t{i}b", blocks=[text(f"done {i}")])
+        )
         records.append(system_record("turn_duration", ts=f"t{i}c", durationMs=d))
     session, turns = _from_records(records)
     long_turns = [f for f in friction(session, turns) if f["kind"] == "long_turn"]

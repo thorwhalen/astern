@@ -58,7 +58,9 @@ def tool_result(
     }
 
 
-def assistant(uuid: str, msg_id: str, *, blocks: list[dict], ts: str, sid: str = SID) -> dict:
+def assistant(
+    uuid: str, msg_id: str, *, blocks: list[dict], ts: str, sid: str = SID
+) -> dict:
     return {
         "type": "assistant",
         "uuid": uuid,
