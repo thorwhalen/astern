@@ -25,10 +25,13 @@ repeat the same ``usage``; summing per line overcounts by an order of magnitude)
 (0, 'fix the bug', 'Fixed.', 1)
 >>> t["tools"][0]["name"], t["tools"][0]["is_error"], t["usage"]["input_tokens"]
 ('Bash', True, 30)
+>>> t["tools"][0]["input_text"], t["tools"][0]["input_chars"]
+('pytest', 6)
 """
 
 from __future__ import annotations
 
+import json
 import re
 from pathlib import Path
 from typing import Any, Iterator, Mapping
@@ -61,6 +64,11 @@ META_TYPES = ("ai-title", "custom-title", "agent-name", "pr-link", "cost-state",
               "worktree-state", "frame-link")
 
 DIGEST_CHARS = 200
+
+#: How much of a tool's full input text (a Bash command, a Write's content) to keep
+#: verbatim on the turn record. Big enough for real scripts, capped so one pasted
+#: blob can't blow up the store.
+MAX_INPUT_TEXT_CHARS = 20000
 
 
 def clean_prompt(text: str) -> str:
@@ -141,13 +149,37 @@ def tool_digest(name: str, inp: Any) -> str:
     'ls -la'
     >>> tool_digest('Edit', {'file_path': '/a/b.py', 'old_string': 'x'})
     '/a/b.py'
+    >>> tool_digest('SendMessage', {'to': 'a', 'message': 'hi'})
+    '{"message": "hi", "to": "a"}'
     """
     if not isinstance(inp, dict):
         return str(inp)[:DIGEST_CHARS]
     for key in ("command", "file_path", "path", "query", "pattern", "prompt", "description", "skill"):
         if inp.get(key):
             return str(inp[key])[:DIGEST_CHARS]
-    return ", ".join(sorted(inp))[:DIGEST_CHARS]
+    # No known key: digest the *values*, never just the key names — a key-only digest
+    # made every distinct SendMessage call in a session collapse onto one string, which
+    # the friction lens then read as a 200-fold retry.
+    return json.dumps(inp, sort_keys=True, default=str)[:DIGEST_CHARS]
+
+
+def tool_input_text(name: str, inp: Any) -> str:
+    """The full text of a tool input worth keeping verbatim: a command, a file body.
+
+    Unlike :func:`tool_digest` (a short label for display) this is uncapped source
+    text — a rewrites lens needs the whole script, not its first 200 chars.
+
+    >>> tool_input_text('Bash', {'command': 'ls -la'})
+    'ls -la'
+    >>> tool_input_text('Write', {'file_path': '/tmp/x.py', 'content': 'print(1)'})
+    'print(1)'
+    """
+    if not isinstance(inp, dict):
+        return str(inp)
+    for key in ("command", "content", "new_string", "query", "pattern", "prompt", "description"):
+        if inp.get(key):
+            return str(inp[key])
+    return tool_digest(name, inp)
 
 
 def _tools(turn: list[dict]) -> list[dict]:
@@ -157,8 +189,11 @@ def _tools(turn: list[dict]) -> list[dict]:
         if m.get("type") == "assistant":
             for b in _blocks(m, "tool_use"):
                 tid = b.get("id") or f"anon{len(order)}"
-                uses[tid] = {"id": tid, "name": b.get("name", ""), "digest": tool_digest(b.get("name", ""), b.get("input")),
-                             "is_error": False, "result_chars": 0, "input_chars": len(str(b.get("input", "")))}
+                name, inp = b.get("name", ""), b.get("input")
+                full_text = tool_input_text(name, inp)
+                uses[tid] = {"id": tid, "name": name, "digest": tool_digest(name, inp),
+                             "is_error": False, "result_chars": 0,
+                             "input_text": full_text[:MAX_INPUT_TEXT_CHARS], "input_chars": len(full_text)}
                 order.append(tid)
         elif m.get("type") == "user":
             for b in _blocks(m, "tool_result"):
