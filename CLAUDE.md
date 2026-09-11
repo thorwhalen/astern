@@ -1,6 +1,6 @@
 # astern — dev notes for the agent working on this repo
 
-`astern` mines past Claude Code sessions (the JSONL under `~/.claude/projects/`) so future sessions burn fewer tokens on the same problems. The full plan and prior-art research live in the `ai` group docs (`$PP/t/priv/data/groups/ai/docs/session-mining-plan.md` and `session-mining-research.md`). Read the plan's §2 (lens catalogue) and §3 (seam table) before adding a lens.
+`astern` mines past Claude Code sessions (the JSONL under `~/.claude/projects/`) so future sessions burn fewer tokens on the same problems. The full plan and prior-art research live in the `ai` group docs (`$PP/g/ai/docs/session-mining-plan.md` and `session-mining-research.md`). Read the plan's §2 (lens catalogue) and §3 (seam table) before adding a lens.
 
 ## Shape
 
