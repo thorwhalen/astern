@@ -1,0 +1,20 @@
+astern.store
+============
+
+.. automodule:: astern.store
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      data_dir
+      mk_store
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      MemoryStore
+      Store
+   

@@ -1,4 +1,0 @@
-astern.sources
-==============
-.. automodule:: astern.sources
-   :members:

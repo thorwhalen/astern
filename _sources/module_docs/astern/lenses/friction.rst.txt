@@ -1,4 +1,0 @@
-astern.lenses.friction
-======================
-.. automodule:: astern.lenses.friction
-   :members:

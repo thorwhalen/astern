@@ -1,0 +1,23 @@
+astern.estimate
+===============
+
+.. automodule:: astern.estimate
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      PRIOR_INPUT_INTERCEPT
+      MIN_POINTS_FOR_OLS
+      FIXED_CACHE_TOKENS
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      features
+      fit
+      predict
+      round_trips
+   

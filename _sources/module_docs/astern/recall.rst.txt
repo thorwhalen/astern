@@ -1,4 +1,0 @@
-astern.recall
-=============
-.. automodule:: astern.recall
-   :members:

@@ -1,0 +1,26 @@
+# astern
+
+> Look astern: mine your past Claude Code sessions for recurring problems, friction, rewritten code, and the vocabulary gap between you and your agents
+
+
+## Pages in this subsection
+
+- [astern](astern.html.md): astern — look astern: mine your past Claude Code sessions.
+- [astern.entire](astern.entire.html.md): Enable and inspect the Entire CLI safely, per repo.
+- [astern.estimate](astern.estimate.html.md): What will judging this batch cost? — features, a fitted model, a prediction.
+- [astern.judge](astern.judge.html.md): The &#96;judge=&#96; seam: an LLM call that returns text or JSON &#42;and says what it cost&#42;.
+- [astern.ledger](astern.ledger.html.md): Idempotency: what has already been analyzed, so no token is spent twice.
+- [astern.lenses](astern.lenses.html.md): The registered lenses: name, kind (H = heuristic, L = LLM-judged), version, one line.
+- [astern.provenance](astern.provenance.html.md): From a line of code back to the session turn that wrote it.
+- [astern.recall](astern.recall.html.md): Recall: what did past sessions already think, try and decide about X?
+- [astern.report](astern.report.html.md): Cross-session reports: one aggregator + markdown renderer per lens.
+- [astern.skills](astern.skills.html.md): The skills astern ships, and the command that makes an agent host see them.
+- [astern.sources](astern.sources.html.md): Where the transcripts are: homes, session files, raw records.
+- [astern.store](astern.store.html.md): Where records, findings and the ledger live: one directory, several JSON stores.
+- [astern.tools](astern.tools.html.md): The SSOT of what astern does: plain functions, JSON-able in, JSON-able dict out.
+- [astern.turns](astern.turns.html.md): From raw transcript records to one record per user→assistant turn, plus session meta.
+- [astern.views](astern.views.html.md): The compressed markdown a judge reads instead of a transcript.
+
+## Optional
+
+- [Top-level llms.txt](../llms.txt): Complete documentation index.

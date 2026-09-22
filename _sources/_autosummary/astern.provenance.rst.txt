@@ -1,0 +1,37 @@
+astern.provenance
+=================
+
+.. automodule:: astern.provenance
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      WRITE_TOOLS
+      PROMPT_CHARS
+      MIN_NEEDLE_CHARS
+      MIN_PATH_CHARS
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      blame_commit
+      bridge_key
+      changed_files
+      commit_record
+      entire_available
+      entire_why
+      introducing_commit
+      iter_hits
+      line_text
+      loose
+      normalize
+      rank_hits
+      repo_root
+      session_id_from_trailer
+      sessions_for_bridge
+      sessions_in_repo
+      with_subagents
+   

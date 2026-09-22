@@ -1,4 +1,0 @@
-astern.__main__
-===============
-.. automodule:: astern.__main__
-   :members:

@@ -1,0 +1,20 @@
+astern.skills
+=============
+
+.. automodule:: astern.skills
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      bundled
+      claude_home
+      install_skills
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Asset
+   

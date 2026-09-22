@@ -1,4 +1,0 @@
-astern.ledger
-=============
-.. automodule:: astern.ledger
-   :members:

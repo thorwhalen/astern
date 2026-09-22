@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html :class="{ 'dark' : darkMode === true }" data-content_root="../" lang="en" x-data="{ darkMode: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches), activeSection: ''}">
+<head>
+<script>
+    (function () {
+      // Set initial color scheme
+      if ((localStorage.getItem("_x_darkMode") === "true") || (window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+
+      // Watch for media preference changes
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+        localStorage.setItem("_x_darkMode", event.matches);
+        document.documentElement.classList.toggle("dark", event.matches);
+      });
+    })();
+  </script>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="#ffffff" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="#030711" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<link href="astern.turns.html.md" rel="alternate" type="text/markdown"/>
+<link href="../llms.txt" rel="describedby" type="text/markdown"/>
+<link href="astern.turns.html.md" rel="alternate" type="text/markdown"/>
+<link href="llms.txt" rel="describedby"/>
+<title>astern.turns | astern</title>
+<meta content="astern.turns | astern" property="og:title"/>
+<meta content="astern.turns | astern" name="twitter:title"/>
+<link href="../_static/pygments.css?v=d75fae25" rel="stylesheet" type="text/css"/>
+<link href="../_static/theme.css?v=d6d7c91b" rel="stylesheet" type="text/css"/>
+<link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../_static/epythet.css?v=bab8646e" rel="stylesheet" type="text/css"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="astern.views.html" rel="next" title="astern.views"/>
+<link href="astern.tools.html" rel="prev" title="astern.tools"/>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-xs border-border bg-background/90 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">astern</span>
+</a><nav class="flex items-center gap-6 text-sm font-medium">
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="https://github.com/thorwhalen/astern" rel="noopener nofollow">GitHub</a>
+</nav></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 gap-2 sm:gap-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center gap-1">
+<button @click="darkMode = !darkMode" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" title="Toggle color scheme" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="justify-start text-sm md:!hidden bg-background" href="../index.html"><span class="font-bold text-clip whitespace-nowrap">astern</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="flex md:hidden flex-col font-medium mt-4">
+<a href="https://github.com/thorwhalen/astern" rel="nofollow noopener">GitHub</a>
+</nav><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul class="current">
+<li class="toctree-l1 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../api.html">API reference<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l2 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="astern.html">astern<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="astern.entire.html">astern.entire</a></li>
+<li class="toctree-l3"><a class="reference internal" href="astern.estimate.html">astern.estimate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="astern.judge.html">astern.judge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="astern.ledger.html">astern.ledger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="astern.lenses.html">astern.lenses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="astern.provenance.html">astern.provenance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="astern.recall.html">astern.recall</a></li>
+<li class="toctree-l3"><a class="reference internal" href="astern.report.html">astern.report</a></li>
+<li class="toctree-l3"><a class="reference internal" href="astern.skills.html">astern.skills</a></li>
+<li class="toctree-l3"><a class="reference internal" href="astern.sources.html">astern.sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="astern.store.html">astern.store</a></li>
+<li class="toctree-l3"><a class="reference internal" href="astern.tools.html">astern.tools</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">astern.turns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="astern.views.html">astern.views</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ai-agents.html">For AI agents</a></li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../index.html">
+<span class="hidden md:inline">astern</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../api.html">API reference</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="astern.html">astern</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">astern.turns</span>
+</nav>
+<div id="content" role="main">
+<section id="module-astern.turns">
+<span id="astern-turns"></span><h1>astern.turns<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#module-astern.turns">¶</a></h1>
+<p>From raw transcript records to one record per user→assistant turn, plus session meta.</p>
+<p>The turn record is the unit every lens works on. Its shape is the one <code class="docutils literal notranslate"><span class="pre">priv</span></code>’s
+<code class="docutils literal notranslate"><span class="pre">claude_transcripts</span></code> established and <code class="docutils literal notranslate"><span class="pre">ir</span></code> indexes, extended with what the mining
+lenses need and the indexer did not: the tool calls of the turn (name, a short
+digest of the input, whether the result was an error), the <code class="docutils literal notranslate"><span class="pre">system</span></code> records that
+fell inside the turn (<code class="docutils literal notranslate"><span class="pre">turn_duration</span></code>, <code class="docutils literal notranslate"><span class="pre">compact_boundary</span></code>), and API usage
+de-duplicated by <code class="docutils literal notranslate"><span class="pre">message.id</span></code> (one API turn spans several <code class="docutils literal notranslate"><span class="pre">assistant</span></code> lines that
+repeat the same <code class="docutils literal notranslate"><span class="pre">usage</span></code>; summing per line overcounts by an order of magnitude).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">recs</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="line-2"><span class="gp">... </span>  <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"uuid"</span><span class="p">:</span> <span class="s2">"u1"</span><span class="p">,</span> <span class="s2">"sessionId"</span><span class="p">:</span> <span class="s2">"s"</span><span class="p">,</span> <span class="s2">"cwd"</span><span class="p">:</span> <span class="s2">"/p/x"</span><span class="p">,</span> <span class="s2">"timestamp"</span><span class="p">:</span> <span class="s2">"t0"</span><span class="p">,</span>
+</span><span id="line-3"><span class="gp">... </span>   <span class="s2">"message"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"fix the bug"</span><span class="p">}},</span>
+</span><span id="line-4"><span class="gp">... </span>  <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"assistant"</span><span class="p">,</span> <span class="s2">"uuid"</span><span class="p">:</span> <span class="s2">"a1"</span><span class="p">,</span> <span class="s2">"sessionId"</span><span class="p">:</span> <span class="s2">"s"</span><span class="p">,</span> <span class="s2">"message"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="s2">"m1"</span><span class="p">,</span>
+</span><span id="line-5"><span class="gp">... </span>   <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"claude-x"</span><span class="p">,</span> <span class="s2">"usage"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"input_tokens"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">"output_tokens"</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
+</span><span id="line-6"><span class="gp">... </span>   <span class="s2">"content"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"tool_use"</span><span class="p">,</span> <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"t1"</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Bash"</span><span class="p">,</span> <span class="s2">"input"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"command"</span><span class="p">:</span> <span class="s2">"pytest"</span><span class="p">}}]}},</span>
+</span><span id="line-7"><span class="gp">... </span>  <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"uuid"</span><span class="p">:</span> <span class="s2">"u2"</span><span class="p">,</span> <span class="s2">"sessionId"</span><span class="p">:</span> <span class="s2">"s"</span><span class="p">,</span> <span class="s2">"message"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span>
+</span><span id="line-8"><span class="gp">... </span>   <span class="s2">"content"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"tool_result"</span><span class="p">,</span> <span class="s2">"tool_use_id"</span><span class="p">:</span> <span class="s2">"t1"</span><span class="p">,</span> <span class="s2">"is_error"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"boom"</span><span class="p">}]}},</span>
+</span><span id="line-9"><span class="gp">... </span>  <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"assistant"</span><span class="p">,</span> <span class="s2">"uuid"</span><span class="p">:</span> <span class="s2">"a2"</span><span class="p">,</span> <span class="s2">"sessionId"</span><span class="p">:</span> <span class="s2">"s"</span><span class="p">,</span> <span class="s2">"message"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="s2">"m2"</span><span class="p">,</span>
+</span><span id="line-10"><span class="gp">... </span>   <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"claude-x"</span><span class="p">,</span> <span class="s2">"usage"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"input_tokens"</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">"output_tokens"</span><span class="p">:</span> <span class="mi">7</span><span class="p">},</span>
+</span><span id="line-11"><span class="gp">... </span>   <span class="s2">"content"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"Fixed."</span><span class="p">}]}},</span>
+</span><span id="line-12"><span class="gp">... </span><span class="p">]</span>
+</span><span id="line-13"><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">iter_turns</span><span class="p">(</span><span class="n">recs</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="line-14"><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="p">[</span><span class="s2">"index"</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="s2">"user_prompt"</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="s2">"assistant_summary"</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="s2">"n_errors"</span><span class="p">]</span>
+</span><span id="line-15"><span class="go">(0, 'fix the bug', 'Fixed.', 1)</span>
+</span><span id="line-16"><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="p">[</span><span class="s2">"tools"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"name"</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="s2">"tools"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"is_error"</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="s2">"usage"</span><span class="p">][</span><span class="s2">"input_tokens"</span><span class="p">]</span>
+</span><span id="line-17"><span class="go">('Bash', True, 30)</span>
+</span><span id="line-18"><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="p">[</span><span class="s2">"tools"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"input_text"</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="s2">"tools"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"input_chars"</span><span class="p">]</span>
+</span><span id="line-19"><span class="go">('pytest', 6)</span>
+</span></code></pre></div>
+</div>
+<p class="rubric">Module Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#astern.turns.WRAPPER_TAGS" title="astern.turns.WRAPPER_TAGS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WRAPPER_TAGS</span></code></a></p></td>
+<td><p>XML-ish wrapper tags the CLI logs around non-prose user lines — slash-command echoes, local-command stdout, injected reminders.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#astern.turns.KEPT_SYSTEM_SUBTYPES" title="astern.turns.KEPT_SYSTEM_SUBTYPES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KEPT_SYSTEM_SUBTYPES</span></code></a></p></td>
+<td><p>Which <code class="docutils literal notranslate"><span class="pre">system</span></code> subtypes are kept on the turn record (others are counted only).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#astern.turns.META_TYPES" title="astern.turns.META_TYPES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">META_TYPES</span></code></a></p></td>
+<td><p>Session-level records that are worth keeping as metadata, keyed by their type.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#astern.turns.MAX_INPUT_TEXT_CHARS" title="astern.turns.MAX_INPUT_TEXT_CHARS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MAX_INPUT_TEXT_CHARS</span></code></a></p></td>
+<td><p>How much of a tool's full input text (a Bash command, a Write's content) to keep verbatim on the turn record.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#astern.turns.clean_prompt" title="astern.turns.clean_prompt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clean_prompt</span></code></a>(text)</p></td>
+<td><p>Strip CLI wrapper tags (and their content) from a user line → prose only.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_tool_result</span></code>(msg)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#astern.turns.is_user_prompt" title="astern.turns.is_user_prompt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_user_prompt</span></code></a>(msg)</p></td>
+<td><p>A real human prompt: a <code class="docutils literal notranslate"><span class="pre">user</span></code> line that is neither meta nor a tool result.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#astern.turns.iter_turn_pairs" title="astern.turns.iter_turn_pairs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_turn_pairs</span></code></a>(records)</p></td>
+<td><p>Yield <code class="docutils literal notranslate"><span class="pre">(user_prompt_record,</span> <span class="pre">[records</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">turn])</span></code> up to the next real prompt.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#astern.turns.iter_turns" title="astern.turns.iter_turns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_turns</span></code></a>(records)</p></td>
+<td><p>Yield one JSON-able record per turn.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#astern.turns.session_meta" title="astern.turns.session_meta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">session_meta</span></code></a>(records)</p></td>
+<td><p>Session-level facts from the non-conversational records (last occurrence wins).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#astern.turns.tool_digest" title="astern.turns.tool_digest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tool_digest</span></code></a>(name, inp)</p></td>
+<td><p>A short, comparable summary of a tool input: the command, the path, or the query.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#astern.turns.tool_input_text" title="astern.turns.tool_input_text"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tool_input_text</span></code></a>(name, inp)</p></td>
+<td><p>The full text of a tool input worth keeping verbatim: a command, a file body.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.turns.KEPT_SYSTEM_SUBTYPES">
+<span class="sig-prename descclassname"><span class="pre">astern.turns.</span></span><span class="sig-name descname"><span class="pre">KEPT_SYSTEM_SUBTYPES</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('turn_duration',</span> <span class="pre">'compact_boundary',</span> <span class="pre">'away_summary',</span> <span class="pre">'stop_hook_summary')</span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.turns.KEPT_SYSTEM_SUBTYPES" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.turns.KEPT_SYSTEM_SUBTYPES'">¶</a></dt>
+<dd><p>Which <code class="docutils literal notranslate"><span class="pre">system</span></code> subtypes are kept on the turn record (others are counted only).</p>
+</dd></dl>
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.turns.MAX_INPUT_TEXT_CHARS">
+<span class="sig-prename descclassname"><span class="pre">astern.turns.</span></span><span class="sig-name descname"><span class="pre">MAX_INPUT_TEXT_CHARS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">20000</span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.turns.MAX_INPUT_TEXT_CHARS" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.turns.MAX_INPUT_TEXT_CHARS'">¶</a></dt>
+<dd><p>How much of a tool’s full input text (a Bash command, a Write’s content) to keep
+verbatim on the turn record. Big enough for real scripts, capped so one pasted
+blob can’t blow up the store.</p>
+</dd></dl>
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.turns.META_TYPES">
+<span class="sig-prename descclassname"><span class="pre">astern.turns.</span></span><span class="sig-name descname"><span class="pre">META_TYPES</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('ai-title',</span> <span class="pre">'custom-title',</span> <span class="pre">'agent-name',</span> <span class="pre">'pr-link',</span> <span class="pre">'cost-state',</span> <span class="pre">'permission-mode',</span> <span class="pre">'worktree-state',</span> <span class="pre">'frame-link',</span> <span class="pre">'bridge-session')</span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.turns.META_TYPES" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.turns.META_TYPES'">¶</a></dt>
+<dd><p>Session-level records that are worth keeping as metadata, keyed by their type.</p>
+</dd></dl>
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.turns.WRAPPER_TAGS">
+<span class="sig-prename descclassname"><span class="pre">astern.turns.</span></span><span class="sig-name descname"><span class="pre">WRAPPER_TAGS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('command-name',</span> <span class="pre">'command-message',</span> <span class="pre">'command-args',</span> <span class="pre">'local-command-stdout',</span> <span class="pre">'local-command-stderr',</span> <span class="pre">'local-command-caveat',</span> <span class="pre">'bash-input',</span> <span class="pre">'bash-stdout',</span> <span class="pre">'bash-stderr',</span> <span class="pre">'system-reminder',</span> <span class="pre">'user-prompt-submit-hook',</span> <span class="pre">'task-notification')</span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.turns.WRAPPER_TAGS" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.turns.WRAPPER_TAGS'">¶</a></dt>
+<dd><p>XML-ish wrapper tags the CLI logs around non-prose user lines — slash-command
+echoes, local-command stdout, injected reminders. Stripped from the <em>user prompt</em>
+so it carries the human’s words, not tooling noise.</p>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.turns.clean_prompt">
+<span class="sig-prename descclassname"><span class="pre">astern.turns.</span></span><span class="sig-name descname"><span class="pre">clean_prompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astern/turns.html#clean_prompt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.turns.clean_prompt" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.turns.clean_prompt'">¶</a></dt>
+<dd><p>Strip CLI wrapper tags (and their content) from a user line → prose only.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">clean_prompt</span><span class="p">(</span><span class="s1">'&lt;system-reminder&gt;x&lt;/system-reminder&gt; hello  world'</span><span class="p">)</span>
+</span><span id="line-2"><span class="go">'hello world'</span>
+</span></code></pre></div>
+</div>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.turns.is_user_prompt">
+<span class="sig-prename descclassname"><span class="pre">astern.turns.</span></span><span class="sig-name descname"><span class="pre">is_user_prompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astern/turns.html#is_user_prompt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.turns.is_user_prompt" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.turns.is_user_prompt'">¶</a></dt>
+<dd><p>A real human prompt: a <code class="docutils literal notranslate"><span class="pre">user</span></code> line that is neither meta nor a tool result.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.turns.iter_turn_pairs">
+<span class="sig-prename descclassname"><span class="pre">astern.turns.</span></span><span class="sig-name descname"><span class="pre">iter_turn_pairs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">records</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astern/turns.html#iter_turn_pairs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.turns.iter_turn_pairs" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.turns.iter_turn_pairs'">¶</a></dt>
+<dd><p>Yield <code class="docutils literal notranslate"><span class="pre">(user_prompt_record,</span> <span class="pre">[records</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">turn])</span></code> up to the next real prompt.</p>
+<p>The turn’s records include assistant lines, the <code class="docutils literal notranslate"><span class="pre">tool_result</span></code> user lines that
+continue the same turn, and <code class="docutils literal notranslate"><span class="pre">system</span></code> lines that fell inside it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>, <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>]]]</span></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.turns.iter_turns">
+<span class="sig-prename descclassname"><span class="pre">astern.turns.</span></span><span class="sig-name descname"><span class="pre">iter_turns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">records</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astern/turns.html#iter_turns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.turns.iter_turns" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.turns.iter_turns'">¶</a></dt>
+<dd><p>Yield one JSON-able record per turn. See the module docstring for the shape.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.turns.session_meta">
+<span class="sig-prename descclassname"><span class="pre">astern.turns.</span></span><span class="sig-name descname"><span class="pre">session_meta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">records</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astern/turns.html#session_meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.turns.session_meta" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.turns.session_meta'">¶</a></dt>
+<dd><p>Session-level facts from the non-conversational records (last occurrence wins).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">session_meta</span><span class="p">([{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"ai-title"</span><span class="p">,</span> <span class="s2">"aiTitle"</span><span class="p">:</span> <span class="s2">"Fix CI"</span><span class="p">},</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"pr-link"</span><span class="p">,</span>
+</span><span id="line-2"><span class="gp">... </span>  <span class="s2">"prNumber"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"prUrl"</span><span class="p">:</span> <span class="s2">"u"</span><span class="p">,</span> <span class="s2">"prRepository"</span><span class="p">:</span> <span class="s2">"o/r"</span><span class="p">},</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"sessionId"</span><span class="p">:</span> <span class="s2">"s"</span><span class="p">,</span>
+</span><span id="line-3"><span class="gp">... </span>  <span class="s2">"cwd"</span><span class="p">:</span> <span class="s2">"/p/x"</span><span class="p">,</span> <span class="s2">"timestamp"</span><span class="p">:</span> <span class="s2">"t"</span><span class="p">,</span> <span class="s2">"version"</span><span class="p">:</span> <span class="s2">"2.1"</span><span class="p">,</span> <span class="s2">"message"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"content"</span><span class="p">:</span> <span class="s2">"hi"</span><span class="p">}}])[</span><span class="s2">"title"</span><span class="p">]</span>
+</span><span id="line-4"><span class="go">'Fix CI'</span>
+</span></code></pre></div>
+</div>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.turns.tool_digest">
+<span class="sig-prename descclassname"><span class="pre">astern.turns.</span></span><span class="sig-name descname"><span class="pre">tool_digest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astern/turns.html#tool_digest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.turns.tool_digest" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.turns.tool_digest'">¶</a></dt>
+<dd><p>A short, comparable summary of a tool input: the command, the path, or the query.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">tool_digest</span><span class="p">(</span><span class="s1">'Bash'</span><span class="p">,</span> <span class="p">{</span><span class="s1">'command'</span><span class="p">:</span> <span class="s1">'ls -la'</span><span class="p">})</span>
+</span><span id="line-2"><span class="go">'ls -la'</span>
+</span><span id="line-3"><span class="gp">&gt;&gt;&gt; </span><span class="n">tool_digest</span><span class="p">(</span><span class="s1">'Edit'</span><span class="p">,</span> <span class="p">{</span><span class="s1">'file_path'</span><span class="p">:</span> <span class="s1">'/a/b.py'</span><span class="p">,</span> <span class="s1">'old_string'</span><span class="p">:</span> <span class="s1">'x'</span><span class="p">})</span>
+</span><span id="line-4"><span class="go">'/a/b.py'</span>
+</span><span id="line-5"><span class="gp">&gt;&gt;&gt; </span><span class="n">tool_digest</span><span class="p">(</span><span class="s1">'SendMessage'</span><span class="p">,</span> <span class="p">{</span><span class="s1">'to'</span><span class="p">:</span> <span class="s1">'a'</span><span class="p">,</span> <span class="s1">'message'</span><span class="p">:</span> <span class="s1">'hi'</span><span class="p">})</span>
+</span><span id="line-6"><span class="go">'{"message": "hi", "to": "a"}'</span>
+</span></code></pre></div>
+</div>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.turns.tool_input_text">
+<span class="sig-prename descclassname"><span class="pre">astern.turns.</span></span><span class="sig-name descname"><span class="pre">tool_input_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astern/turns.html#tool_input_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.turns.tool_input_text" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.turns.tool_input_text'">¶</a></dt>
+<dd><p>The full text of a tool input worth keeping verbatim: a command, a file body.</p>
+<p>Unlike <a class="reference internal" href="#astern.turns.tool_digest" title="astern.turns.tool_digest"><code class="xref py py-func docutils literal notranslate"><span class="pre">tool_digest()</span></code></a> (a short label for display) this is uncapped source
+text — a rewrites lens needs the whole script, not its first 200 chars.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">tool_input_text</span><span class="p">(</span><span class="s1">'Bash'</span><span class="p">,</span> <span class="p">{</span><span class="s1">'command'</span><span class="p">:</span> <span class="s1">'ls -la'</span><span class="p">})</span>
+</span><span id="line-2"><span class="go">'ls -la'</span>
+</span><span id="line-3"><span class="gp">&gt;&gt;&gt; </span><span class="n">tool_input_text</span><span class="p">(</span><span class="s1">'Write'</span><span class="p">,</span> <span class="p">{</span><span class="s1">'file_path'</span><span class="p">:</span> <span class="s1">'/tmp/x.py'</span><span class="p">,</span> <span class="s1">'content'</span><span class="p">:</span> <span class="s1">'print(1)'</span><span class="p">})</span>
+</span><span id="line-4"><span class="go">'print(1)'</span>
+</span></code></pre></div>
+</div>
+</dd></dl>
+</section>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#astern.turns.KEPT_SYSTEM_SUBTYPES'" class="reference internal" href="#astern.turns.KEPT_SYSTEM_SUBTYPES"><code class="docutils literal notranslate"><span class="pre">KEPT_SYSTEM_SUBTYPES</span></code></a></li>
+<li><a :data-current="activeSection === '#astern.turns.MAX_INPUT_TEXT_CHARS'" class="reference internal" href="#astern.turns.MAX_INPUT_TEXT_CHARS"><code class="docutils literal notranslate"><span class="pre">MAX_INPUT_TEXT_CHARS</span></code></a></li>
+<li><a :data-current="activeSection === '#astern.turns.META_TYPES'" class="reference internal" href="#astern.turns.META_TYPES"><code class="docutils literal notranslate"><span class="pre">META_TYPES</span></code></a></li>
+<li><a :data-current="activeSection === '#astern.turns.WRAPPER_TAGS'" class="reference internal" href="#astern.turns.WRAPPER_TAGS"><code class="docutils literal notranslate"><span class="pre">WRAPPER_TAGS</span></code></a></li>
+<li><a :data-current="activeSection === '#astern.turns.clean_prompt'" class="reference internal" href="#astern.turns.clean_prompt"><code class="docutils literal notranslate"><span class="pre">clean_prompt()</span></code></a></li>
+<li><a :data-current="activeSection === '#astern.turns.is_user_prompt'" class="reference internal" href="#astern.turns.is_user_prompt"><code class="docutils literal notranslate"><span class="pre">is_user_prompt()</span></code></a></li>
+<li><a :data-current="activeSection === '#astern.turns.iter_turn_pairs'" class="reference internal" href="#astern.turns.iter_turn_pairs"><code class="docutils literal notranslate"><span class="pre">iter_turn_pairs()</span></code></a></li>
+<li><a :data-current="activeSection === '#astern.turns.iter_turns'" class="reference internal" href="#astern.turns.iter_turns"><code class="docutils literal notranslate"><span class="pre">iter_turns()</span></code></a></li>
+<li><a :data-current="activeSection === '#astern.turns.session_meta'" class="reference internal" href="#astern.turns.session_meta"><code class="docutils literal notranslate"><span class="pre">session_meta()</span></code></a></li>
+<li><a :data-current="activeSection === '#astern.turns.tool_digest'" class="reference internal" href="#astern.turns.tool_digest"><code class="docutils literal notranslate"><span class="pre">tool_digest()</span></code></a></li>
+<li><a :data-current="activeSection === '#astern.turns.tool_input_text'" class="reference internal" href="#astern.turns.tool_input_text"><code class="docutils literal notranslate"><span class="pre">tool_input_text()</span></code></a></li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left"></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../_static/documentation_options.js?v=f7cdbf68"></script>
+<script src="../_static/doctools.js?v=fd6eb6e6"></script>
+<script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+<script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../_static/copybutton.js?v=fd10adb8"></script>
+<script defer="defer" src="../_static/theme.js?v=5db23cf8"></script>
+</body>
+</html>

@@ -1,4 +1,0 @@
-astern.views
-============
-.. automodule:: astern.views
-   :members:

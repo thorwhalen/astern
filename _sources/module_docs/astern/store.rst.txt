@@ -1,4 +1,0 @@
-astern.store
-============
-.. automodule:: astern.store
-   :members:

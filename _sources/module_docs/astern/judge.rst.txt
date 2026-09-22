@@ -1,4 +1,0 @@
-astern.judge
-============
-.. automodule:: astern.judge
-   :members:

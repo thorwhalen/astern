@@ -1,0 +1,13 @@
+astern.report
+=============
+
+.. automodule:: astern.report
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      aggregate
+      render
+   

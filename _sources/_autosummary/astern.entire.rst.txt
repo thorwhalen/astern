@@ -1,0 +1,13 @@
+astern.entire
+=============
+
+.. automodule:: astern.entire
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      entire_enable
+      entire_status
+   

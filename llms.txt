@@ -1,0 +1,34 @@
+# astern
+
+> Look astern: mine your past Claude Code sessions for recurring problems, friction, rewritten code, and the vocabulary gap between you and your agents
+
+
+## Pages
+
+- [astern](index.html.md): &#96;crowsnest&#96; watches the sessions running right now; &#96;astern&#96; looks back at the wake they left — the ...
+- [API reference](api.html.md): | &#96;astern&#96;   | astern — look astern: mine your past Claude Code sessions.   |
+- [astern](_autosummary/astern.html.md): astern — look astern: mine your past Claude Code sessions.
+- [astern.entire](_autosummary/astern.entire.html.md): Enable and inspect the Entire CLI safely, per repo.
+- [astern.estimate](_autosummary/astern.estimate.html.md): What will judging this batch cost? — features, a fitted model, a prediction.
+- [astern.judge](_autosummary/astern.judge.html.md): The &#96;judge=&#96; seam: an LLM call that returns text or JSON &#42;and says what it cost&#42;.
+- [astern.ledger](_autosummary/astern.ledger.html.md): Idempotency: what has already been analyzed, so no token is spent twice.
+- [astern.lenses](_autosummary/astern.lenses.html.md): The registered lenses: name, kind (H = heuristic, L = LLM-judged), version, one line.
+- [astern.provenance](_autosummary/astern.provenance.html.md): From a line of code back to the session turn that wrote it.
+- [astern.recall](_autosummary/astern.recall.html.md): Recall: what did past sessions already think, try and decide about X?
+- [astern.report](_autosummary/astern.report.html.md): Cross-session reports: one aggregator + markdown renderer per lens.
+- [astern.skills](_autosummary/astern.skills.html.md): The skills astern ships, and the command that makes an agent host see them.
+- [astern.sources](_autosummary/astern.sources.html.md): Where the transcripts are: homes, session files, raw records.
+- [astern.store](_autosummary/astern.store.html.md): Where records, findings and the ledger live: one directory, several JSON stores.
+- [astern.tools](_autosummary/astern.tools.html.md): The SSOT of what astern does: plain functions, JSON-able in, JSON-able dict out.
+- [astern.turns](_autosummary/astern.turns.html.md): From raw transcript records to one record per user→assistant turn, plus session meta.
+- [astern.views](_autosummary/astern.views.html.md): The compressed markdown a judge reads instead of a transcript.
+- [For AI agents](ai-agents.html.md): &#96;astern&#96; ships artifacts for coding agents alongside its code. This page lists
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-09-22 12:58 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
+
+## Optional
+
+- [astern.md](astern.md): Complete documentation in a single file.
+
+## Build
+
+- [build_info.json](build_info.json): build provenance (commit, version, tool versions, whether the docs match the package)

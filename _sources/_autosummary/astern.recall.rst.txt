@@ -1,0 +1,33 @@
+astern.recall
+=============
+
+.. automodule:: astern.recall
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      GRAINS
+      SESSION_KINDS
+      DFLT_RECALL_GRAINS
+      DFLT_EMBEDDER
+      DFLT_MODE
+      SNIPPET_CHARS
+      COMPANION_CORPORA
+      COMPANION_WEIGHT
+      METADATA_KEYS
+      CORPUS_SPECS
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      index
+      recall
+      records
+      subagent_turn_records
+      synopsis_records
+      synopsis_text
+      turn_records
+   

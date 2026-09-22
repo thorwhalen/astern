@@ -1,0 +1,28 @@
+astern.turns
+============
+
+.. automodule:: astern.turns
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      WRAPPER_TAGS
+      KEPT_SYSTEM_SUBTYPES
+      META_TYPES
+      MAX_INPUT_TEXT_CHARS
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      clean_prompt
+      is_tool_result
+      is_user_prompt
+      iter_turn_pairs
+      iter_turns
+      session_meta
+      tool_digest
+      tool_input_text
+   

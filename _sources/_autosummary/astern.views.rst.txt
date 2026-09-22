@@ -1,0 +1,21 @@
+astern.views
+============
+
+.. automodule:: astern.views
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      DFLT_MAX_CHARS
+      MIN_PROMPT_CHARS
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      session_view
+      tool_summary
+      view_stats
+   
