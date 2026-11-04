@@ -36,10 +36,10 @@ Repository = "https://github.com/thorwhalen/astern"
 Issues = "https://github.com/thorwhalen/astern/issues"
 
 [project.optional-dependencies]
-dev = ["pytest>=7.0", "ruff>=0.1.0", "orjson"]
+dev = ["pytest>=7.0", "ruff>=0.1.0", "orjson>=3.10"]
 # Faster transcript parsing: `load_records` decodes with orjson where it agrees with
 # `json.loads` and falls back to it everywhere else. Results are identical either way.
-fast = ["orjson"]
+fast = ["orjson>=3.10"]
 # Cross-session clustering of findings; the default groups by normalized strings.
 similar = ["ir"]
 # `astern index` / `astern recall`: ir owns the indexing and the search (ef/vd

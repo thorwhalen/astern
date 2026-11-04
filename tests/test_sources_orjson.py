@@ -226,3 +226,50 @@ def test_loads_is_keyword_only(tmp_path):
     p = _write(tmp_path / "t.jsonl", ['{"a": 1}'])
     with pytest.raises(TypeError):
         load_records(p, json.loads)  # type: ignore[misc]
+
+
+def test_fast_loads_accepts_a_raw_lone_surrogate():
+    assert sources.fast_loads('"\ud800"') == json.loads('"\ud800"')
+
+
+def test_random_lines_decode_like_json_loads():
+    import random
+
+    rnd = random.Random(11)
+    atoms = [
+        "0", "-0", "1", "-7", "1.5", "1e5", "1e999", "NaN", "Infinity", "-Infinity",
+        "true", "null", '"s"', '"\\ud800"', '"\\u00e9"', "9" * 18, "9" * 19,
+        "1" + "0" * 20, "-" + "9" * 19, "0." + "1" * 19,
+    ]  # fmt: skip
+
+    def val(depth=0):
+        r = rnd.random()
+        if depth < 3 and r < 0.2:
+            return "[" + ",".join(val(depth + 1) for _ in range(rnd.randint(0, 3))) + "]"
+        if depth < 3 and r < 0.4:
+            return (
+                "{"
+                + ",".join(
+                    f'"k{rnd.randint(0, 2)}":{val(depth + 1)}'
+                    for _ in range(rnd.randint(0, 3))
+                )
+                + "}"
+            )
+        return rnd.choice(atoms)
+
+    lines = []
+    for _ in range(3000):
+        s = val()
+        if rnd.random() < 0.3 and s:
+            i = rnd.randrange(len(s))
+            s = s[:i] + rnd.choice(["", ",", "]", "x", " "]) + s[i + 1 :]
+        lines.append(s)
+
+    def decode(loads, line):
+        try:
+            return repr(loads(line)), type(loads(line)).__name__
+        except ValueError:
+            return None
+
+    for line in lines:
+        assert decode(sources.fast_loads, line) == decode(json.loads, line), line
