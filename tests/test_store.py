@@ -119,3 +119,12 @@ def test_mk_store_none_without_env_uses_default(monkeypatch):
 def test_data_dir_precedence_arg_over_env(monkeypatch, tmp_path):
     monkeypatch.setenv("ASTERN_DATA_DIR", str(tmp_path / "env-root"))
     assert data_dir(tmp_path / "explicit-root") == tmp_path / "explicit-root"
+
+
+def test_suffixed_keys_are_slash_separated_whatever_the_os_separator(monkeypatch):
+    """dol yields OS-separated keys (``stats\\sid`` on Windows); the store's are ``a/b``."""
+    from astern import store as store_mod
+
+    monkeypatch.setattr(store_mod.os, "sep", "\\")
+    inner = {"stats\\s1.json": 1}
+    assert list(store_mod._Suffixed(inner)) == ["stats/s1"]
