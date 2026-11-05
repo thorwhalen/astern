@@ -74,9 +74,6 @@ A judge-sized markdown view of `turns`, never longer than `max_chars`.
 `prior` is the previous synopsis dict for the same session; when given, the
 view recaps it and `turns` should be the new turns only.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> ts = [{'index': i, 'user_prompt': 'x' * 400, 'assistant_full': 'y' * 400,
 ...        'tools': []} for i in range(20)]
@@ -88,12 +85,12 @@ view recaps it and `turns` should be the new turns only.
 True
 ```
 
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 ### astern.views.tool_summary(turn, , max_errors=3, digest_chars=70)
 
 One line for a turn’s tool calls: the mix, then the errors that matter.
-
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ```pycon
 >>> tool_summary({'tools': [{'name': 'Bash', 'digest': 'ls', 'is_error': False},
@@ -104,14 +101,17 @@ One line for a turn’s tool calls: the mix, then the errors that matter.
 ''
 ```
 
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 ### astern.views.view_stats(text)
 
 Size and coverage of a rendered view — the cost model’s cheap regressor.
-
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
 
 ```pycon
 >>> view_stats('# Session s\n\n### turn 0\nuser: hi\n')
 {'chars': 33, 'tokens_est': 8, 'n_turns_shown': 1, 'n_turns_dropped': 0}
 ```
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)

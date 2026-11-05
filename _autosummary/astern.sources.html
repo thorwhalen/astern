@@ -29,7 +29,8 @@
 <meta content="astern.sources | astern" property="og:title"/>
 <meta content="astern.sources | astern" name="twitter:title"/>
 <link href="../_static/pygments.css?v=d75fae25" rel="stylesheet" type="text/css"/>
-<link href="../_static/theme.css?v=d6d7c91b" rel="stylesheet" type="text/css"/>
+<link href="../_static/theme.css?v=009055c6" rel="stylesheet" type="text/css"/>
+<link href="../_static/sphinx_autodoc_typehints.css?v=057ac668" rel="stylesheet" type="text/css"/>
 <link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
 <link href="../_static/epythet.css?v=bab8646e" rel="stylesheet" type="text/css"/>
 <link href="../search.html" rel="search" title="Search"/>
@@ -149,13 +150,16 @@ that is <a class="reference internal" href="astern.turns.html#module-astern.turn
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#astern.sources.homes" title="astern.sources.homes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">homes</span></code></a>([home])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#astern.sources.fast_loads" title="astern.sources.fast_loads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fast_loads</span></code></a>(line)</p></td>
+<td><p>Decode one JSON line: orjson where it provably agrees with <code class="docutils literal notranslate"><span class="pre">json.loads</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#astern.sources.homes" title="astern.sources.homes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">homes</span></code></a>([home])</p></td>
 <td><p>Resolve the <code class="docutils literal notranslate"><span class="pre">home=</span></code> seam to a list of <a class="reference internal" href="#astern.sources.Home" title="astern.sources.Home"><code class="xref py py-class docutils literal notranslate"><span class="pre">Home</span></code></a>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#astern.sources.iter_session_files" title="astern.sources.iter_session_files"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_session_files</span></code></a>([home, since_days, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#astern.sources.iter_session_files" title="astern.sources.iter_session_files"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_session_files</span></code></a>([home, since_days, ...])</p></td>
 <td><p>Yield transcript files across the given homes, newest first.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#astern.sources.load_records" title="astern.sources.load_records"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_records</span></code></a>(path)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#astern.sources.load_records" title="astern.sources.load_records"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_records</span></code></a>(path, *[, loads])</p></td>
 <td><p>Parse one JSONL transcript, tolerating blank and malformed lines.</p></td>
 </tr>
 </tbody>
@@ -174,7 +178,7 @@ that is <a class="reference internal" href="astern.turns.html#module-astern.turn
 <dl class="py class">
 <dt class="sig sig-object py" id="astern.sources.Home">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astern.sources.</span></span><span class="sig-name descname"><span class="pre">Home</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astern/sources.html#Home"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.sources.Home" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.sources.Home'">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></p>
 <p>One <code class="docutils literal notranslate"><span class="pre">~/.claude</span></code>-shaped directory, named so records can say where they came from.</p>
 <dl class="field-list simple">
 </dl>
@@ -189,8 +193,28 @@ transcript; <code class="docutils literal notranslate"><span class="pre">subagen
 <dl class="py class">
 <dt class="sig sig-object py" id="astern.sources.SessionFile">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astern.sources.</span></span><span class="sig-name descname"><span class="pre">SessionFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">home</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_slug</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mtime</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astern/sources.html#SessionFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.sources.SessionFile" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.sources.SessionFile'">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></p>
 <p>One transcript on disk, with the facts the ledger keys on (<code class="docutils literal notranslate"><span class="pre">size</span></code>, <code class="docutils literal notranslate"><span class="pre">mtime</span></code>).</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.sources.fast_loads">
+<span class="sig-prename descclassname"><span class="pre">astern.sources.</span></span><span class="sig-name descname"><span class="pre">fast_loads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astern/sources.html#fast_loads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.sources.fast_loads" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.sources.fast_loads'">¶</a></dt>
+<dd><p>Decode one JSON line: orjson where it provably agrees with <code class="docutils literal notranslate"><span class="pre">json.loads</span></code>.</p>
+<p>Falls back to <code class="docutils literal notranslate"><span class="pre">json.loads</span></code> when orjson is not installed, when the line has a run
+of 19+ digits (orjson would silently turn a huge int into a float), and when orjson
+rejects the line (<code class="docutils literal notranslate"><span class="pre">NaN</span></code>/<code class="docutils literal notranslate"><span class="pre">Infinity</span></code>/<code class="docutils literal notranslate"><span class="pre">-Infinity</span></code>, a lone surrogate escape or an
+overflowing exponent are valid to <code class="docutils literal notranslate"><span class="pre">json.loads</span></code> only). A line neither decoder
+accepts raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>, as <code class="docutils literal notranslate"><span class="pre">json.loads</span></code> does.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">fast_loads</span><span class="p">(</span><span class="s1">'{"a": [1, 2.5, null]}'</span><span class="p">)</span>
+</span><span id="line-2"><span class="go">{'a': [1, 2.5, None]}</span>
+</span><span id="line-3"><span class="gp">&gt;&gt;&gt; </span><span class="n">fast_loads</span><span class="p">(</span><span class="s1">'{"n": 18446744073709551616}'</span><span class="p">)[</span><span class="s2">"n"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="o">**</span><span class="mi">64</span>
+</span><span id="line-4"><span class="go">True</span>
+</span><span id="line-5"><span class="gp">&gt;&gt;&gt; </span><span class="n">fast_loads</span><span class="p">(</span><span class="s1">'[NaN]'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">fast_loads</span><span class="p">(</span><span class="s1">'[NaN]'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="line-6"><span class="go">True</span>
+</span></code></pre></div>
+</div>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -201,15 +225,15 @@ transcript; <code class="docutils literal notranslate"><span class="pre">subagen
 <p><code class="docutils literal notranslate"><span class="pre">None</span></code> → the one default home (<code class="docutils literal notranslate"><span class="pre">$ASTERN_HOME</span></code> or <code class="docutils literal notranslate"><span class="pre">~/.claude</span></code>). A string or
 path → that one home. An iterable → several. A home’s name is its directory
 name with the leading dot dropped (<code class="docutils literal notranslate"><span class="pre">claude</span></code>, <code class="docutils literal notranslate"><span class="pre">claude-iq</span></code>).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference internal" href="#astern.sources.Home" title="astern.sources.Home"><code class="xref py py-class docutils literal notranslate"><span class="pre">Home</span></code></a>]</span></p>
-</dd>
-</dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">homes</span><span class="p">(</span><span class="s1">'/tmp/.claude-x'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
 </span><span id="line-2"><span class="go">'claude-x'</span>
 </span></code></pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference internal" href="#astern.sources.Home" title="astern.sources.Home"><code class="xref py py-class docutils literal notranslate"><span class="pre">Home</span></code></a>]</span></p>
+</dd>
+</dl>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="astern.sources.iter_session_files">
@@ -221,19 +245,29 @@ top-level sessions and/or their nested <code class="docutils literal notranslate
 <code class="docutils literal notranslate"><span class="pre">max_sessions</span></code> caps the count after sorting, so it means “the N most recent”.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference internal" href="#astern.sources.SessionFile" title="astern.sources.SessionFile"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionFile</span></code></a>]</span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference internal" href="#astern.sources.SessionFile" title="astern.sources.SessionFile"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionFile</span></code></a>]</span></p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="astern.sources.load_records">
-<span class="sig-prename descclassname"><span class="pre">astern.sources.</span></span><span class="sig-name descname"><span class="pre">load_records</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astern/sources.html#load_records"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.sources.load_records" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.sources.load_records'">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">astern.sources.</span></span><span class="sig-name descname"><span class="pre">load_records</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">loads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astern/sources.html#load_records"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.sources.load_records" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.sources.load_records'">¶</a></dt>
 <dd><p>Parse one JSONL transcript, tolerating blank and malformed lines.</p>
 <p>Unknown record types are kept as-is: the format drifts between Claude Code
 versions and a parser that drops what it does not recognise loses data silently.</p>
+<p><code class="docutils literal notranslate"><span class="pre">loads</span></code> decodes one stripped, non-empty line (default: <a class="reference internal" href="#astern.sources.fast_loads" title="astern.sources.fast_loads"><code class="xref py py-func docutils literal notranslate"><span class="pre">fast_loads()</span></code></a>);
+a line it rejects with <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> is skipped, as is any non-object value.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">tempfile</span>
+</span><span id="line-2"><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">d</span><span class="p">:</span>
+</span><span id="line-3"><span class="gp">... </span>    <span class="n">p</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">/</span> <span class="s2">"t.jsonl"</span>
+</span><span id="line-4"><span class="gp">... </span>    <span class="n">_</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s1">'{"type": "x"}</span><span class="se">\n\n</span><span class="s1">oops</span><span class="se">\n</span><span class="s1">[1]</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+</span><span id="line-5"><span class="gp">... </span>    <span class="n">load_records</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">loads</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">)</span>
+</span><span id="line-6"><span class="go">[{'type': 'x'}]</span>
+</span></code></pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>]</span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -244,6 +278,7 @@ versions and a parser that drops what it does not recognise loses data silently.
 <li><a :data-current="activeSection === '#astern.sources.Home'" class="reference internal" href="#astern.sources.Home"><code class="docutils literal notranslate"><span class="pre">Home</span></code></a></li>
 <li><a :data-current="activeSection === '#astern.sources.KINDS'" class="reference internal" href="#astern.sources.KINDS"><code class="docutils literal notranslate"><span class="pre">KINDS</span></code></a></li>
 <li><a :data-current="activeSection === '#astern.sources.SessionFile'" class="reference internal" href="#astern.sources.SessionFile"><code class="docutils literal notranslate"><span class="pre">SessionFile</span></code></a></li>
+<li><a :data-current="activeSection === '#astern.sources.fast_loads'" class="reference internal" href="#astern.sources.fast_loads"><code class="docutils literal notranslate"><span class="pre">fast_loads()</span></code></a></li>
 <li><a :data-current="activeSection === '#astern.sources.homes'" class="reference internal" href="#astern.sources.homes"><code class="docutils literal notranslate"><span class="pre">homes()</span></code></a></li>
 <li><a :data-current="activeSection === '#astern.sources.iter_session_files'" class="reference internal" href="#astern.sources.iter_session_files"><code class="docutils literal notranslate"><span class="pre">iter_session_files()</span></code></a></li>
 <li><a :data-current="activeSection === '#astern.sources.load_records'" class="reference internal" href="#astern.sources.load_records"><code class="docutils literal notranslate"><span class="pre">load_records()</span></code></a></li>
@@ -260,11 +295,11 @@ versions and a parser that drops what it does not recognise loses data silently.
 </div>
 </footer>
 </div>
-<script src="../_static/documentation_options.js?v=f7cdbf68"></script>
+<script src="../_static/documentation_options.js?v=a83ce22a"></script>
 <script src="../_static/doctools.js?v=fd6eb6e6"></script>
 <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../_static/copybutton.js?v=fd10adb8"></script>
-<script defer="defer" src="../_static/theme.js?v=5db23cf8"></script>
+<script defer="defer" src="../_static/theme.js?v=49cc6205"></script>
 </body>
 </html>

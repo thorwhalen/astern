@@ -76,13 +76,13 @@ so it carries the human’s words, not tooling noise.
 
 Strip CLI wrapper tags (and their content) from a user line → prose only.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> clean_prompt('<system-reminder>x</system-reminder> hello  world')
 'hello world'
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### astern.turns.is_user_prompt(msg)
 
@@ -112,9 +112,6 @@ Yield one JSON-able record per turn. See the module docstring for the shape.
 
 Session-level facts from the non-conversational records (last occurrence wins).
 
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
-
 ```pycon
 >>> session_meta([{"type": "ai-title", "aiTitle": "Fix CI"}, {"type": "pr-link",
 ...   "prNumber": 3, "prUrl": "u", "prRepository": "o/r"}, {"type": "user", "sessionId": "s",
@@ -122,12 +119,12 @@ Session-level facts from the non-conversational records (last occurrence wins).
 'Fix CI'
 ```
 
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
 ### astern.turns.tool_digest(name, inp)
 
 A short, comparable summary of a tool input: the command, the path, or the query.
-
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ```pycon
 >>> tool_digest('Bash', {'command': 'ls -la'})
@@ -138,6 +135,9 @@ A short, comparable summary of a tool input: the command, the path, or the query
 '{"message": "hi", "to": "a"}'
 ```
 
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 ### astern.turns.tool_input_text(name, inp)
 
 The full text of a tool input worth keeping verbatim: a command, a file body.
@@ -145,12 +145,12 @@ The full text of a tool input worth keeping verbatim: a command, a file body.
 Unlike [`tool_digest()`](#astern.turns.tool_digest) (a short label for display) this is uncapped source
 text — a rewrites lens needs the whole script, not its first 200 chars.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> tool_input_text('Bash', {'command': 'ls -la'})
 'ls -la'
 >>> tool_input_text('Write', {'file_path': '/tmp/x.py', 'content': 'print(1)'})
 'print(1)'
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)

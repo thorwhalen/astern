@@ -1,39 +1,39 @@
 {
   "schema_version": 1,
-  "built_at": "2026-09-22T12:58:15Z",
+  "built_at": "2026-11-05T12:17:12Z",
   "package": {
     "name": "astern",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "display_name": "astern",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "605dfddb50ca474b5de55f08afc03b0e1d6b7bc4",
-    "short_commit": "605dfdd",
+    "commit": "20bdbe41dad972c35707ddddead8de8fd72ba912",
+    "short_commit": "20bdbe4",
     "branch": "main",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/thorwhalen/astern",
-    "commit_url": "https://github.com/thorwhalen/astern/commit/605dfddb50ca474b5de55f08afc03b0e1d6b7bc4",
+    "commit_url": "https://github.com/thorwhalen/astern/commit/20bdbe41dad972c35707ddddead8de8fd72ba912",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "thorwhalen/astern",
-    "sha": "605dfddb50ca474b5de55f08afc03b0e1d6b7bc4",
+    "sha": "20bdbe41dad972c35707ddddead8de8fd72ba912",
     "sha_in_history": true,
     "ref": "refs/heads/main",
     "ref_name": "main",
-    "run_id": "35730292974",
-    "run_url": "https://github.com/thorwhalen/astern/actions/runs/35730292974",
+    "run_id": "42025631892",
+    "run_url": "https://github.com/thorwhalen/astern/actions/runs/42025631892",
     "server_url": "https://github.com"
   },
   "tools": {
-    "epythet": "0.2.12",
-    "sphinx": "9.1.0",
+    "epythet": "0.2.22",
+    "sphinx": "9.1.1",
     "docutils": "0.22.4",
-    "python": "3.12.14"
+    "python": "3.12.15"
   },
   "config": {
     "theme": "auto",
@@ -56,18 +56,20 @@
   },
   "site": {
     "modules_documented": 15,
-    "objects_documented": 105
+    "objects_documented": 106
   },
   "pypi": {
     "checked": true,
-    "latest": "0.0.9",
-    "relation": "same",
+    "latest": "0.0.11",
+    "relation": "behind",
     "error": null
   },
-  "reproduce": "git clone https://github.com/thorwhalen/astern && cd astern\ngit checkout 605dfddb50ca474b5de55f08afc03b0e1d6b7bc4\npip install \"epythet==0.2.12\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/thorwhalen/astern && cd astern\ngit checkout 20bdbe41dad972c35707ddddead8de8fd72ba912\npip install \"epythet==0.2.22\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
-    "aligned": true,
-    "notes": []
+    "aligned": false,
+    "notes": [
+      "The documented version (0.0.10) is behind the latest release on PyPI (0.0.11): `pip install astern` gives newer code than these docs describe."
+    ]
   }
 }

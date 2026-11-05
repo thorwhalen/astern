@@ -40,7 +40,7 @@ Bases: [`Store`](#astern.store.Store)
 
 The same five stores as dicts; what tests and dry runs use.
 
-### *class* astern.store.Store(root=<factory>)
+### *class* astern.store.Store(root=data_dir())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 

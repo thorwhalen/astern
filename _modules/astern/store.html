@@ -29,7 +29,8 @@
   <meta property="og:title" content="astern.store | astern" />
   <meta name="twitter:title" content="astern.store | astern" />
   <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d75fae25" />
-  <link rel="stylesheet" type="text/css" href="../../_static/theme.css?v=d6d7c91b" />
+  <link rel="stylesheet" type="text/css" href="../../_static/theme.css?v=009055c6" />
+  <link rel="stylesheet" type="text/css" href="../../_static/sphinx_autodoc_typehints.css?v=057ac668" />
   <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
   <link rel="stylesheet" type="text/css" href="../../_static/epythet.css?v=bab8646e" />
   <link rel="search" title="Search" href="../../search.html" />
@@ -246,71 +247,72 @@
 </span><span id="line-67">
 </span><span id="line-68">    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="line-69">        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner</span><span class="p">:</span>
-</span><span id="line-70">            <span class="k">yield</span> <span class="n">k</span><span class="o">.</span><span class="n">removesuffix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_suffix</span><span class="p">)</span>
-</span><span id="line-71">
-</span><span id="line-72">    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="line-73">        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_inner</span><span class="p">)</span>
-</span><span id="line-74">
-</span><span id="line-75">    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-</span><span id="line-76">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner</span>
-</span><span id="line-77">
+</span><span id="line-70">            <span class="c1"># dol yields OS-separated keys; the store's keys are always "a/b" (SSOT)</span>
+</span><span id="line-71">            <span class="k">yield</span> <span class="n">k</span><span class="o">.</span><span class="n">removesuffix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_suffix</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="p">,</span> <span class="s2">"/"</span><span class="p">)</span>
+</span><span id="line-72">
+</span><span id="line-73">    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="line-74">        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_inner</span><span class="p">)</span>
+</span><span id="line-75">
+</span><span id="line-76">    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+</span><span id="line-77">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner</span>
 </span><span id="line-78">
+</span><span id="line-79">
 <div class="viewcode-block" id="Store">
 <a class="viewcode-back" href="../../_autosummary/astern.store.html#astern.store.Store">[docs]</a>
-</span><span id="line-79"><span class="nd">@dataclass</span>
-</span><span id="line-80"><span class="k">class</span><span class="w"> </span><span class="nc">Store</span><span class="p">:</span>
-</span><span id="line-81"><span class="w">    </span><span class="sd">"""The five stores, lazily opened under one data directory."""</span>
-</span><span id="line-82">
-</span><span id="line-83">    <span class="n">root</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">data_dir</span><span class="p">)</span>
-</span><span id="line-84">
-</span><span id="line-85">    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="line-86">        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">data_dir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">)</span>
-</span><span id="line-87">
-</span><span id="line-88">    <span class="k">def</span><span class="w"> </span><span class="nf">_open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">:</span>
-</span><span id="line-89">        <span class="k">return</span> <span class="n">_Suffixed</span><span class="p">(</span><span class="n">_json_files</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">/</span> <span class="n">kind</span><span class="p">))</span>
-</span><span id="line-90">
-</span><span id="line-91">    <span class="nd">@cached_property</span>
-</span><span id="line-92">    <span class="k">def</span><span class="w"> </span><span class="nf">sessions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">:</span>
-</span><span id="line-93">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">(</span><span class="s2">"sessions"</span><span class="p">)</span>
-</span><span id="line-94">
-</span><span id="line-95">    <span class="nd">@cached_property</span>
-</span><span id="line-96">    <span class="k">def</span><span class="w"> </span><span class="nf">turns</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">:</span>
-</span><span id="line-97">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">(</span><span class="s2">"turns"</span><span class="p">)</span>
-</span><span id="line-98">
-</span><span id="line-99">    <span class="nd">@cached_property</span>
-</span><span id="line-100">    <span class="k">def</span><span class="w"> </span><span class="nf">findings</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">:</span>
-</span><span id="line-101">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">(</span><span class="s2">"findings"</span><span class="p">)</span>
-</span><span id="line-102">
-</span><span id="line-103">    <span class="nd">@cached_property</span>
-</span><span id="line-104">    <span class="k">def</span><span class="w"> </span><span class="nf">ledger</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">:</span>
-</span><span id="line-105">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">(</span><span class="s2">"ledger"</span><span class="p">)</span>
-</span><span id="line-106">
-</span><span id="line-107">    <span class="nd">@cached_property</span>
-</span><span id="line-108">    <span class="k">def</span><span class="w"> </span><span class="nf">judgments</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">:</span>
-</span><span id="line-109">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">(</span><span class="s2">"judgments"</span><span class="p">)</span></div>
+</span><span id="line-80"><span class="nd">@dataclass</span>
+</span><span id="line-81"><span class="k">class</span><span class="w"> </span><span class="nc">Store</span><span class="p">:</span>
+</span><span id="line-82"><span class="w">    </span><span class="sd">"""The five stores, lazily opened under one data directory."""</span>
+</span><span id="line-83">
+</span><span id="line-84">    <span class="n">root</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">data_dir</span><span class="p">)</span>
+</span><span id="line-85">
+</span><span id="line-86">    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="line-87">        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">data_dir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">)</span>
+</span><span id="line-88">
+</span><span id="line-89">    <span class="k">def</span><span class="w"> </span><span class="nf">_open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">:</span>
+</span><span id="line-90">        <span class="k">return</span> <span class="n">_Suffixed</span><span class="p">(</span><span class="n">_json_files</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">/</span> <span class="n">kind</span><span class="p">))</span>
+</span><span id="line-91">
+</span><span id="line-92">    <span class="nd">@cached_property</span>
+</span><span id="line-93">    <span class="k">def</span><span class="w"> </span><span class="nf">sessions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">:</span>
+</span><span id="line-94">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">(</span><span class="s2">"sessions"</span><span class="p">)</span>
+</span><span id="line-95">
+</span><span id="line-96">    <span class="nd">@cached_property</span>
+</span><span id="line-97">    <span class="k">def</span><span class="w"> </span><span class="nf">turns</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">:</span>
+</span><span id="line-98">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">(</span><span class="s2">"turns"</span><span class="p">)</span>
+</span><span id="line-99">
+</span><span id="line-100">    <span class="nd">@cached_property</span>
+</span><span id="line-101">    <span class="k">def</span><span class="w"> </span><span class="nf">findings</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">:</span>
+</span><span id="line-102">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">(</span><span class="s2">"findings"</span><span class="p">)</span>
+</span><span id="line-103">
+</span><span id="line-104">    <span class="nd">@cached_property</span>
+</span><span id="line-105">    <span class="k">def</span><span class="w"> </span><span class="nf">ledger</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">:</span>
+</span><span id="line-106">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">(</span><span class="s2">"ledger"</span><span class="p">)</span>
+</span><span id="line-107">
+</span><span id="line-108">    <span class="nd">@cached_property</span>
+</span><span id="line-109">    <span class="k">def</span><span class="w"> </span><span class="nf">judgments</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">:</span>
+</span><span id="line-110">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">(</span><span class="s2">"judgments"</span><span class="p">)</span></div>
 
-</span><span id="line-110">
 </span><span id="line-111">
+</span><span id="line-112">
 <div class="viewcode-block" id="MemoryStore">
 <a class="viewcode-back" href="../../_autosummary/astern.store.html#astern.store.MemoryStore">[docs]</a>
-</span><span id="line-112"><span class="k">class</span><span class="w"> </span><span class="nc">MemoryStore</span><span class="p">(</span><span class="n">Store</span><span class="p">):</span>
-</span><span id="line-113"><span class="w">    </span><span class="sd">"""The same five stores as dicts; what tests and dry runs use."""</span>
-</span><span id="line-114">
-</span><span id="line-115">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="line-116">        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"&lt;memory&gt;"</span><span class="p">)</span>
-</span><span id="line-117">
-</span><span id="line-118">    <span class="k">def</span><span class="w"> </span><span class="nf">_open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">:</span>
-</span><span id="line-119">        <span class="k">return</span> <span class="p">{}</span></div>
+</span><span id="line-113"><span class="k">class</span><span class="w"> </span><span class="nc">MemoryStore</span><span class="p">(</span><span class="n">Store</span><span class="p">):</span>
+</span><span id="line-114"><span class="w">    </span><span class="sd">"""The same five stores as dicts; what tests and dry runs use."""</span>
+</span><span id="line-115">
+</span><span id="line-116">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="line-117">        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"&lt;memory&gt;"</span><span class="p">)</span>
+</span><span id="line-118">
+</span><span id="line-119">    <span class="k">def</span><span class="w"> </span><span class="nf">_open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">:</span>
+</span><span id="line-120">        <span class="k">return</span> <span class="p">{}</span></div>
 
-</span><span id="line-120">
 </span><span id="line-121">
+</span><span id="line-122">
 <div class="viewcode-block" id="mk_store">
 <a class="viewcode-back" href="../../_autosummary/astern.store.html#astern.store.mk_store">[docs]</a>
-</span><span id="line-122"><span class="k">def</span><span class="w"> </span><span class="nf">mk_store</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Store</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Store</span><span class="p">:</span>
-</span><span id="line-123"><span class="w">    </span><span class="sd">"""Resolve the ``store=`` seam: a :class:`Store`, a directory, or the default."""</span>
-</span><span id="line-124">    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">Store</span><span class="p">):</span>
-</span><span id="line-125">        <span class="k">return</span> <span class="n">store</span>
-</span><span id="line-126">    <span class="k">return</span> <span class="n">Store</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="n">data_dir</span><span class="p">(</span><span class="n">store</span><span class="p">))</span></div>
+</span><span id="line-123"><span class="k">def</span><span class="w"> </span><span class="nf">mk_store</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Store</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Store</span><span class="p">:</span>
+</span><span id="line-124"><span class="w">    </span><span class="sd">"""Resolve the ``store=`` seam: a :class:`Store`, a directory, or the default."""</span>
+</span><span id="line-125">    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">Store</span><span class="p">):</span>
+</span><span id="line-126">        <span class="k">return</span> <span class="n">store</span>
+</span><span id="line-127">    <span class="k">return</span> <span class="n">Store</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="n">data_dir</span><span class="p">(</span><span class="n">store</span><span class="p">))</span></div>
 
 </span></code></pre></div>
     </div></div>
@@ -325,12 +327,12 @@
 </footer>
     </div>
     
-    <script src="../../_static/documentation_options.js?v=f7cdbf68"></script>
+    <script src="../../_static/documentation_options.js?v=a83ce22a"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=fd10adb8"></script>
-    <script defer="defer" src="../../_static/theme.js?v=5db23cf8"></script>
+    <script defer="defer" src="../../_static/theme.js?v=49cc6205"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
 
 

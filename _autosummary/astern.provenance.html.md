@@ -91,13 +91,13 @@ The comparable half of a bridge id: `cse_01AB` and `session_01AB` agree.
 The transcript’s `bridge-session` record prefixes the id `cse_`; the commit
 trailer’s URL prefixes the same id `session_`. Only the tail is the identity.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> bridge_key('cse_01AB'), bridge_key('session_01AB'), bridge_key('01AB')
 ('01AB', '01AB', '01AB')
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### astern.provenance.changed_files(repo, sha)
 
@@ -169,25 +169,25 @@ Line `line` of the working-tree file (1-based), or `''`.
 A formatter rewrites `'x'` to `"x"` and a refactor renumbers a constant
 without either being a different line; this is the second pass that still finds it.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> loose('assert n == 42, "boom"')
 "assert n == 0, 'boom'"
 ```
 
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 ### astern.provenance.normalize(text)
 
 Collapse every run of whitespace, so indentation and reflow stop mattering.
-
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ```pycon
 >>> normalize('a\t b\n  c ')
 'a b c'
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### astern.provenance.rank_hits(hits)
 
@@ -196,9 +196,6 @@ Best evidence first: an exact match, from a writing tool, earliest in time.
 Earliest wins because the question is *who wrote this line*, and a later turn
 that merely re-wrote the same file is the answer to a different question.
 
-* **Return type:**
-  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
-
 ```pycon
 >>> a = {'match': 'loose', 'tool': 'Write', 'timestamp': '2026-01-01'}
 >>> b = {'match': 'exact', 'tool': 'Bash', 'timestamp': '2026-01-02'}
@@ -206,6 +203,9 @@ that merely re-wrote the same file is the answer to a different question.
 >>> [h['tool'] for h in rank_hits([a, b, c])]
 ['Write', 'Bash', 'Write']
 ```
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
 
 ### astern.provenance.repo_root(path)
 
@@ -220,15 +220,15 @@ The claude.ai session id in a commit message’s `Claude-Session:` trailer.
 
 Accepts the URL form and a bare `session_<id>`; returns the id without prefix.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`None`](https://docs.python.org/3/builtins/constants.html#None)
-
 ```pycon
 >>> session_id_from_trailer('no trailer here') is None
 True
 >>> session_id_from_trailer('x\n\nClaude-Session: session_01Z9')
 '01Z9'
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 ### astern.provenance.sessions_for_bridge(store, bridge_id)
 

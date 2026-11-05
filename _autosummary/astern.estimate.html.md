@@ -89,15 +89,15 @@ Everything about a session that costs no tokens to know.
 `turns` is the scope actually rendered (the new turns, on an incremental run),
 so the features describe the same thing the usage will.
 
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
-
 ```pycon
 >>> f = features({'source': {'size': 4096}}, [{'user_prompt': 'hi', 'assistant_chars': 10,
 ...     'n_tool_calls': 2, 'n_errors': 1, 'tool_result_chars': 99, 'tools': []}], 'x' * 40)
 >>> f['bytes'], f['n_turns'], f['prose_chars'], f['view_chars'], f['view_tokens_est']
 (4096, 1, 12, 40, 10)
 ```
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
 
 ### astern.estimate.fit(judgments)
 
@@ -107,9 +107,6 @@ Fit input tokens on view size; summarise output tokens, totals and cost.
 `features` and `usage`). With fewer than [`MIN_POINTS_FOR_OLS`](#astern.estimate.MIN_POINTS_FOR_OLS) points
 the slope is a ratio through the measured intercept, and `method` says so.
 
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
-
 ```pycon
 >>> fit([])['method']
 'prior'
@@ -118,6 +115,9 @@ the slope is a ratio through the measured intercept, and `method` says so.
 'ratio'
 ```
 
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
 ### astern.estimate.predict(model, features)
 
 Predicted tokens (and cost) of judging one session, with a ±1σ band.
@@ -125,9 +125,6 @@ Predicted tokens (and cost) of judging one session, with a ±1σ band.
 `input_model` in the result says which regression priced it — `single_pass`
 when the judged batch this model was fit on never retried, `all_calls`
 otherwise (see `_input_model()`).
-
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
 
 ```pycon
 >>> m = fit([])
@@ -140,6 +137,9 @@ True
 'all_calls'
 ```
 
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
 ### astern.estimate.round_trips(judgment)
 
 How many API calls one judge call took — recorded, else inferred from the cache.
@@ -147,9 +147,6 @@ How many API calls one judge call took — recorded, else inferred from the cach
 `n_iterations` (recorded since the CLI’s `usage.iterations` was captured) is
 authoritative. Older records have only the cache read to go on, and the threshold
 it is compared against is [`FIXED_CACHE_TOKENS`](#astern.estimate.FIXED_CACHE_TOKENS), not zero — see there.
-
-* **Return type:**
-  [`int`](https://docs.python.org/3/builtins/functions.html#int)
 
 ```pycon
 >>> round_trips({'usage': {'n_iterations': 3}})
@@ -159,3 +156,6 @@ it is compared against is [`FIXED_CACHE_TOKENS`](#astern.estimate.FIXED_CACHE_TO
 >>> round_trips({'usage': {'cache_read_input_tokens': 1319}})
 1
 ```
+
+* **Return type:**
+  [`int`](https://docs.python.org/3/builtins/functions.html#int)

@@ -1,4 +1,4 @@
-> built 2026-09-22 12:58 UTC from 605dfdd (main) · astern 0.0.9. Details: build_info.json
+> built 2026-11-05 12:17 UTC from 20bdbe4 (main) · astern 0.0.10. Details: build_info.json
 
 # index.html.md
 
@@ -344,15 +344,15 @@ Everything about a session that costs no tokens to know.
 `turns` is the scope actually rendered (the new turns, on an incremental run),
 so the features describe the same thing the usage will.
 
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
-
 ```pycon
 >>> f = features({'source': {'size': 4096}}, [{'user_prompt': 'hi', 'assistant_chars': 10,
 ...     'n_tool_calls': 2, 'n_errors': 1, 'tool_result_chars': 99, 'tools': []}], 'x' * 40)
 >>> f['bytes'], f['n_turns'], f['prose_chars'], f['view_chars'], f['view_tokens_est']
 (4096, 1, 12, 40, 10)
 ```
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
 
 ### astern.estimate.fit(judgments)
 
@@ -362,9 +362,6 @@ Fit input tokens on view size; summarise output tokens, totals and cost.
 `features` and `usage`). With fewer than [`MIN_POINTS_FOR_OLS`](_autosummary/astern.estimate.html.md#astern.estimate.MIN_POINTS_FOR_OLS) points
 the slope is a ratio through the measured intercept, and `method` says so.
 
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
-
 ```pycon
 >>> fit([])['method']
 'prior'
@@ -373,6 +370,9 @@ the slope is a ratio through the measured intercept, and `method` says so.
 'ratio'
 ```
 
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
 ### astern.estimate.predict(model, features)
 
 Predicted tokens (and cost) of judging one session, with a ±1σ band.
@@ -380,9 +380,6 @@ Predicted tokens (and cost) of judging one session, with a ±1σ band.
 `input_model` in the result says which regression priced it — `single_pass`
 when the judged batch this model was fit on never retried, `all_calls`
 otherwise (see `_input_model()`).
-
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
 
 ```pycon
 >>> m = fit([])
@@ -395,6 +392,9 @@ True
 'all_calls'
 ```
 
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
 ### astern.estimate.round_trips(judgment)
 
 How many API calls one judge call took — recorded, else inferred from the cache.
@@ -402,9 +402,6 @@ How many API calls one judge call took — recorded, else inferred from the cach
 `n_iterations` (recorded since the CLI’s `usage.iterations` was captured) is
 authoritative. Older records have only the cache read to go on, and the threshold
 it is compared against is [`FIXED_CACHE_TOKENS`](_autosummary/astern.estimate.html.md#astern.estimate.FIXED_CACHE_TOKENS), not zero — see there.
-
-* **Return type:**
-  [`int`](https://docs.python.org/3/builtins/functions.html#int)
 
 ```pycon
 >>> round_trips({'usage': {'n_iterations': 3}})
@@ -414,6 +411,9 @@ it is compared against is [`FIXED_CACHE_TOKENS`](_autosummary/astern.estimate.ht
 >>> round_trips({'usage': {'cache_read_input_tokens': 1319}})
 1
 ```
+
+* **Return type:**
+  [`int`](https://docs.python.org/3/builtins/functions.html#int)
 
 
 # _autosummary/astern.html.md
@@ -537,7 +537,7 @@ True
 The usage keys that are billed as input. `input_tokens` alone under-reports by
 an order of magnitude whenever the default system prompt is cached.
 
-### *class* astern.judge.Judgment(text, data=None, usage=<factory>, cost_usd=None, duration_ms=None, model='', prompt_chars=0, num_turns=1, raw=None, error=None)
+### *class* astern.judge.Judgment(text, data=None, usage=dict(), cost_usd=None, duration_ms=None, model='', prompt_chars=0, num_turns=1, raw=None, error=None)
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -585,13 +585,13 @@ retries included.
 
 Billed input of one call: fresh input plus both halves of the cache.
 
-* **Return type:**
-  [`int`](https://docs.python.org/3/builtins/functions.html#int)
-
 ```pycon
 >>> input_tokens({'input_tokens': 9, 'cache_creation_input_tokens': 4241})
 4250
 ```
+
+* **Return type:**
+  [`int`](https://docs.python.org/3/builtins/functions.html#int)
 
 ### astern.judge.replay_judge(answers, , default=None)
 
@@ -601,9 +601,6 @@ A prompt with no recorded answer is an *error* judgment unless `default` is
 given — silently answering `""` would let a test mistake a missing recording
 for a real (empty) verdict, which is the one thing a replay judge must not do.
 
-* **Return type:**
-  [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis), [`Judgment`](_autosummary/astern.judge.html.md#astern.judge.Judgment)]
-
 ```pycon
 >>> replay_judge({})('unseen').error
 'no recorded answer'
@@ -611,17 +608,20 @@ for a real (empty) verdict, which is the one thing a replay judge must not do.
 True
 ```
 
+* **Return type:**
+  [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis), [`Judgment`](_autosummary/astern.judge.html.md#astern.judge.Judgment)]
+
 ### astern.judge.total_tokens(usage)
 
 Input (all three flavours) plus output.
-
-* **Return type:**
-  [`int`](https://docs.python.org/3/builtins/functions.html#int)
 
 ```pycon
 >>> total_tokens({'input_tokens': 10, 'output_tokens': 5})
 15
 ```
+
+* **Return type:**
+  [`int`](https://docs.python.org/3/builtins/functions.html#int)
 
 
 # _autosummary/astern.ledger.html.md
@@ -809,13 +809,13 @@ The comparable half of a bridge id: `cse_01AB` and `session_01AB` agree.
 The transcript’s `bridge-session` record prefixes the id `cse_`; the commit
 trailer’s URL prefixes the same id `session_`. Only the tail is the identity.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> bridge_key('cse_01AB'), bridge_key('session_01AB'), bridge_key('01AB')
 ('01AB', '01AB', '01AB')
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### astern.provenance.changed_files(repo, sha)
 
@@ -887,25 +887,25 @@ Line `line` of the working-tree file (1-based), or `''`.
 A formatter rewrites `'x'` to `"x"` and a refactor renumbers a constant
 without either being a different line; this is the second pass that still finds it.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> loose('assert n == 42, "boom"')
 "assert n == 0, 'boom'"
 ```
 
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 ### astern.provenance.normalize(text)
 
 Collapse every run of whitespace, so indentation and reflow stop mattering.
-
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ```pycon
 >>> normalize('a\t b\n  c ')
 'a b c'
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### astern.provenance.rank_hits(hits)
 
@@ -914,9 +914,6 @@ Best evidence first: an exact match, from a writing tool, earliest in time.
 Earliest wins because the question is *who wrote this line*, and a later turn
 that merely re-wrote the same file is the answer to a different question.
 
-* **Return type:**
-  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
-
 ```pycon
 >>> a = {'match': 'loose', 'tool': 'Write', 'timestamp': '2026-01-01'}
 >>> b = {'match': 'exact', 'tool': 'Bash', 'timestamp': '2026-01-02'}
@@ -924,6 +921,9 @@ that merely re-wrote the same file is the answer to a different question.
 >>> [h['tool'] for h in rank_hits([a, b, c])]
 ['Write', 'Bash', 'Write']
 ```
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
 
 ### astern.provenance.repo_root(path)
 
@@ -938,15 +938,15 @@ The claude.ai session id in a commit message’s `Claude-Session:` trailer.
 
 Accepts the URL form and a bare `session_<id>`; returns the id without prefix.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`None`](https://docs.python.org/3/builtins/constants.html#None)
-
 ```pycon
 >>> session_id_from_trailer('no trailer here') is None
 True
 >>> session_id_from_trailer('x\n\nClaude-Session: session_01Z9')
 '01Z9'
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 ### astern.provenance.sessions_for_bridge(store, bridge_id)
 
@@ -1162,9 +1162,6 @@ synopsis, `<sid>:<turn_uuid>` for a turn. `project` / `since_days`
 narrow the *source*; the same filters exist at query time in [`recall()`](_autosummary/astern.recall.html.md#astern.recall.recall),
 where they are hard metadata filters and cost nothing to change.
 
-* **Return type:**
-  [`Iterator`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
-
 ```pycon
 >>> from astern.store import MemoryStore
 >>> store = MemoryStore()
@@ -1175,6 +1172,9 @@ where they are hard metadata filters and cost nothing to change.
 >>> rec['id'], rec['outcome'], rec['text'].splitlines()[0]
 ('s1', 'done', 'Goal: ship recall')
 ```
+
+* **Return type:**
+  [`Iterator`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
 
 ### astern.recall.subagent_turn_records()
 
@@ -1208,9 +1208,6 @@ Only the fields that answer *what was decided and what went wrong* — the
 session’s vocabulary and skill candidates are for the reports, not for
 recall, and padding the embedded text with them dilutes the signal.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> print(synopsis_text({'goal': 'unred the CI', 'outcome': 'done',
 ...                      'problems': [{'problem': 'stale lockfile',
@@ -1223,6 +1220,9 @@ Problems and solutions:
 Decisions:
 - pin numpy below 2
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### astern.recall.turn_records()
 
@@ -1347,14 +1347,14 @@ Returns the plan: one row per asset with its action — `install`, `ok`
 (already ours) or `conflict` (something else is there; left alone unless
 `force`).
 
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
-
 ```pycon
 >>> plan = install_skills(target='/nonexistent/host', dry_run=True)
 >>> plan['counts']
 {'install': 1, 'ok': 0, 'conflict': 0}
 ```
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
 
 
 # _autosummary/astern.sources.html.md
@@ -1381,10 +1381,11 @@ that is [`astern.turns`](_autosummary/astern.turns.html.md#module-astern.turns) 
 
 ### Functions
 
-| [`homes`](_autosummary/astern.sources.html.md#astern.sources.homes)([home])                               | Resolve the `home=` seam to a list of [`Home`](_autosummary/astern.sources.html.md#astern.sources.Home).   |
-|----------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|
-| [`iter_session_files`](_autosummary/astern.sources.html.md#astern.sources.iter_session_files)([home, since_days, ...]) | Yield transcript files across the given homes, newest first.                                   |
-| [`load_records`](_autosummary/astern.sources.html.md#astern.sources.load_records)(path)                          | Parse one JSONL transcript, tolerating blank and malformed lines.                              |
+| [`fast_loads`](_autosummary/astern.sources.html.md#astern.sources.fast_loads)(line)                            | Decode one JSON line: orjson where it provably agrees with `json.loads`.                     |
+|----------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
+| [`homes`](_autosummary/astern.sources.html.md#astern.sources.homes)([home])                               | Resolve the `home=` seam to a list of [`Home`](_autosummary/astern.sources.html.md#astern.sources.Home). |
+| [`iter_session_files`](_autosummary/astern.sources.html.md#astern.sources.iter_session_files)([home, since_days, ...]) | Yield transcript files across the given homes, newest first.                                 |
+| [`load_records`](_autosummary/astern.sources.html.md#astern.sources.load_records)(path, \*[, loads])             | Parse one JSONL transcript, tolerating blank and malformed lines.                            |
 
 ### Classes
 
@@ -1410,6 +1411,25 @@ Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
 One transcript on disk, with the facts the ledger keys on (`size`, `mtime`).
 
+### astern.sources.fast_loads(line)
+
+Decode one JSON line: orjson where it provably agrees with `json.loads`.
+
+Falls back to `json.loads` when orjson is not installed, when the line has a run
+of 19+ digits (orjson would silently turn a huge int into a float), and when orjson
+rejects the line (`NaN`/`Infinity`/`-Infinity`, a lone surrogate escape or an
+overflowing exponent are valid to `json.loads` only). A line neither decoder
+accepts raises `ValueError`, as `json.loads` does.
+
+```pycon
+>>> fast_loads('{"a": [1, 2.5, null]}')
+{'a': [1, 2.5, None]}
+>>> fast_loads('{"n": 18446744073709551616}')["n"] == 2**64
+True
+>>> fast_loads('[NaN]')[0] != fast_loads('[NaN]')[0]
+True
+```
+
 ### astern.sources.homes(home=None)
 
 Resolve the `home=` seam to a list of [`Home`](_autosummary/astern.sources.html.md#astern.sources.Home).
@@ -1418,13 +1438,13 @@ Resolve the `home=` seam to a list of [`Home`](_autosummary/astern.sources.html.
 path → that one home. An iterable → several. A home’s name is its directory
 name with the leading dot dropped (`claude`, `claude-iq`).
 
-* **Return type:**
-  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Home`](_autosummary/astern.sources.html.md#astern.sources.Home)]
-
 ```pycon
 >>> homes('/tmp/.claude-x')[0].name
 'claude-x'
 ```
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Home`](_autosummary/astern.sources.html.md#astern.sources.Home)]
 
 ### astern.sources.iter_session_files(home=None, , since_days=None, projects=None, max_sessions=None, kinds=('session',))
 
@@ -1438,12 +1458,24 @@ top-level sessions and/or their nested `subagent` / `workflow` transcripts.
 * **Return type:**
   [`Iterator`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator)[[`SessionFile`](_autosummary/astern.sources.html.md#astern.sources.SessionFile)]
 
-### astern.sources.load_records(path)
+### astern.sources.load_records(path, , loads=None)
 
 Parse one JSONL transcript, tolerating blank and malformed lines.
 
 Unknown record types are kept as-is: the format drifts between Claude Code
 versions and a parser that drops what it does not recognise loses data silently.
+
+`loads` decodes one stripped, non-empty line (default: [`fast_loads()`](_autosummary/astern.sources.html.md#astern.sources.fast_loads));
+a line it rejects with `ValueError` is skipped, as is any non-object value.
+
+```pycon
+>>> import json, tempfile
+>>> with tempfile.TemporaryDirectory() as d:
+...     p = Path(d) / "t.jsonl"
+...     _ = p.write_text('{"type": "x"}\n\noops\n[1]\n')
+...     load_records(p, loads=json.loads)
+[{'type': 'x'}]
+```
 
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
@@ -1493,7 +1525,7 @@ Bases: [`Store`](_autosummary/astern.store.html.md#astern.store.Store)
 
 The same five stores as dicts; what tests and dry runs use.
 
-### *class* astern.store.Store(root=<factory>)
+### *class* astern.store.Store(root=data_dir())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -1804,13 +1836,13 @@ so it carries the human’s words, not tooling noise.
 
 Strip CLI wrapper tags (and their content) from a user line → prose only.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> clean_prompt('<system-reminder>x</system-reminder> hello  world')
 'hello world'
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### astern.turns.is_user_prompt(msg)
 
@@ -1840,9 +1872,6 @@ Yield one JSON-able record per turn. See the module docstring for the shape.
 
 Session-level facts from the non-conversational records (last occurrence wins).
 
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
-
 ```pycon
 >>> session_meta([{"type": "ai-title", "aiTitle": "Fix CI"}, {"type": "pr-link",
 ...   "prNumber": 3, "prUrl": "u", "prRepository": "o/r"}, {"type": "user", "sessionId": "s",
@@ -1850,12 +1879,12 @@ Session-level facts from the non-conversational records (last occurrence wins).
 'Fix CI'
 ```
 
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
 ### astern.turns.tool_digest(name, inp)
 
 A short, comparable summary of a tool input: the command, the path, or the query.
-
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ```pycon
 >>> tool_digest('Bash', {'command': 'ls -la'})
@@ -1866,6 +1895,9 @@ A short, comparable summary of a tool input: the command, the path, or the query
 '{"message": "hi", "to": "a"}'
 ```
 
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 ### astern.turns.tool_input_text(name, inp)
 
 The full text of a tool input worth keeping verbatim: a command, a file body.
@@ -1873,15 +1905,15 @@ The full text of a tool input worth keeping verbatim: a command, a file body.
 Unlike [`tool_digest()`](_autosummary/astern.turns.html.md#astern.turns.tool_digest) (a short label for display) this is uncapped source
 text — a rewrites lens needs the whole script, not its first 200 chars.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> tool_input_text('Bash', {'command': 'ls -la'})
 'ls -la'
 >>> tool_input_text('Write', {'file_path': '/tmp/x.py', 'content': 'print(1)'})
 'print(1)'
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 
 # _autosummary/astern.views.html.md
@@ -1962,9 +1994,6 @@ A judge-sized markdown view of `turns`, never longer than `max_chars`.
 `prior` is the previous synopsis dict for the same session; when given, the
 view recaps it and `turns` should be the new turns only.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> ts = [{'index': i, 'user_prompt': 'x' * 400, 'assistant_full': 'y' * 400,
 ...        'tools': []} for i in range(20)]
@@ -1976,12 +2005,12 @@ view recaps it and `turns` should be the new turns only.
 True
 ```
 
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 ### astern.views.tool_summary(turn, , max_errors=3, digest_chars=70)
 
 One line for a turn’s tool calls: the mix, then the errors that matter.
-
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ```pycon
 >>> tool_summary({'tools': [{'name': 'Bash', 'digest': 'ls', 'is_error': False},
@@ -1992,17 +2021,20 @@ One line for a turn’s tool calls: the mix, then the errors that matter.
 ''
 ```
 
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 ### astern.views.view_stats(text)
 
 Size and coverage of a rendered view — the cost model’s cheap regressor.
-
-* **Return type:**
-  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
 
 ```pycon
 >>> view_stats('# Session s\n\n### turn 0\nuser: hi\n')
 {'chars': 33, 'tokens_est': 8, 'n_turns_shown': 1, 'n_turns_dropped': 0}
 ```
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
 
 
 # about-this-build.html.md
@@ -2011,16 +2043,18 @@ Size and coverage of a rendered view — the cost model’s cheap regressor.
 
 # About this build
 
-This documentation was built on **2026-09-22 12:58 UTC** from commit <a href="https://github.com/thorwhalen/astern/commit/605dfddb50ca474b5de55f08afc03b0e1d6b7bc4"><code>605dfdd</code></a> on branch <code>main</code>, for **astern 0.0.9** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-05 12:17 UTC** from commit <a href="https://github.com/thorwhalen/astern/commit/20bdbe41dad972c35707ddddead8de8fd72ba912"><code>20bdbe4</code></a> on branch <code>main</code>, for **astern 0.0.10** (from <code>pyproject.toml</code>).
 
-#### NOTE
-Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
+#### WARNING
+The documentation and the package may be misaligned:
+
+- The documented version (0.0.10) is behind the latest release on PyPI (0.0.11): `pip install astern` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/astern/commit/605dfddb50ca474b5de55f08afc03b0e1d6b7bc4"><code>605dfddb50ca474b5de55f08afc03b0e1d6b7bc4</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/astern/commit/20bdbe41dad972c35707ddddead8de8fd72ba912"><code>20bdbe41dad972c35707ddddead8de8fd72ba912</code></a> |
 | Branch              | <code>main</code>                                                                                                                                        |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -2031,18 +2065,18 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/astern</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/astern/actions/runs/35730292974">35730292974</a>    |
+| Run          | <a href="https://github.com/thorwhalen/astern/actions/runs/42025631892">42025631892</a>    |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>605dfddb50ca474b5de55f08afc03b0e1d6b7bc4</code> (in the history of the built commit) |
+| Event commit | <code>20bdbe41dad972c35707ddddead8de8fd72ba912</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.12  |
-| Sphinx   | 9.1.0   |
+| epythet  | 0.2.22  |
+| Sphinx   | 9.1.1   |
 | docutils | 0.22.4  |
-| Python   | 3.12.14 |
+| Python   | 3.12.15 |
 
 ## Configuration as resolved
 
@@ -2058,14 +2092,14 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/astern/0.0.9/">0.0.9</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/astern/0.0.11/">0.0.11</a>, newer than the documented version (0.0.10).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/astern && cd astern
-git checkout 605dfddb50ca474b5de55f08afc03b0e1d6b7bc4
-pip install "epythet==0.2.12"
+git checkout 20bdbe41dad972c35707ddddead8de8fd72ba912
+pip install "epythet==0.2.22"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 

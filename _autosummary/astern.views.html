@@ -29,7 +29,8 @@
 <meta content="astern.views | astern" property="og:title"/>
 <meta content="astern.views | astern" name="twitter:title"/>
 <link href="../_static/pygments.css?v=d75fae25" rel="stylesheet" type="text/css"/>
-<link href="../_static/theme.css?v=d6d7c91b" rel="stylesheet" type="text/css"/>
+<link href="../_static/theme.css?v=009055c6" rel="stylesheet" type="text/css"/>
+<link href="../_static/sphinx_autodoc_typehints.css?v=057ac668" rel="stylesheet" type="text/css"/>
 <link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
 <link href="../_static/epythet.css?v=bab8646e" rel="stylesheet" type="text/css"/>
 <link href="../search.html" rel="search" title="Search"/>
@@ -213,11 +214,6 @@ and becomes noise, so the next step (dropping whole turns) is the honest one.</p
 <dd><p>A judge-sized markdown view of <code class="docutils literal notranslate"><span class="pre">turns</span></code>, never longer than <code class="docutils literal notranslate"><span class="pre">max_chars</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">prior</span></code> is the previous synopsis dict for the same session; when given, the
 view recaps it and <code class="docutils literal notranslate"><span class="pre">turns</span></code> should be the new turns only.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
-</dd>
-</dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">'index'</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span> <span class="s1">'user_prompt'</span><span class="p">:</span> <span class="s1">'x'</span> <span class="o">*</span> <span class="mi">400</span><span class="p">,</span> <span class="s1">'assistant_full'</span><span class="p">:</span> <span class="s1">'y'</span> <span class="o">*</span> <span class="mi">400</span><span class="p">,</span>
 </span><span id="line-2"><span class="gp">... </span>       <span class="s1">'tools'</span><span class="p">:</span> <span class="p">[]}</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)]</span>
 </span><span id="line-3"><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">session_view</span><span class="p">({</span><span class="s1">'session_id'</span><span class="p">:</span> <span class="s1">'s'</span><span class="p">},</span> <span class="n">ts</span><span class="p">,</span> <span class="n">max_chars</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
@@ -228,16 +224,16 @@ view recaps it and <code class="docutils literal notranslate"><span class="pre">
 </span><span id="line-8"><span class="go">True</span>
 </span></code></pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="astern.views.tool_summary">
 <span class="sig-prename descclassname"><span class="pre">astern.views.</span></span><span class="sig-name descname"><span class="pre">tool_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">turn</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digest_chars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">70</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astern/views.html#tool_summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.views.tool_summary" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.views.tool_summary'">¶</a></dt>
 <dd><p>One line for a turn’s tool calls: the mix, then the errors that matter.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
-</dd>
-</dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">tool_summary</span><span class="p">({</span><span class="s1">'tools'</span><span class="p">:</span> <span class="p">[{</span><span class="s1">'name'</span><span class="p">:</span> <span class="s1">'Bash'</span><span class="p">,</span> <span class="s1">'digest'</span><span class="p">:</span> <span class="s1">'ls'</span><span class="p">,</span> <span class="s1">'is_error'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
 </span><span id="line-2"><span class="gp">... </span>                        <span class="p">{</span><span class="s1">'name'</span><span class="p">:</span> <span class="s1">'Bash'</span><span class="p">,</span> <span class="s1">'digest'</span><span class="p">:</span> <span class="s1">'uv build'</span><span class="p">,</span> <span class="s1">'is_error'</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
 </span><span id="line-3"><span class="gp">... </span>                        <span class="p">{</span><span class="s1">'name'</span><span class="p">:</span> <span class="s1">'Edit'</span><span class="p">,</span> <span class="s1">'digest'</span><span class="p">:</span> <span class="s1">'/a.py'</span><span class="p">,</span> <span class="s1">'is_error'</span><span class="p">:</span> <span class="kc">False</span><span class="p">}]})</span>
@@ -246,20 +242,25 @@ view recaps it and <code class="docutils literal notranslate"><span class="pre">
 </span><span id="line-6"><span class="go">''</span>
 </span></code></pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="astern.views.view_stats">
 <span class="sig-prename descclassname"><span class="pre">astern.views.</span></span><span class="sig-name descname"><span class="pre">view_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astern/views.html#view_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.views.view_stats" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.views.view_stats'">¶</a></dt>
 <dd><p>Size and coverage of a rendered view — the cost model’s cheap regressor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
-</dd>
-</dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">view_stats</span><span class="p">(</span><span class="s1">'# Session s</span><span class="se">\n\n</span><span class="s1">### turn 0</span><span class="se">\n</span><span class="s1">user: hi</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
 </span><span id="line-2"><span class="go">{'chars': 33, 'tokens_est': 8, 'n_turns_shown': 1, 'n_turns_dropped': 0}</span>
 </span></code></pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
 </dd></dl>
 </section>
 </div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
@@ -283,11 +284,11 @@ view recaps it and <code class="docutils literal notranslate"><span class="pre">
 </div>
 </footer>
 </div>
-<script src="../_static/documentation_options.js?v=f7cdbf68"></script>
+<script src="../_static/documentation_options.js?v=a83ce22a"></script>
 <script src="../_static/doctools.js?v=fd6eb6e6"></script>
 <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../_static/copybutton.js?v=fd10adb8"></script>
-<script defer="defer" src="../_static/theme.js?v=5db23cf8"></script>
+<script defer="defer" src="../_static/theme.js?v=49cc6205"></script>
 </body>
 </html>

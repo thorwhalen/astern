@@ -20,10 +20,11 @@ that is [`astern.turns`](astern.turns.html.md#module-astern.turns) (turn pairs) 
 
 ### Functions
 
-| [`homes`](#astern.sources.homes)([home])                               | Resolve the `home=` seam to a list of [`Home`](#astern.sources.Home).   |
-|----------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|
-| [`iter_session_files`](#astern.sources.iter_session_files)([home, since_days, ...]) | Yield transcript files across the given homes, newest first.                                   |
-| [`load_records`](#astern.sources.load_records)(path)                          | Parse one JSONL transcript, tolerating blank and malformed lines.                              |
+| [`fast_loads`](#astern.sources.fast_loads)(line)                            | Decode one JSON line: orjson where it provably agrees with `json.loads`.                     |
+|----------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
+| [`homes`](#astern.sources.homes)([home])                               | Resolve the `home=` seam to a list of [`Home`](#astern.sources.Home). |
+| [`iter_session_files`](#astern.sources.iter_session_files)([home, since_days, ...]) | Yield transcript files across the given homes, newest first.                                 |
+| [`load_records`](#astern.sources.load_records)(path, \*[, loads])             | Parse one JSONL transcript, tolerating blank and malformed lines.                            |
 
 ### Classes
 
@@ -49,6 +50,25 @@ Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
 One transcript on disk, with the facts the ledger keys on (`size`, `mtime`).
 
+### astern.sources.fast_loads(line)
+
+Decode one JSON line: orjson where it provably agrees with `json.loads`.
+
+Falls back to `json.loads` when orjson is not installed, when the line has a run
+of 19+ digits (orjson would silently turn a huge int into a float), and when orjson
+rejects the line (`NaN`/`Infinity`/`-Infinity`, a lone surrogate escape or an
+overflowing exponent are valid to `json.loads` only). A line neither decoder
+accepts raises `ValueError`, as `json.loads` does.
+
+```pycon
+>>> fast_loads('{"a": [1, 2.5, null]}')
+{'a': [1, 2.5, None]}
+>>> fast_loads('{"n": 18446744073709551616}')["n"] == 2**64
+True
+>>> fast_loads('[NaN]')[0] != fast_loads('[NaN]')[0]
+True
+```
+
 ### astern.sources.homes(home=None)
 
 Resolve the `home=` seam to a list of [`Home`](#astern.sources.Home).
@@ -57,13 +77,13 @@ Resolve the `home=` seam to a list of [`Home`](#astern.sources.Home).
 path → that one home. An iterable → several. A home’s name is its directory
 name with the leading dot dropped (`claude`, `claude-iq`).
 
-* **Return type:**
-  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Home`](#astern.sources.Home)]
-
 ```pycon
 >>> homes('/tmp/.claude-x')[0].name
 'claude-x'
 ```
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Home`](#astern.sources.Home)]
 
 ### astern.sources.iter_session_files(home=None, , since_days=None, projects=None, max_sessions=None, kinds=('session',))
 
@@ -77,12 +97,24 @@ top-level sessions and/or their nested `subagent` / `workflow` transcripts.
 * **Return type:**
   [`Iterator`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator)[[`SessionFile`](#astern.sources.SessionFile)]
 
-### astern.sources.load_records(path)
+### astern.sources.load_records(path, , loads=None)
 
 Parse one JSONL transcript, tolerating blank and malformed lines.
 
 Unknown record types are kept as-is: the format drifts between Claude Code
 versions and a parser that drops what it does not recognise loses data silently.
+
+`loads` decodes one stripped, non-empty line (default: [`fast_loads()`](#astern.sources.fast_loads));
+a line it rejects with `ValueError` is skipped, as is any non-object value.
+
+```pycon
+>>> import json, tempfile
+>>> with tempfile.TemporaryDirectory() as d:
+...     p = Path(d) / "t.jsonl"
+...     _ = p.write_text('{"type": "x"}\n\noops\n[1]\n')
+...     load_records(p, loads=json.loads)
+[{'type': 'x'}]
+```
 
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]

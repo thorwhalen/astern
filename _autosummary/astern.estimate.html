@@ -29,7 +29,8 @@
 <meta content="astern.estimate | astern" property="og:title"/>
 <meta content="astern.estimate | astern" name="twitter:title"/>
 <link href="../_static/pygments.css?v=d75fae25" rel="stylesheet" type="text/css"/>
-<link href="../_static/theme.css?v=d6d7c91b" rel="stylesheet" type="text/css"/>
+<link href="../_static/theme.css?v=009055c6" rel="stylesheet" type="text/css"/>
+<link href="../_static/sphinx_autodoc_typehints.css?v=057ac668" rel="stylesheet" type="text/css"/>
 <link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
 <link href="../_static/epythet.css?v=bab8646e" rel="stylesheet" type="text/css"/>
 <link href="../search.html" rel="search" title="Search"/>
@@ -232,17 +233,17 @@ only when nothing has been judged yet — a prior, replaced by the first real fi
 <dd><p>Everything about a session that costs no tokens to know.</p>
 <p><code class="docutils literal notranslate"><span class="pre">turns</span></code> is the scope actually rendered (the new turns, on an incremental run),
 so the features describe the same thing the usage will.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
-</dd>
-</dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">features</span><span class="p">({</span><span class="s1">'source'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'size'</span><span class="p">:</span> <span class="mi">4096</span><span class="p">}},</span> <span class="p">[{</span><span class="s1">'user_prompt'</span><span class="p">:</span> <span class="s1">'hi'</span><span class="p">,</span> <span class="s1">'assistant_chars'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
 </span><span id="line-2"><span class="gp">... </span>    <span class="s1">'n_tool_calls'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'n_errors'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'tool_result_chars'</span><span class="p">:</span> <span class="mi">99</span><span class="p">,</span> <span class="s1">'tools'</span><span class="p">:</span> <span class="p">[]}],</span> <span class="s1">'x'</span> <span class="o">*</span> <span class="mi">40</span><span class="p">)</span>
 </span><span id="line-3"><span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="p">[</span><span class="s1">'bytes'</span><span class="p">],</span> <span class="n">f</span><span class="p">[</span><span class="s1">'n_turns'</span><span class="p">],</span> <span class="n">f</span><span class="p">[</span><span class="s1">'prose_chars'</span><span class="p">],</span> <span class="n">f</span><span class="p">[</span><span class="s1">'view_chars'</span><span class="p">],</span> <span class="n">f</span><span class="p">[</span><span class="s1">'view_tokens_est'</span><span class="p">]</span>
 </span><span id="line-4"><span class="go">(4096, 1, 12, 40, 10)</span>
 </span></code></pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="astern.estimate.fit">
@@ -251,11 +252,6 @@ so the features describe the same thing the usage will.</p>
 <p><code class="docutils literal notranslate"><span class="pre">judgments</span></code> are the records <code class="xref py py-mod docutils literal notranslate"><span class="pre">astern.lenses.synopsis</span></code> stores (each with
 <code class="docutils literal notranslate"><span class="pre">features</span></code> and <code class="docutils literal notranslate"><span class="pre">usage</span></code>). With fewer than <a class="reference internal" href="#astern.estimate.MIN_POINTS_FOR_OLS" title="astern.estimate.MIN_POINTS_FOR_OLS"><code class="xref py py-data docutils literal notranslate"><span class="pre">MIN_POINTS_FOR_OLS</span></code></a> points
 the slope is a ratio through the measured intercept, and <code class="docutils literal notranslate"><span class="pre">method</span></code> says so.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
-</dd>
-</dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">fit</span><span class="p">([])[</span><span class="s1">'method'</span><span class="p">]</span>
 </span><span id="line-2"><span class="go">'prior'</span>
 </span><span id="line-3"><span class="gp">&gt;&gt;&gt; </span><span class="n">fit</span><span class="p">([{</span><span class="s1">'features'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'view_chars'</span><span class="p">:</span> <span class="mi">4000</span><span class="p">,</span> <span class="s1">'n_turns'</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
@@ -263,6 +259,11 @@ the slope is a ratio through the measured intercept, and <code class="docutils l
 </span><span id="line-5"><span class="go">'ratio'</span>
 </span></code></pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="astern.estimate.predict">
@@ -271,11 +272,6 @@ the slope is a ratio through the measured intercept, and <code class="docutils l
 <p><code class="docutils literal notranslate"><span class="pre">input_model</span></code> in the result says which regression priced it — <code class="docutils literal notranslate"><span class="pre">single_pass</span></code>
 when the judged batch this model was fit on never retried, <code class="docutils literal notranslate"><span class="pre">all_calls</span></code>
 otherwise (see <code class="xref py py-func docutils literal notranslate"><span class="pre">_input_model()</span></code>).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
-</dd>
-</dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">fit</span><span class="p">([])</span>
 </span><span id="line-2"><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="p">{</span><span class="s1">'view_chars'</span><span class="p">:</span> <span class="mi">10000</span><span class="p">})</span>
 </span><span id="line-3"><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="p">[</span><span class="s1">'input_tokens'</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="s1">'total_tokens'</span><span class="p">]</span> <span class="o">==</span> <span class="n">p</span><span class="p">[</span><span class="s1">'input_tokens'</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="s1">'output_tokens'</span><span class="p">]</span>
@@ -286,6 +282,11 @@ otherwise (see <code class="xref py py-func docutils literal notranslate"><span 
 </span><span id="line-8"><span class="go">'all_calls'</span>
 </span></code></pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="astern.estimate.round_trips">
@@ -294,11 +295,6 @@ otherwise (see <code class="xref py py-func docutils literal notranslate"><span 
 <p><code class="docutils literal notranslate"><span class="pre">n_iterations</span></code> (recorded since the CLI’s <code class="docutils literal notranslate"><span class="pre">usage.iterations</span></code> was captured) is
 authoritative. Older records have only the cache read to go on, and the threshold
 it is compared against is <a class="reference internal" href="#astern.estimate.FIXED_CACHE_TOKENS" title="astern.estimate.FIXED_CACHE_TOKENS"><code class="xref py py-data docutils literal notranslate"><span class="pre">FIXED_CACHE_TOKENS</span></code></a>, not zero — see there.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" rel="nofollow noopener" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
-</dd>
-</dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">round_trips</span><span class="p">({</span><span class="s1">'usage'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'n_iterations'</span><span class="p">:</span> <span class="mi">3</span><span class="p">}})</span>
 </span><span id="line-2"><span class="go">3</span>
 </span><span id="line-3"><span class="gp">&gt;&gt;&gt; </span><span class="n">round_trips</span><span class="p">({</span><span class="s1">'usage'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'cache_read_input_tokens'</span><span class="p">:</span> <span class="mi">5197</span><span class="p">}})</span>
@@ -307,6 +303,11 @@ it is compared against is <a class="reference internal" href="#astern.estimate.F
 </span><span id="line-6"><span class="go">1</span>
 </span></code></pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
 </dd></dl>
 </section>
 </div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
@@ -332,11 +333,11 @@ it is compared against is <a class="reference internal" href="#astern.estimate.F
 </div>
 </footer>
 </div>
-<script src="../_static/documentation_options.js?v=f7cdbf68"></script>
+<script src="../_static/documentation_options.js?v=a83ce22a"></script>
 <script src="../_static/doctools.js?v=fd6eb6e6"></script>
 <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../_static/copybutton.js?v=fd10adb8"></script>
-<script defer="defer" src="../_static/theme.js?v=5db23cf8"></script>
+<script defer="defer" src="../_static/theme.js?v=49cc6205"></script>
 </body>
 </html>

@@ -14,6 +14,7 @@ astern.sources
 
    .. autosummary::
    
+      fast_loads
       homes
       iter_session_files
       load_records

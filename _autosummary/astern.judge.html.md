@@ -80,7 +80,7 @@ True
 The usage keys that are billed as input. `input_tokens` alone under-reports by
 an order of magnitude whenever the default system prompt is cached.
 
-### *class* astern.judge.Judgment(text, data=None, usage=<factory>, cost_usd=None, duration_ms=None, model='', prompt_chars=0, num_turns=1, raw=None, error=None)
+### *class* astern.judge.Judgment(text, data=None, usage=dict(), cost_usd=None, duration_ms=None, model='', prompt_chars=0, num_turns=1, raw=None, error=None)
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -128,13 +128,13 @@ retries included.
 
 Billed input of one call: fresh input plus both halves of the cache.
 
-* **Return type:**
-  [`int`](https://docs.python.org/3/builtins/functions.html#int)
-
 ```pycon
 >>> input_tokens({'input_tokens': 9, 'cache_creation_input_tokens': 4241})
 4250
 ```
+
+* **Return type:**
+  [`int`](https://docs.python.org/3/builtins/functions.html#int)
 
 ### astern.judge.replay_judge(answers, , default=None)
 
@@ -144,9 +144,6 @@ A prompt with no recorded answer is an *error* judgment unless `default` is
 given — silently answering `""` would let a test mistake a missing recording
 for a real (empty) verdict, which is the one thing a replay judge must not do.
 
-* **Return type:**
-  [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis), [`Judgment`](#astern.judge.Judgment)]
-
 ```pycon
 >>> replay_judge({})('unseen').error
 'no recorded answer'
@@ -154,14 +151,17 @@ for a real (empty) verdict, which is the one thing a replay judge must not do.
 True
 ```
 
+* **Return type:**
+  [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis), [`Judgment`](#astern.judge.Judgment)]
+
 ### astern.judge.total_tokens(usage)
 
 Input (all three flavours) plus output.
-
-* **Return type:**
-  [`int`](https://docs.python.org/3/builtins/functions.html#int)
 
 ```pycon
 >>> total_tokens({'input_tokens': 10, 'output_tokens': 5})
 15
 ```
+
+* **Return type:**
+  [`int`](https://docs.python.org/3/builtins/functions.html#int)

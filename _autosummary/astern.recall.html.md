@@ -184,9 +184,6 @@ synopsis, `<sid>:<turn_uuid>` for a turn. `project` / `since_days`
 narrow the *source*; the same filters exist at query time in [`recall()`](#astern.recall.recall),
 where they are hard metadata filters and cost nothing to change.
 
-* **Return type:**
-  [`Iterator`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
-
 ```pycon
 >>> from astern.store import MemoryStore
 >>> store = MemoryStore()
@@ -197,6 +194,9 @@ where they are hard metadata filters and cost nothing to change.
 >>> rec['id'], rec['outcome'], rec['text'].splitlines()[0]
 ('s1', 'done', 'Goal: ship recall')
 ```
+
+* **Return type:**
+  [`Iterator`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
 
 ### astern.recall.subagent_turn_records()
 
@@ -230,9 +230,6 @@ Only the fields that answer *what was decided and what went wrong* — the
 session’s vocabulary and skill candidates are for the reports, not for
 recall, and padding the embedded text with them dilutes the signal.
 
-* **Return type:**
-  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
-
 ```pycon
 >>> print(synopsis_text({'goal': 'unred the CI', 'outcome': 'done',
 ...                      'problems': [{'problem': 'stale lockfile',
@@ -245,6 +242,9 @@ Problems and solutions:
 Decisions:
 - pin numpy below 2
 ```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### astern.recall.turn_records()
 
