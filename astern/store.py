@@ -67,7 +67,8 @@ class _Suffixed(MutableMapping):
 
     def __iter__(self):
         for k in self._inner:
-            yield k.removesuffix(self._suffix)
+            # dol yields OS-separated keys; the store's keys are always "a/b" (SSOT)
+            yield k.removesuffix(self._suffix).replace(os.sep, "/")
 
     def __len__(self):
         return len(self._inner)

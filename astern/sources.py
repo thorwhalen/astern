@@ -15,9 +15,14 @@ from __future__ import annotations
 import json
 import os
 import time
-from collections.abc import Iterable, Iterator
+from collections.abc import Callable, Iterable, Iterator
 from dataclasses import dataclass
 from pathlib import Path
+
+try:  # optional speed-up (``pip install astern[fast]``); never required
+    from orjson import loads as _orjson_loads
+except ImportError:  # pragma: no cover - exercised by monkeypatching in the tests
+    _orjson_loads = None
 
 DFLT_HOME = Path.home() / ".claude"
 
@@ -164,12 +169,63 @@ def iter_session_files(
         yield sf
 
 
-def load_records(path: str | Path) -> list[dict]:
+#: orjson turns an integer beyond the 64-bit range into a float where ``json.loads``
+#: returns the exact int. 19 digits is the shortest run that can overflow, so a line
+#: holding one (in a number or, harmlessly, in a string) is left to ``json.loads``.
+#: The check maps every ASCII digit to ``1`` in one C-level pass and looks for 19 of
+#: them in a row -- several times cheaper than a ``\d{19}`` regex, which costs more
+#: than the orjson decode it guards.
+_DIGITS_TO_ONES = bytes.maketrans(b"0123456789", b"1" * 10)
+_LONG_DIGIT_RUN = b"1" * 19
+
+
+def fast_loads(line: str):
+    """Decode one JSON line: orjson where it provably agrees with ``json.loads``.
+
+    Falls back to ``json.loads`` when orjson is not installed, when the line has a run
+    of 19+ digits (orjson would silently turn a huge int into a float), and when orjson
+    rejects the line (``NaN``/``Infinity``/``-Infinity``, a lone surrogate escape or an
+    overflowing exponent are valid to ``json.loads`` only). A line neither decoder
+    accepts raises ``ValueError``, as ``json.loads`` does.
+
+    >>> fast_loads('{"a": [1, 2.5, null]}')
+    {'a': [1, 2.5, None]}
+    >>> fast_loads('{"n": 18446744073709551616}')["n"] == 2**64
+    True
+    >>> fast_loads('[NaN]')[0] != fast_loads('[NaN]')[0]
+    True
+    """
+    if _orjson_loads is not None:
+        raw = line.encode(
+            "utf-8", "surrogatepass"
+        )  # lone surrogates: orjson rejects them
+        if _LONG_DIGIT_RUN not in raw.translate(_DIGITS_TO_ONES):
+            try:
+                return _orjson_loads(raw)
+            except ValueError:
+                pass
+    return json.loads(line)
+
+
+def load_records(
+    path: str | Path, *, loads: Callable[[str], object] | None = None
+) -> list[dict]:
     """Parse one JSONL transcript, tolerating blank and malformed lines.
 
     Unknown record types are kept as-is: the format drifts between Claude Code
     versions and a parser that drops what it does not recognise loses data silently.
+
+    ``loads`` decodes one stripped, non-empty line (default: :func:`fast_loads`);
+    a line it rejects with ``ValueError`` is skipped, as is any non-object value.
+
+    >>> import json, tempfile
+    >>> with tempfile.TemporaryDirectory() as d:
+    ...     p = Path(d) / "t.jsonl"
+    ...     _ = p.write_text('{"type": "x"}\\n\\noops\\n[1]\\n')
+    ...     load_records(p, loads=json.loads)
+    [{'type': 'x'}]
     """
+    loads = loads or fast_loads
     out: list[dict] = []
     try:
         text = Path(path).read_text(encoding="utf-8", errors="replace")
@@ -180,7 +236,7 @@ def load_records(path: str | Path) -> list[dict]:
         if not line:
             continue
         try:
-            obj = json.loads(line)
+            obj = loads(line)
         except ValueError:
             continue
         if isinstance(obj, dict):

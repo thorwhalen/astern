@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- `sources.load_records` decodes with orjson when it is installed (`pip install astern[fast]`), falling back to `json.loads` for any line orjson rejects (`NaN`/`Infinity`, lone surrogate escapes) and any line with a run of 19+ digits (orjson turns huge ints into floats). Results are identical either way. New keyword-only `loads=` argument injects a decoder; `fast_loads` is the default.
+
 ## [0.0.1] - 2026-09-07
 
 ### Added

@@ -16,6 +16,7 @@ from __future__ import annotations
 import itertools
 import json
 import os
+import re
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
@@ -27,7 +28,7 @@ _BASE = datetime(2026, 9, 1, tzinfo=timezone.utc)
 
 def _slug(cwd: str) -> str:
     """A project-dir-name-shaped slug for a ``cwd``, mirroring Claude Code's own scheme."""
-    return "-" + cwd.strip("/").replace("/", "-")
+    return re.sub(r"[^A-Za-z0-9]", "-", cwd)
 
 
 def _counter():
