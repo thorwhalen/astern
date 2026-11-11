@@ -26,6 +26,16 @@ except ImportError:  # pragma: no cover - exercised by monkeypatching in the tes
 
 DFLT_HOME = Path.home() / ".claude"
 
+#: The ``home=`` value meaning "every home this machine can see": each local
+#: ``~/.claude*`` account home and each mirror of another machine's home (see
+#: :func:`discover_homes`). ``$ASTERN_HOME``, when set, still pins the homes.
+ALL_HOMES = "all"
+
+#: Where mirrors of other machines' homes live when nothing says otherwise: ``xa``
+#: rsyncs each configured SSH host's ``~/.claude`` into ``<cache_dir>/<host>/``.
+DFLT_XA_CONFIG = Path("~/.config/xa/config.toml")
+DFLT_MIRRORS_DIR = Path("~/.cache/xa/remotes")
+
 #: How a nested transcript relates to its parent session. ``session`` is a top-level
 #: transcript; ``subagent`` lives under ``<sid>/subagents/``; ``workflow`` under a
 #: ``<sid>/wf_*/`` directory (the ``Workflow`` tool's runs).
@@ -44,20 +54,155 @@ class Home:
         return self.path / "projects"
 
 
+def mirrors_dir() -> Path:
+    """The directory holding mirrors of other machines' homes, one subdir per host.
+
+    ``$ASTERN_MIRRORS`` wins; else ``xa``'s ``[settings] cache_dir`` (from
+    ``$XA_CONFIG`` or ``~/.config/xa/config.toml``); else ``~/.cache/xa/remotes``.
+    """
+    env = os.environ.get("ASTERN_MIRRORS")
+    if env:
+        return Path(env).expanduser()
+    cfg = Path(os.environ.get("XA_CONFIG") or DFLT_XA_CONFIG).expanduser()
+    try:
+        import tomllib  # py>=3.11
+
+        cache_dir = tomllib.loads(cfg.read_text()).get("settings", {}).get("cache_dir")
+    except (ImportError, OSError, ValueError):
+        cache_dir = None
+    return Path(cache_dir or DFLT_MIRRORS_DIR).expanduser()
+
+
+def discover_homes(
+    *, root: str | Path | None = None, mirrors: str | Path | None = None
+) -> list[Home]:
+    """Every home this machine can see: local accounts first, then mirrors.
+
+    Local: each ``<root>/.claude*`` directory with a ``projects/`` subdir (``root``
+    defaults to ``~``), named as :func:`homes` names them (``claude``,
+    ``claude-iq``). Mirrors: each ``<mirrors>/<host>/`` with a ``projects/`` subdir
+    (``mirrors`` defaults to :func:`mirrors_dir`), named after the host.
+
+    >>> import tempfile
+    >>> with tempfile.TemporaryDirectory() as d:
+    ...     for sub in ('.claude/projects', '.claude-iq/projects', 'm/host1/projects'):
+    ...         Path(d, sub).mkdir(parents=True)
+    ...     [h.name for h in discover_homes(root=d, mirrors=Path(d, 'm'))]
+    ['claude', 'claude-iq', 'host1']
+    """
+    import re
+
+    root = Path(root).expanduser() if root else Path.home()
+    mdir = Path(mirrors).expanduser() if mirrors else mirrors_dir()
+    account = re.compile(r"\.claude(-[A-Za-z0-9_]+)?")  # not .claude.bak, .claude.json
+    local = sorted(
+        p
+        for p in root.glob(".claude*")
+        if account.fullmatch(p.name) and (p / "projects").is_dir()
+    )
+    out: list[Home] = []
+    taken: set[str] = set()
+    real: set[Path] = set()
+
+    def _add(name: str, path: Path) -> None:
+        rp = path.resolve()
+        if rp in real:  # a symlinked alias of a home already listed
+            return
+        real.add(rp)
+        name = name if name not in taken else f"remote-{name}"
+        taken.add(name)
+        out.append(Home(name=name, path=path))
+
+    for p in local:
+        _add(p.name.lstrip("."), p)
+    if mdir.is_dir():
+        for p in sorted(mdir.iterdir()):
+            if (p / "projects").is_dir():
+                _add(p.name, p)
+    return out
+
+
+#: Skip a mirror refresh when the last one is younger than this (seconds), so a
+#: burst of searches pays for one ``xa sync``, not one each.
+DFLT_PULL_MIN_INTERVAL = 600.0
+
+
+def _pull_stamp() -> Path:
+    from astern.store import data_dir
+
+    return data_dir() / "mirrors_pulled_at"
+
+
+def pull_mirrors(
+    *,
+    force: bool = False,
+    timeout: float = 120.0,
+    min_interval: float = DFLT_PULL_MIN_INTERVAL,
+) -> dict:
+    """Refresh the mirrors of other machines' homes (``xa sync``), best effort.
+
+    A no-op returning ``{"pulled": False, ...}`` when ``xa`` is not installed, so
+    nothing here depends on it. Skipped when the last refresh is younger than
+    ``min_interval`` seconds (``force`` overrides, and is passed on to ``xa``). Never
+    prompts: stdin is closed, so an ssh asking for a password fails instead of
+    waiting, and ``timeout`` bounds an unreachable host.
+    """
+    import shutil
+    import subprocess
+
+    xa = shutil.which("xa")
+    if not xa:
+        return {"pulled": False, "reason": "xa not on PATH"}
+    stamp = _pull_stamp()
+    try:
+        age = time.time() - stamp.stat().st_mtime
+    except OSError:
+        age = None
+    if not force and age is not None and age < min_interval:
+        return {"pulled": False, "reason": f"refreshed {age:.0f}s ago"}
+    argv = [xa, "sync"] + (["--force"] if force else [])
+    try:
+        proc = subprocess.run(
+            argv,
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+            check=False,
+            stdin=subprocess.DEVNULL,
+        )
+    except subprocess.TimeoutExpired:
+        return {"pulled": False, "reason": f"xa sync timed out after {timeout}s"}
+    try:
+        stamp.parent.mkdir(parents=True, exist_ok=True)
+        stamp.touch()
+    except OSError:
+        pass
+    return {
+        "pulled": proc.returncode == 0,
+        "output": (proc.stdout + proc.stderr).strip()[-2000:],
+    }
+
+
 def homes(
     home: str | Path | Home | Iterable[str | Path | Home] | None = None,
 ) -> list[Home]:
     """Resolve the ``home=`` seam to a list of :class:`Home`.
 
-    ``None`` → the one default home (``$ASTERN_HOME`` or ``~/.claude``). A string or
-    path → that one home. An iterable → several. A home's name is its directory
-    name with the leading dot dropped (``claude``, ``claude-iq``).
+    ``None`` → the one default home (``$ASTERN_HOME`` or ``~/.claude``).
+    ``"all"`` (:data:`ALL_HOMES`) → ``$ASTERN_HOME`` if set, else every home
+    :func:`discover_homes` finds (both accounts, plus mirrors of other machines).
+    A string or path → that one home. An iterable → several. A home's name is its
+    directory name with the leading dot dropped (``claude``, ``claude-iq``).
 
     >>> homes('/tmp/.claude-x')[0].name
     'claude-x'
     """
+    env = os.environ.get("ASTERN_HOME")
+    if isinstance(home, str) and home == ALL_HOMES:
+        if not env:
+            return discover_homes()
+        home = None
     if home is None:
-        env = os.environ.get("ASTERN_HOME")
         home = env if env else DFLT_HOME
     if isinstance(home, (str, Path, Home)):
         home = [home]
@@ -121,6 +266,7 @@ def iter_session_files(
     project dirs whose slug contains one of the substrings; ``kinds`` selects
     top-level sessions and/or their nested ``subagent`` / ``workflow`` transcripts.
     ``max_sessions`` caps the count after sorting, so it means "the N most recent".
+    A transcript present in several homes is yielded once, from its newest copy.
     """
     cutoff = time.time() - since_days * 86400 if since_days else None
     keep = _as_list(projects)
@@ -162,7 +308,18 @@ def iter_session_files(
                         mtime=st.st_mtime,
                     )
                 )
-    found.sort(key=lambda sf: sf.mtime, reverse=True)
+    found.sort(key=lambda sf: (sf.mtime, sf.size), reverse=True)
+    # The same transcript can live in two homes (copied between accounts, or a
+    # mirror of a machine that also synced it): keep only the newest copy, so the
+    # store is never overwritten by an older one and a session is listed once.
+    seen: set[tuple] = set()
+    unique: list[SessionFile] = []
+    for sf in found:
+        key = (sf.kind, sf.parent_id, sf.session_id)
+        if key not in seen:
+            seen.add(key)
+            unique.append(sf)
+    found = unique
     for i, sf in enumerate(found):
         if max_sessions is not None and i >= max_sessions:
             break
@@ -231,7 +388,9 @@ def load_records(
         text = Path(path).read_text(encoding="utf-8", errors="replace")
     except OSError:
         return out
-    for line in text.splitlines():
+    # split on "\n" only: str.splitlines() also breaks at U+2028/U+2029/\x85/\x0c,
+    # which JSON writers leave raw inside strings, and would drop that record.
+    for line in text.split("\n"):
         line = line.strip()
         if not line:
             continue

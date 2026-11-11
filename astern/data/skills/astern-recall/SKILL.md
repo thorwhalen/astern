@@ -1,117 +1,92 @@
 ---
 name: astern-recall
 description: >-
-  Search past Claude Code sessions for what was already thought, tried and
-  decided about a topic, and write the answer up as a briefing. Use when the
-  user asks "what did we decide about X", "what did I already try for X", "did
-  we ever look at X", "why did we do X that way", "catch me up on project X",
-  "what happened last time I worked on X", or "before I start on X, what do past
-  sessions say" — and use it proactively at the start of work on a project the
-  user has not touched in weeks, before re-deriving a decision that a past
-  session already made. Runs astern's mined session store (sync → index →
-  recall) through the `ir` retrieval substrate; reads the few hits that matter
-  with `astern show`; writes `docs/briefings/<date>-<slug>.md` in the repo the
-  question is about. Read-only with respect to the sessions themselves.
+  Find past Claude Code sessions, on every machine and account, and say what they
+  decided, tried and produced. Use whenever the user refers to earlier work, however
+  casually: "we did X", "remember when we", "that old session", "the session where",
+  "last week/month we", "find the work on X", "where did we leave X", "what did we
+  decide about X", "did we ever look at X", "why did we do X that way", "catch me up on
+  project X", "what happened last time", "find that conversation", "it was on the server /
+  another machine" — and proactively before re-deriving a decision on a project untouched
+  for weeks. Searches both local accounts (~/.claude, ~/.claude-iq) and mirrors of the
+  other machines automatically: `astern grep` (regex over raw transcripts, no
+  index, seconds) for names, identifiers and phrases, `astern recall` (ir hybrid
+  search over the synced store) for paraphrases and decisions. Reads the hits with
+  `astern show`; writes a briefing when asked. Read-only on the sessions.
 metadata:
   audience: developers
 ---
 
-# astern recall — what past sessions already know
+# astern recall — find past sessions, wherever they ran
 
-Transcripts are the only honest record of why a project is the way it is, and nobody re-reads them. `astern` mines them into a store; this skill turns that store into an answer.
+Transcripts are the only honest record of why a project is the way it is. `astern` reads them on **every home this machine can see**: each local account (`~/.claude`, `~/.claude-iq`) and a mirror of each other machine (`~/.cache/xa/remotes/<host>/`, one per SSH host in `~/.config/xa/config.toml`, refreshed with `xa sync` before every search). Every hit names its `home` (`claude`, `claude-iq`, or a host name), so you can say where a session ran. You never need to be told which machine to search: the default is all of them.
 
-**What it is not**: a chat log search. A hit is an *address*, not an answer — the procedure below ends with you reading the top hits and writing a briefing, because the value is in the synthesis, not in the ranked list.
+**A hit is an address, not an answer.** Read the top hits, then answer or write a briefing.
 
 ## Prerequisites (check once, cheap)
 
 ```bash
-astern sessions --limit 3     # is anything synced at all?
+astern grep --help >/dev/null && echo ok      # grep: no extra needed
+astern sessions --limit 1                     # recall: needs `pip install "astern[recall]"`
 ```
 
-If that errors on an import, the retrieval extra is missing: `pip install "astern[recall]"` (it pulls `ir`, `ef`, `vd`). No API key is needed — the default embedder is local and offline.
+## 1. Pick the route by the shape of the query
 
-## Procedure
+| The query has… | Route | Why |
+|---|---|---|
+| a rare token: a name, nickname, identifier, path, error string, URL, issue number, quoted phrase | `astern grep` first | exact, no index, sees a session that ended a minute ago |
+| only ordinary words ("the session where we argued about storage") | `astern recall` (hybrid) first | paraphrase and vocabulary mismatch are what embeddings are for |
+| a decision or rationale ("what did we decide…") | `recall --grains session_synopses`, then grep the names it surfaces | synopses carry decisions; grep confirms in the source |
+| both | run both; grep's hits are the precise ones | different failure modes, cheap to combine |
 
-### 1. Sync and index (both idempotent — run them, don't ask)
+## 2. Grep: write patterns that use the structure
 
 ```bash
-astern sync                   # read new/changed transcripts into the store
-astern index                  # build the ir corpora (only what changed is embedded)
+astern grep 'acme[- ]?corp|\bac\b'                       # all homes, newest first
+astern grep 'venture|joint ?venture' --project acme --since-days 60
+astern grep 'oauth.*refresh' --roles all --sort hits        # + tool inputs (commands, file bodies)
+astern grep 'cleanupPeriodDays' --kinds session,subagent    # + subagent transcripts
 ```
 
-`sync` reads only transcripts whose size/mtime changed; `index` embeds only records whose content hash changed. Running both costs seconds when nothing moved. Do not skip `index` after a `sync`: an index built yesterday answers confidently about a corpus that no longer matches.
+- It matches the **decoded text of the conversational fields**: `user` (the human prompt, reminders stripped), `assistant` (prose), `title` (custom/AI titles, agent names), and with `--roles all` also `tool` (tool inputs). Never the raw JSON: CLAUDE.md attachments and record keys don't produce hits, and `\b`, `^`, `$` work on the text (`^` is the start of a message, not of a line).
+- Python regex, case-insensitive by default (`--case-sensitive` to turn it off).
+- **Widen deliberately**: alternation of synonyms (`venture|partnership|joint ?venture`), stems (`deploy\w*`), separator tolerance (`acme[- _]?corp`), abbreviations with word boundaries (`\bac\b`). Before writing a pattern for a project or person, run `ir synonyms <term>` to get the alternation the synonym ledger already knows.
+- Narrow with structure, not with longer patterns: `--project` (cwd substring), `--since-days`, `--home <dir>` for one home, `--kinds`. Use `--sort hits` when recency misleads.
+- Each session row carries `home`, `cwd`, `title`, `started_at`, `ended_at`, the first snippets and the transcript `path`.
+- `--offline` skips the mirror refresh (use it for a burst of greps after the first one).
 
-### 2. Recall
+## 3. Recall: the indexed, semantic route
 
 ```bash
+astern sync && astern index          # idempotent: seconds when nothing moved; sync covers every home
 astern recall "how do we keep the miner from re-judging a resumed session"
-astern recall "what did we decide about the judge and json schema retries" --project astern
 astern recall "vector store backend choice" --project vd --since-days 120 --k 12
 ```
 
-Flags: `--project` (matched against the session's project/cwd), `--since-days`, `--k` (how many hits), `--grains session_synopses|session_turns|subagent_turns` (default: `session_synopses` + `session_turns`), `--mode dense|lexical|hybrid` (default hybrid).
+Flags: `--project`, `--since-days`, `--k`, `--grains session_synopses|session_turns|subagent_turns` (default synopses + turns), `--mode dense|lexical|hybrid` (default hybrid). `subagent_turns` answers "what did an agent do", and its "prompt" is the parent's instruction, so it is excluded by default. Unfiltered, recall also reaches the `skills` and `reports` corpora.
 
-Two grains answer the default question — what did *we* decide and try — and it is worth naming which you want:
+## 4. Judge the miss, reformulate, stop
 
-| Grain | One record is | Best for |
-|---|---|---|
-| `session_synopses` | a whole session, LLM-distilled: goal, problems and their solutions, decisions, corrections | **what was decided**, what the session was for |
-| `session_turns` | one turn of a top-level session: the prompt and the assistant's closing text | **what was actually tried**, the specific error, the exact command |
+- **A miss is**: no hit, or hits whose snippets don't mention the thing. Not "fewer than k".
+- Reformulate with the vocabulary the session would have used: the file it would have touched, the command it would have run, the repo or issue number, the error text. Switch route (grep ↔ recall) rather than repeating the same one.
+- Stop after three rounds that bring no new candidate sessions, and say what you searched (patterns, routes, homes): "not found on <the homes listed>" is a finding.
+- **Synonym ledger**: when a miss was fixed by a word only this corpus uses (a project nickname, a renamed package, a person's handle, private jargon) and you verified the hit, record it: `ir synonyms-add "<term>, <alias>, ..." --note "<why>"`. Don't add general-English synonyms; you produce those yourself.
 
-A third grain, `subagent_turns`, answers a different question — **what did an agent do**, not what was decided — and is excluded by default: a subagent's "user prompt" is the *parent* session's task instruction, not a human asking a question, so mixed in unfiltered it would duplicate the parent's own content and drown it out. Reach for it deliberately, when the question is about delegated work specifically: `--grains subagent_turns` (or add it alongside the defaults, `--grains session_turns,subagent_turns`).
-
-Unfiltered, recall also reaches the `skills` and `reports` corpora when this machine has them — often the fastest route to an existing skill or a written-up report. A `--project` or `--since-days` filter deliberately excludes those two (they carry no project or timestamp metadata); the result's `notes` says so.
-
-If `abstained` is true or the hits look unrelated, **reformulate rather than reporting nothing**: try the vocabulary a session would have used (an error message, a file name, a command) and `--mode lexical` for identifier-heavy queries. Two or three query shapes is normal; that loop is your job, not the tool's.
-
-### 3. Read the hits that matter
-
-Every hit carries a `pointer` — run it:
+## 5. Read the hits that matter
 
 ```bash
-astern show <session_id>              # the session's meta + its last turns
-astern show <session_id> --turns 40   # more of the turn history
+astern show <session_id>              # synced: meta + last turns
+astern show <session_id> --turns 40
 ```
 
-Read the top 3–6. A synopsis hit tells you a decision was made; the turns tell you what it actually was and whether it stuck. Where they disagree, the turns win — a synopsis is a summary, and later turns may have reversed it.
+A grep hit not yet synced: run `astern sync` (all homes) and then `show`, or read the `path` directly (bounded: `rg -n 'pattern' <path> | head`). Where a synopsis and the turns disagree, the turns win. To resume a session, give the user `cclaude --resume <id>` to run from its `cwd` on the machine its `home` names.
 
-### 4. Write the briefing
+## 6. Answer, or write the briefing
 
-Write to **the repo the question is about** (not astern's), at `docs/briefings/<YYYY-MM-DD>-<slug>.md`. Create the directory if it does not exist. Then tell the user the path.
-
-Rules for the file:
-
-- **No hard-wrapped prose.** One line per paragraph or list item — newlines only where markdown is structural.
-- **Cite every claim**: the session id (first 8 chars is enough) and the date. A briefing whose claims cannot be traced back is a rumour.
-- **Separate what was DECIDED from what was merely TRIED.** This is the whole point. A decision is something the user stated or ratified; an experiment an agent ran and abandoned is not a decision, however confidently the transcript reads.
-- **Say what you did not find.** An absence ("no session discusses the S3 backend") is a finding, and it is what stops the reader from assuming you looked and hid it.
-
-Shape:
-
-```markdown
-# <Topic> — what past sessions say
-
-_Briefing written <date> from N sessions between <first> and <last>. Sources: astern session ids, cited inline._
-
-## Decided
-
-- <the decision>, stated in `a1b2c3d4` (2026-07-14) and unchanged since.
-
-## Tried, not settled
-
-- <the approach>, attempted in `e5f6a7b8` (2026-08-02); abandoned after <what happened>.
-
-## Open questions
-
-- <what nobody answered>
-
-## Not found
-
-- <what you searched for and did not find, with the queries you used>
-```
+For a quick question, answer with the session id (8 chars), its home and date. For a briefing, write `docs/briefings/<YYYY-MM-DD>-<slug>.md` in the repo the question is about: cite every claim (session id + date), separate **Decided** from **Tried, not settled**, list **Open questions** and **Not found** (with the queries and homes searched). No hard-wrapped prose.
 
 ## Notes
 
-- **Never paste real transcript content into a public artifact** (an issue, a PR, a committed doc that leaves the machine) without checking it for secrets and absolute home paths. A briefing is a local doc; keep it that way unless the user says otherwise.
-- The store is per-machine. A second Claude home (`~/.claude-*`) is just another source to `astern sync`; a session that lives only on another machine is invisible here, and "not found" means "not found on this machine".
-- `episodes` — a fourth grain, consecutive turns on one topic — does not exist yet (thorwhalen/astern#7). Until it does, a topic that spans many turns is best reached through `session_synopses` first, then read in full with `astern show`.
+- Never paste transcript content into a public artifact (issue, PR, committed doc) without checking it for secrets and home paths.
+- Coverage limits: a machine without an xa host entry is invisible; a machine's transcripts older than its `cleanupPeriodDays` are gone unless an earlier `astern sync` stored them (recall still finds those). claude.ai chats are not Claude Code transcripts and are not searched.
+- `episodes` (consecutive turns on one topic) does not exist yet (thorwhalen/astern#7); reach long topics through `session_synopses` and read in full with `astern show`.

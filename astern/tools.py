@@ -10,6 +10,7 @@ The one-command test of v1: ``astern sync && astern report friction``.
 
 from __future__ import annotations
 
+import os
 import time
 from collections.abc import Iterable
 from datetime import datetime, timezone
@@ -21,9 +22,17 @@ from astern import ledger as _ledger
 from astern import provenance as _prov
 from astern import report as _report
 from astern import views as _views
+from astern.grep import DFLT_ROLES, grep_sessions
 from astern.lenses import LENSES, load_builtin_lenses
 from astern.recall import DFLT_EMBEDDER
-from astern.sources import SessionFile, homes, iter_session_files, load_records
+from astern.sources import (
+    ALL_HOMES,
+    SessionFile,
+    homes,
+    iter_session_files,
+    load_records,
+    pull_mirrors,
+)
 from astern.store import Store, mk_store
 from astern.turns import iter_turns, session_meta
 
@@ -121,7 +130,7 @@ def _run_lens(
 
 
 def sync(
-    home: str | None = None,
+    home: str | None = ALL_HOMES,
     *,
     since_days: float | None = None,
     projects: str | None = None,
@@ -129,9 +138,15 @@ def sync(
     kinds: str = "session",
     lenses: str = "H",
     force: bool = False,
+    offline: bool = False,
     store: str | Store | None = None,
 ) -> dict:
     """Read new or changed transcripts into the store and run the heuristic lenses.
+
+    ``home`` defaults to ``all``: both local accounts (``~/.claude``, ``~/.claude-iq``)
+    and the mirrors of other machines' homes. With ``home='all'`` the mirrors are
+    refreshed first (``xa sync``, a no-op without ``xa``; ``offline`` skips it), so a
+    session on another machine is in the store after one command.
 
     Idempotent: a transcript whose size and mtime the ledger already knows is not
     re-read; a lens that already covered every turn is not re-run (``force`` re-runs
@@ -148,6 +163,11 @@ def sync(
     """
     store = mk_store(store)
     load_builtin_lenses()
+    pulled = (
+        pull_mirrors()
+        if not offline and home == ALL_HOMES and not os.environ.get("ASTERN_HOME")
+        else None
+    )
     # CLI adapters hand Optional[int] through as str; coerce here, once, for every surface.
     max_sessions = int(max_sessions) if max_sessions is not None else None
     since_days = float(since_days) if since_days is not None else None
@@ -198,6 +218,7 @@ def sync(
                 agg["findings"] += r["n_findings"]
     return {
         "homes": [h.name for h in homes(home)],
+        "pulled": pulled,
         "store": str(store.root),
         "seen": seen,
         "read": read,
@@ -205,6 +226,61 @@ def sync(
         "lenses": per_lens,
         "session_ids": session_ids,
     }
+
+
+def grep(
+    pattern: str,
+    *,
+    home: str | None = ALL_HOMES,
+    project: str | None = None,
+    since_days: float | None = None,
+    roles: str = DFLT_ROLES,
+    kinds: str = "session",
+    case_sensitive: bool = False,
+    k: int = 20,
+    context: int = 100,
+    max_snippets: int = 3,
+    sort: str = "recent",
+    offline: bool = False,
+) -> dict:
+    """Regex search over the raw transcripts of every home -- no sync, no index.
+
+    The fast route for exact things (a name, an identifier, an error, a URL, a
+    phrase), and the one that sees a session that ended a minute ago. Matches the
+    conversational text only (prompt, assistant prose, titles; ``roles=all`` adds
+    tool inputs), never the raw JSON, so attachments and keys don't produce hits.
+    Widen a term with alternation and stems: ``'acmecorp|acme[- ]?corp|\\bac\\b'``.
+
+    ``home`` defaults to ``all`` (both local accounts and the mirrors of other
+    machines, refreshed first unless ``offline``). ``project`` is a substring of the cwd;
+    ``since_days`` keeps recently modified transcripts; ``kinds`` adds ``subagent``
+    or ``workflow`` transcripts; ``sort`` is ``recent`` or ``hits``. Each session
+    carries its home (which machine/account), cwd and path; read it with
+    ``astern show <id>`` once synced, or open the path.
+    """
+    k = int(k)
+    context, max_snippets = int(context), int(max_snippets)
+    since_days = float(since_days) if since_days is not None else None
+    pulled = (
+        pull_mirrors()
+        if not offline and home == ALL_HOMES and not os.environ.get("ASTERN_HOME")
+        else None
+    )
+    out = grep_sessions(
+        pattern,
+        home=home,
+        project=project,
+        since_days=since_days,
+        roles=roles,
+        kinds=kinds,
+        ignore_case=not case_sensitive,
+        k=k,
+        context=context,
+        max_snippets=max_snippets,
+        sort=sort,
+    )
+    out["pulled"] = pulled
+    return out
 
 
 def _lens_names(spec: str | Iterable[str], *, kind: str | None) -> list[str]:
@@ -1067,6 +1143,7 @@ _dispatch_config: dict = {}
 
 _dispatch_funcs = [
     sync,
+    grep,
     sessions,
     show,
     lenses,
