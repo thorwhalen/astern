@@ -26,6 +26,16 @@ except ImportError:  # pragma: no cover - exercised by monkeypatching in the tes
 
 DFLT_HOME = Path.home() / ".claude"
 
+#: The ``home=`` value meaning "every home this machine can see": each local
+#: ``~/.claude*`` account home and each mirror of another machine's home (see
+#: :func:`discover_homes`). ``$ASTERN_HOME``, when set, still pins the homes.
+ALL_HOMES = "all"
+
+#: Where mirrors of other machines' homes live when nothing says otherwise: ``xa``
+#: rsyncs each configured SSH host's ``~/.claude`` into ``<cache_dir>/<host>/``.
+DFLT_XA_CONFIG = Path("~/.config/xa/config.toml")
+DFLT_MIRRORS_DIR = Path("~/.cache/xa/remotes")
+
 #: How a nested transcript relates to its parent session. ``session`` is a top-level
 #: transcript; ``subagent`` lives under ``<sid>/subagents/``; ``workflow`` under a
 #: ``<sid>/wf_*/`` directory (the ``Workflow`` tool's runs).
@@ -44,20 +54,101 @@ class Home:
         return self.path / "projects"
 
 
+def mirrors_dir() -> Path:
+    """The directory holding mirrors of other machines' homes, one subdir per host.
+
+    ``$ASTERN_MIRRORS`` wins; else ``xa``'s ``[settings] cache_dir`` (from
+    ``$XA_CONFIG`` or ``~/.config/xa/config.toml``); else ``~/.cache/xa/remotes``.
+    """
+    env = os.environ.get("ASTERN_MIRRORS")
+    if env:
+        return Path(env).expanduser()
+    cfg = Path(os.environ.get("XA_CONFIG") or DFLT_XA_CONFIG).expanduser()
+    try:
+        import tomllib  # py>=3.11
+
+        cache_dir = tomllib.loads(cfg.read_text()).get("settings", {}).get("cache_dir")
+    except (ImportError, OSError, ValueError):
+        cache_dir = None
+    return Path(cache_dir or DFLT_MIRRORS_DIR).expanduser()
+
+
+def discover_homes(
+    *, root: str | Path | None = None, mirrors: str | Path | None = None
+) -> list[Home]:
+    """Every home this machine can see: local accounts first, then mirrors.
+
+    Local: each ``<root>/.claude*`` directory with a ``projects/`` subdir (``root``
+    defaults to ``~``), named as :func:`homes` names them (``claude``,
+    ``claude-iq``). Mirrors: each ``<mirrors>/<host>/`` with a ``projects/`` subdir
+    (``mirrors`` defaults to :func:`mirrors_dir`), named after the host (``tw``).
+
+    >>> import tempfile
+    >>> with tempfile.TemporaryDirectory() as d:
+    ...     for sub in ('.claude/projects', '.claude-iq/projects', 'm/tw/projects'):
+    ...         Path(d, sub).mkdir(parents=True)
+    ...     [h.name for h in discover_homes(root=d, mirrors=Path(d, 'm'))]
+    ['claude', 'claude-iq', 'tw']
+    """
+    root = Path(root).expanduser() if root else Path.home()
+    mdir = Path(mirrors).expanduser() if mirrors else mirrors_dir()
+    local = sorted(p for p in root.glob(".claude*") if (p / "projects").is_dir())
+    out = [Home(name=p.name.lstrip("."), path=p) for p in local]
+    taken = {h.name for h in out}
+    if mdir.is_dir():
+        for p in sorted(mdir.iterdir()):
+            if (p / "projects").is_dir():
+                name = p.name if p.name not in taken else f"remote-{p.name}"
+                out.append(Home(name=name, path=p))
+    return out
+
+
+def pull_mirrors(*, force: bool = False, timeout: float = 300.0) -> dict:
+    """Refresh the mirrors of other machines' homes (``xa sync``), best effort.
+
+    A no-op returning ``{"pulled": False, ...}`` when ``xa`` is not installed, so
+    nothing here depends on it; ``xa`` itself skips a mirror younger than its
+    staleness threshold unless ``force``.
+    """
+    import shutil
+    import subprocess
+
+    xa = shutil.which("xa")
+    if not xa:
+        return {"pulled": False, "reason": "xa not on PATH"}
+    argv = [xa, "sync"] + (["--force"] if force else [])
+    try:
+        proc = subprocess.run(
+            argv, capture_output=True, text=True, timeout=timeout, check=False
+        )
+    except subprocess.TimeoutExpired:
+        return {"pulled": False, "reason": f"xa sync timed out after {timeout}s"}
+    return {
+        "pulled": proc.returncode == 0,
+        "output": (proc.stdout + proc.stderr).strip()[-2000:],
+    }
+
+
 def homes(
     home: str | Path | Home | Iterable[str | Path | Home] | None = None,
 ) -> list[Home]:
     """Resolve the ``home=`` seam to a list of :class:`Home`.
 
-    ``None`` → the one default home (``$ASTERN_HOME`` or ``~/.claude``). A string or
-    path → that one home. An iterable → several. A home's name is its directory
-    name with the leading dot dropped (``claude``, ``claude-iq``).
+    ``None`` → the one default home (``$ASTERN_HOME`` or ``~/.claude``).
+    ``"all"`` (:data:`ALL_HOMES`) → ``$ASTERN_HOME`` if set, else every home
+    :func:`discover_homes` finds (both accounts, plus mirrors of other machines).
+    A string or path → that one home. An iterable → several. A home's name is its
+    directory name with the leading dot dropped (``claude``, ``claude-iq``).
 
     >>> homes('/tmp/.claude-x')[0].name
     'claude-x'
     """
+    env = os.environ.get("ASTERN_HOME")
+    if isinstance(home, str) and home == ALL_HOMES:
+        if not env:
+            return discover_homes()
+        home = None
     if home is None:
-        env = os.environ.get("ASTERN_HOME")
         home = env if env else DFLT_HOME
     if isinstance(home, (str, Path, Home)):
         home = [home]
