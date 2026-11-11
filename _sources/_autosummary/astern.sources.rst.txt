@@ -8,16 +8,22 @@ astern.sources
 
    .. autosummary::
    
+      ALL_HOMES
+      DFLT_XA_CONFIG
       KINDS
+      DFLT_PULL_MIN_INTERVAL
    
    .. rubric:: Functions
 
    .. autosummary::
    
+      discover_homes
       fast_loads
       homes
       iter_session_files
       load_records
+      mirrors_dir
+      pull_mirrors
    
    .. rubric:: Classes
 

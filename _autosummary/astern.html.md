@@ -19,6 +19,7 @@ turn that wrote it, and [`astern.judge`](astern.judge.html.md#module-astern.judg
 | [`entire`](astern.entire.html.md#module-astern.entire)         | Enable and inspect the [Entire CLI](https://github.com/entireio/cli) safely, per repo.   |
 |--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
 | [`estimate`](astern.estimate.html.md#module-astern.estimate)     | What will judging this batch cost? — features, a fitted model, a prediction.             |
+| [`grep`](astern.grep.html.md#module-astern.grep)             | Regex search over raw transcripts, across every home, with no index to maintain.         |
 | [`judge`](astern.judge.html.md#module-astern.judge)           | The `judge=` seam: an LLM call that returns text or JSON *and says what it cost*.        |
 | [`ledger`](astern.ledger.html.md#module-astern.ledger)         | Idempotency: what has already been analyzed, so no token is spent twice.                 |
 | [`lenses`](astern.lenses.html.md#astern.lenses)()              | The registered lenses: name, kind (H = heuristic, L = LLM-judged), version, one line.    |

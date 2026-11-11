@@ -11,6 +11,7 @@ astern.tools
       entire_enable
       entire_status
       estimate
+      grep
       index
       install_skills
       judge

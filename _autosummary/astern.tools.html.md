@@ -15,6 +15,7 @@ The one-command test of v1: `astern sync && astern report friction`.
 |-----------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
 | [`entire_status`](#astern.tools.entire_status)([repo])                              | Is Entire installed and enabled in `repo`, and is it safe? Read-only.                 |
 | [`estimate`](#astern.tools.estimate)(\*[, store, lens, model, home])           | Fit the cost model on what has been judged, then price what has not.                  |
+| [`grep`](#astern.tools.grep)(pattern, \*[, home, project, ...])            | Regex search over the raw transcripts of every home -- no sync, no index.             |
 | [`index`](#astern.tools.index)([grain, store, embedder, refresh])           | Index the synced store into `ir` corpora, so `recall` can search it.                  |
 | [`install_skills`](#astern.tools.install_skills)(\*[, target, only, force, dry_run]) | Link the skills astern ships into an agent host (default `~/.claude`).                |
 | [`judge`](#astern.tools.judge)([lens, session_id, max_sessions, ...])       | Run an LLM lens over the synced sessions, newest first, under the ledger.             |
@@ -57,6 +58,26 @@ Two prices, each saying which proxy it used: the *pending* one is exact about
 its input (the views are built from the store), the *corpus* one multiplies file
 bytes by the measured view-chars-per-byte ratio, because a session that was
 never synced has no view to measure.
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
+### astern.tools.grep(pattern, , home='all', project=None, since_days=None, roles='user,assistant,title', kinds='session', case_sensitive=False, k=20, context=100, max_snippets=3, sort='recent', offline=False)
+
+Regex search over the raw transcripts of every home – no sync, no index.
+
+The fast route for exact things (a name, an identifier, an error, a URL, a
+phrase), and the one that sees a session that ended a minute ago. Matches the
+conversational text only (prompt, assistant prose, titles; `roles=all` adds
+tool inputs), never the raw JSON, so attachments and keys don’t produce hits.
+Widen a term with alternation and stems: `'acmecorp|acme[- ]?corp|\bac\b'`.
+
+`home` defaults to `all` (both local accounts and the mirrors of other
+machines, refreshed first unless `offline`). `project` is a substring of the cwd;
+`since_days` keeps recently modified transcripts; `kinds` adds `subagent`
+or `workflow` transcripts; `sort` is `recent` or `hits`. Each session
+carries its home (which machine/account), cwd and path; read it with
+`astern show <id>` once synced, or open the path.
 
 * **Return type:**
   [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
@@ -157,9 +178,14 @@ One session: its meta, ledger entry, and the last `turns` turns (prompt + summar
 * **Return type:**
   [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
 
-### astern.tools.sync(home=None, , since_days=None, projects=None, max_sessions=None, kinds='session', lenses='H', force=False, store=None)
+### astern.tools.sync(home='all', , since_days=None, projects=None, max_sessions=None, kinds='session', lenses='H', force=False, offline=False, store=None)
 
 Read new or changed transcripts into the store and run the heuristic lenses.
+
+`home` defaults to `all`: both local accounts (`~/.claude`, `~/.claude-iq`)
+and the mirrors of other machines’ homes. With `home='all'` the mirrors are
+refreshed first (`xa sync`, a no-op without `xa`; `offline` skips it), so a
+session on another machine is in the store after one command.
 
 Idempotent: a transcript whose size and mtime the ledger already knows is not
 re-read; a lens that already covered every turn is not re-run (`force` re-runs

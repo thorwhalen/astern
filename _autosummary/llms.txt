@@ -8,6 +8,7 @@
 - [astern](astern.html.md): astern — look astern: mine your past Claude Code sessions.
 - [astern.entire](astern.entire.html.md): Enable and inspect the Entire CLI safely, per repo.
 - [astern.estimate](astern.estimate.html.md): What will judging this batch cost? — features, a fitted model, a prediction.
+- [astern.grep](astern.grep.html.md): Regex search over raw transcripts, across every home, with no index to maintain.
 - [astern.judge](astern.judge.html.md): The &#96;judge=&#96; seam: an LLM call that returns text or JSON &#42;and says what it cost&#42;.
 - [astern.ledger](astern.ledger.html.md): Idempotency: what has already been analyzed, so no token is spent twice.
 - [astern.lenses](astern.lenses.html.md): The registered lenses: name, kind (H = heuristic, L = LLM-judged), version, one line.

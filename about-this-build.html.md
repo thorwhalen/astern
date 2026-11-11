@@ -2,18 +2,18 @@
 
 # About this build
 
-This documentation was built on **2026-11-05 12:17 UTC** from commit <a href="https://github.com/thorwhalen/astern/commit/20bdbe41dad972c35707ddddead8de8fd72ba912"><code>20bdbe4</code></a> on branch <code>main</code>, for **astern 0.0.10** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-11 11:00 UTC** from commit <a href="https://github.com/thorwhalen/astern/commit/1db424ea637e81d791f4cacbd30b142ba047b25c"><code>1db424e</code></a> on branch <code>main</code>, for **astern 0.0.11** (from <code>pyproject.toml</code>).
 
 #### WARNING
 The documentation and the package may be misaligned:
 
-- The documented version (0.0.10) is behind the latest release on PyPI (0.0.11): `pip install astern` gives newer code than these docs describe.
+- The documented version (0.0.11) is behind the latest release on PyPI (0.0.12): `pip install astern` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/astern/commit/20bdbe41dad972c35707ddddead8de8fd72ba912"><code>20bdbe41dad972c35707ddddead8de8fd72ba912</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/astern/commit/1db424ea637e81d791f4cacbd30b142ba047b25c"><code>1db424ea637e81d791f4cacbd30b142ba047b25c</code></a> |
 | Branch              | <code>main</code>                                                                                                                                        |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -24,9 +24,9 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/astern</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/astern/actions/runs/42025631892">42025631892</a>    |
+| Run          | <a href="https://github.com/thorwhalen/astern/actions/runs/43008144718">43008144718</a>    |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>20bdbe41dad972c35707ddddead8de8fd72ba912</code> (in the history of the built commit) |
+| Event commit | <code>1db424ea637e81d791f4cacbd30b142ba047b25c</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -35,7 +35,7 @@ The documentation and the package may be misaligned:
 | epythet  | 0.2.22  |
 | Sphinx   | 9.1.1   |
 | docutils | 0.22.4  |
-| Python   | 3.12.15 |
+| Python   | 3.12.16 |
 
 ## Configuration as resolved
 
@@ -51,13 +51,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/astern/0.0.11/">0.0.11</a>, newer than the documented version (0.0.10).
+Latest release: <a href="https://pypi.org/project/astern/0.0.12/">0.0.12</a>, newer than the documented version (0.0.11).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/astern && cd astern
-git checkout 20bdbe41dad972c35707ddddead8de8fd72ba912
+git checkout 1db424ea637e81d791f4cacbd30b142ba047b25c
 pip install "epythet==0.2.22"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

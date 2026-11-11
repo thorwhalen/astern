@@ -9,6 +9,7 @@
 ```bash
 pip install astern
 
+astern grep 'acme[- ]?corp|\bac\b'  # regex over every home's raw transcripts: no sync, no index
 astern sync                        # read new or changed transcripts, run the free (heuristic) lenses
 astern sessions                    # what's synced, newest first
 astern show <sid-prefix>           # one session: meta, ledger state, last turns, findings
@@ -56,6 +57,14 @@ Each **lens** asks one question of a session and returns typed, evidence-backed 
 
 Session handoffs (`Q`) are deliberately not a lens here — that’s `openloops`, linked rather than re-derived. The full catalogue, with the signal each lens reads and the sink it feeds, is plan §2 (see “The seams” below).
 
+## Every home: both accounts and the other machines
+
+`sync` and `grep` read **every home this machine can see** by default (`home='all'`): each local `~/.claude*` account home (`~/.claude`, `~/.claude-iq`) and each mirror of another machine’s home under xa’s cache (`~/.cache/xa/remotes/<host>/`, one per SSH host in `~/.config/xa/config.toml`). Before reading, they refresh those mirrors with `xa sync` (skip with `--offline`; a no-op without `xa`). Every result names its `home`, so you know which machine and account a session came from. `$ASTERN_HOME` pins the homes, `$ASTERN_MIRRORS` moves the mirror directory, and `--home <dir>` reads one home only.
+
+## Grep — exact things, no index
+
+`astern grep PATTERN` is a Python regex over the conversational text of the raw transcripts (human prompts, assistant prose, session titles; `--roles all` adds tool inputs), never over the raw JSON, so the `CLAUDE.md` attachment every session carries and the JSON keys produce no hits. `rg` narrows the lines first, so a 20 GB set of homes takes seconds. It is the right first move for anything with a rare token (a name, an identifier, an error string, a path, an issue number) and the only route that sees a session that ended a minute ago. Filters: `--project` (a substring of the cwd), `--since-days`, `--kinds session,subagent`, `--sort recent|hits`, `--case-sensitive`.
+
 ## Recall — what past sessions already know
 
 `astern recall "<query>"` answers *what did we already think, try and decide about X* without re-reading a transcript. astern is only the **record source** here: `ir` owns the indexing and the search, and the multi-hop search loop belongs to `raglab`. Install the extra (`pip install "astern[recall]"`), run `astern index` after a `sync`, and ask.
@@ -102,7 +111,7 @@ astern why 589f17a --commit                     # or a whole commit
 
 The subagent half is not a refinement — it is usually the whole answer. A session that delegates never has the code in its own turns, so `sync` must have been run with `--kinds session,subagent`; `why` says so in `notes` when it wasn’t. That is not the default because on a real corpus (290 sessions, 4547 nested transcripts) it is 50.7 s and a 330 MB store against 7.6 s and 87 MB for sessions alone.
 
-With no trailer (older work, another machine, another account) step 2 has nothing to say and step 3 runs over every session whose `cwd` is inside the repo, inside a date window around the commit. If that still finds nothing, the usual reason is the *other home*: pass `--home ~/.claude-iq` to `sync`, because a second account’s transcripts are a different corpus.
+With no trailer (older work, another machine, another account) step 2 has nothing to say and step 3 runs over every session whose `cwd` is inside the repo, inside a date window around the commit. If that still finds nothing, the usual reason is a home that was not synced: `sync` reads every home by default, so check that the account or machine is listed in its `homes` output.
 
 ### astern and Entire
 
@@ -127,20 +136,20 @@ astern entire-status --repo .              # is it enabled here, and is it safe?
 
 ## Where things live
 
-The store is `dol`-backed JSON files under `~/.local/share/astern/` (`sessions`, `turns`, `findings`, `ledger`, `judgments`) — override with `$ASTERN_DATA_DIR` to keep an experiment out of the real store. The transcripts it reads come from `~/.claude` by default — override with `$ASTERN_HOME` to point at a second account or a synced copy of another machine’s home. Both are seams: any `MutableMapping` serves as a store, and `homes()` takes a single dir, an iterable of dirs, or `None`.
+The store is `dol`-backed JSON files under `~/.local/share/astern/` (`sessions`, `turns`, `findings`, `ledger`, `judgments`) — override with `$ASTERN_DATA_DIR` to keep an experiment out of the real store. `sync` and `grep` read every home by default (see “Every home” above); `$ASTERN_HOME` pins one. Both are seams: any `MutableMapping` serves as a store, and `homes()` takes a single dir, an iterable of dirs, `None` (the one default home) or `'all'`.
 
 ## The seams
 
 Five things in astern are deliberately swappable, each with a strong out-of-the-box default and a named replacement:
 
-| Seam                                            | v1 default                                             | Replacement                                                          |
-|-------------------------------------------------|--------------------------------------------------------|----------------------------------------------------------------------|
-| `home=` — which `~/.claude`-shaped dirs to read | the one `~/.claude`                                    | a second account, or the server’s home over a sync                   |
-| `store=` — where records and findings live      | `dol` JSON files under `~/.local/share/astern/`        | any `MutableMapping` — S3, SQLite, a dict for tests                  |
-| `judge=` — the LLM callable for `L` lenses      | the local `claude` CLI, headless, no session persisted | `aix.prompt_func` for API billing; a recorded-replay judge for tests |
-| `similar=` — how findings group across sessions | normalized-string near match                           | `ir` corpus + embeddings, for real semantic clustering               |
-| `turns=` — the transcript-to-turns fetcher      | astern’s own `openloops`-backed iterator               | `priv.claude_transcripts.turn_pair_records` by injection             |
-| `embedder=` — how `astern index` embeds         | `ir`’s local `all-MiniLM-L6-v2` (offline, no key)      | `light` (numpy-only), or any embedder spec `ir` understands          |
+| Seam                                            | v1 default                                                       | Replacement                                                          |
+|-------------------------------------------------|------------------------------------------------------------------|----------------------------------------------------------------------|
+| `home=` — which `~/.claude`-shaped dirs to read | `'all'`: every local account plus xa’s mirrors of other machines | one home, or an explicit list                                        |
+| `store=` — where records and findings live      | `dol` JSON files under `~/.local/share/astern/`                  | any `MutableMapping` — S3, SQLite, a dict for tests                  |
+| `judge=` — the LLM callable for `L` lenses      | the local `claude` CLI, headless, no session persisted           | `aix.prompt_func` for API billing; a recorded-replay judge for tests |
+| `similar=` — how findings group across sessions | normalized-string near match                                     | `ir` corpus + embeddings, for real semantic clustering               |
+| `turns=` — the transcript-to-turns fetcher      | astern’s own `openloops`-backed iterator                         | `priv.claude_transcripts.turn_pair_records` by injection             |
+| `embedder=` — how `astern index` embeds         | `ir`’s local `all-MiniLM-L6-v2` (offline, no key)                | `light` (numpy-only), or any embedder spec `ir` understands          |
 
 What’s deliberately **not** a seam: the lens registry (a module-level dict), report templates, the finding dict shape, and the `openloops.egress` scrub step on every sink — none of these are meant to vary.
 

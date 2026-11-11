@@ -12,6 +12,7 @@
 
    entire
    estimate
+   grep
    judge
    ledger
    lenses

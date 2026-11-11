@@ -1,4 +1,4 @@
-> built 2026-11-05 12:17 UTC from 20bdbe4 (main) · astern 0.0.10. Details: build_info.json
+> built 2026-11-11 11:00 UTC from 1db424e (main) · astern 0.0.11. Details: build_info.json
 
 # index.html.md
 
@@ -13,6 +13,7 @@
 ```bash
 pip install astern
 
+astern grep 'acme[- ]?corp|\bac\b'  # regex over every home's raw transcripts: no sync, no index
 astern sync                        # read new or changed transcripts, run the free (heuristic) lenses
 astern sessions                    # what's synced, newest first
 astern show <sid-prefix>           # one session: meta, ledger state, last turns, findings
@@ -60,6 +61,14 @@ Each **lens** asks one question of a session and returns typed, evidence-backed 
 
 Session handoffs (`Q`) are deliberately not a lens here — that’s `openloops`, linked rather than re-derived. The full catalogue, with the signal each lens reads and the sink it feeds, is plan §2 (see “The seams” below).
 
+## Every home: both accounts and the other machines
+
+`sync` and `grep` read **every home this machine can see** by default (`home='all'`): each local `~/.claude*` account home (`~/.claude`, `~/.claude-iq`) and each mirror of another machine’s home under xa’s cache (`~/.cache/xa/remotes/<host>/`, one per SSH host in `~/.config/xa/config.toml`). Before reading, they refresh those mirrors with `xa sync` (skip with `--offline`; a no-op without `xa`). Every result names its `home`, so you know which machine and account a session came from. `$ASTERN_HOME` pins the homes, `$ASTERN_MIRRORS` moves the mirror directory, and `--home <dir>` reads one home only.
+
+## Grep — exact things, no index
+
+`astern grep PATTERN` is a Python regex over the conversational text of the raw transcripts (human prompts, assistant prose, session titles; `--roles all` adds tool inputs), never over the raw JSON, so the `CLAUDE.md` attachment every session carries and the JSON keys produce no hits. `rg` narrows the lines first, so a 20 GB set of homes takes seconds. It is the right first move for anything with a rare token (a name, an identifier, an error string, a path, an issue number) and the only route that sees a session that ended a minute ago. Filters: `--project` (a substring of the cwd), `--since-days`, `--kinds session,subagent`, `--sort recent|hits`, `--case-sensitive`.
+
 ## Recall — what past sessions already know
 
 `astern recall "<query>"` answers *what did we already think, try and decide about X* without re-reading a transcript. astern is only the **record source** here: `ir` owns the indexing and the search, and the multi-hop search loop belongs to `raglab`. Install the extra (`pip install "astern[recall]"`), run `astern index` after a `sync`, and ask.
@@ -106,7 +115,7 @@ astern why 589f17a --commit                     # or a whole commit
 
 The subagent half is not a refinement — it is usually the whole answer. A session that delegates never has the code in its own turns, so `sync` must have been run with `--kinds session,subagent`; `why` says so in `notes` when it wasn’t. That is not the default because on a real corpus (290 sessions, 4547 nested transcripts) it is 50.7 s and a 330 MB store against 7.6 s and 87 MB for sessions alone.
 
-With no trailer (older work, another machine, another account) step 2 has nothing to say and step 3 runs over every session whose `cwd` is inside the repo, inside a date window around the commit. If that still finds nothing, the usual reason is the *other home*: pass `--home ~/.claude-iq` to `sync`, because a second account’s transcripts are a different corpus.
+With no trailer (older work, another machine, another account) step 2 has nothing to say and step 3 runs over every session whose `cwd` is inside the repo, inside a date window around the commit. If that still finds nothing, the usual reason is a home that was not synced: `sync` reads every home by default, so check that the account or machine is listed in its `homes` output.
 
 ### astern and Entire
 
@@ -131,20 +140,20 @@ astern entire-status --repo .              # is it enabled here, and is it safe?
 
 ## Where things live
 
-The store is `dol`-backed JSON files under `~/.local/share/astern/` (`sessions`, `turns`, `findings`, `ledger`, `judgments`) — override with `$ASTERN_DATA_DIR` to keep an experiment out of the real store. The transcripts it reads come from `~/.claude` by default — override with `$ASTERN_HOME` to point at a second account or a synced copy of another machine’s home. Both are seams: any `MutableMapping` serves as a store, and `homes()` takes a single dir, an iterable of dirs, or `None`.
+The store is `dol`-backed JSON files under `~/.local/share/astern/` (`sessions`, `turns`, `findings`, `ledger`, `judgments`) — override with `$ASTERN_DATA_DIR` to keep an experiment out of the real store. `sync` and `grep` read every home by default (see “Every home” above); `$ASTERN_HOME` pins one. Both are seams: any `MutableMapping` serves as a store, and `homes()` takes a single dir, an iterable of dirs, `None` (the one default home) or `'all'`.
 
 ## The seams
 
 Five things in astern are deliberately swappable, each with a strong out-of-the-box default and a named replacement:
 
-| Seam                                            | v1 default                                             | Replacement                                                          |
-|-------------------------------------------------|--------------------------------------------------------|----------------------------------------------------------------------|
-| `home=` — which `~/.claude`-shaped dirs to read | the one `~/.claude`                                    | a second account, or the server’s home over a sync                   |
-| `store=` — where records and findings live      | `dol` JSON files under `~/.local/share/astern/`        | any `MutableMapping` — S3, SQLite, a dict for tests                  |
-| `judge=` — the LLM callable for `L` lenses      | the local `claude` CLI, headless, no session persisted | `aix.prompt_func` for API billing; a recorded-replay judge for tests |
-| `similar=` — how findings group across sessions | normalized-string near match                           | `ir` corpus + embeddings, for real semantic clustering               |
-| `turns=` — the transcript-to-turns fetcher      | astern’s own `openloops`-backed iterator               | `priv.claude_transcripts.turn_pair_records` by injection             |
-| `embedder=` — how `astern index` embeds         | `ir`’s local `all-MiniLM-L6-v2` (offline, no key)      | `light` (numpy-only), or any embedder spec `ir` understands          |
+| Seam                                            | v1 default                                                       | Replacement                                                          |
+|-------------------------------------------------|------------------------------------------------------------------|----------------------------------------------------------------------|
+| `home=` — which `~/.claude`-shaped dirs to read | `'all'`: every local account plus xa’s mirrors of other machines | one home, or an explicit list                                        |
+| `store=` — where records and findings live      | `dol` JSON files under `~/.local/share/astern/`                  | any `MutableMapping` — S3, SQLite, a dict for tests                  |
+| `judge=` — the LLM callable for `L` lenses      | the local `claude` CLI, headless, no session persisted           | `aix.prompt_func` for API billing; a recorded-replay judge for tests |
+| `similar=` — how findings group across sessions | normalized-string near match                                     | `ir` corpus + embeddings, for real semantic clustering               |
+| `turns=` — the transcript-to-turns fetcher      | astern’s own `openloops`-backed iterator                         | `priv.claude_transcripts.turn_pair_records` by injection             |
+| `embedder=` — how `astern index` embeds         | `ir`’s local `all-MiniLM-L6-v2` (offline, no key)                | `light` (numpy-only), or any embedder spec `ir` understands          |
 
 What’s deliberately **not** a seam: the lens registry (a module-level dict), report templates, the finding dict shape, and the `openloops.egress` scrub step on every sink — none of these are meant to vary.
 
@@ -416,6 +425,98 @@ it is compared against is [`FIXED_CACHE_TOKENS`](_autosummary/astern.estimate.ht
   [`int`](https://docs.python.org/3/builtins/functions.html#int)
 
 
+# _autosummary/astern.grep.html.md
+
+# astern.grep
+
+Regex search over raw transcripts, across every home, with no index to maintain.
+
+The index-backed route ([`astern.tools.recall()`](_autosummary/astern.tools.html.md#astern.tools.recall), over `ir`) needs `sync` and
+`index` to have run and finds paraphrases; this one reads the JSONL files where
+they lie and finds exact things: a name, an identifier, an error string, a URL, a
+phrase. It is *structure-aware*: the pattern is matched against the text of the
+conversational fields only (the human prompt, the assistant’s prose, optionally the
+tool inputs and session titles), never against the raw JSON line, so the
+`CLAUDE.md` attachment every session carries, JSON escapes and record keys do not
+produce hits.
+
+Two stages keep it fast on gigabytes: `rg -l` picks the files whose raw bytes
+could match (a superset, see [`raw_prefilter_pattern()`](_autosummary/astern.grep.html.md#astern.grep.raw_prefilter_pattern)), then only those files
+are parsed and matched field by field. Without `rg` every candidate is parsed.
+
+```pycon
+>>> import json, tempfile
+>>> recs = [
+...   {"type": "user", "sessionId": "s1", "cwd": "/p/shop", "timestamp": "2026-10-01T10:00:00Z",
+...    "message": {"role": "user", "content": "Where is the Acme-corp agreement?"}},
+...   {"type": "assistant", "timestamp": "2026-10-01T10:01:00Z",
+...    "message": {"content": [{"type": "text", "text": "In the agreement folder."}]}},
+... ]
+>>> with tempfile.TemporaryDirectory() as d:
+...     p = Path(d, ".claude", "projects", "-p-shop"); p.mkdir(parents=True)
+...     _ = Path(p, "s1.jsonl").write_text("\n".join(json.dumps(r) for r in recs))
+...     r = grep_sessions("acme\\w*", home=Path(d, ".claude"), use_rg=False)
+>>> r["n_sessions"], r["sessions"][0]["n_hits"], r["sessions"][0]["hits"][0]["role"]
+(1, 1, 'user')
+```
+
+### Module Attributes
+
+| [`ROLES`](_autosummary/astern.grep.html.md#astern.grep.ROLES)   | The fields a hit can come from.   |
+|----------------------------------------------------------|-----------------------------------|
+
+### Functions
+
+| [`grep_sessions`](_autosummary/astern.grep.html.md#astern.grep.grep_sessions)(pattern, \*[, home, project, ...])   | Sessions whose conversational text matches the regex `pattern`, best first.     |
+|-----------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| [`raw_prefilter_pattern`](_autosummary/astern.grep.html.md#astern.grep.raw_prefilter_pattern)(pattern)                     | Widen `pattern` so it matches the *raw JSON line* wherever it matches the text. |
+
+### astern.grep.ROLES *= ('user', 'assistant', 'tool', 'title')*
+
+The fields a hit can come from. `user` is the human prompt (wrapper tags and
+system reminders stripped), `assistant` the assistant’s prose, `tool` the
+tool inputs (commands, file bodies, queries), `title` the session’s titles.
+
+### astern.grep.grep_sessions(pattern, , home='all', project=None, since_days=None, roles='user,assistant,title', kinds='session', ignore_case=True, k=20, context=100, max_snippets=3, sort='recent', use_rg=True)
+
+Sessions whose conversational text matches the regex `pattern`, best first.
+
+`home` defaults to every home ([`ALL_HOMES`](_autosummary/astern.sources.html.md#astern.sources.ALL_HOMES)). `project`
+is a case-insensitive substring of the session’s cwd (or project slug).
+`roles` picks the fields ([`ROLES`](_autosummary/astern.grep.html.md#astern.grep.ROLES); `all` for every one). `sort` is
+`recent` (last activity first) or `hits` (most matches first). The pattern is
+a Python regex; `ignore_case` is on by default.
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
+### astern.grep.raw_prefilter_pattern(pattern)
+
+Widen `pattern` so it matches the *raw JSON line* wherever it matches the text.
+
+The real pattern runs on the decoded text of a field; this one only picks the
+raw lines worth decoding, so it may over-match but must never under-match. In
+JSON a quote, a backslash and control characters are escaped (`\"`, `\\`,
+`\n`, `\u001b`), so every atom that could match one of those (`.`, `\s`,
+`\W`, `\S`, `\D`, a character class, a literal `"` or `\\`, a control
+escape) also accepts any JSON escape. Assertions that cannot hold inside a JSON
+string (`\b`, `\B`, `^`, `$`, `\A`, `\Z`) are dropped. Constructs
+`rg` cannot compile (lookarounds, backreferences) make the caller fall back to
+decoding every line.
+
+```pycon
+>>> raw_prefilter_pattern(r'foo\s+bar')
+'foo(?:\\\\(?:u[0-9a-fA-F]{4}|[^u])|\\s)+bar'
+>>> raw_prefilter_pattern(r'^\bac\b$')
+'ac'
+>>> raw_prefilter_pattern(r'ab\d+')
+'ab\\d+'
+```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+
 # _autosummary/astern.html.md
 
 # astern
@@ -439,6 +540,7 @@ turn that wrote it, and [`astern.judge`](_autosummary/astern.judge.html.md#modul
 | [`entire`](_autosummary/astern.entire.html.md#module-astern.entire)         | Enable and inspect the [Entire CLI](https://github.com/entireio/cli) safely, per repo.   |
 |--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
 | [`estimate`](_autosummary/astern.estimate.html.md#module-astern.estimate)     | What will judging this batch cost? — features, a fitted model, a prediction.             |
+| [`grep`](_autosummary/astern.grep.html.md#module-astern.grep)             | Regex search over raw transcripts, across every home, with no index to maintain.         |
 | [`judge`](_autosummary/astern.judge.html.md#module-astern.judge)           | The `judge=` seam: an LLM call that returns text or JSON *and says what it cost*.        |
 | [`ledger`](_autosummary/astern.ledger.html.md#module-astern.ledger)         | Idempotency: what has already been analyzed, so no token is spent twice.                 |
 | [`lenses`](_autosummary/astern.lenses.html.md#astern.lenses)()              | The registered lenses: name, kind (H = heuristic, L = LLM-judged), version, one line.    |
@@ -1376,22 +1478,50 @@ that is [`astern.turns`](_autosummary/astern.turns.html.md#module-astern.turns) 
 
 ### Module Attributes
 
-| [`KINDS`](_autosummary/astern.sources.html.md#astern.sources.KINDS)   | How a nested transcript relates to its parent session.   |
-|----------------------------------------------------------|----------------------------------------------------------|
+| [`ALL_HOMES`](_autosummary/astern.sources.html.md#astern.sources.ALL_HOMES)              | each local `~/.claude*` account home and each mirror of another machine's home (see [`discover_homes()`](_autosummary/astern.sources.html.md#astern.sources.discover_homes)).   |
+|-------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`DFLT_XA_CONFIG`](_autosummary/astern.sources.html.md#astern.sources.DFLT_XA_CONFIG)         | `xa` rsyncs each configured SSH host's `~/.claude` into `<cache_dir>/<host>/`.                                                                            |
+| [`KINDS`](_autosummary/astern.sources.html.md#astern.sources.KINDS)                  | How a nested transcript relates to its parent session.                                                                                                    |
+| [`DFLT_PULL_MIN_INTERVAL`](_autosummary/astern.sources.html.md#astern.sources.DFLT_PULL_MIN_INTERVAL) | Skip a mirror refresh when the last one is younger than this (seconds), so a burst of searches pays for one `xa sync`, not one each.                      |
 
 ### Functions
 
-| [`fast_loads`](_autosummary/astern.sources.html.md#astern.sources.fast_loads)(line)                            | Decode one JSON line: orjson where it provably agrees with `json.loads`.                     |
-|----------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
-| [`homes`](_autosummary/astern.sources.html.md#astern.sources.homes)([home])                               | Resolve the `home=` seam to a list of [`Home`](_autosummary/astern.sources.html.md#astern.sources.Home). |
-| [`iter_session_files`](_autosummary/astern.sources.html.md#astern.sources.iter_session_files)([home, since_days, ...]) | Yield transcript files across the given homes, newest first.                                 |
-| [`load_records`](_autosummary/astern.sources.html.md#astern.sources.load_records)(path, \*[, loads])             | Parse one JSONL transcript, tolerating blank and malformed lines.                            |
+| [`discover_homes`](_autosummary/astern.sources.html.md#astern.sources.discover_homes)(\*[, root, mirrors])              | Every home this machine can see: local accounts first, then mirrors.                         |
+|---------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
+| [`fast_loads`](_autosummary/astern.sources.html.md#astern.sources.fast_loads)(line)                                 | Decode one JSON line: orjson where it provably agrees with `json.loads`.                     |
+| [`homes`](_autosummary/astern.sources.html.md#astern.sources.homes)([home])                                    | Resolve the `home=` seam to a list of [`Home`](_autosummary/astern.sources.html.md#astern.sources.Home). |
+| [`iter_session_files`](_autosummary/astern.sources.html.md#astern.sources.iter_session_files)([home, since_days, ...])      | Yield transcript files across the given homes, newest first.                                 |
+| [`load_records`](_autosummary/astern.sources.html.md#astern.sources.load_records)(path, \*[, loads])                  | Parse one JSONL transcript, tolerating blank and malformed lines.                            |
+| [`mirrors_dir`](_autosummary/astern.sources.html.md#astern.sources.mirrors_dir)()                                    | The directory holding mirrors of other machines' homes, one subdir per host.                 |
+| [`pull_mirrors`](_autosummary/astern.sources.html.md#astern.sources.pull_mirrors)(\*[, force, timeout, min_interval]) | Refresh the mirrors of other machines' homes (`xa sync`), best effort.                       |
 
 ### Classes
 
 | [`Home`](_autosummary/astern.sources.html.md#astern.sources.Home)(name, path)                         | One `~/.claude`-shaped directory, named so records can say where they came from.   |
 |-------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
 | [`SessionFile`](_autosummary/astern.sources.html.md#astern.sources.SessionFile)(path, home, session_id, ...) | One transcript on disk, with the facts the ledger keys on (`size`, `mtime`).       |
+
+### astern.sources.ALL_HOMES *= 'all'*
+
+each local
+`~/.claude*` account home and each mirror of another machine’s home (see
+[`discover_homes()`](_autosummary/astern.sources.html.md#astern.sources.discover_homes)). `$ASTERN_HOME`, when set, still pins the homes.
+
+* **Type:**
+  The `home=` value meaning “every home this machine can see”
+
+### astern.sources.DFLT_PULL_MIN_INTERVAL *= 600.0*
+
+Skip a mirror refresh when the last one is younger than this (seconds), so a
+burst of searches pays for one `xa sync`, not one each.
+
+### astern.sources.DFLT_XA_CONFIG *= PosixPath('~/.config/xa/config.toml')*
+
+`xa`
+rsyncs each configured SSH host’s `~/.claude` into `<cache_dir>/<host>/`.
+
+* **Type:**
+  Where mirrors of other machines’ homes live when nothing says otherwise
 
 ### *class* astern.sources.Home(name, path)
 
@@ -1410,6 +1540,27 @@ transcript; `subagent` lives under `<sid>/subagents/`; `workflow` under a
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
 One transcript on disk, with the facts the ledger keys on (`size`, `mtime`).
+
+### astern.sources.discover_homes(, root=None, mirrors=None)
+
+Every home this machine can see: local accounts first, then mirrors.
+
+Local: each `<root>/.claude*` directory with a `projects/` subdir (`root`
+defaults to `~`), named as [`homes()`](_autosummary/astern.sources.html.md#astern.sources.homes) names them (`claude`,
+`claude-iq`). Mirrors: each `<mirrors>/<host>/` with a `projects/` subdir
+(`mirrors` defaults to [`mirrors_dir()`](_autosummary/astern.sources.html.md#astern.sources.mirrors_dir)), named after the host.
+
+```pycon
+>>> import tempfile
+>>> with tempfile.TemporaryDirectory() as d:
+...     for sub in ('.claude/projects', '.claude-iq/projects', 'm/host1/projects'):
+...         Path(d, sub).mkdir(parents=True)
+...     [h.name for h in discover_homes(root=d, mirrors=Path(d, 'm'))]
+['claude', 'claude-iq', 'host1']
+```
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Home`](_autosummary/astern.sources.html.md#astern.sources.Home)]
 
 ### astern.sources.fast_loads(line)
 
@@ -1434,9 +1585,11 @@ True
 
 Resolve the `home=` seam to a list of [`Home`](_autosummary/astern.sources.html.md#astern.sources.Home).
 
-`None` → the one default home (`$ASTERN_HOME` or `~/.claude`). A string or
-path → that one home. An iterable → several. A home’s name is its directory
-name with the leading dot dropped (`claude`, `claude-iq`).
+`None` → the one default home (`$ASTERN_HOME` or `~/.claude`).
+`"all"` ([`ALL_HOMES`](_autosummary/astern.sources.html.md#astern.sources.ALL_HOMES)) → `$ASTERN_HOME` if set, else every home
+[`discover_homes()`](_autosummary/astern.sources.html.md#astern.sources.discover_homes) finds (both accounts, plus mirrors of other machines).
+A string or path → that one home. An iterable → several. A home’s name is its
+directory name with the leading dot dropped (`claude`, `claude-iq`).
 
 ```pycon
 >>> homes('/tmp/.claude-x')[0].name
@@ -1454,6 +1607,7 @@ Yield transcript files across the given homes, newest first.
 project dirs whose slug contains one of the substrings; `kinds` selects
 top-level sessions and/or their nested `subagent` / `workflow` transcripts.
 `max_sessions` caps the count after sorting, so it means “the N most recent”.
+A transcript present in several homes is yielded once, from its newest copy.
 
 * **Return type:**
   [`Iterator`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator)[[`SessionFile`](_autosummary/astern.sources.html.md#astern.sources.SessionFile)]
@@ -1479,6 +1633,29 @@ a line it rejects with `ValueError` is skipped, as is any non-object value.
 
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
+
+### astern.sources.mirrors_dir()
+
+The directory holding mirrors of other machines’ homes, one subdir per host.
+
+`$ASTERN_MIRRORS` wins; else `xa`’s `[settings] cache_dir` (from
+`$XA_CONFIG` or `~/.config/xa/config.toml`); else `~/.cache/xa/remotes`.
+
+* **Return type:**
+  [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path)
+
+### astern.sources.pull_mirrors(, force=False, timeout=120.0, min_interval=600.0)
+
+Refresh the mirrors of other machines’ homes (`xa sync`), best effort.
+
+A no-op returning `{"pulled": False, ...}` when `xa` is not installed, so
+nothing here depends on it. Skipped when the last refresh is younger than
+`min_interval` seconds (`force` overrides, and is passed on to `xa`). Never
+prompts: stdin is closed, so an ssh asking for a password fails instead of
+waiting, and `timeout` bounds an unreachable host.
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
 
 
 # _autosummary/astern.store.html.md
@@ -1565,6 +1742,7 @@ The one-command test of v1: `astern sync && astern report friction`.
 |-----------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
 | [`entire_status`](_autosummary/astern.tools.html.md#astern.tools.entire_status)([repo])                              | Is Entire installed and enabled in `repo`, and is it safe? Read-only.                 |
 | [`estimate`](_autosummary/astern.tools.html.md#astern.tools.estimate)(\*[, store, lens, model, home])           | Fit the cost model on what has been judged, then price what has not.                  |
+| [`grep`](_autosummary/astern.tools.html.md#astern.tools.grep)(pattern, \*[, home, project, ...])            | Regex search over the raw transcripts of every home -- no sync, no index.             |
 | [`index`](_autosummary/astern.tools.html.md#astern.tools.index)([grain, store, embedder, refresh])           | Index the synced store into `ir` corpora, so `recall` can search it.                  |
 | [`install_skills`](_autosummary/astern.tools.html.md#astern.tools.install_skills)(\*[, target, only, force, dry_run]) | Link the skills astern ships into an agent host (default `~/.claude`).                |
 | [`judge`](_autosummary/astern.tools.html.md#astern.tools.judge)([lens, session_id, max_sessions, ...])       | Run an LLM lens over the synced sessions, newest first, under the ledger.             |
@@ -1607,6 +1785,26 @@ Two prices, each saying which proxy it used: the *pending* one is exact about
 its input (the views are built from the store), the *corpus* one multiplies file
 bytes by the measured view-chars-per-byte ratio, because a session that was
 never synced has no view to measure.
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
+### astern.tools.grep(pattern, , home='all', project=None, since_days=None, roles='user,assistant,title', kinds='session', case_sensitive=False, k=20, context=100, max_snippets=3, sort='recent', offline=False)
+
+Regex search over the raw transcripts of every home – no sync, no index.
+
+The fast route for exact things (a name, an identifier, an error, a URL, a
+phrase), and the one that sees a session that ended a minute ago. Matches the
+conversational text only (prompt, assistant prose, titles; `roles=all` adds
+tool inputs), never the raw JSON, so attachments and keys don’t produce hits.
+Widen a term with alternation and stems: `'acmecorp|acme[- ]?corp|\bac\b'`.
+
+`home` defaults to `all` (both local accounts and the mirrors of other
+machines, refreshed first unless `offline`). `project` is a substring of the cwd;
+`since_days` keeps recently modified transcripts; `kinds` adds `subagent`
+or `workflow` transcripts; `sort` is `recent` or `hits`. Each session
+carries its home (which machine/account), cwd and path; read it with
+`astern show <id>` once synced, or open the path.
 
 * **Return type:**
   [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
@@ -1707,9 +1905,14 @@ One session: its meta, ledger entry, and the last `turns` turns (prompt + summar
 * **Return type:**
   [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
 
-### astern.tools.sync(home=None, , since_days=None, projects=None, max_sessions=None, kinds='session', lenses='H', force=False, store=None)
+### astern.tools.sync(home='all', , since_days=None, projects=None, max_sessions=None, kinds='session', lenses='H', force=False, offline=False, store=None)
 
 Read new or changed transcripts into the store and run the heuristic lenses.
+
+`home` defaults to `all`: both local accounts (`~/.claude`, `~/.claude-iq`)
+and the mirrors of other machines’ homes. With `home='all'` the mirrors are
+refreshed first (`xa sync`, a no-op without `xa`; `offline` skips it), so a
+session on another machine is in the store after one command.
 
 Idempotent: a transcript whose size and mtime the ledger already knows is not
 re-read; a lens that already covered every turn is not re-run (`force` re-runs
@@ -2043,18 +2246,18 @@ Size and coverage of a rendered view — the cost model’s cheap regressor.
 
 # About this build
 
-This documentation was built on **2026-11-05 12:17 UTC** from commit <a href="https://github.com/thorwhalen/astern/commit/20bdbe41dad972c35707ddddead8de8fd72ba912"><code>20bdbe4</code></a> on branch <code>main</code>, for **astern 0.0.10** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-11 11:00 UTC** from commit <a href="https://github.com/thorwhalen/astern/commit/1db424ea637e81d791f4cacbd30b142ba047b25c"><code>1db424e</code></a> on branch <code>main</code>, for **astern 0.0.11** (from <code>pyproject.toml</code>).
 
 #### WARNING
 The documentation and the package may be misaligned:
 
-- The documented version (0.0.10) is behind the latest release on PyPI (0.0.11): `pip install astern` gives newer code than these docs describe.
+- The documented version (0.0.11) is behind the latest release on PyPI (0.0.12): `pip install astern` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/astern/commit/20bdbe41dad972c35707ddddead8de8fd72ba912"><code>20bdbe41dad972c35707ddddead8de8fd72ba912</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/astern/commit/1db424ea637e81d791f4cacbd30b142ba047b25c"><code>1db424ea637e81d791f4cacbd30b142ba047b25c</code></a> |
 | Branch              | <code>main</code>                                                                                                                                        |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -2065,9 +2268,9 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/astern</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/astern/actions/runs/42025631892">42025631892</a>    |
+| Run          | <a href="https://github.com/thorwhalen/astern/actions/runs/43008144718">43008144718</a>    |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>20bdbe41dad972c35707ddddead8de8fd72ba912</code> (in the history of the built commit) |
+| Event commit | <code>1db424ea637e81d791f4cacbd30b142ba047b25c</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -2076,7 +2279,7 @@ The documentation and the package may be misaligned:
 | epythet  | 0.2.22  |
 | Sphinx   | 9.1.1   |
 | docutils | 0.22.4  |
-| Python   | 3.12.15 |
+| Python   | 3.12.16 |
 
 ## Configuration as resolved
 
@@ -2092,13 +2295,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/astern/0.0.11/">0.0.11</a>, newer than the documented version (0.0.10).
+Latest release: <a href="https://pypi.org/project/astern/0.0.12/">0.0.12</a>, newer than the documented version (0.0.11).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/astern && cd astern
-git checkout 20bdbe41dad972c35707ddddead8de8fd72ba912
+git checkout 1db424ea637e81d791f4cacbd30b142ba047b25c
 pip install "epythet==0.2.22"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
@@ -2122,7 +2325,7 @@ Skills are folders holding a `SKILL.md` (the [Agent Skills](https://agentskills.
 
 ### `astern-recall`
 
-Search past Claude Code sessions for what was already thought, tried and decided about a topic, and write the answer up as a briefing. Use when the user asks “what did we decide about X”, “what did I already try for X”, “did we ever look at X”, “why did we do X that way”, “catch me up on project X”, “what happened last time I worked on X”, or “before I start on X, what do past sessions say” — and use it proactively at the start of work on a project the user has not touched in weeks, before re-deriving a decision that a past session already made. Runs astern’s mined session store (sync → index → recall) through the `ir` retrieval substrate; reads the few hits that matter with `astern show`; writes `docs/briefings/<date>-<slug>.md` in the repo the question is about. Read-only with respect to the sessions themselves.
+Find past Claude Code sessions, on every machine and account, and say what they decided, tried and produced. Use whenever the user refers to earlier work, however casually: “we did X”, “remember when we”, “that old session”, “the session where”, “last week/month we”, “find the work on X”, “where did we leave X”, “what did we decide about X”, “did we ever look at X”, “why did we do X that way”, “catch me up on project X”, “what happened last time”, “find that conversation”, “it was on the server / another machine” — and proactively before re-deriving a decision on a project untouched for weeks. Searches both local accounts (~/.claude, ~/.claude-iq) and mirrors of the other machines automatically: `astern grep` (regex over raw transcripts, no index, seconds) for names, identifiers and phrases, `astern recall` (ir hybrid search over the synced store) for paraphrases and decisions. Reads the hits with `astern show`; writes a briefing when asked. Read-only on the sessions.
 
 ```bash
 gh skill install thorwhalen/astern astern-recall --agent claude-code

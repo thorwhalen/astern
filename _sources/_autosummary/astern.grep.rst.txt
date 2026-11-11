@@ -1,0 +1,19 @@
+astern.grep
+===========
+
+.. automodule:: astern.grep
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      ROLES
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      grep_sessions
+      raw_prefilter_pattern
+   

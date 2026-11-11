@@ -36,7 +36,7 @@
 <link href="../search.html" rel="search" title="Search"/>
 <link href="../genindex.html" rel="index" title="Index"/>
 <link href="astern.ledger.html" rel="next" title="astern.ledger"/>
-<link href="astern.estimate.html" rel="prev" title="astern.estimate"/>
+<link href="astern.grep.html" rel="prev" title="astern.grep"/>
 </head>
 <body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
 <div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
@@ -86,6 +86,7 @@
 <li class="toctree-l2 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="astern.html">astern<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
 <li class="toctree-l3"><a class="reference internal" href="astern.entire.html">astern.entire</a></li>
 <li class="toctree-l3"><a class="reference internal" href="astern.estimate.html">astern.estimate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="astern.grep.html">astern.grep</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">astern.judge</a></li>
 <li class="toctree-l3"><a class="reference internal" href="astern.ledger.html">astern.ledger</a></li>
 <li class="toctree-l3"><a class="reference internal" href="astern.lenses.html">astern.lenses</a></li>
@@ -345,7 +346,7 @@ for a real (empty) verdict, which is the one thing a replay judge must not do.</
 </div>
 </footer>
 </div>
-<script src="../_static/documentation_options.js?v=a83ce22a"></script>
+<script src="../_static/documentation_options.js?v=0c446633"></script>
 <script src="../_static/doctools.js?v=fd6eb6e6"></script>
 <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

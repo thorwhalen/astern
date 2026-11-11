@@ -86,6 +86,7 @@
 <li class="toctree-l2 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="astern.html">astern<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
 <li class="toctree-l3"><a class="reference internal" href="astern.entire.html">astern.entire</a></li>
 <li class="toctree-l3"><a class="reference internal" href="astern.estimate.html">astern.estimate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="astern.grep.html">astern.grep</a></li>
 <li class="toctree-l3"><a class="reference internal" href="astern.judge.html">astern.judge</a></li>
 <li class="toctree-l3"><a class="reference internal" href="astern.ledger.html">astern.ledger</a></li>
 <li class="toctree-l3"><a class="reference internal" href="astern.lenses.html">astern.lenses</a></li>
@@ -142,25 +143,43 @@ that is <a class="reference internal" href="astern.turns.html#module-astern.turn
 <p class="rubric">Module Attributes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#astern.sources.ALL_HOMES" title="astern.sources.ALL_HOMES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ALL_HOMES</span></code></a></p></td>
+<td><p>each local <code class="docutils literal notranslate"><span class="pre">~/.claude*</span></code> account home and each mirror of another machine's home (see <a class="reference internal" href="#astern.sources.discover_homes" title="astern.sources.discover_homes"><code class="xref py py-func docutils literal notranslate"><span class="pre">discover_homes()</span></code></a>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#astern.sources.DFLT_XA_CONFIG" title="astern.sources.DFLT_XA_CONFIG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DFLT_XA_CONFIG</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">xa</span></code> rsyncs each configured SSH host's <code class="docutils literal notranslate"><span class="pre">~/.claude</span></code> into <code class="docutils literal notranslate"><span class="pre">&lt;cache_dir&gt;/&lt;host&gt;/</span></code>.</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#astern.sources.KINDS" title="astern.sources.KINDS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KINDS</span></code></a></p></td>
 <td><p>How a nested transcript relates to its parent session.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#astern.sources.DFLT_PULL_MIN_INTERVAL" title="astern.sources.DFLT_PULL_MIN_INTERVAL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DFLT_PULL_MIN_INTERVAL</span></code></a></p></td>
+<td><p>Skip a mirror refresh when the last one is younger than this (seconds), so a burst of searches pays for one <code class="docutils literal notranslate"><span class="pre">xa</span> <span class="pre">sync</span></code>, not one each.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#astern.sources.fast_loads" title="astern.sources.fast_loads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fast_loads</span></code></a>(line)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#astern.sources.discover_homes" title="astern.sources.discover_homes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">discover_homes</span></code></a>(*[, root, mirrors])</p></td>
+<td><p>Every home this machine can see: local accounts first, then mirrors.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#astern.sources.fast_loads" title="astern.sources.fast_loads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fast_loads</span></code></a>(line)</p></td>
 <td><p>Decode one JSON line: orjson where it provably agrees with <code class="docutils literal notranslate"><span class="pre">json.loads</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#astern.sources.homes" title="astern.sources.homes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">homes</span></code></a>([home])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#astern.sources.homes" title="astern.sources.homes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">homes</span></code></a>([home])</p></td>
 <td><p>Resolve the <code class="docutils literal notranslate"><span class="pre">home=</span></code> seam to a list of <a class="reference internal" href="#astern.sources.Home" title="astern.sources.Home"><code class="xref py py-class docutils literal notranslate"><span class="pre">Home</span></code></a>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#astern.sources.iter_session_files" title="astern.sources.iter_session_files"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_session_files</span></code></a>([home, since_days, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#astern.sources.iter_session_files" title="astern.sources.iter_session_files"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_session_files</span></code></a>([home, since_days, ...])</p></td>
 <td><p>Yield transcript files across the given homes, newest first.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#astern.sources.load_records" title="astern.sources.load_records"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_records</span></code></a>(path, *[, loads])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#astern.sources.load_records" title="astern.sources.load_records"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_records</span></code></a>(path, *[, loads])</p></td>
 <td><p>Parse one JSONL transcript, tolerating blank and malformed lines.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#astern.sources.mirrors_dir" title="astern.sources.mirrors_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mirrors_dir</span></code></a>()</p></td>
+<td><p>The directory holding mirrors of other machines' homes, one subdir per host.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#astern.sources.pull_mirrors" title="astern.sources.pull_mirrors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pull_mirrors</span></code></a>(*[, force, timeout, min_interval])</p></td>
+<td><p>Refresh the mirrors of other machines' homes (<code class="docutils literal notranslate"><span class="pre">xa</span> <span class="pre">sync</span></code>), best effort.</p></td>
 </tr>
 </tbody>
 </table>
@@ -175,6 +194,35 @@ that is <a class="reference internal" href="astern.turns.html#module-astern.turn
 </tr>
 </tbody>
 </table>
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.sources.ALL_HOMES">
+<span class="sig-prename descclassname"><span class="pre">astern.sources.</span></span><span class="sig-name descname"><span class="pre">ALL_HOMES</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'all'</span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.sources.ALL_HOMES" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.sources.ALL_HOMES'">¶</a></dt>
+<dd><p>each local
+<code class="docutils literal notranslate"><span class="pre">~/.claude*</span></code> account home and each mirror of another machine’s home (see
+<a class="reference internal" href="#astern.sources.discover_homes" title="astern.sources.discover_homes"><code class="xref py py-func docutils literal notranslate"><span class="pre">discover_homes()</span></code></a>). <code class="docutils literal notranslate"><span class="pre">$ASTERN_HOME</span></code>, when set, still pins the homes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <code class="docutils literal notranslate"><span class="pre">home=</span></code> value meaning “every home this machine can see”</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.sources.DFLT_PULL_MIN_INTERVAL">
+<span class="sig-prename descclassname"><span class="pre">astern.sources.</span></span><span class="sig-name descname"><span class="pre">DFLT_PULL_MIN_INTERVAL</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">600.0</span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.sources.DFLT_PULL_MIN_INTERVAL" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.sources.DFLT_PULL_MIN_INTERVAL'">¶</a></dt>
+<dd><p>Skip a mirror refresh when the last one is younger than this (seconds), so a
+burst of searches pays for one <code class="docutils literal notranslate"><span class="pre">xa</span> <span class="pre">sync</span></code>, not one each.</p>
+</dd></dl>
+<dl class="py data">
+<dt class="sig sig-object py" id="astern.sources.DFLT_XA_CONFIG">
+<span class="sig-prename descclassname"><span class="pre">astern.sources.</span></span><span class="sig-name descname"><span class="pre">DFLT_XA_CONFIG</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">PosixPath('~/.config/xa/config.toml')</span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.sources.DFLT_XA_CONFIG" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.sources.DFLT_XA_CONFIG'">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">xa</span></code>
+rsyncs each configured SSH host’s <code class="docutils literal notranslate"><span class="pre">~/.claude</span></code> into <code class="docutils literal notranslate"><span class="pre">&lt;cache_dir&gt;/&lt;host&gt;/</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Where mirrors of other machines’ homes live when nothing says otherwise</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="astern.sources.Home">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astern.sources.</span></span><span class="sig-name descname"><span class="pre">Home</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astern/sources.html#Home"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.sources.Home" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.sources.Home'">¶</a></dt>
@@ -196,6 +244,28 @@ transcript; <code class="docutils literal notranslate"><span class="pre">subagen
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></p>
 <p>One transcript on disk, with the facts the ledger keys on (<code class="docutils literal notranslate"><span class="pre">size</span></code>, <code class="docutils literal notranslate"><span class="pre">mtime</span></code>).</p>
 <dl class="field-list simple">
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.sources.discover_homes">
+<span class="sig-prename descclassname"><span class="pre">astern.sources.</span></span><span class="sig-name descname"><span class="pre">discover_homes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mirrors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astern/sources.html#discover_homes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.sources.discover_homes" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.sources.discover_homes'">¶</a></dt>
+<dd><p>Every home this machine can see: local accounts first, then mirrors.</p>
+<p>Local: each <code class="docutils literal notranslate"><span class="pre">&lt;root&gt;/.claude*</span></code> directory with a <code class="docutils literal notranslate"><span class="pre">projects/</span></code> subdir (<code class="docutils literal notranslate"><span class="pre">root</span></code>
+defaults to <code class="docutils literal notranslate"><span class="pre">~</span></code>), named as <a class="reference internal" href="#astern.sources.homes" title="astern.sources.homes"><code class="xref py py-func docutils literal notranslate"><span class="pre">homes()</span></code></a> names them (<code class="docutils literal notranslate"><span class="pre">claude</span></code>,
+<code class="docutils literal notranslate"><span class="pre">claude-iq</span></code>). Mirrors: each <code class="docutils literal notranslate"><span class="pre">&lt;mirrors&gt;/&lt;host&gt;/</span></code> with a <code class="docutils literal notranslate"><span class="pre">projects/</span></code> subdir
+(<code class="docutils literal notranslate"><span class="pre">mirrors</span></code> defaults to <a class="reference internal" href="#astern.sources.mirrors_dir" title="astern.sources.mirrors_dir"><code class="xref py py-func docutils literal notranslate"><span class="pre">mirrors_dir()</span></code></a>), named after the host.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+</span><span id="line-2"><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">d</span><span class="p">:</span>
+</span><span id="line-3"><span class="gp">... </span>    <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'.claude/projects'</span><span class="p">,</span> <span class="s1">'.claude-iq/projects'</span><span class="p">,</span> <span class="s1">'m/host1/projects'</span><span class="p">):</span>
+</span><span id="line-4"><span class="gp">... </span>        <span class="n">Path</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">sub</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="line-5"><span class="gp">... </span>    <span class="p">[</span><span class="n">h</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">discover_homes</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">mirrors</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s1">'m'</span><span class="p">))]</span>
+</span><span id="line-6"><span class="go">['claude', 'claude-iq', 'host1']</span>
+</span></code></pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference internal" href="#astern.sources.Home" title="astern.sources.Home"><code class="xref py py-class docutils literal notranslate"><span class="pre">Home</span></code></a>]</span></p>
+</dd>
 </dl>
 </dd></dl>
 <dl class="py function">
@@ -222,9 +292,11 @@ accepts raises <code class="docutils literal notranslate"><span class="pre">Valu
 <dt class="sig sig-object py" id="astern.sources.homes">
 <span class="sig-prename descclassname"><span class="pre">astern.sources.</span></span><span class="sig-name descname"><span class="pre">homes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astern/sources.html#homes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.sources.homes" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.sources.homes'">¶</a></dt>
 <dd><p>Resolve the <code class="docutils literal notranslate"><span class="pre">home=</span></code> seam to a list of <a class="reference internal" href="#astern.sources.Home" title="astern.sources.Home"><code class="xref py py-class docutils literal notranslate"><span class="pre">Home</span></code></a>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">None</span></code> → the one default home (<code class="docutils literal notranslate"><span class="pre">$ASTERN_HOME</span></code> or <code class="docutils literal notranslate"><span class="pre">~/.claude</span></code>). A string or
-path → that one home. An iterable → several. A home’s name is its directory
-name with the leading dot dropped (<code class="docutils literal notranslate"><span class="pre">claude</span></code>, <code class="docutils literal notranslate"><span class="pre">claude-iq</span></code>).</p>
+<p><code class="docutils literal notranslate"><span class="pre">None</span></code> → the one default home (<code class="docutils literal notranslate"><span class="pre">$ASTERN_HOME</span></code> or <code class="docutils literal notranslate"><span class="pre">~/.claude</span></code>).
+<code class="docutils literal notranslate"><span class="pre">"all"</span></code> (<a class="reference internal" href="#astern.sources.ALL_HOMES" title="astern.sources.ALL_HOMES"><code class="xref py py-data docutils literal notranslate"><span class="pre">ALL_HOMES</span></code></a>) → <code class="docutils literal notranslate"><span class="pre">$ASTERN_HOME</span></code> if set, else every home
+<a class="reference internal" href="#astern.sources.discover_homes" title="astern.sources.discover_homes"><code class="xref py py-func docutils literal notranslate"><span class="pre">discover_homes()</span></code></a> finds (both accounts, plus mirrors of other machines).
+A string or path → that one home. An iterable → several. A home’s name is its
+directory name with the leading dot dropped (<code class="docutils literal notranslate"><span class="pre">claude</span></code>, <code class="docutils literal notranslate"><span class="pre">claude-iq</span></code>).</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">homes</span><span class="p">(</span><span class="s1">'/tmp/.claude-x'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
 </span><span id="line-2"><span class="go">'claude-x'</span>
 </span></code></pre></div>
@@ -242,7 +314,8 @@ name with the leading dot dropped (<code class="docutils literal notranslate"><s
 <p><code class="docutils literal notranslate"><span class="pre">since_days</span></code> keeps files modified within that window; <code class="docutils literal notranslate"><span class="pre">projects</span></code> keeps only
 project dirs whose slug contains one of the substrings; <code class="docutils literal notranslate"><span class="pre">kinds</span></code> selects
 top-level sessions and/or their nested <code class="docutils literal notranslate"><span class="pre">subagent</span></code> / <code class="docutils literal notranslate"><span class="pre">workflow</span></code> transcripts.
-<code class="docutils literal notranslate"><span class="pre">max_sessions</span></code> caps the count after sorting, so it means “the N most recent”.</p>
+<code class="docutils literal notranslate"><span class="pre">max_sessions</span></code> caps the count after sorting, so it means “the N most recent”.
+A transcript present in several homes is yielded once, from its newest copy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference internal" href="#astern.sources.SessionFile" title="astern.sources.SessionFile"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionFile</span></code></a>]</span></p>
@@ -271,17 +344,50 @@ a line it rejects with <code class="docutils literal notranslate"><span class="p
 </dd>
 </dl>
 </dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.sources.mirrors_dir">
+<span class="sig-prename descclassname"><span class="pre">astern.sources.</span></span><span class="sig-name descname"><span class="pre">mirrors_dir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astern/sources.html#mirrors_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.sources.mirrors_dir" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.sources.mirrors_dir'">¶</a></dt>
+<dd><p>The directory holding mirrors of other machines’ homes, one subdir per host.</p>
+<p><code class="docutils literal notranslate"><span class="pre">$ASTERN_MIRRORS</span></code> wins; else <code class="docutils literal notranslate"><span class="pre">xa</span></code>’s <code class="docutils literal notranslate"><span class="pre">[settings]</span> <span class="pre">cache_dir</span></code> (from
+<code class="docutils literal notranslate"><span class="pre">$XA_CONFIG</span></code> or <code class="docutils literal notranslate"><span class="pre">~/.config/xa/config.toml</span></code>); else <code class="docutils literal notranslate"><span class="pre">~/.cache/xa/remotes</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="astern.sources.pull_mirrors">
+<span class="sig-prename descclassname"><span class="pre">astern.sources.</span></span><span class="sig-name descname"><span class="pre">pull_mirrors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">120.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">600.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astern/sources.html#pull_mirrors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#astern.sources.pull_mirrors" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#astern.sources.pull_mirrors'">¶</a></dt>
+<dd><p>Refresh the mirrors of other machines’ homes (<code class="docutils literal notranslate"><span class="pre">xa</span> <span class="pre">sync</span></code>), best effort.</p>
+<p>A no-op returning <code class="docutils literal notranslate"><span class="pre">{"pulled":</span> <span class="pre">False,</span> <span class="pre">...}</span></code> when <code class="docutils literal notranslate"><span class="pre">xa</span></code> is not installed, so
+nothing here depends on it. Skipped when the last refresh is younger than
+<code class="docutils literal notranslate"><span class="pre">min_interval</span></code> seconds (<code class="docutils literal notranslate"><span class="pre">force</span></code> overrides, and is passed on to <code class="docutils literal notranslate"><span class="pre">xa</span></code>). Never
+prompts: stdin is closed, so an ssh asking for a password fails instead of
+waiting, and <code class="docutils literal notranslate"><span class="pre">timeout</span></code> bounds an unreachable host.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
+</dd></dl>
 </section>
 </div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
 <div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
 <ul>
+<li><a :data-current="activeSection === '#astern.sources.ALL_HOMES'" class="reference internal" href="#astern.sources.ALL_HOMES"><code class="docutils literal notranslate"><span class="pre">ALL_HOMES</span></code></a></li>
+<li><a :data-current="activeSection === '#astern.sources.DFLT_PULL_MIN_INTERVAL'" class="reference internal" href="#astern.sources.DFLT_PULL_MIN_INTERVAL"><code class="docutils literal notranslate"><span class="pre">DFLT_PULL_MIN_INTERVAL</span></code></a></li>
+<li><a :data-current="activeSection === '#astern.sources.DFLT_XA_CONFIG'" class="reference internal" href="#astern.sources.DFLT_XA_CONFIG"><code class="docutils literal notranslate"><span class="pre">DFLT_XA_CONFIG</span></code></a></li>
 <li><a :data-current="activeSection === '#astern.sources.Home'" class="reference internal" href="#astern.sources.Home"><code class="docutils literal notranslate"><span class="pre">Home</span></code></a></li>
 <li><a :data-current="activeSection === '#astern.sources.KINDS'" class="reference internal" href="#astern.sources.KINDS"><code class="docutils literal notranslate"><span class="pre">KINDS</span></code></a></li>
 <li><a :data-current="activeSection === '#astern.sources.SessionFile'" class="reference internal" href="#astern.sources.SessionFile"><code class="docutils literal notranslate"><span class="pre">SessionFile</span></code></a></li>
+<li><a :data-current="activeSection === '#astern.sources.discover_homes'" class="reference internal" href="#astern.sources.discover_homes"><code class="docutils literal notranslate"><span class="pre">discover_homes()</span></code></a></li>
 <li><a :data-current="activeSection === '#astern.sources.fast_loads'" class="reference internal" href="#astern.sources.fast_loads"><code class="docutils literal notranslate"><span class="pre">fast_loads()</span></code></a></li>
 <li><a :data-current="activeSection === '#astern.sources.homes'" class="reference internal" href="#astern.sources.homes"><code class="docutils literal notranslate"><span class="pre">homes()</span></code></a></li>
 <li><a :data-current="activeSection === '#astern.sources.iter_session_files'" class="reference internal" href="#astern.sources.iter_session_files"><code class="docutils literal notranslate"><span class="pre">iter_session_files()</span></code></a></li>
 <li><a :data-current="activeSection === '#astern.sources.load_records'" class="reference internal" href="#astern.sources.load_records"><code class="docutils literal notranslate"><span class="pre">load_records()</span></code></a></li>
+<li><a :data-current="activeSection === '#astern.sources.mirrors_dir'" class="reference internal" href="#astern.sources.mirrors_dir"><code class="docutils literal notranslate"><span class="pre">mirrors_dir()</span></code></a></li>
+<li><a :data-current="activeSection === '#astern.sources.pull_mirrors'" class="reference internal" href="#astern.sources.pull_mirrors"><code class="docutils literal notranslate"><span class="pre">pull_mirrors()</span></code></a></li>
 </ul>
 </div>
 </aside>
@@ -295,7 +401,7 @@ a line it rejects with <code class="docutils literal notranslate"><span class="p
 </div>
 </footer>
 </div>
-<script src="../_static/documentation_options.js?v=a83ce22a"></script>
+<script src="../_static/documentation_options.js?v=0c446633"></script>
 <script src="../_static/doctools.js?v=fd6eb6e6"></script>
 <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
