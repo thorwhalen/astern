@@ -30,6 +30,7 @@ are parsed and matched field by field. Without ``rg`` every candidate is parsed.
 
 from __future__ import annotations
 
+import os
 import re
 import shutil
 import subprocess
@@ -64,65 +65,149 @@ DFLT_ROLES = "user,assistant,title"
 _RG_BATCH = 500
 
 
+#: A decoded character JSON may have written as an escape: ``\"``, ``\\``, ``\n``,
+#: ``\t``, ``\uXXXX``... An atom that can match such a character is OR-ed with this.
+_JSON_ESCAPE = r"\\(?:u[0-9a-fA-F]{4}|[^u])"
+
+#: Escapes that stand for one character JSON never escapes (word chars, digits) and
+#: escaped punctuation other than quote and backslash: safe to keep as they are.
+_SAFE_ESCAPES = set("wd") | set(".^$|?*+()[]{}/-#&~,:;=!<>%@'` ")
+
+
 def raw_prefilter_pattern(pattern: str) -> str:
     r"""Widen ``pattern`` so it matches the *raw JSON line* wherever it matches the text.
 
-    In a JSONL transcript a newline inside a message is the two characters ``\n``,
-    and a double quote is ``\"``. So ``\s`` becomes ``[\s\\nrt]`` (whitespace, or the
-    letters of an escape), likewise ``\W``, ``"`` becomes ``\\?"``, and the assertions that cannot
-    hold inside a JSON string (``\b`` after an escaped newline, ``^``, ``$``) are
-    dropped. The result only picks candidate lines: it may over-match, the real
-    pattern is then applied to the decoded text.
+    The real pattern runs on the decoded text of a field; this one only picks the
+    raw lines worth decoding, so it may over-match but must never under-match. In
+    JSON a quote, a backslash and control characters are escaped (``\"``, ``\\``,
+    ``\n``, ``\u001b``), so every atom that could match one of those (``.``, ``\s``,
+    ``\W``, ``\S``, ``\D``, a character class, a literal ``"`` or ``\\``, a control
+    escape) also accepts any JSON escape. Assertions that cannot hold inside a JSON
+    string (``\b``, ``\B``, ``^``, ``$``, ``\A``, ``\Z``) are dropped. Constructs
+    ``rg`` cannot compile (lookarounds, backreferences) make the caller fall back to
+    decoding every line.
 
     >>> raw_prefilter_pattern(r'foo\s+bar')
-    'foo[\\s\\\\nrt]+bar'
-    >>> raw_prefilter_pattern(r'a\W+b')
-    'a[\\W\\\\nrt]+b'
-    >>> raw_prefilter_pattern('say "hi"')
-    'say \\\\?"hi\\\\?"'
-    >>> raw_prefilter_pattern(r'^\bac\b$|[^a]')
-    'ac|[^a]'
+    'foo(?:\\\\(?:u[0-9a-fA-F]{4}|[^u])|\\s)+bar'
+    >>> raw_prefilter_pattern(r'^\bac\b$')
+    'ac'
+    >>> raw_prefilter_pattern(r'ab\d+')
+    'ab\\d+'
     """
-    out = re.sub(r"(?<!\\)\\([sW])", r"[\\\1\\\\nrt]", pattern)
-    out = re.sub(r"(?<!\\)\\[bBAzZ]", "", out)
-    out = re.sub(r"(?<![\[\\])\^", "", out)
-    out = re.sub(r"(?<!\\)\$", "", out)
-    return out.replace('"', '\\\\?"')
+    out: list[str] = []
+    i, n = 0, len(pattern)
+
+    def wrap(atom: str) -> str:
+        return f"(?:{_JSON_ESCAPE}|{atom})"
+
+    while i < n:
+        c = pattern[i]
+        if c == "\\" and i + 1 < n:
+            e = pattern[i + 1]
+            if e in "bBAzZ":
+                i += 2
+                continue
+            if e in "xu" or e == "N":  # \xhh, \uhhhh, \N{...}: copy then wrap
+                j = i + 2
+                if j < n and pattern[j] == "{":
+                    j = pattern.index("}", j) + 1 if "}" in pattern[j:] else n
+                else:
+                    j += 2 if e == "x" else 4
+                out.append(wrap(pattern[i:j]))
+                i = j
+                continue
+            atom = pattern[i : i + 2]
+            out.append(atom if e in _SAFE_ESCAPES else wrap(atom))
+            i += 2
+        elif c == "[":
+            j = i + 1
+            if j < n and pattern[j] == "^":
+                j += 1
+            if j < n and pattern[j] == "]":
+                j += 1
+            while j < n and pattern[j] != "]":
+                j += 2 if pattern[j] == "\\" else 1
+            out.append(wrap(pattern[i : j + 1]))
+            i = j + 1
+        elif c in "^$":
+            i += 1
+        elif c == ".":
+            out.append(wrap("."))
+            i += 1
+        elif c == '"' or ord(c) > 127:  # a quote, or non-ASCII a writer may \u-escape
+            out.append(wrap(c))
+            i += 1
+        elif (
+            c == "("
+            and pattern.startswith("(?", i)
+            and i + 2 < n
+            and pattern[i + 2] in "aiLmsux-"
+        ):
+            j = pattern.index(")", i) if ")" in pattern[i:] else n - 1
+            flags = pattern[i + 2 : j]
+            if ":" in flags:  # (?i:...) scoped flags: keep the opener only
+                k = pattern.index(":", i)
+                out.append(pattern[i : k + 1])
+                i = k + 1
+            else:
+                out.append(pattern[i : j + 1])
+                i = j + 1
+        else:
+            out.append(c)
+            i += 1
+    return "".join(out)
+
+
+def _rg_ok(rg: str, raw: str) -> bool:
+    """Does ``rg`` compile ``raw``? (exit 2 = a regex it cannot handle)."""
+    proc = subprocess.run(
+        [rg, "--no-config", "-e", raw, "--", os.devnull],
+        capture_output=True,
+        stdin=subprocess.DEVNULL,
+        check=False,
+    )
+    return proc.returncode != 2
 
 
 def _rg_lines(
     files: list[Path], pattern: str, *, ignore_case: bool
-) -> dict[Path, list[str]] | None:
-    """The raw lines (per file) that could match, or ``None`` if ``rg`` can't say.
+) -> Iterator[tuple[Path, list[str]]] | None:
+    """The raw lines that could match, one file at a time, or ``None`` if ``rg`` can't.
 
-    Only these lines are decoded and matched field by field, so a 9 GB home costs
-    what ``rg`` costs, not what parsing every record would.
+    Streams ``rg``'s output (it prints each file's lines together), so memory holds
+    one file's matching lines, not every match in every home.
     """
     rg = shutil.which("rg")
     if not rg:
         return None
     raw = raw_prefilter_pattern(pattern)
-    out: dict[Path, list[str]] = {}
-    for i in range(0, len(files), _RG_BATCH):
-        batch = [str(f) for f in files[i : i + _RG_BATCH]]
-        argv = [rg, "--null", "--no-line-number", "--no-heading", "--no-messages"]
-        argv += ["--no-ignore", "--with-filename", "-e", raw]
-        if ignore_case:
-            argv.insert(1, "-i")
-        proc = subprocess.run(
-            [*argv, "--", *batch],
-            capture_output=True,
-            text=True,
-            errors="replace",
-            check=False,
-        )
-        if proc.returncode == 2 and not proc.stdout:  # a pattern rg can't compile
-            return None
-        for line in proc.stdout.splitlines():
-            path, _, rec = line.partition("\0")
-            if rec:
-                out.setdefault(Path(path), []).append(rec)
-    return out
+    if not _rg_ok(rg, raw):
+        return None
+
+    def gen() -> Iterator[tuple[Path, list[str]]]:
+        for i in range(0, len(files), _RG_BATCH):
+            batch = [str(f) for f in files[i : i + _RG_BATCH]]
+            argv = [rg, "--no-config", "--null", "--no-line-number", "--no-heading"]
+            argv += ["--no-messages", "--no-ignore", "--with-filename", "-j1"]
+            argv += ["-e", raw] + (["-i"] if ignore_case else [])
+            with subprocess.Popen(
+                [*argv, "--", *batch],
+                stdout=subprocess.PIPE,
+                stdin=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            ) as proc:
+                cur, lines = None, []
+                for bline in proc.stdout:
+                    path, _, rec = bline.partition(b"\0")
+                    if path != cur:
+                        if cur is not None:
+                            yield Path(cur.decode()), lines
+                        cur, lines = path, []
+                    lines.append(rec.decode("utf-8", "replace").rstrip("\n"))
+                if cur is not None:
+                    yield Path(cur.decode()), lines
+
+    return gen()
 
 
 def _decode(lines: Iterable[str]) -> list[dict]:
@@ -276,18 +361,24 @@ def grep_sessions(
     if project:  # cheap pre-cut on the slug (the cwd with '/' turned into '-')
         slug_part = re.sub(r"[^A-Za-z0-9]", "-", project).lower()
         files = [sf for sf in files if slug_part in sf.project_slug.lower()] or files
-    by_file = (
+    streamed = (
         _rg_lines([sf.path for sf in files], pattern, ignore_case=ignore_case)
         if use_rg
         else None
     )
-    scanned = [sf for sf in files if by_file is None or sf.path in by_file]
-    rows = []
-    for sf in scanned:
+    by_path = {sf.path: sf for sf in files}
+    work = (
+        ((sf, None) for sf in files)
+        if streamed is None
+        else ((by_path[p], lines) for p, lines in streamed if p in by_path)
+    )
+    rows, n_scanned = [], 0
+    for sf, lines in work:
+        n_scanned += 1
         row = _session_hits(
             sf,
             rx,
-            lines=None if by_file is None else by_file[sf.path],
+            lines=lines,
             roles=roles,
             context=context,
             max_snippets=max_snippets,
@@ -301,8 +392,8 @@ def grep_sessions(
         "pattern": pattern,
         "homes": {h.name: str(h.path) for h in hs},
         "n_files": len(files),
-        "n_scanned": len(scanned),
-        "prefilter": "rg" if by_file is not None else "none",
+        "n_scanned": n_scanned,
+        "prefilter": "rg" if streamed is not None else "none",
         "n_sessions": len(rows),
         "sessions": rows[:k],
     }

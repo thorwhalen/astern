@@ -29,17 +29,17 @@ SESSIONS_MAIN = [
         "turns": [{"prompt": "unrelated", "final_text": "nothing here"}],
     },
 ]
-SESSIONS_IQ = [
+SESSIONS_ACCT2 = [
     {
-        "sid": "iq-1",
+        "sid": "acct2-1",
         "cwd": "/p/shop",
         "turns": [{"prompt": "draft", "final_text": 'The "acmecorp"\nventure memo.'}],
     }
 ]
-SESSIONS_TW = [
+SESSIONS_HOST1 = [
     {
-        "sid": "tw-1",
-        "cwd": "/root/py/proj/venture",
+        "sid": "host1-1",
+        "cwd": "/srv/proj/venture",
         "turns": [
             {
                 "prompt": "deploy",
@@ -56,15 +56,15 @@ def machine(tmp_path, monkeypatch):
     """A fake machine: two account homes under ``root`` and one mirrored remote host."""
     root = tmp_path / "root"
     write_home(root, sessions=SESSIONS_MAIN, name=".claude")
-    write_home(root, sessions=SESSIONS_IQ, name=".claude-iq")
-    write_home(tmp_path / "mirrors", sessions=SESSIONS_TW, name="tw")
+    write_home(root, sessions=SESSIONS_ACCT2, name=".claude-iq")
+    write_home(tmp_path / "mirrors", sessions=SESSIONS_HOST1, name="host1")
     monkeypatch.setenv("ASTERN_MIRRORS", str(tmp_path / "mirrors"))
     return root
 
 
 def test_discover_homes_finds_accounts_and_mirrors(machine):
     names = [h.name for h in discover_homes(root=machine)]
-    assert names == ["claude", "claude-iq", "tw"]
+    assert names == ["claude", "claude-iq", "host1"]
 
 
 def test_homes_all_respects_env_pin(monkeypatch, tmp_path):
@@ -87,23 +87,23 @@ def test_grep_across_homes_is_field_aware(machine, use_rg):
     # main (user prompt, with a hyphen) and iq (assistant prose with a quote and a
     # newline, i.e. JSON escapes in the raw line) match; tw's hit is a tool input,
     # which is not searched by default.
-    assert set(by_id) == {"main-1", "iq-1"}
+    assert set(by_id) == {"main-1", "acct2-1"}
     assert by_id["main-1"]["home"] == "claude"
     assert by_id["main-1"]["hits"][0]["role"] == "user"
     assert by_id["main-1"]["title"] == "agreement hunt"
-    assert by_id["iq-1"]["home"] == "claude-iq"
-    assert by_id["iq-1"]["cwd"] == "/p/shop"
+    assert by_id["acct2-1"]["home"] == "claude-iq"
+    assert by_id["acct2-1"]["cwd"] == "/p/shop"
     r = grep_sessions("acmecorp", home=hs, roles="all", use_rg=use_rg)
-    assert {s["session_id"] for s in r["sessions"]} == {"iq-1", "tw-1"}
-    tw = next(s for s in r["sessions"] if s["session_id"] == "tw-1")
-    assert tw["home"] == "tw" and tw["hits"][0]["role"] == "tool"
+    assert {s["session_id"] for s in r["sessions"]} == {"acct2-1", "host1-1"}
+    tw = next(s for s in r["sessions"] if s["session_id"] == "host1-1")
+    assert tw["home"] == "host1" and tw["hits"][0]["role"] == "tool"
 
 
 def test_grep_escapes_in_raw_line(machine):
     """A pattern spanning a newline/quote in the text must survive the raw prefilter."""
     hs = discover_homes(root=machine)
     r = grep_sessions(r'"acmecorp"\s+venture', home=hs)
-    assert [s["session_id"] for s in r["sessions"]] == ["iq-1"]
+    assert [s["session_id"] for s in r["sessions"]] == ["acct2-1"]
 
 
 def test_grep_project_and_title_filters(machine):
@@ -118,9 +118,69 @@ def test_grep_rejects_unknown_role(machine):
         grep_sessions("x", home=discover_homes(root=machine), roles="bogus")
 
 
-def test_raw_prefilter_pattern_widens_escapes():
-    assert raw_prefilter_pattern(r"a\sb") == r"a[\s\\nrt]b"
-    assert raw_prefilter_pattern('"x"') == r'\\?"x\\?"'
+#: (pattern, decoded text) pairs where a naive raw-line prefilter under-matches: JSON
+#: escapes a quote, a backslash and control characters, so one decoded character is
+#: two (or six) raw ones.
+ESCAPE_CASES = [
+    (r"C:\\Users", r"open C:\Users\me"),
+    (r"\"hi\"", 'say "hi" now'),
+    (r"ab[^\s]", "abt"),
+    (r"x[*^]y", "x^y"),
+    (r"[$£]\d+", "costs $40"),
+    (r"col1.col2", "col1\tcol2"),
+    (r"a\Wb", 'a"b'),
+    (r"it.s", 'it"s'),
+    (r"\d+.\d+", "3\\4"),
+    (r"\x1b\[0m", "reset \x1b[0m done"),
+    (r"foo\s+bar", "foo\n  bar"),
+    (r"(?i)HELLO\b", "hello\nworld"),
+    (r"\bac\b", "notes\nac agreement"),
+]
+
+
+@pytest.mark.skipif(not shutil.which("rg"), reason="rg not installed")
+@pytest.mark.parametrize("pattern,text", ESCAPE_CASES)
+def test_prefilter_never_under_matches(tmp_path, pattern, text):
+    home = write_home(
+        tmp_path,
+        sessions=[{"sid": "e-1", "cwd": "/p/x", "turns": [{"prompt": text}]}],
+    ).home
+    slow = grep_sessions(pattern, home=home, use_rg=False)
+    fast = grep_sessions(pattern, home=home, use_rg=True)
+    assert slow["n_sessions"] == 1, (pattern, text)
+    assert fast["n_sessions"] == 1, (pattern, raw_prefilter_pattern(pattern))
+
+
+def test_raw_prefilter_drops_assertions_keeps_safe_atoms():
+    assert raw_prefilter_pattern(r"^\bac\b$") == "ac"
+    assert raw_prefilter_pattern(r"ab\d+\w") == r"ab\d+\w"
+
+
+def test_duplicate_session_across_homes_listed_once_newest_wins(tmp_path):
+    import os
+
+    a = write_home(
+        tmp_path / "a",
+        sessions=[{"sid": "dup", "cwd": "/p/x", "turns": [{"prompt": "acme old"}]}],
+    ).home
+    b = write_home(
+        tmp_path / "b",
+        sessions=[{"sid": "dup", "cwd": "/p/x", "turns": [{"prompt": "acme newer"}]}],
+    ).home
+    old = next(a.rglob("dup.jsonl"))
+    os.utime(old, (1_000_000, 1_000_000))
+    r = grep_sessions("acme", home=[a, b])
+    assert [(s["session_id"], s["hits"][0]["text"]) for s in r["sessions"]] == [
+        ("dup", "acme newer")
+    ]
+
+
+def test_discover_homes_ignores_backups_and_aliases(tmp_path):
+    for sub in (".claude/projects", ".claude.bak/projects", ".claude-iq/projects"):
+        (tmp_path / sub).mkdir(parents=True)
+    (tmp_path / ".claude-alias").symlink_to(tmp_path / ".claude")
+    names = [h.name for h in discover_homes(root=tmp_path, mirrors=tmp_path / "none")]
+    assert names == ["claude", "claude-iq"]
 
 
 def test_tools_grep_does_not_pull_when_pinned(machine, monkeypatch):
@@ -138,11 +198,11 @@ def test_word_boundary_after_escaped_newline(tmp_path):
             {
                 "sid": "nl-1",
                 "cwd": "/p/x",
-                "turns": [{"prompt": "notes", "final_text": "first line\ntp agreement"}],
+                "turns": [{"prompt": "notes", "final_text": "first line\nac agreement"}],
             }
         ],
     ).home
     r = grep_sessions(r"^ac\b", home=home)
     assert r["n_sessions"] == 0  # ^ anchors to the start of the whole message
-    r = grep_sessions(r"\btp\b", home=home)
+    r = grep_sessions(r"\bac\b", home=home)
     assert [s["session_id"] for s in r["sessions"]] == ["nl-1"]

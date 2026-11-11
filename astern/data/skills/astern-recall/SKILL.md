@@ -6,10 +6,10 @@ description: >-
   casually: "we did X", "remember when we", "that old session", "the session where",
   "last week/month we", "find the work on X", "where did we leave X", "what did we
   decide about X", "did we ever look at X", "why did we do X that way", "catch me up on
-  project X", "what happened last time", "find that conversation", "it was on tw / iq /
-  the server" — and proactively before re-deriving a decision on a project untouched
+  project X", "what happened last time", "find that conversation", "it was on the server /
+  another machine" — and proactively before re-deriving a decision on a project untouched
   for weeks. Searches both local accounts (~/.claude, ~/.claude-iq) and mirrors of the
-  other machines (tw, iq) automatically: `astern grep` (regex over raw transcripts, no
+  other machines automatically: `astern grep` (regex over raw transcripts, no
   index, seconds) for names, identifiers and phrases, `astern recall` (ir hybrid
   search over the synced store) for paraphrases and decisions. Reads the hits with
   `astern show`; writes a briefing when asked. Read-only on the sessions.
@@ -19,7 +19,7 @@ metadata:
 
 # astern recall — find past sessions, wherever they ran
 
-Transcripts are the only honest record of why a project is the way it is. `astern` reads them on **every home this machine can see**: each local account (`~/.claude`, `~/.claude-iq`) and a mirror of each other machine (`~/.cache/xa/remotes/<host>/`, one per SSH host in `~/.config/xa/config.toml`, refreshed with `xa sync` before every search). Every hit names its `home` (`claude`, `claude-iq`, `tw`, `iq`), so you can say where a session ran. You never need to be told which machine to search: the default is all of them.
+Transcripts are the only honest record of why a project is the way it is. `astern` reads them on **every home this machine can see**: each local account (`~/.claude`, `~/.claude-iq`) and a mirror of each other machine (`~/.cache/xa/remotes/<host>/`, one per SSH host in `~/.config/xa/config.toml`, refreshed with `xa sync` before every search). Every hit names its `home` (`claude`, `claude-iq`, or a host name), so you can say where a session ran. You never need to be told which machine to search: the default is all of them.
 
 **A hit is an address, not an answer.** Read the top hits, then answer or write a briefing.
 
@@ -69,7 +69,7 @@ Flags: `--project`, `--since-days`, `--k`, `--grains session_synopses|session_tu
 
 - **A miss is**: no hit, or hits whose snippets don't mention the thing. Not "fewer than k".
 - Reformulate with the vocabulary the session would have used: the file it would have touched, the command it would have run, the repo or issue number, the error text. Switch route (grep ↔ recall) rather than repeating the same one.
-- Stop after three rounds that bring no new candidate sessions, and say what you searched (patterns, routes, homes): "not found on claude, claude-iq, tw, iq" is a finding.
+- Stop after three rounds that bring no new candidate sessions, and say what you searched (patterns, routes, homes): "not found on <the homes listed>" is a finding.
 - **Synonym ledger**: when a miss was fixed by a word only this corpus uses (a project nickname, a renamed package, a person's handle, private jargon) and you verified the hit, record it: `ir synonyms-add "<term>, <alias>, ..." --note "<why>"`. Don't add general-English synonyms; you produce those yourself.
 
 ## 5. Read the hits that matter
